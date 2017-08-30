@@ -19,6 +19,7 @@ public class DragableToy : MonoBehaviour {
 	public void EndDrag()
 	{
 		GetComponent<CircleCollider2D>().enabled = true;
+		GetComponent<Rigidbody2D>().velocity = Vector2.zero;
 		GetComponent<Rigidbody2D>().simulated = true;
 		GetComponent<Animator>().SetBool("hold",false);
 	}
