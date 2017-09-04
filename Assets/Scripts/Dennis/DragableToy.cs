@@ -1,13 +1,33 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class DragableToy : MonoBehaviour {
 
+	bool endDrag = false;
+	List<Collider2D> daftar = new List<Collider2D>();
+
+	void OnTriggerEnter2D(Collider2D other)
+	{
+		print(other.name);
+		if (endDrag) 
+		{
+			daftar.Add(other.transform.parent.GetComponent<Collider2D>());
+		}
+	}
+
 	public void BeginDrag()
 	{
 		GetComponent<Animator>().SetBool("hold",true);
-		GetComponent<CircleCollider2D>().enabled = false;
 		GetComponent<Rigidbody2D>().simulated = false;
+
+		if(daftar.Count != 0){
+			foreach(Collider2D c in daftar){
+				Physics2D.IgnoreCollision(c,GetComponent<Collider2D>(),false);
+			}
+		}
+
+		daftar = new List<Collider2D>();
 	}
 
 	public void Drag()
@@ -18,9 +38,44 @@ public class DragableToy : MonoBehaviour {
 
 	public void EndDrag()
 	{
-		GetComponent<CircleCollider2D>().enabled = true;
-		GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-		GetComponent<Rigidbody2D>().simulated = true;
+		endDrag = true;
 		GetComponent<Animator>().SetBool("hold",false);
+		StartCoroutine(changeDragState());
+	}
+
+
+	public void OnFinishedEndDragAnimation()
+	{
+		if(endDrag){
+			Debug.Log("-------End drag------------");
+
+
+			GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+			GetComponent<Rigidbody2D>().simulated = true;
+		}
+	}
+
+	IEnumerator reAdjustFurniturePosition()
+	{
+		yield return null;
+		float t = 0;
+		while(t<=1){
+			
+		}
+	}
+
+	IEnumerator changeDragState()
+	{
+		yield return null;
+		if (endDrag) {
+			Debug.Log("------change end drag state-----");
+			endDrag = false;
+			if(daftar.Count != 0){
+				foreach(Collider2D c in daftar){
+					Physics2D.IgnoreCollision(c,GetComponent<Collider2D>());
+				}
+			}
+
+		}
 	}
 }
