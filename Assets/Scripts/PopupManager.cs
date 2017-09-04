@@ -9,17 +9,17 @@ public class PopupManager : MonoBehaviour {
 	public Text textContent;
 	public Animator popupAnim;
 
-	PopupManager instance;
+	static PopupManager instance = null;
 	string popupOpenTrigger = "PopupOpen";
 	string popupCloseTrigger = "PopupClose";
 
-	public PopupManager Instance {
+	public static PopupManager Instance {
 		get{ return instance;}
 	}
 
 	// Use this for initialization
 	void Awake () {
-		if(instance == null || instance != this){
+		if(instance != null && instance != this){
 			Destroy(this.gameObject);
 		}else{
 			instance = this;
