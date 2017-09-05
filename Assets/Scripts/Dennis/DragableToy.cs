@@ -9,11 +9,7 @@ public class DragableToy : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other)
 	{
-		print(other.name);
-		if (endDrag) 
-		{
-			daftar.Add(other.transform.parent.GetComponent<Collider2D>());
-		}
+		if (endDrag && other.tag == Tags.FLOOR) daftar.Add(other.transform.parent.GetComponent<Collider2D>());
 	}
 
 	public void BeginDrag()
@@ -55,15 +51,6 @@ public class DragableToy : MonoBehaviour {
 		}
 	}
 
-	IEnumerator reAdjustFurniturePosition()
-	{
-		yield return null;
-		float t = 0;
-		while(t<=1){
-			
-		}
-	}
-
 	IEnumerator changeDragState()
 	{
 		yield return null;
@@ -75,7 +62,6 @@ public class DragableToy : MonoBehaviour {
 					Physics2D.IgnoreCollision(c,GetComponent<Collider2D>());
 				}
 			}
-
 		}
 	}
 }
