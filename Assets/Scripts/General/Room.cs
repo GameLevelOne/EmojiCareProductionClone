@@ -1,19 +1,29 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+
+public enum RoomName{
+	LivingRoom,
+	Bedroom,
+	Bathroom,
+	Kitchen,
+	Playroom,
+	Garden
+}
 
 public class Room : MonoBehaviour {
-	#region attribute
+	public List<Furniture> furnitures;
 
-	#endregion
+	protected bool editMode = false;
 
+	public void SwitchEditMode()
+	{
+		if(editMode){
+			editMode = false;
 
-	#region mechanics
+		}else{
+			editMode = true;
 
-	#endregion
-
-
-	#region public methods
-
-	#endregion
+		}
+	}
 }
