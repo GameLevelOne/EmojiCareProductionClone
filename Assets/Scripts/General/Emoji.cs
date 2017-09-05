@@ -2,13 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Emoji : MonoBehaviour {
-	private Emoji instance;
-	private EmojiSO currentEmojiData;
+public enum EmojiStats{
+	Hunger,
+	Hygiene,
+	Happiness,
+	Stamina,
+	Health
+}
 
-	public Emoji Instance {
-		get{ return instance;}
-	}
+public class Emoji : MonoBehaviour {
+	private static Emoji instance;
+	private EmojiSO currentEmojiData;
 
 	void Awake(){
 		if(instance != null && instance != this){
@@ -16,5 +20,14 @@ public class Emoji : MonoBehaviour {
 		} else{
 			instance = this;
 		}
+	}
+
+	public static Emoji Instance {
+		get{ return instance;}
+	}
+
+	public EmojiSO CurrentEmojiData {
+		set{ currentEmojiData = value; }
+		get{ return currentEmojiData;}
 	}
 }

@@ -5,25 +5,31 @@ using UnityEngine;
 public class SceneTitleManager : MonoBehaviour {
 	public Fader fader;
 	public LoadingBar panelLoadingBar;
-	string nextScene = "ScenePrologue";
+	string nextScene;
 
-//	void OnEnable(){
-//		Fader.OnFadeOutFinished += HandleFadeOutFinished;
-//	}
-//
-//	void OnDisable(){
-//		Fader.OnFadeOutFinished -= HandleFadeOutFinished;
-//	}
+	void OnEnable(){
+		Fader.OnFadeOutFinished += HandleFadeOutFinished;
+	}
+
+	void OnDisable(){
+		
+	}
 
 	void HandleFadeOutFinished(){
-		
+		panelLoadingBar.gameObject.SetActive(true);
+		panelLoadingBar.NextScene = nextScene;
+		Fader.OnFadeOutFinished -= HandleFadeOutFinished;
 	}
 
 	public void TapToStart ()
 	{
-		//fader.FadeOut();
-		panelLoadingBar.gameObject.SetActive(true);
-		panelLoadingBar.ChangeScene(nextScene);
+		fader.FadeOut();
+
+		if(PlayerData.Instance.FirstPlay){
+			nextScene = "ScenePrologue";
+		} else {
+			nextScene = "SceneSelection";
+		}
 	}
 
 }
