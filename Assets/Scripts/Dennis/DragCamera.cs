@@ -6,36 +6,33 @@ public class DragCamera : MonoBehaviour {
 	//constants
 	const float roomWidth = 7.2f;
 
-	public Transform cameraTransform;
-
 	float distance = 0f;
 	bool snapState = false;
 
 	public void OnBeginDrag()
 	{
 		if(!snapState){
-			Vector3 tempMousePosition = new Vector3(Input.mousePosition.x,Input.mousePosition.y,10f);
-			Vector3 worldPosition = Camera.main.ScreenToWorldPoint(tempMousePosition);
-			float x = worldPosition.x;
+			float x = getWorldPositionFromTouchInput().x;
 			distance = transform.position.x - x;
 		}
 	}
 
 	public void OnDrag()
 	{
-		if(!snapState){
-			Vector3 tempMousePosition = new Vector3(Input.mousePosition.x,Input.mousePosition.y,10f);
-			Vector3 worldPosition = Camera.main.ScreenToWorldPoint(tempMousePosition);
-			transform.position = new Vector3(worldPosition.x + distance,0f,0f);
-		}
+		if(!snapState) transform.position = new Vector3(getWorldPositionFromTouchInput().x + distance,0f,0f);
 	}
 
 	public void OnEndDrag()
 	{
-		snapState = true;
 		Vector3 startPos = transform.position;
 		Vector3 endpos = new Vector3(getXEndPosition(startPos.x),0f,0f);
 		StartCoroutine(SmoothSnap(startPos,endpos));
+	}
+
+	Vector3 getWorldPositionFromTouchInput()
+	{
+		Vector3 tempMousePosition = new Vector3(Input.mousePosition.x,Input.mousePosition.y,10f);
+		return Camera.main.ScreenToWorldPoint(tempMousePosition);
 	}
 
 	float getXEndPosition(float xPosOnEndDrag)

@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Rooms in the game. Can be modifed for game update.
+/// </summary>
 public enum RoomName{
+	Garden,
+	Playroom,
 	LivingRoom,
+	Kitchen,
 	Bedroom,
 	Bathroom,
-	Kitchen,
-	Playroom,
-	Garden
 }
 
 public class Room : MonoBehaviour {
@@ -18,12 +21,8 @@ public class Room : MonoBehaviour {
 
 	public void SwitchEditMode()
 	{
-		if(editMode){
-			editMode = false;
-
-		}else{
-			editMode = true;
-
-		}
+		if(!editMode) editMode = true;
+		else editMode = false;
+		foreach(Furniture f in furnitures) f.SwitchEditMode(editMode);
 	}
 }
