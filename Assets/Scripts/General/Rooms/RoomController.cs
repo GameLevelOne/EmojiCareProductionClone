@@ -13,6 +13,7 @@ public class RoomController : MonoBehaviour {
 
 	//private
 	BoxCollider2D thisCollider;
+	RoomName currentRoom = RoomName.LivingRoom;
 
 	int roomTotal = 0;
 	float distance = 0;
@@ -31,6 +32,11 @@ public class RoomController : MonoBehaviour {
 		thisCollider = GetComponent<BoxCollider2D>();
 
 		AdjustTouchAreaSize();
+	}
+
+	void Start()
+	{
+		GoToRoom(currentRoom);
 	}
 
 	/// <summary>
@@ -120,4 +126,16 @@ public class RoomController : MonoBehaviour {
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
+	#region public methods
+	public void GoToRoom(RoomName destination)
+	{
+		if(currentRoom == destination) return;
+
+		Vector3 startPos = transform.position;
+		Vector3 endpos = new Vector3((roomWidth*(int)destination*-1f),0f,0f);
+		StartCoroutine(SmoothSnap(startPos,endpos));
+	}
+	#endregion
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+
 }
