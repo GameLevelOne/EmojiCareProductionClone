@@ -4,6 +4,7 @@ public static class AnimatorParameters {
 	public static class Bools
 	{
 		public const string HOLD = "hold";
+		public const string RADIO_ON = "RadioOn";
 	}
 
 	public static class Ints
