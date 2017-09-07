@@ -3,7 +3,7 @@
 public static class AnimatorParameters {
 	public static class Bools
 	{
-		public const string HOLD = "Hold";
+		public const string HOLD = "hold";
 	}
 
 	public static class Ints

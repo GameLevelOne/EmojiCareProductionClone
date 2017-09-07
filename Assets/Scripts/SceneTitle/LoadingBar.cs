@@ -13,15 +13,26 @@ public class LoadingBar : MonoBehaviour {
 
 	void OnEnable(){
 		Fader.OnFadeOutFinished += HandleFadeOutFinished;
+		Fader.OnFadeInFinished += HandleFadeInFinished;
+		fader.FadeIn();
 	}
 
 	void OnDisable(){
 		Fader.OnFadeOutFinished -= HandleFadeOutFinished;
+		Fader.OnFadeInFinished -= HandleFadeInFinished;
+	}
+
+	void HandleFadeInFinished(){
+		ChangeScene(nextScene);
 	}
 
 	void HandleFadeOutFinished ()
 	{
 		asop.allowSceneActivation = true;
+	}
+
+	public string NextScene{
+		set{nextScene = value;}
 	}
 
 	public void ChangeScene(string nextScene){

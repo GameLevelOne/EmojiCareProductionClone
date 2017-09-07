@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class PopupSelection : MonoBehaviour {
 	public Animator anim;
+	public PanelCelebration panelCelebration;
 	public GameObject buttonOk;
 	public GameObject buttonPay;
 	public Text textPrice;
@@ -47,5 +48,6 @@ public class PopupSelection : MonoBehaviour {
 		Debug.Log("Name: "+currEmojiData.emojiName);
 		Debug.Log("Price: "+currEmojiData.emojiPrice);
 		anim.SetTrigger(triggerPopupClose);
+		panelCelebration.ShowNewEmoji(currEmojiData);
 	}
 }

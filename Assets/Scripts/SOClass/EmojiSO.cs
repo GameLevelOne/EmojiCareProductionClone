@@ -6,17 +6,18 @@ using UnityEngine;
 public class EmojiSO : ScriptableObject {
 	public string emojiName;
 
-	public int maxHealth;
-	public int maxHunger;
-	public int maxHygiene;
-	public int maxHappiness;
+	public float maxHunger;
+	public float maxHygiene;
+	public float maxHappiness;
+	public float maxStamina;
+	public float maxHealth;
 
 //	public int modHealth;
 //	public int modHunger;
 //	public int modHygiene;
 //	public int modHappiness;
 
-	public int statDecreasePerTick;
+	public int statDecreasePerTick = 5;
 
 	public bool isUnlocked;
 
