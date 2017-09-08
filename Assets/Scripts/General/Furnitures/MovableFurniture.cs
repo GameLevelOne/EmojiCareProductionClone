@@ -37,12 +37,14 @@ public class MovableFurniture : Furniture {
 	//collider modules
 	void OnTriggerEnter2D(Collider2D other)
 	{
+		print("Trigger: "+other.name);
 		if(other.tag == Tags.FLOOR || other.tag == Tags.IMMOVABLE_FURNITURE) {
 			floorColliders.Add(other.transform.parent.GetComponent<Collider2D>());
 		}
 	}
 
 	void OnCollisionEnter2D(Collision2D other){
+		print("Collider: "+other.gameObject.name);
 		if(other.gameObject.tag == Tags.MOVABLE_FURNITURE){
 			Physics2D.IgnoreCollision(other.gameObject.GetComponent<Collider2D>(),thisCollider);
 		}
