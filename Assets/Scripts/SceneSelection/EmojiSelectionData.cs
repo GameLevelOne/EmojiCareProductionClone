@@ -21,7 +21,7 @@ public class EmojiSelectionData : MonoBehaviour, IPointerClickHandler {
 			textPrice.text = emojiData.emojiPrice.ToString();
 		}
 		gameObject.name = emojiData.emojiName;
-		//gameObject.GetComponent<Image>().sprite = emojiSO[idx].emojiSelectionIcon;
+		gameObject.GetComponent<Image>().sprite = emojiData.emojiSelectionIcon;
 	}
 
 	public void OnPointerClick(PointerEventData ped){
