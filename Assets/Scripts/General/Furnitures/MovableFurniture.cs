@@ -38,7 +38,6 @@ public class MovableFurniture : Furniture {
 	void OnTriggerEnter2D(Collider2D other)
 	{
 		if(other.tag == Tags.FLOOR || other.tag == Tags.IMMOVABLE_FURNITURE) {
-			print(other.name);
 			floorColliders.Add(other.transform.parent.GetComponent<Collider2D>());
 		}
 	}
@@ -68,7 +67,7 @@ public class MovableFurniture : Furniture {
 	public void Drag()
 	{
 		if(!editMode || !endDrag){
-			Vector3 tempMousePosition = new Vector3(Input.mousePosition.x,Input.mousePosition.y,10f);
+			Vector3 tempMousePosition = new Vector3(Input.mousePosition.x,Input.mousePosition.y,9f);
 			transform.localPosition = Camera.main.ScreenToWorldPoint(tempMousePosition);
 		}
 	}
