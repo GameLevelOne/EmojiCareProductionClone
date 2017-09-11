@@ -14,6 +14,7 @@ public class GameSparkManager : MonoBehaviour {
 	{
 		if(instance != null && instance != this) Destroy(gameObject);
 		else instance = this;
+		DontDestroyOnLoad(this.gameObject);
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -22,26 +23,40 @@ public class GameSparkManager : MonoBehaviour {
 	{
 		new FacebookConnectRequest().SetAccessToken(facebookAccessToken).Send((response)=>{
 			if(!response.HasErrors){
-				//do code here
+				PlayerData.Instance.AuthToken = response.AuthToken;
+				Debug.Log("Connected to GameSpark. Auth Token = "+PlayerData.Instance.AuthToken);
+			}else{
+				Debug.Log("GameSparks Login Error: "+response.Errors.JSON.ToString());
 			}
 		});
+	}
+
+	public void DoSaveData()
+	{
+		
+	}
+
+	public void DoLoadData()
+	{
+		
+	}
+
+	public void GetDownloadableContent(string shortCode)
+	{
+//		new GameSparks.Api.Requests.GetDownloadableRequest().SetShortCode("mybundle").Send((response)=>{
+//			if(!response.HasErrors){
+//				//do code here
+//
+//			}else{
+//				Debug.Log("Error: "+response.Errors.JSON);
+//			}	
+//		});
 	}
 
 	public void DoLogout()
 	{
 		GS.Reset();
 		FacebookManager.Instance.DoLogout();
-	}
-
-	public void GetDownloadable()
-	{
-		new GameSparks.Api.Requests.GetDownloadableRequest().SetShortCode("mybundle").Send((response)=>{
-			if(!response.HasErrors){
-				
-			}else{
-				Debug.Log("Error: "+response.Errors.JSON);
-			}	
-		});
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
