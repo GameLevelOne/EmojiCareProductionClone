@@ -17,38 +17,48 @@ public class FacebookManager : MonoBehaviour {
 		Init();
 	}
 	#endregion
+
+	#region delegate events
+	public delegate void PlayerLogin();
+	public delegate void PlayerShare();
+	public delegate void PlayerInvite();
+	public event PlayerLogin OnPlayerLogin;
+	public event PlayerShare OnPlayerShare;
+	public event PlayerInvite OnPlayerInvite;
+	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
 	void Init()
 	{
 		if(!FB.IsInitialized) FB.Init(InitCallBack,OnHideUnity);
-		else
-			#if UNITY_ANDROID
-			FB.ActivateApp();
-			#endif
+		else FB.ActivateApp();
 	}
 
 	void InitCallBack(){
-		if(FB.IsInitialized)
-			#if UNITY_ANDROID
-			FB.ActivateApp();
-			#endif
+		if(FB.IsInitialized) FB.ActivateApp();
 		else Debug.Log("Facebook Init Failed.");
 	}
-	void OnHideUnity(bool isGameShown){}
 
+	void OnHideUnity(bool isGameShown){}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
-	public void DoLogin(){
+	public void DoLogin()
+	{
 		if(FB.IsInitialized) FB.LogInWithPublishPermissions(new List<string>{"publish_actions"},LoginResponse);
 		else Init();
 	}
-	public void DoShare(){
+
+	public void DoShare()
+	{
 //		if(FB.IsInitialized) 
 //		else Init();
 	}
-	public void DoInviteFriends(){}
+
+	public void DoInviteFriends()
+	{
+		
+	}
 
 	public void DoLogout(){
 		FB.LogOut();
@@ -59,10 +69,9 @@ public class FacebookManager : MonoBehaviour {
 	void LoginResponse(ILoginResult result)
 	{
 		if(!string.IsNullOrEmpty(result.Error) || result.Cancelled){
-			if(result.Cancelled) Debug.Log("Error: Login canceled");
-			else Debug.Log("Error: Facebook Login Failed. "+result.Error.ToString());
+			Debug.Log("Error: "+result.Error.ToString());
 		}else{
-			Debug.Log("Facebook Login Successful. Directing to Gamesparks...");
+			Debug.Log("Facebook Login Success. Directing to Gamesparks...");
 
 			Dictionary<string,object> resultObj = Json.Deserialize(result.RawResult) as Dictionary<string,object>;
 			string accessToken = resultObj["access_token"].ToString();
@@ -73,12 +82,22 @@ public class FacebookManager : MonoBehaviour {
 
 	void ShareResponse(IShareResult result)
 	{
-		
+		if(!string.IsNullOrEmpty(result.Error) || result.Cancelled){
+			Debug.Log("Error: "+result.Error.ToString());
+		}else{
+			Debug.Log("Facebook Share success");
+			if(OnPlayerShare != null) OnPlayerShare();
+		}
 	}
 
 	void InviteResponse(IAppInviteResult result)
 	{
-		
+		if(!string.IsNullOrEmpty(result.Error) || result.Cancelled){
+			Debug.Log("Error: "+result.Error.ToString());
+		}else{
+			Debug.Log("Invite Success");
+			if(OnPlayerInvite != null) OnPlayerInvite();
+		}
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
