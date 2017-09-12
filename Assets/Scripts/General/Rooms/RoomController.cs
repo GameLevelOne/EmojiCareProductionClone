@@ -21,6 +21,11 @@ public class RoomController : MonoBehaviour {
 	bool snapping = false;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
+	#region delegate events
+	public delegate void RoomChange();
+	public event RoomChange OnRoomChange;
+	#endregion
+//-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initializations
 	void Awake()
 	{
@@ -116,11 +121,12 @@ public class RoomController : MonoBehaviour {
 
 		while(t <= 1){
 			t += Time.deltaTime * snapSpeed;
-			transform.position = Vector3.Lerp(startPos, endPos, Mathf.SmoothStep(0, 1, Mathf.SmoothStep(0, 1, t)));
+			transform.position = Vector3.Lerp(startPos, endPos, Mathf.SmoothStep(0, 1, t));
 			yield return new WaitForSeconds(Time.deltaTime);
 		}
 
 		transform.position = endPos;
+		if(OnRoomChange != null) OnRoomChange();
 		snapping = false;
 		yield return null;
 	}

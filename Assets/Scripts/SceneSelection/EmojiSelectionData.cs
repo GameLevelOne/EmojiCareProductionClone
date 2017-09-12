@@ -14,13 +14,13 @@ public class EmojiSelectionData : MonoBehaviour, IPointerClickHandler {
 
 	public void InitEmoji(EmojiSO emojiData){
 		currEmojiData = emojiData;
-		if(emojiData.isUnlocked){
+//		if(emojiData.isUnlocked){
 			priceBox.SetActive(false);	
-		} else{
+//		} else{
 			priceBox.SetActive(true);
 			textPrice.text = emojiData.emojiPrice.ToString();
-		}
-		gameObject.name = emojiData.emojiName;
+//		}
+//		gameObject.name = emojiData.emojiName;
 		gameObject.GetComponent<Image>().sprite = emojiData.emojiSelectionIcon;
 	}
 

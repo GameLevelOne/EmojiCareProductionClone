@@ -27,29 +27,29 @@ public class PanelStatsManager : MonoBehaviour {
 	void InitStats(){
 		Emoji currData = Emoji.Instance;
 
-		currData.CurrEmojiHunger = 50;
-		currData.CurrEmojiHygiene = 80;
-		currData.CurrEmojiHappiness = 90;
-		currData.CurrEmojiStamina = 49;
-		currData.CurrEmojiHealth = 16;
-
-		float ratioHunger = currData.CurrEmojiHunger / currData.MaxEmojiHunger;
-		float ratioHygiene = currData.CurrEmojiHygiene / currData.MaxEmojiHygiene;
-		float ratioHappiness = currData.CurrEmojiHappiness / currData.MaxEmojiHappiness;
-		float ratioStamina = currData.CurrEmojiStamina / currData.MaxEmojiStamina;
-		float ratioHealth = currData.CurrEmojiHealth / currData.MaxEmojiHealth;
-
-		barFillHunger.fillAmount = ratioHunger;
-		barFillHygiene.fillAmount = ratioHygiene;
-		barFillHappiness.fillAmount = ratioHappiness;
-		barFillStamina.fillAmount = ratioStamina;
-		barFillHealth.fillAmount = ratioHealth;
-
-		InitStatArrows(parentArrowHunger,ratioHunger);
-		InitStatArrows(parentArrowHygiene,ratioHygiene);
-		InitStatArrows(parentArrowHappiness,ratioHappiness);
-		InitStatArrows(parentArrowStamina,ratioStamina);
-		InitStatArrows(parentArrowHealth,ratioHealth);
+//		currData.CurrEmojiHunger = 50;
+//		currData.CurrEmojiHygiene = 80;
+//		currData.CurrEmojiHappiness = 90;
+//		currData.CurrEmojiStamina = 49;
+//		currData.CurrEmojiHealth = 16;
+//
+//		float ratioHunger = currData.CurrEmojiHunger / currData.MaxEmojiHunger;
+//		float ratioHygiene = currData.CurrEmojiHygiene / currData.MaxEmojiHygiene;
+//		float ratioHappiness = currData.CurrEmojiHappiness / currData.MaxEmojiHappiness;
+//		float ratioStamina = currData.CurrEmojiStamina / currData.MaxEmojiStamina;
+//		float ratioHealth = currData.CurrEmojiHealth / currData.MaxEmojiHealth;
+//
+//		barFillHunger.fillAmount = ratioHunger;
+//		barFillHygiene.fillAmount = ratioHygiene;
+//		barFillHappiness.fillAmount = ratioHappiness;
+//		barFillStamina.fillAmount = ratioStamina;
+//		barFillHealth.fillAmount = ratioHealth;
+//
+//		InitStatArrows(parentArrowHunger,ratioHunger);
+//		InitStatArrows(parentArrowHygiene,ratioHygiene);
+//		InitStatArrows(parentArrowHappiness,ratioHappiness);
+//		InitStatArrows(parentArrowStamina,ratioStamina);
+//		InitStatArrows(parentArrowHealth,ratioHealth);
 	}
 
 	void InitStatArrows(Transform parentObj,float value){

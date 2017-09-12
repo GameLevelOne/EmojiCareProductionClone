@@ -15,6 +15,7 @@ public enum RoomName{
 }
 
 public class Room : MonoBehaviour {
+	public float hungerFactor, hygeneFactor, happinessFactor, staminaFactor, healthFactor;
 	public List<Furniture> furnitures;
 
 	protected bool editMode = false;
