@@ -9,7 +9,7 @@ public static class AnimatorParameters {
 
 	public static class Ints
 	{
-		
+		public const string STATE = "State";
 	}
 
 	public static class Floats

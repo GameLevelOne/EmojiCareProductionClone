@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum EmojiStats{
 	Hunger,
-	Hygiene,
+	Hygene,
 	Happiness,
 	Stamina,
 	Health
@@ -75,7 +75,8 @@ public class Emoji : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region delegate events
-
+	public delegate void EmojiTickStats();
+	public event EmojiTickStats OnEmojiTickStats;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region attribute
@@ -84,7 +85,7 @@ public class Emoji : MonoBehaviour {
 	public List<EmojiExpression> unlockedExpression = new List<EmojiExpression>();
 	Animator emojiObjectAnimation;
 
-	public float hungerRoomFactor = 0, hygeneRoomFactor = 0, happinessRoomFactor = 0, staminaRoomFactor = 0, healthRoomFactor = 0;
+	public float[] statsFactor;
 
 	public float hunger{
 		get{return PlayerPrefs.GetFloat(PlayerPrefKeys.Emoji.HUNGER);}
@@ -106,13 +107,21 @@ public class Emoji : MonoBehaviour {
 		get{return PlayerPrefs.GetFloat(PlayerPrefKeys.Emoji.HEALTH);}
 		set{PlayerPrefs.SetFloat(PlayerPrefKeys.Emoji.HEALTH,value);}
 	}
-
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanic
-	public void TickStats()
+	public void TickStats(float tick = 1f, float[] roomMod = null)
 	{
-		
+		if(hunger > 0f) 	hunger 		-= ( tick * ( statsFactor[(int)EmojiStats.Hunger]    + roomMod[(int)EmojiStats.Hunger] ));
+		if(hygene > 0f) 	hygene 		-= ( tick * ( statsFactor[(int)EmojiStats.Hygene]    + roomMod[(int)EmojiStats.Hygene] ));
+		if(happiness > 0f)  happiness 	-= ( tick * ( statsFactor[(int)EmojiStats.Happiness] + roomMod[(int)EmojiStats.Happiness] ));
+		if(stamina > 0f) 	stamina 	-= ( tick * ( statsFactor[(int)EmojiStats.Stamina]   + roomMod[(int)EmojiStats.Stamina] ));
+
+		if(hunger <= 0f || hygene <= 0f || happiness <= 0f || stamina <= 0f){
+			if(health > 0f) health -= ( tick * ( statsFactor[(int)EmojiStats.Health] + roomMod[(int)EmojiStats.Health] ));
+		}
+
+		if(OnEmojiTickStats != null) OnEmojiTickStats();
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -122,9 +131,9 @@ public class Emoji : MonoBehaviour {
 
 	}
 
-	public void ShowExpression(EmojiExpression expression)
+	public void ChangeExpression(EmojiExpression expression)
 	{
-		
+		emojiObjectAnimation.SetInteger(AnimatorParameters.Ints.STATE,(int)expression);
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
