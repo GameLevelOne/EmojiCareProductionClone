@@ -81,6 +81,9 @@ public class Emoji : MonoBehaviour {
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region attribute
 	public EmojiSO emojiSO;
+	public string emojiName;
+	public EmojiType emojiType;
+	public EmojiStatus emojiStatus;
 	public GameObject emojiObject;
 	public List<EmojiExpression> unlockedExpression = new List<EmojiExpression>();
 	Animator emojiObjectAnimation;
