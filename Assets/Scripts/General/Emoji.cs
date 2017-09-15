@@ -18,46 +18,46 @@ public enum EmojiStatus{
 }
 
 public enum EmojiExpression{
-	Default = 0,//00
-	Smile,		//01
-	Yummy,		//02
-	Hungry,		//03
-	Starving,	//04
-	Blush,		//05
-	Embarassed,	//06
-	Worried,	//07
-	Excited,	//08
-	Upset,		//09
-	Cry,		//10
-	Lively,		//11
-	Fidget,		//12
-	Sick,		//13
-	Energized,	//14
-	Weary,		//15
-	Exhausted,	//16
-	Eat,		//17
-	Oh,			//18
-	Content,	//19
-	Eyeroll,	//20
-	Whistle,	//21
-	Amused,		//22
-	Blessed,	//23
-	Sleep,		//24
-	Nerd,		//25
-	Cool,		//26
-	Happy,		//27
-	Calm,		//28
-	Hearty,		//29
-	Mouthzip,	//30
-	Terrified,	//31
-	Kisswink,	//32
-	Lick,		//33
-	Overjoyed,	//34
-	Glee,		//35
-	Angry,		//36
-	Drool,		//37
-	Dizzy,		//38
-	Surprised	//39
+	Default = 1,//01
+	Smile,		//02
+	Yummy,		//03
+	Hungry,		//04
+	Starving,	//05
+	Blushed,	//06
+	Embarrassed,//07
+	Worried,	//08
+	Excited,	//09
+	Upset,		//10
+	Cry,		//11
+	Lively,		//12
+	Fidget,		//13
+	Sick,		//14
+	Energized,	//15
+	Weary,		//16
+	Exhausted,	//17
+	Eat,		//18
+	Oh,			//19
+	Content,	//20
+	Eyeroll,	//21
+	Whistle,	//22
+	Amused,		//23
+	Blessed,	//24
+	Sleep,		//25
+	Nerd,		//26
+	Cool,		//27
+	Happy,		//28
+	Calm,		//29
+	Hearty,		//30
+	Mouthzip,	//31
+	Terrified,	//32
+	Kisswink,	//33
+	Lick,		//34
+	Overjoyed,	//35
+	Glee,		//36
+	Angry,		//37
+	Drool,		//38
+	Dizzy,		//39
+	Surprised	//40
 }
 
 public class Emoji : MonoBehaviour {
