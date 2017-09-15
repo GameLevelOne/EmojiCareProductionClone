@@ -18,6 +18,11 @@ public class GameSparkManager : MonoBehaviour {
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
+	#region delegate events
+	public delegate void URLResponse(string URL, string emojiType);
+	public event URLResponse OnURLResponse;
+	#endregion
+//-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
 	public void DoFacebookLogin(string facebookAccessToken)
 	{
@@ -41,16 +46,23 @@ public class GameSparkManager : MonoBehaviour {
 		
 	}
 
-	public void GetDownloadableContent(string shortCode)
+	/// <summary>
+	/// USE THIS for get emoji bundle.
+	/// </summary>
+	public void GetDownloadableURL(EmojiType emojiType)
 	{
-//		new GameSparks.Api.Requests.GetDownloadableRequest().SetShortCode("mybundle").Send((response)=>{
-//			if(!response.HasErrors){
-//				//do code here
-//
-//			}else{
-//				Debug.Log("Error: "+response.Errors.JSON);
-//			}	
-//		});
+		new GameSparks.Api.Requests.GetDownloadableRequest().SetShortCode(emojiType.ToString().ToUpper()).Send((response)=>{
+			if(!response.HasErrors){
+				if(OnURLResponse != null) OnURLResponse(response.Url, emojiType.ToString());
+			}else{
+				Debug.Log("Error: "+response.Errors.JSON);
+			}	
+		});
+	}
+
+	public void GetDownloadableURL(string shortCode)
+	{
+		
 	}
 
 	public void DoSetDiary()

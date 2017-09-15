@@ -17,7 +17,15 @@ public enum EmojiStatus{
 	SentOff
 }
 
-public enum EmojiExpression{
+public enum BodyAnimation{
+	Idle,
+	Bounce,
+	Play,
+	HappyBounce,
+	Falling
+}
+
+public enum FaceAnimation{
 	Default = 1,//01
 	Smile,		//02
 	Yummy,		//03
@@ -80,13 +88,17 @@ public class Emoji : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region attribute
-	public EmojiSO emojiSO;
+	[Header("Data")]
+	public EmojiSO[] emojiSOs;
+
+	[Header("Reference")]
 	public string emojiName;
 	public EmojiType emojiType;
+	public List<FaceAnimation> unlockedExpression = new List<FaceAnimation>();
 	public EmojiStatus emojiStatus;
-	public GameObject emojiObject;
-	public List<EmojiExpression> unlockedExpression = new List<EmojiExpression>();
-	Animator emojiObjectAnimation;
+
+	GameObject emojiObject;
+	Animator bodyAnimation, faceAnimation;
 
 	public float[] statsFactor;
 
@@ -129,14 +141,26 @@ public class Emoji : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public module
-	public void InitEmojiData(EmojiExpression[] unlockedExpression, GameObject emojiObject)
+	public void InitEmojiData()
 	{
-
+		
 	}
 
-	public void ChangeExpression(EmojiExpression expression)
+	public void InitEmojiObject(GameObject emojiObject)
 	{
-		emojiObjectAnimation.SetInteger(AnimatorParameters.Ints.STATE,(int)expression);
+		this.emojiObject = emojiObject;
+		bodyAnimation = emojiObject.transform.Find("Body").GetComponent<Animator>();
+		faceAnimation = emojiObject.transform.GetChild(0).Find("Face").GetComponent<Animator>();
+	}
+
+	public void ChangeBodyAnimation(BodyAnimation anim)
+	{
+		bodyAnimation.SetInteger(AnimatorParameters.Ints.STATE,(int)anim);
+	}
+
+	public void ChangeExpression(FaceAnimation anim)
+	{
+		faceAnimation.SetInteger(AnimatorParameters.Ints.STATE,(int)anim);
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
