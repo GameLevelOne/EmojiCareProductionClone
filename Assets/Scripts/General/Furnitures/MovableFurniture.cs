@@ -37,13 +37,14 @@ public class MovableFurniture : Furniture {
 	//collider modules
 	void OnTriggerEnter2D(Collider2D other)
 	{
+		print("Trigger: "+other.name);
 		if(other.tag == Tags.FLOOR || other.tag == Tags.IMMOVABLE_FURNITURE) {
-			print(other.name);
 			floorColliders.Add(other.transform.parent.GetComponent<Collider2D>());
 		}
 	}
 
 	void OnCollisionEnter2D(Collision2D other){
+		print("Collider: "+other.gameObject.name);
 		if(other.gameObject.tag == Tags.MOVABLE_FURNITURE){
 			Physics2D.IgnoreCollision(other.gameObject.GetComponent<Collider2D>(),thisCollider);
 		}
@@ -68,7 +69,7 @@ public class MovableFurniture : Furniture {
 	public void Drag()
 	{
 		if(!editMode || !endDrag){
-			Vector3 tempMousePosition = new Vector3(Input.mousePosition.x,Input.mousePosition.y,10f);
+			Vector3 tempMousePosition = new Vector3(Input.mousePosition.x,Input.mousePosition.y,9f);
 			transform.localPosition = Camera.main.ScreenToWorldPoint(tempMousePosition);
 		}
 	}

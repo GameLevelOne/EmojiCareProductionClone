@@ -29,14 +29,14 @@ public class PopupSelection : MonoBehaviour {
 
 	public void ShowPopup(EmojiSO data){
 		currEmojiData=data;
-		if(data.isUnlocked){
+//		if(data.isUnlocked){
 			buttonOk.SetActive(true);
 			buttonPay.SetActive(false);
-		} else{
+//		} else{
 			buttonOk.SetActive(false);
 			buttonPay.SetActive(true);
 			textPrice.text = data.emojiPrice.ToString();
-		}
+//		}
 		anim.SetTrigger(triggerPopupOpen);
 	}
 
@@ -45,7 +45,7 @@ public class PopupSelection : MonoBehaviour {
 	}
 
 	public void ChooseEmoji(){
-		Debug.Log("Name: "+currEmojiData.emojiName);
+//		Debug.Log("Name: "+currEmojiData.emojiName);
 		Debug.Log("Price: "+currEmojiData.emojiPrice);
 		anim.SetTrigger(triggerPopupClose);
 		panelCelebration.ShowNewEmoji(currEmojiData);

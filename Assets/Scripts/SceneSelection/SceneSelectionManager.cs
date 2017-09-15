@@ -19,13 +19,13 @@ public class SceneSelectionManager : MonoBehaviour {
 
 	public void GenerateSelectionPool(){
 		for(int i=0;i<emojiSO.Length;i++){
-			if(emojiSO[i].isUnlocked){
+//			if(emojiSO[i].isUnlocked){
 				unlockedEmoji.Add(i);
 				Debug.Log("unlocked "+i);
-			} else{
+//			} else{
 				lockedEmoji.Add(i);
 				Debug.Log("locked "+i);
-			}
+//			}
 		}
 
 		int rand = 0;

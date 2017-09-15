@@ -16,20 +16,20 @@ public class SceneTitleManager : MonoBehaviour {
 	}
 
 	void HandleFadeOutFinished(){
-		panelLoadingBar.gameObject.SetActive(true);
-		panelLoadingBar.NextScene = nextScene;
-		Fader.OnFadeOutFinished -= HandleFadeOutFinished;
+//		panelLoadingBar.gameObject.SetActive(true);
+//		panelLoadingBar.NextScene = nextScene;
+//		Fader.OnFadeOutFinished -= HandleFadeOutFinished;
 	}
 
 	public void TapToStart ()
 	{
 		fader.FadeOut();
 
-		if(PlayerData.Instance.FirstPlay){
-			nextScene = "ScenePrologue";
-		} else {
-			nextScene = "SceneSelection";
-		}
+//		if(PlayerData.Instance.FirstPlay){
+//			nextScene = "ScenePrologue";
+//		} else {
+//			nextScene = "SceneSelection";
+//		}
 	}
 
 }

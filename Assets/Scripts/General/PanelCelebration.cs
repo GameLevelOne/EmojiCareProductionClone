@@ -19,7 +19,7 @@ public class PanelCelebration : MonoBehaviour {
 
 	public void ShowNewEmoji(EmojiSO data){
 		currEmojiData = data;
-		emojiName.text = data.emojiName;
+//		emojiName.text = data.emojiName;
 		//emojiIcon.sprite = currEmojiData.emojiSelectionIcon;
 		panelNewEmoji.SetActive(true);
 		panelNewExpression.SetActive(false);
