@@ -10,10 +10,9 @@ public class MovableFurniture : Furniture {
 	Animator thisAnim;
 	Rigidbody2D thisRigidbody;
 	Collider2D thisCollider;
-	SpriteRenderer thisSprite;
+	protected SpriteRenderer thisSprite;
 
 	bool endDrag = false;
-	int tempSortingOrder;
 
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -34,17 +33,18 @@ public class MovableFurniture : Furniture {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
+
 	//collider modules
 	void OnTriggerEnter2D(Collider2D other)
 	{
-		print("Trigger: "+other.name);
+//		print("Trigger: "+other.name);
 		if(other.tag == Tags.FLOOR || other.tag == Tags.IMMOVABLE_FURNITURE) {
 			floorColliders.Add(other.transform.parent.GetComponent<Collider2D>());
 		}
 	}
 
 	void OnCollisionEnter2D(Collision2D other){
-		print("Collider: "+other.gameObject.name);
+//		print("Collider: "+other.gameObject.name);
 		if(other.gameObject.tag == Tags.MOVABLE_FURNITURE){
 			Physics2D.IgnoreCollision(other.gameObject.GetComponent<Collider2D>(),thisCollider);
 		}
@@ -56,7 +56,6 @@ public class MovableFurniture : Furniture {
 		if(!editMode || !endDrag){
 			thisAnim.SetBool(AnimatorParameters.Bools.HOLD,true);
 			thisRigidbody.simulated = false;
-			tempSortingOrder = thisSprite.sortingOrder;
 			thisSprite.sortingOrder = 100;
 
 			if(floorColliders.Count != 0){
@@ -82,9 +81,24 @@ public class MovableFurniture : Furniture {
 			thisAnim.SetBool(AnimatorParameters.Bools.HOLD,false);
 			thisRigidbody.velocity = Vector2.zero;
 			thisRigidbody.simulated = true;
-			thisSprite.sortingOrder = tempSortingOrder;
+			AdjustSortingOrder();
 
 			StartCoroutine(ChangeDragState());
+		}
+	}
+
+	protected virtual void AdjustSortingOrder()
+	{
+		if(transform.localPosition.y >= 0) thisSprite.sortingOrder = 0;
+		else{
+			int sortingOrder = 0;
+			float abs = Mathf.Abs(transform.localPosition.y);
+			float absSisa = abs - Mathf.Floor(abs);
+
+			if(absSisa < 0.5f) sortingOrder = Mathf.FloorToInt(abs) * 2 + 1;
+			else sortingOrder = Mathf.CeilToInt(abs) * 2;
+
+			thisSprite.sortingOrder = sortingOrder;
 		}
 	}
 	#endregion
