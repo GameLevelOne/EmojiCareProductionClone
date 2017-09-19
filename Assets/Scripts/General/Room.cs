@@ -15,8 +15,10 @@ public enum RoomName{
 }
 
 public class Room : MonoBehaviour {
+
 	public float[] statsFactor = new float[5]{0,0,0,0,0};
-	public List<Furniture> furnitures;
+	public List<Furniture> movableFurnitures;
+	public List<Furniture> immovableFurnitures;
 
 	protected bool editMode = false;
 
@@ -24,6 +26,8 @@ public class Room : MonoBehaviour {
 	{
 		if(!editMode) editMode = true;
 		else editMode = false;
-		foreach(Furniture f in furnitures) f.SwitchEditMode(editMode);
+		foreach(Furniture f in movableFurnitures) f.SwitchEditMode(editMode);
+		foreach(Furniture f in immovableFurnitures) f.SwitchEditMode(editMode);
 	}
+
 }
