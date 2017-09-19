@@ -7,35 +7,34 @@ public class MovableFurniture : Furniture {
 	#region attributes
 	List<Collider2D> floorColliders = new List<Collider2D>();
 
-	Animator thisAnim;
-	Rigidbody2D thisRigidbody;
-	Collider2D thisCollider;
+	protected Animator thisAnim;
+	protected Rigidbody2D thisRigidbody;
+	protected Collider2D thisCollider;
 	protected SpriteRenderer thisSprite;
 
-	bool endDrag = false;
+	protected bool endDrag = false;
 
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initializations
-	void Awake()
+	protected void Awake()
 	{
 		Init();
 	}
 
-	void Init()
+	protected virtual void Init()
 	{
-		thisAnim = transform.GetChild(0).GetComponent<Animator>();
-		thisSprite = transform.GetChild(0).GetComponent<SpriteRenderer>();
-		thisRigidbody = GetComponent<Rigidbody2D>();
-		thisCollider = GetComponent<Collider2D>();
-		
+		if(transform.GetChild(0).GetComponent<Animator>() != null) thisAnim = transform.GetChild(0).GetComponent<Animator>();
+		if(transform.GetChild(0).GetComponent<SpriteRenderer>() != null) thisSprite = transform.GetChild(0).GetComponent<SpriteRenderer>();
+		if(GetComponent<Rigidbody2D>() != null) thisRigidbody = GetComponent<Rigidbody2D>();
+		if(GetComponent<Collider2D>() != null) thisCollider = GetComponent<Collider2D>();
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
 
 	//collider modules
-	void OnTriggerEnter2D(Collider2D other)
+	protected void OnTriggerEnter2D(Collider2D other)
 	{
 //		print("Trigger: "+other.name);
 		if(other.tag == Tags.FLOOR || other.tag == Tags.IMMOVABLE_FURNITURE) {
@@ -43,7 +42,7 @@ public class MovableFurniture : Furniture {
 		}
 	}
 
-	void OnCollisionEnter2D(Collision2D other){
+	protected void OnCollisionEnter2D(Collision2D other){
 //		print("Collider: "+other.gameObject.name);
 		if(other.gameObject.tag == Tags.MOVABLE_FURNITURE){
 			Physics2D.IgnoreCollision(other.gameObject.GetComponent<Collider2D>(),thisCollider);
@@ -51,7 +50,7 @@ public class MovableFurniture : Furniture {
 	}
 
 	//event trigger modules
-	public void BeginDrag()
+	public virtual void BeginDrag()
 	{
 		if(!editMode || !endDrag){
 			thisAnim.SetBool(AnimatorParameters.Bools.HOLD,true);
@@ -73,7 +72,7 @@ public class MovableFurniture : Furniture {
 		}
 	}
 
-	public void EndDrag()
+	public virtual void EndDrag()
 	{
 		if(!editMode || !endDrag){
 			endDrag = true;
@@ -104,7 +103,7 @@ public class MovableFurniture : Furniture {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region coroutines
-	IEnumerator ChangeDragState()
+	protected IEnumerator ChangeDragState()
 	{
 		yield return null;
 		if (endDrag) {
