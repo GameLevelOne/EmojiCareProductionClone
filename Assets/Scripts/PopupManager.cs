@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class PopupManager : MonoBehaviour {
 	public GameObject buttonGroupNotice;
 	public GameObject buttonGroupConfirmation;
+	public GameObject buttonShop;
 	public Text textContent;
 	public Animator popupAnim;
 
@@ -26,13 +27,18 @@ public class PopupManager : MonoBehaviour {
 		}
 	}
 
-	public void ShowPopup(string text,bool isNotice){
+	public void ShowPopup(string text,bool isNotice,bool isShop){
 		if(isNotice){
 			buttonGroupNotice.SetActive(true);
 			buttonGroupConfirmation.SetActive(false);
 		} else{
 			buttonGroupNotice.SetActive(false);
 			buttonGroupConfirmation.SetActive(true);
+			if(isShop){
+				buttonShop.SetActive(true);
+			}else{
+				buttonShop.SetActive(false);
+			}
 		}
 		textContent.text = text;
 		popupAnim.SetTrigger(popupOpenTrigger);
