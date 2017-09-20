@@ -19,7 +19,7 @@ public static class AnimatorParameters {
 
 	public static class Triggers
 	{
-		
+		public const string SPIN = "Spin";
 	}
 
 }
