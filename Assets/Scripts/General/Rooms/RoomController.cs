@@ -8,22 +8,16 @@ public class RoomController : MonoBehaviour {
 	const float roomWidth = 7.2f;
 	const float roomHeight = 12.8f;
 
-	//public
 	public float snapSpeed = 6f;
+	public Room[] rooms;
 
-	//private
 	BoxCollider2D thisCollider;
-	RoomName currentRoom = RoomName.LivingRoom;
+	public RoomName currentRoom = RoomName.LivingRoom;
 
 	int roomTotal = 0;
 	float distance = 0;
 	float xOnBeginDrag;
 	bool snapping = false;
-	#endregion
-//-------------------------------------------------------------------------------------------------------------------------------------------------
-	#region delegate events
-	public delegate void RoomChange();
-	public event RoomChange OnRoomChange;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initializations
@@ -35,7 +29,8 @@ public class RoomController : MonoBehaviour {
 	void Init()
 	{
 		thisCollider = GetComponent<BoxCollider2D>();
-
+		currentRoom = GetCurrentRoom(transform.localPosition.x);
+		foreach(Room r in rooms) r.OnRoomChanged(currentRoom);
 		AdjustTouchAreaSize();
 	}
 
@@ -60,6 +55,8 @@ public class RoomController : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
+
+	//event triggers
 	public void BeginDrag()
 	{
 		if(!snapping){
@@ -68,7 +65,7 @@ public class RoomController : MonoBehaviour {
 			distance = transform.localPosition.x - x;
 		}
 	}
-
+		
 	public void Drag()
 	{
 		if(!snapping) transform.position = new Vector3(getWorldPositionFromTouchInput().x + distance,0f,0f);
@@ -79,6 +76,7 @@ public class RoomController : MonoBehaviour {
 		if(!snapping){
 			Vector3 startPos = transform.position;
 			Vector3 endpos = new Vector3(getXEndPosition(startPos.x),0f,0f);
+
 			StartCoroutine(SmoothSnap(startPos,endpos));
 		}
 	}
@@ -107,9 +105,17 @@ public class RoomController : MonoBehaviour {
 			}else{
 				if(tenths > 0.1f) index++;
 			}
-
 			return -1f * (index * roomWidth);
 		}
+	}
+
+	/// <summary>
+	/// I don't know what happens, but when I use (int) casting instead, the system misscalculate. 21.6 / 7.2 is 3 in float, but 2 in int. thus I use Mathf.CeilToInt
+	/// </summary>
+	RoomName GetCurrentRoom(float xPos)
+	{
+		int roomIndex = Mathf.CeilToInt(Mathf.Abs(xPos / roomWidth));
+		return (RoomName)roomIndex;
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -119,6 +125,9 @@ public class RoomController : MonoBehaviour {
 		snapping = true;
 		float t = 0;
 
+		currentRoom = GetCurrentRoom(endPos.x);
+		foreach(Room r in rooms) r.OnRoomChanged(currentRoom);
+
 		while(t <= 1){
 			t += Time.fixedDeltaTime * snapSpeed;
 			transform.position = Vector3.Lerp(startPos, endPos, Mathf.SmoothStep(0, 1, t));
@@ -126,7 +135,7 @@ public class RoomController : MonoBehaviour {
 		}
 
 		transform.position = endPos;
-		if(OnRoomChange != null) OnRoomChange();
+
 		snapping = false;
 		yield return null;
 	}
@@ -135,7 +144,7 @@ public class RoomController : MonoBehaviour {
 	#region public methods
 	public void GoToRoom(RoomName destination)
 	{
-		if(currentRoom == destination) return;
+		if(destination == currentRoom) return;
 
 		Vector3 startPos = transform.position;
 		Vector3 endpos = new Vector3((roomWidth*(int)destination*-1f),0f,0f);
@@ -143,5 +152,4 @@ public class RoomController : MonoBehaviour {
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
-
 }
