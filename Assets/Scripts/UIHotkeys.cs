@@ -8,6 +8,8 @@ public class UIHotkeys : MonoBehaviour {
 	public Animator panelLocationHotkey;
 	string triggerHotkeyOpen = "Open";
 	string triggerHotkeyClose = "Close";
+	string triggerHotkeyLocationOpen = "LocationOpen";
+	string triggerHotkeyLocationClose = "LocationClose";
 	string triggerPopupOpen = "PopupOpen";
 	string triggerPopupClose = "PopupClose";
 
@@ -18,6 +20,16 @@ public class UIHotkeys : MonoBehaviour {
 
 	public void CloseHotkey(GameObject obj){
 		obj.GetComponent<Animator>().SetTrigger(triggerHotkeyClose);
+		StartCoroutine(WaitForAnim(obj));
+	}
+
+	public void OpenHotkeyLocation(GameObject obj){
+		obj.SetActive(true);
+		obj.GetComponent<Animator>().SetTrigger(triggerHotkeyLocationOpen);
+	}
+
+	public void CloseHotkeyLocation(GameObject obj){
+		obj.GetComponent<Animator>().SetTrigger(triggerHotkeyLocationClose);
 		StartCoroutine(WaitForAnim(obj));
 	}
 

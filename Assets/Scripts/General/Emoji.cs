@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum EmojiStats{
 	Hunger,
-	Hygene,
+	Hygiene,
 	Happiness,
 	Stamina,
 	Health
@@ -96,6 +96,7 @@ public class Emoji : MonoBehaviour {
 	public EmojiType emojiType;
 	public List<FaceAnimation> unlockedExpression = new List<FaceAnimation>();
 	public EmojiStatus emojiStatus;
+	public EmojiStatsTick emojiStatsTick;
 
 	GameObject emojiObject;
 	Animator bodyAnimation, faceAnimation;
@@ -106,9 +107,9 @@ public class Emoji : MonoBehaviour {
 		get{return PlayerPrefs.GetFloat(PlayerPrefKeys.Emoji.HUNGER);}
 		set{PlayerPrefs.SetFloat(PlayerPrefKeys.Emoji.HUNGER,value);}
 	}
-	public float hygene{
-		get{return PlayerPrefs.GetFloat(PlayerPrefKeys.Emoji.HYGENE);}
-		set{PlayerPrefs.SetFloat(PlayerPrefKeys.Emoji.HYGENE,value);}
+	public float hygiene{
+		get{return PlayerPrefs.GetFloat(PlayerPrefKeys.Emoji.HYGIENE);}
+		set{PlayerPrefs.SetFloat(PlayerPrefKeys.Emoji.HYGIENE,value);}
 	}
 	public float happiness{
 		get{return PlayerPrefs.GetFloat(PlayerPrefKeys.Emoji.HAPPINESS);}
@@ -128,11 +129,11 @@ public class Emoji : MonoBehaviour {
 	public void TickStats(float tick = 1f, float[] roomMod = null)
 	{
 		if(hunger > 0f) 	hunger 		-= ( tick * ( statsFactor[(int)EmojiStats.Hunger]    + roomMod[(int)EmojiStats.Hunger] ));
-		if(hygene > 0f) 	hygene 		-= ( tick * ( statsFactor[(int)EmojiStats.Hygene]    + roomMod[(int)EmojiStats.Hygene] ));
+		if(hygiene > 0f) 	hygiene 		-= ( tick * ( statsFactor[(int)EmojiStats.Hygiene]    + roomMod[(int)EmojiStats.Hygiene] ));
 		if(happiness > 0f)  happiness 	-= ( tick * ( statsFactor[(int)EmojiStats.Happiness] + roomMod[(int)EmojiStats.Happiness] ));
 		if(stamina > 0f) 	stamina 	-= ( tick * ( statsFactor[(int)EmojiStats.Stamina]   + roomMod[(int)EmojiStats.Stamina] ));
 
-		if(hunger <= 0f || hygene <= 0f || happiness <= 0f || stamina <= 0f){
+		if(hunger <= 0f || hygiene <= 0f || happiness <= 0f || stamina <= 0f){
 			if(health > 0f) health -= ( tick * ( statsFactor[(int)EmojiStats.Health] + roomMod[(int)EmojiStats.Health] ));
 		}
 
@@ -143,7 +144,9 @@ public class Emoji : MonoBehaviour {
 	#region public module
 	public void InitEmojiData()
 	{
-		
+		//hunger = hygiene = happiness = stamina = health = emojiSOs[0].maxStatsPoint; //temp
+
+		//emojiStatsTick.CalculateEmojiStats();
 	}
 
 	public void InitEmojiObject(GameObject emojiObject)

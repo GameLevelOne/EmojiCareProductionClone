@@ -10,6 +10,11 @@ public class PanelStatsManager : MonoBehaviour {
 	public Image barFillStamina;
 	public Image barFillHealth;
 
+	public Sprite barPos;
+	public Sprite barNeg;
+	public Sprite arrowPos;
+	public Sprite arrowNeg;
+
 	public GameObject arrowObj;
 
 	public Transform parentArrowHunger;
@@ -20,66 +25,74 @@ public class PanelStatsManager : MonoBehaviour {
 
 	bool moveArrows = true;
 
-	void Start(){
-		InitStats();
+	void OnEnable(){
+		Emoji.Instance.InitEmojiData();
+		CalculateStats();
 	}
 
-	void InitStats(){
+	void CalculateStats(){
 		Emoji currData = Emoji.Instance;
+		float tempMaxStats = 100f; //temp
 
-//		currData.CurrEmojiHunger = 50;
-//		currData.CurrEmojiHygiene = 80;
-//		currData.CurrEmojiHappiness = 90;
-//		currData.CurrEmojiStamina = 49;
-//		currData.CurrEmojiHealth = 16;
-//
-//		float ratioHunger = currData.CurrEmojiHunger / currData.MaxEmojiHunger;
-//		float ratioHygiene = currData.CurrEmojiHygiene / currData.MaxEmojiHygiene;
-//		float ratioHappiness = currData.CurrEmojiHappiness / currData.MaxEmojiHappiness;
-//		float ratioStamina = currData.CurrEmojiStamina / currData.MaxEmojiStamina;
-//		float ratioHealth = currData.CurrEmojiHealth / currData.MaxEmojiHealth;
-//
-//		barFillHunger.fillAmount = ratioHunger;
-//		barFillHygiene.fillAmount = ratioHygiene;
-//		barFillHappiness.fillAmount = ratioHappiness;
-//		barFillStamina.fillAmount = ratioStamina;
-//		barFillHealth.fillAmount = ratioHealth;
-//
-//		InitStatArrows(parentArrowHunger,ratioHunger);
-//		InitStatArrows(parentArrowHygiene,ratioHygiene);
-//		InitStatArrows(parentArrowHappiness,ratioHappiness);
-//		InitStatArrows(parentArrowStamina,ratioStamina);
-//		InitStatArrows(parentArrowHealth,ratioHealth);
+//		float ratioHunger = currData.hunger / tempMaxStats;
+//		float ratioHygiene = currData.hygiene / tempMaxStats;
+//		float ratioHappiness = currData.happiness / tempMaxStats;
+//		float ratioStamina = currData.stamina / tempMaxStats;
+//		float ratioHealth = currData.health / tempMaxStats;
+
+		float ratioHunger = 0.85f;
+		float ratioHygiene = 0.65f;
+		float ratioHappiness = 0.49f;
+		float ratioStamina = 0.2f;
+		float ratioHealth = 0.1f;
+
+		barFillHunger.fillAmount = ratioHunger;
+		barFillHygiene.fillAmount = ratioHygiene;
+		barFillHappiness.fillAmount = ratioHappiness;
+		barFillStamina.fillAmount = ratioStamina;
+		barFillHealth.fillAmount = ratioHealth;
+
+		InitStats(parentArrowHunger,barFillHunger,ratioHunger);
+		InitStats(parentArrowHygiene,barFillHygiene,ratioHygiene);
+		InitStats(parentArrowHappiness,barFillHappiness,ratioHappiness);
+		InitStats(parentArrowStamina,barFillStamina,ratioStamina);
+		InitStats(parentArrowHealth,barFillHealth,ratioHealth);
 	}
 
-	void InitStatArrows(Transform parentObj,float value){
+	void InitStats(Transform parentObj,Image barFill,float value){
 		int arrowCount = 0;
 		bool isFlipped = false;
+		bool posValue = true;
 		if(value>=0f && value<0.15f){
 			arrowCount = 3;
-			isFlipped=true;
+			posValue=false;
 		} else if(value>=0.15f && value<0.3f){
 			arrowCount = 2;
-			isFlipped = true;
+			posValue=false;
 		} else if(value>=0.3f && value<0.5f){
 			arrowCount = 1;
-			isFlipped=true;
+			posValue=false;
 		} else if(value>=0.5f && value<0.7f){
 			arrowCount = 1;
-			isFlipped=false;
 		} else if(value>=0.7f && value<0.85f){
 			arrowCount = 2;
-			isFlipped = false;
 		} else{
 			arrowCount = 3;
-			isFlipped = false;
+		}
+
+		if(posValue){
+			barFill.sprite = barPos;
+		} else{
+			barFill.sprite = barNeg;
 		}
 
 		for(int i=0;i<arrowCount;i++){
 			GameObject obj = Instantiate(arrowObj,parentObj,false) as GameObject;
-			obj.transform.localPosition = new Vector3((-34+i*15),0,0);
-			if(isFlipped){
-				obj.transform.localScale = new Vector3(-1,1,1);
+			obj.transform.localPosition = new Vector3(-10+i*20,0,0);
+			if(posValue){
+				obj.GetComponent<Image>().sprite = arrowPos;
+			} else{
+				obj.GetComponent<Image>().sprite = arrowNeg;
 			}
 			StartCoroutine(ArrowsFX(obj.GetComponent<Image>()));
 		}
