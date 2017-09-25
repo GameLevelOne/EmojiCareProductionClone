@@ -26,7 +26,7 @@ public class PanelStatsManager : MonoBehaviour {
 	bool moveArrows = true;
 
 	void OnEnable(){
-		Emoji.Instance.InitEmojiData();
+//		Emoji.Instance.InitEmojiData();
 		CalculateStats();
 	}
 

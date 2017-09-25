@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum EmojiStats{
 	Hunger,
-	Hygiene,
+	hygene,
 	Happiness,
 	Stamina,
 	Health
@@ -92,11 +92,10 @@ public class Emoji : MonoBehaviour {
 	public EmojiSO[] emojiSOs;
 
 	[Header("Reference")]
-	public string emojiName;
+	public string emojiName = string.Empty;
 	public EmojiType emojiType;
 	public List<FaceAnimation> unlockedExpression = new List<FaceAnimation>();
 	public EmojiStatus emojiStatus;
-	public EmojiStatsTick emojiStatsTick;
 
 	GameObject emojiObject;
 	Animator bodyAnimation, faceAnimation;
@@ -107,9 +106,9 @@ public class Emoji : MonoBehaviour {
 		get{return PlayerPrefs.GetFloat(PlayerPrefKeys.Emoji.HUNGER);}
 		set{PlayerPrefs.SetFloat(PlayerPrefKeys.Emoji.HUNGER,value);}
 	}
-	public float hygiene{
-		get{return PlayerPrefs.GetFloat(PlayerPrefKeys.Emoji.HYGIENE);}
-		set{PlayerPrefs.SetFloat(PlayerPrefKeys.Emoji.HYGIENE,value);}
+	public float hygene{
+		get{return PlayerPrefs.GetFloat(PlayerPrefKeys.Emoji.HYGENE);}
+		set{PlayerPrefs.SetFloat(PlayerPrefKeys.Emoji.HYGENE,value);}
 	}
 	public float happiness{
 		get{return PlayerPrefs.GetFloat(PlayerPrefKeys.Emoji.HAPPINESS);}
@@ -129,41 +128,52 @@ public class Emoji : MonoBehaviour {
 	public void TickStats(float tick = 1f, float[] roomMod = null)
 	{
 		if(hunger > 0f) 	hunger 		-= ( tick * ( statsFactor[(int)EmojiStats.Hunger]    + roomMod[(int)EmojiStats.Hunger] ));
-		if(hygiene > 0f) 	hygiene 		-= ( tick * ( statsFactor[(int)EmojiStats.Hygiene]    + roomMod[(int)EmojiStats.Hygiene] ));
+		if(hygene > 0f) 	hygene 		-= ( tick * ( statsFactor[(int)EmojiStats.hygene]    + roomMod[(int)EmojiStats.hygene] ));
 		if(happiness > 0f)  happiness 	-= ( tick * ( statsFactor[(int)EmojiStats.Happiness] + roomMod[(int)EmojiStats.Happiness] ));
 		if(stamina > 0f) 	stamina 	-= ( tick * ( statsFactor[(int)EmojiStats.Stamina]   + roomMod[(int)EmojiStats.Stamina] ));
 
-		if(hunger <= 0f || hygiene <= 0f || happiness <= 0f || stamina <= 0f){
+		if(hunger <= 0f || hygene <= 0f || happiness <= 0f || stamina <= 0f){
 			if(health > 0f) health -= ( tick * ( statsFactor[(int)EmojiStats.Health] + roomMod[(int)EmojiStats.Health] ));
 		}
 
 		if(OnEmojiTickStats != null) OnEmojiTickStats();
 	}
+
+	public void ModStats(EmojiStats statsType, float mod = 0)
+	{
+		switch(statsType){
+		case EmojiStats.Hunger: if(hunger > 0f) hunger += mod; break;
+		case EmojiStats.hygene: if(hygene > 0f) hygene += mod; break;
+		case EmojiStats.Happiness: if(happiness > 0f) happiness += mod; break;
+		case EmojiStats.Stamina: if(stamina > 0f) stamina += mod; break;
+		case EmojiStats.Health: if(health > 0f) health += mod; break;
+		default: break;
+		}
+	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public module
-	public void InitEmojiData()
-	{
-		//hunger = hygiene = happiness = stamina = health = emojiSOs[0].maxStatsPoint; //temp
 
-		//emojiStatsTick.CalculateEmojiStats();
+	public void InitEmojiData(string name,int type, int[] expressions)
+	{
+		emojiName = name;
+		emojiType = (EmojiType) type;
+		for(int i = 0;i<expressions.Length;i++) unlockedExpression.Add((FaceAnimation)expressions[i]);
+		
 	}
 
 	public void InitEmojiObject(GameObject emojiObject)
 	{
-		this.emojiObject = emojiObject;
+		GameObject tempObj = emojiObject;
+		this.emojiObject = Instantiate(tempObj,this.transform);
 		bodyAnimation = emojiObject.transform.Find("Body").GetComponent<Animator>();
 		faceAnimation = emojiObject.transform.GetChild(0).Find("Face").GetComponent<Animator>();
 	}
 
-	public void ChangeBodyAnimation(BodyAnimation anim)
+	public void OnEditMode(bool editMode)
 	{
-		bodyAnimation.SetInteger(AnimatorParameters.Ints.STATE,(int)anim);
-	}
-
-	public void ChangeExpression(FaceAnimation anim)
-	{
-		faceAnimation.SetInteger(AnimatorParameters.Ints.STATE,(int)anim);
+		if(editMode) emojiObject.SetActive(false);
+		else emojiObject.SetActive(true);
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
