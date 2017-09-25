@@ -34,11 +34,6 @@ public class RoomController : MonoBehaviour {
 		AdjustTouchAreaSize();
 	}
 
-	void Start()
-	{
-		GoToRoom(currentRoom);
-	}
-
 	/// <summary>
 	///<para>Automatically adjust the room collider size for touch function.</para> 
 	/// <para> </para>
