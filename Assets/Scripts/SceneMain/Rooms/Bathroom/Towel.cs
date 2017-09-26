@@ -54,7 +54,6 @@ public class Towel : MovableFurniture {
 			transform.localPosition = Vector3.Lerp(transform.localPosition,fixedPosition,Mathf.SmoothStep(0,1,Mathf.SmoothStep(0,1,Mathf.SmoothStep(0,1,t))));
 			yield return new WaitForSeconds(Time.deltaTime);
 		}
-		print(t);
 		transform.localPosition = fixedPosition;
 		endDrag = false;
 	}     

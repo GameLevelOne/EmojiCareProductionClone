@@ -97,10 +97,10 @@ public class Emoji : MonoBehaviour {
 	public List<FaceAnimation> unlockedExpression = new List<FaceAnimation>();
 	public EmojiStatus emojiStatus;
 
-	GameObject emojiObject;
-	Animator bodyAnimation, faceAnimation;
+	public GameObject emojiObject;
 
 	public float[] statsFactor;
+	public float[] roomFactor = new float[5]{0,0,0,0,0};
 
 	public float hunger{
 		get{return PlayerPrefs.GetFloat(PlayerPrefKeys.Emoji.HUNGER);}
@@ -125,15 +125,15 @@ public class Emoji : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanic
-	public void TickStats(float tick = 1f, float[] roomMod = null)
+	public void TickStats(float tick = 1f)
 	{
-		if(hunger > 0f) 	hunger 		-= ( tick * ( statsFactor[(int)EmojiStats.Hunger]    + roomMod[(int)EmojiStats.Hunger] ));
-		if(hygene > 0f) 	hygene 		-= ( tick * ( statsFactor[(int)EmojiStats.hygene]    + roomMod[(int)EmojiStats.hygene] ));
-		if(happiness > 0f)  happiness 	-= ( tick * ( statsFactor[(int)EmojiStats.Happiness] + roomMod[(int)EmojiStats.Happiness] ));
-		if(stamina > 0f) 	stamina 	-= ( tick * ( statsFactor[(int)EmojiStats.Stamina]   + roomMod[(int)EmojiStats.Stamina] ));
+		if(hunger > 0f) 	hunger 		-= ( tick * ( statsFactor[(int)EmojiStats.Hunger]    + roomFactor[(int)EmojiStats.Hunger] ));
+		if(hygene > 0f) 	hygene 		-= ( tick * ( statsFactor[(int)EmojiStats.hygene]    + roomFactor[(int)EmojiStats.hygene] ));
+		if(happiness > 0f)  happiness 	-= ( tick * ( statsFactor[(int)EmojiStats.Happiness] + roomFactor[(int)EmojiStats.Happiness] ));
+		if(stamina > 0f) 	stamina 	-= ( tick * ( statsFactor[(int)EmojiStats.Stamina]   + roomFactor[(int)EmojiStats.Stamina] ));
 
 		if(hunger <= 0f || hygene <= 0f || happiness <= 0f || stamina <= 0f){
-			if(health > 0f) health -= ( tick * ( statsFactor[(int)EmojiStats.Health] + roomMod[(int)EmojiStats.Health] ));
+			if(health > 0f) health -= ( tick * ( statsFactor[(int)EmojiStats.Health] + roomFactor[(int)EmojiStats.Health] ));
 		}
 
 		if(OnEmojiTickStats != null) OnEmojiTickStats();
@@ -149,25 +149,23 @@ public class Emoji : MonoBehaviour {
 		case EmojiStats.Health: if(health > 0f) health += mod; break;
 		default: break;
 		}
+
+		if(OnEmojiTickStats != null) OnEmojiTickStats();
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public module
-
 	public void InitEmojiData(string name,int type, int[] expressions)
 	{
 		emojiName = name;
 		emojiType = (EmojiType) type;
 		for(int i = 0;i<expressions.Length;i++) unlockedExpression.Add((FaceAnimation)expressions[i]);
-		
 	}
 
 	public void InitEmojiObject(GameObject emojiObject)
 	{
 		GameObject tempObj = emojiObject;
 		this.emojiObject = Instantiate(tempObj,this.transform);
-		bodyAnimation = emojiObject.transform.Find("Body").GetComponent<Animator>();
-		faceAnimation = emojiObject.transform.GetChild(0).Find("Face").GetComponent<Animator>();
 	}
 
 	public void OnEditMode(bool editMode)

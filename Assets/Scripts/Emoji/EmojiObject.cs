@@ -11,6 +11,7 @@ public class EmojiObject : MonoBehaviour {
 	List<Collider2D> otherColliders = new List<Collider2D>();
 	bool isFalling = false;
 	bool isSleeping = false;
+	bool isChangingRoom = false;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
@@ -22,6 +23,7 @@ public class EmojiObject : MonoBehaviour {
 	void Init()
 	{
 		thisRigidbody = GetComponent<Rigidbody2D>();
+		thisCollider = GetComponent<Collider2D>();
 		bodyAnimation = transform.GetChild(0).GetComponent<Animator>();
 		faceAnimation = transform.GetChild(0).FindChild("Face").GetComponent<Animator>();
 	}
@@ -50,24 +52,48 @@ public class EmojiObject : MonoBehaviour {
 	//event triggers
 	public void BeginDrag()
 	{
-		if(isSleeping) isSleeping = false;
-		if(isFalling) isFalling = false;
+		if(!isChangingRoom){
+			if(isSleeping) isSleeping = false;
+			if(isFalling) isFalling = false;
 
-		bodyAnimation.SetInteger(AnimatorParameters.Ints.BODY_STATE,(int)BodyAnimation.Falling);
+			bodyAnimation.SetInteger(AnimatorParameters.Ints.BODY_STATE,(int)BodyAnimation.Falling);
 
-		thisRigidbody.simulated = false;
-		if(otherColliders.Count != 0) foreach(Collider2D c in otherColliders) Physics2D.IgnoreCollision(c,thisCollider,false);
-		otherColliders.Clear();
+			thisRigidbody.simulated = false;
+			if(otherColliders.Count != 0) foreach(Collider2D c in otherColliders) Physics2D.IgnoreCollision(c,thisCollider,false);
+			otherColliders.Clear();
+		}
 	}
+
 	public void Drag()
 	{
-		Vector3 tempMousePosition = new Vector3(Input.mousePosition.x,Input.mousePosition.y,8f);
-		transform.localPosition = Camera.main.ScreenToWorldPoint(tempMousePosition);
+		if(!isChangingRoom){
+			Vector3 tempMousePosition = new Vector3(Input.mousePosition.x,Input.mousePosition.y,8f);
+			transform.localPosition = Camera.main.ScreenToWorldPoint(tempMousePosition);
+		}
 	}
+
 	public void EndDrag()
+	{	
+		if(!isChangingRoom){
+			thisRigidbody.simulated = true;
+			StartCoroutine(IgnoreCollissions());
+		}
+	}
+
+	public void OnRoomChangingStart()
 	{
-		thisRigidbody.simulated = true;
-		StartCoroutine(IgnoreCollissions());
+		if(!isChangingRoom){
+			StartCoroutine(HangEmoji());
+		}
+	
+
+	}
+
+	public void OnRoomChangingEnd()
+	{
+		if(isChangingRoom){
+			StartCoroutine(ReleaseEmoji());
+		}
 	}
 
 	//expressions
@@ -104,6 +130,37 @@ public class EmojiObject : MonoBehaviour {
 		}
 
 
+	}
+
+	IEnumerator HangEmoji()
+	{
+		isChangingRoom = true;
+		thisCollider.enabled = false;
+		thisRigidbody.simulated = false;
+		thisRigidbody.velocity = Vector2.zero;
+		thisRigidbody.angularVelocity = 0f;
+
+		float t = 0f;
+		while(t <= 1f){
+			t += Time.deltaTime*2f;
+			transform.localPosition = Vector3.Lerp(transform.localPosition,new Vector3(0f,1.5f,-2f),Mathf.SmoothStep(0f,1f,t));
+			yield return new WaitForSeconds(Time.deltaTime);
+		}
+
+	}
+
+	IEnumerator ReleaseEmoji()
+	{
+		float t = 0f;
+		while(t <= 1f){
+			t += Time.deltaTime*2f;
+			transform.localPosition = Vector3.Lerp(transform.localPosition,new Vector3(0f,0f,-2f),Mathf.SmoothStep(0f,1f,t));
+			yield return new WaitForSeconds(Time.deltaTime);
+		}
+
+		isChangingRoom = false;
+		thisCollider.enabled = true;
+		thisRigidbody.simulated = true;
 	}
 
 	IEnumerator GoToSleep()
