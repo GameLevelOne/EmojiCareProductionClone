@@ -5,7 +5,7 @@ public static class PlayerPrefKeys {
 
 	public static class Emoji{
 		public const string HUNGER = "Emoji/Hunger";
-		public const string HYGENE = "Emoji/Hygene";
+		public const string HYGENE = "Emoji/Hygiene";
 		public const string HAPPINESS = "Emoji/Happiness";
 		public const string STAMINA = "Emoji/Stamina";
 		public const string HEALTH = "Emoji/Health";
