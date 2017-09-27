@@ -53,7 +53,10 @@ public class EmojiObject : MonoBehaviour {
 	public void BeginDrag()
 	{
 		if(!isChangingRoom){
-			if(isSleeping) isSleeping = false;
+			if(isSleeping){ 
+				isSleeping = false; 
+				ChangeExpression(FaceAnimation.Default);
+			}
 			if(isFalling) isFalling = false;
 
 			bodyAnimation.SetInteger(AnimatorParameters.Ints.BODY_STATE,(int)BodyAnimation.Falling);
@@ -123,13 +126,12 @@ public class EmojiObject : MonoBehaviour {
 		}
 
 		if(isSleeping){
-			StartCoroutine(GoToSleep());
+			ChangeExpression(FaceAnimation.Sleep);
+			ChangeBodyAnimation(BodyAnimation.Idle);
 		}else{
 			isFalling = true;
-			bodyAnimation.SetInteger(AnimatorParameters.Ints.BODY_STATE,(int)BodyAnimation.Falling);
+			ChangeBodyAnimation(BodyAnimation.Falling);
 		}
-
-
 	}
 
 	IEnumerator HangEmoji()
@@ -163,10 +165,5 @@ public class EmojiObject : MonoBehaviour {
 		thisRigidbody.simulated = true;
 	}
 
-	IEnumerator GoToSleep()
-	{
-		ChangeExpression(FaceAnimation.Sleep);
-		yield return null;
-	}
 	#endregion
 }
