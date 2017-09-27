@@ -56,6 +56,7 @@ public class MovableFurniture : Furniture {
 			thisAnim.SetBool(AnimatorParameters.Bools.HOLD,true);
 			thisRigidbody.simulated = false;
 			thisSprite.sortingOrder = 100;
+			thisSprite.sortingLayerName = SortingLayers.HELD;
 
 			if(floorColliders.Count != 0){
 				foreach(Collider2D c in floorColliders) Physics2D.IgnoreCollision(c,thisCollider,false);
@@ -99,6 +100,8 @@ public class MovableFurniture : Furniture {
 
 			thisSprite.sortingOrder = sortingOrder;
 		}
+
+		thisSprite.sortingLayerName = SortingLayers.MOVABLE_FURNITURE;
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
