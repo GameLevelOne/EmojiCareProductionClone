@@ -12,30 +12,24 @@ public class BundleLoader : MonoBehaviour {
 	{
 		if(instance != null && instance != this) Destroy(this.gameObject);
 		else instance = this;
+
+		DontDestroyOnLoad(gameObject);
 	}
 	#endregion
-
+//-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region attribute
 	AssetBundle bundle;
 	#endregion
-
-	void OnEnable()
-	{
-		GameSparkManager.Instance.OnURLResponse += OnURLResponse;
-	}
-
-	void OnDisable()
-	{
-		GameSparkManager.Instance.OnURLResponse -= OnURLResponse;
-	}
-
-
-	public void OnURLResponse(string URL, string emojiType)
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+	#region public modules
+	public void DoLoadBundle(string URL, EmojiType emojiType)
 	{
 		StartCoroutine((LoadBundle(URL,emojiType)));
 	}
-
-	IEnumerator LoadBundle(string URL, string emojiType)
+	#endregion
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+	#region coroutines
+	IEnumerator LoadBundle(string URL, EmojiType emojiType)
 	{
 		WWW download = WWW.LoadFromCacheOrDownload(URL,0);
 		yield return download;
@@ -47,8 +41,10 @@ public class BundleLoader : MonoBehaviour {
 			if(bundle == null){
 				throw new System.Exception("Error: Bundle is null");
 			}else{
-				Emoji.Instance.InitEmojiObject((GameObject) bundle.LoadAsset(emojiType));
+				Emoji.Instance.InitEmojiObject((GameObject) bundle.LoadAsset(EmojiObjectName.EMOJI_OBJECTS[(int)emojiType]));
 			}
 		}
 	}
+	#endregion
+//-------------------------------------------------------------------------------------------------------------------------------------------------
 }
