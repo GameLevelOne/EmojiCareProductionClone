@@ -24,7 +24,7 @@ public class Room : MonoBehaviour {
 
 	protected void Awake()
 	{
-		IgnoreMovableColliders();
+//		IgnoreMovableColliders();
 	}
 
 	protected void IgnoreMovableColliders()
@@ -50,12 +50,12 @@ public class Room : MonoBehaviour {
 	{
 		if(roomName == currentRoom){
 			//show all furniture
-			foreach(Furniture f in movableFurnitures) f.gameObject.SetActive(true);
-			foreach(Furniture f in immovableFurnitures) f.gameObject.SetActive(true);
+			foreach(Furniture f in movableFurnitures) if(f != null) f.gameObject.SetActive(true);
+			foreach(Furniture f in immovableFurnitures) if(f != null) f.gameObject.SetActive(true);
 		}else{
 			//hide all furniture
-			foreach(Furniture f in movableFurnitures) f.gameObject.SetActive(false);
-			foreach(Furniture f in immovableFurnitures) f.gameObject.SetActive(false);
+			foreach(Furniture f in movableFurnitures) if(f != null) f.gameObject.SetActive(false);
+			foreach(Furniture f in immovableFurnitures) if(f != null) f.gameObject.SetActive(false);
 		}
 	}
 

@@ -30,7 +30,7 @@ public class RoomController : MonoBehaviour {
 	{
 		thisCollider = GetComponent<BoxCollider2D>();
 		currentRoom = GetCurrentRoom(transform.localPosition.x);
-		foreach(Room r in rooms) r.OnRoomChanged(currentRoom);
+		foreach(Room r in rooms) if(r!=null) r.OnRoomChanged(currentRoom);
 		AdjustTouchAreaSize();
 	}
 

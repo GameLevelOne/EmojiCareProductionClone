@@ -15,7 +15,15 @@ public class SceneMainManager : MonoBehaviour {
 
 	void InitMain()
 	{
-		roomController.GoToRoom(RoomName.LivingRoom);
+//		roomController.GoToRoom(RoomName.LivingRoom);
+//		GameSparkManager.Instance.GetDownloadableURL(Emoji.Instance.emojiType);
+		StartCoroutine(a());
+	}
+
+	IEnumerator a()
+	{
+		yield return new WaitForSeconds(1f);
+		GameSparkManager.Instance.DeviceAuth();
 	}
 
 	#endregion
