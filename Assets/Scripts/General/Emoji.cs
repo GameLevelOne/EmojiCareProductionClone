@@ -79,6 +79,8 @@ public class Emoji : MonoBehaviour {
 	{
 		if(instance != null && instance != this) Destroy(this.gameObject);
 		else instance = this;
+
+		DontDestroyOnLoad(this.gameObject);
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -101,6 +103,9 @@ public class Emoji : MonoBehaviour {
 
 	public float[] statsFactor;
 	public float[] roomFactor = new float[5]{0,0,0,0,0};
+
+	bool hasInitData = false;
+	bool hasInitObject = false;
 
 	public float hunger{
 		get{return PlayerPrefs.GetFloat(PlayerPrefKeys.Emoji.HUNGER);}
@@ -157,15 +162,23 @@ public class Emoji : MonoBehaviour {
 	#region public module
 	public void InitEmojiData(string name,int type, int[] expressions)
 	{
-		emojiName = name;
-		emojiType = (EmojiType) type;
-		for(int i = 0;i<expressions.Length;i++) unlockedExpression.Add((FaceAnimation)expressions[i]);
+		if(!hasInitData){
+			hasInitData = true;
+
+			emojiName = name;
+			emojiType = (EmojiType) type;
+			for(int i = 0;i<expressions.Length;i++) unlockedExpression.Add((FaceAnimation)expressions[i]);
+		}
 	}
 
 	public void InitEmojiObject(GameObject emojiObject)
 	{
-		GameObject tempObj = emojiObject;
-		this.emojiObject = Instantiate(tempObj,this.transform);
+		if(!hasInitObject){
+			hasInitObject = true;
+
+			GameObject tempObj = emojiObject;
+			this.emojiObject = Instantiate(tempObj,this.transform);
+		}
 	}
 
 	public void OnEditMode(bool editMode)

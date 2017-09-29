@@ -19,8 +19,7 @@ public class GameSparkManager : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region delegate events
-	public delegate void URLResponse(string URL, string emojiType);
-	public event URLResponse OnURLResponse;
+
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
@@ -30,8 +29,21 @@ public class GameSparkManager : MonoBehaviour {
 			if(!response.HasErrors){
 				PlayerData.Instance.AuthToken = response.AuthToken;
 				Debug.Log("Connected to GameSpark. Auth Token = "+PlayerData.Instance.AuthToken);
+
 			}else{
 				Debug.Log("GameSparks Login Error: "+response.Errors.JSON.ToString());
+			}
+		});
+	}
+
+	public void DeviceAuth()
+	{
+		new GameSparks.Api.Requests.DeviceAuthenticationRequest().Send((response)=>{
+			if(!response.HasErrors){
+				print("success login device");
+				GetDownloadableURL(EmojiType.Emoji);	
+			}else{
+				print("Error: "+response.Errors.JSON.ToString());
 			}
 		});
 	}
@@ -51,19 +63,15 @@ public class GameSparkManager : MonoBehaviour {
 	/// </summary>
 	public void GetDownloadableURL(EmojiType emojiType)
 	{
-		new GameSparks.Api.Requests.GetDownloadableRequest().SetShortCode(emojiType.ToString().ToUpper()).Send((response)=>{
+		new GameSparks.Api.Requests.GetDownloadableRequest().SetShortCode(ShortCode.EMOJIS[(int)emojiType]).Send((response)=>{
 			if(!response.HasErrors){
-				if(OnURLResponse != null) OnURLResponse(response.Url, emojiType.ToString());
+				BundleLoader.Instance.DoLoadBundle(response.Url,emojiType);
 			}else{
 				Debug.Log("Error: "+response.Errors.JSON);
 			}	
 		});
 	}
-
-	public void GetDownloadableURL(string shortCode)
-	{
 		
-	}
 
 	public void DoSetDiary()
 	{

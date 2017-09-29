@@ -17,8 +17,8 @@ public class PanelProgressManager : MonoBehaviour {
 	int expressionTotalCount = 40;
 	int tileWidth = 4;
 	int tileHeight = 10;
-	float expressionBoxWidth = 150f;
-	float contentBoxMarginX = 100f;
+	float expressionBoxWidth = 110f;
+	float contentBoxMarginX = 50f;
 
 	void Start(){
 		InitContentBox();
@@ -30,7 +30,7 @@ public class PanelProgressManager : MonoBehaviour {
 		for(int i=0;i<tileHeight;i++){
 			for(int j=0;j<tileWidth;j++){
 				GameObject obj = Instantiate(expressionBoxPrefab,contentBox,false) as GameObject;
-				obj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-230+j*150,700-i*150);
+				obj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-160+j*105,500-i*105);
 			}
 		}
 	}
