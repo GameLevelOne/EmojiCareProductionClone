@@ -77,6 +77,7 @@ public class Emoji : MonoBehaviour {
 
 	void Awake()
 	{
+//		PlayerPrefs.DeleteAll();
 		if(instance != null && instance != this) Destroy(this.gameObject);
 		else instance = this;
 
@@ -127,18 +128,27 @@ public class Emoji : MonoBehaviour {
 		get{return PlayerPrefs.GetFloat(PlayerPrefKeys.Emoji.HEALTH);}
 		set{PlayerPrefs.SetFloat(PlayerPrefKeys.Emoji.HEALTH,value);}
 	}
+
+	[HideInInspector]
+	public float hungerTick = 0f, hygeneTick = 0f, happinessTick = 0f, staminaTick = 0f, healthTick = 0f;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanic
 	public void TickStats(float tick = 1f)
 	{
-		if(hunger > 0f) 	hunger 		-= ( tick * ( statsFactor[(int)EmojiStats.Hunger]    + roomFactor[(int)EmojiStats.Hunger] ));
-		if(hygene > 0f) 	hygene 		-= ( tick * ( statsFactor[(int)EmojiStats.hygene]    + roomFactor[(int)EmojiStats.hygene] ));
-		if(happiness > 0f)  happiness 	-= ( tick * ( statsFactor[(int)EmojiStats.Happiness] + roomFactor[(int)EmojiStats.Happiness] ));
-		if(stamina > 0f) 	stamina 	-= ( tick * ( statsFactor[(int)EmojiStats.Stamina]   + roomFactor[(int)EmojiStats.Stamina] ));
+		hungerTick = statsFactor[(int)EmojiStats.Hunger] + roomFactor[(int)EmojiStats.Hunger];
+		hygeneTick = statsFactor[(int)EmojiStats.Hunger] + roomFactor[(int)EmojiStats.Hunger];
+		happinessTick = statsFactor[(int)EmojiStats.Hunger] + roomFactor[(int)EmojiStats.Hunger];
+		staminaTick = statsFactor[(int)EmojiStats.Hunger] + roomFactor[(int)EmojiStats.Hunger];
+		healthTick = statsFactor[(int)EmojiStats.Hunger] + roomFactor[(int)EmojiStats.Hunger];
+
+		if(hunger > 0f) 	hunger 		-= ( tick * hungerTick);
+		if(hygene > 0f) 	hygene 		-= ( tick * hygeneTick);
+		if(happiness > 0f)  happiness 	-= ( tick * happinessTick);
+		if(stamina > 0f) 	stamina 	-= ( tick * staminaTick);
 
 		if(hunger <= 0f || hygene <= 0f || happiness <= 0f || stamina <= 0f){
-			if(health > 0f) health -= ( tick * ( statsFactor[(int)EmojiStats.Health] + roomFactor[(int)EmojiStats.Health] ));
+			if(health > 0f) health -= ( tick * healthTick);
 		}
 
 		if(OnEmojiTickStats != null) OnEmojiTickStats();
@@ -178,6 +188,9 @@ public class Emoji : MonoBehaviour {
 
 			GameObject tempObj = emojiObject;
 			this.emojiObject = Instantiate(tempObj,this.transform);
+
+			hunger = hygene = happiness = stamina = 50f;
+			health = 100f;
 		}
 	}
 

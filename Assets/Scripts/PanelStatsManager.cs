@@ -28,23 +28,28 @@ public class PanelStatsManager : MonoBehaviour {
 	void OnEnable(){
 //		Emoji.Instance.InitEmojiData();
 		CalculateStats();
+		Emoji.Instance.OnEmojiTickStats += CalculateStats;
+	}
+
+	void OnDisable(){
+		Emoji.Instance.OnEmojiTickStats -= CalculateStats;
 	}
 
 	void CalculateStats(){
 		Emoji currData = Emoji.Instance;
 		float tempMaxStats = 100f; //temp
 
-//		float ratioHunger = currData.hunger / tempMaxStats;
-//		float ratioHygiene = currData.hygiene / tempMaxStats;
-//		float ratioHappiness = currData.happiness / tempMaxStats;
-//		float ratioStamina = currData.stamina / tempMaxStats;
-//		float ratioHealth = currData.health / tempMaxStats;
+		float ratioHunger = currData.hunger / tempMaxStats;
+		float ratioHygiene = currData.hygene / tempMaxStats;
+		float ratioHappiness = currData.happiness / tempMaxStats;
+		float ratioStamina = currData.stamina / tempMaxStats;
+		float ratioHealth = currData.health / tempMaxStats;
 
-		float ratioHunger = 0.85f;
-		float ratioHygiene = 0.65f;
-		float ratioHappiness = 0.49f;
-		float ratioStamina = 0.2f;
-		float ratioHealth = 0.1f;
+//		float ratioHunger = 0.85f;
+//		float ratioHygiene = 0.65f;
+//		float ratioHappiness = 0.49f;
+//		float ratioStamina = 0.2f;
+//		float ratioHealth = 0.1f;
 
 		barFillHunger.fillAmount = ratioHunger;
 		barFillHygiene.fillAmount = ratioHygiene;
@@ -52,11 +57,11 @@ public class PanelStatsManager : MonoBehaviour {
 		barFillStamina.fillAmount = ratioStamina;
 		barFillHealth.fillAmount = ratioHealth;
 
-		InitStats(parentArrowHunger,barFillHunger,ratioHunger);
-		InitStats(parentArrowHygiene,barFillHygiene,ratioHygiene);
-		InitStats(parentArrowHappiness,barFillHappiness,ratioHappiness);
-		InitStats(parentArrowStamina,barFillStamina,ratioStamina);
-		InitStats(parentArrowHealth,barFillHealth,ratioHealth);
+//		InitStats(parentArrowHunger,barFillHunger,ratioHunger);
+//		InitStats(parentArrowHygiene,barFillHygiene,ratioHygiene);
+//		InitStats(parentArrowHappiness,barFillHappiness,ratioHappiness);
+//		InitStats(parentArrowStamina,barFillStamina,ratioStamina);
+//		InitStats(parentArrowHealth,barFillHealth,ratioHealth);
 	}
 
 	void InitStats(Transform parentObj,Image barFill,float value){

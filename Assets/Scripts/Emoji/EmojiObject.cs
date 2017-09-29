@@ -33,6 +33,10 @@ public class EmojiObject : MonoBehaviour {
 	//triggers and colliders
 	void OnCollisionEnter2D(Collision2D other)
 	{
+		if(other.gameObject.tag == Tags.MOVABLE_FURNITURE){
+			Physics2D.IgnoreCollision(thisCollider,other.collider);
+		}
+
 		if(isFalling){
 			isFalling = false;
 			bodyAnimation.SetInteger(AnimatorParameters.Ints.BODY_STATE,(int)BodyAnimation.Idle);
