@@ -23,6 +23,7 @@ public class Shower : MovableFurniture {
 		if(!editMode || !endDrag){
 			thisAnim.SetBool(AnimatorParameters.Bools.HOLD,true);
 			thisSprite.sortingOrder = 100;
+			thisSprite.sortingLayerName = SortingLayers.HELD;
 		}
 	}
 
@@ -33,6 +34,7 @@ public class Shower : MovableFurniture {
 
 			thisAnim.SetBool(AnimatorParameters.Bools.HOLD,false);
 			thisSprite.sortingOrder = 0;
+			thisSprite.sortingLayerName = SortingLayers.MOVABLE_FURNITURE;
 			StartCoroutine(BackToFixedPosition());
 		}
 	}

@@ -33,6 +33,7 @@ public class EmojiObject : MonoBehaviour {
 	//triggers and colliders
 	void OnCollisionEnter2D(Collision2D other)
 	{
+		print(other.gameObject.tag);
 		if(other.gameObject.tag == Tags.MOVABLE_FURNITURE){
 			Physics2D.IgnoreCollision(thisCollider,other.collider);
 		}
@@ -91,6 +92,10 @@ public class EmojiObject : MonoBehaviour {
 	{
 		if(!isChangingRoom){
 			StartCoroutine(HangEmoji());
+			if(isSleeping){ 
+				isSleeping = false; 
+				ChangeExpression(FaceAnimation.Default);
+			}
 		}
 	
 

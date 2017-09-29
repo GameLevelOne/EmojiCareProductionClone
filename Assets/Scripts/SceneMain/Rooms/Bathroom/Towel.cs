@@ -30,6 +30,7 @@ public class Towel : MovableFurniture {
 		if(!editMode || !endDrag){
 			thisAnim.SetBool(AnimatorParameters.Bools.HOLD,true);
 			thisSprite.sortingOrder = 100;
+			thisSprite.sortingLayerName = SortingLayers.HELD;
 		}
 	}
 
@@ -40,6 +41,7 @@ public class Towel : MovableFurniture {
 
 			thisAnim.SetBool(AnimatorParameters.Bools.HOLD,false);
 			thisSprite.sortingOrder = 0;
+			thisSprite.sortingLayerName = SortingLayers.MOVABLE_FURNITURE;
 			StartCoroutine(BackToFixedPosition());
 		}
 	}

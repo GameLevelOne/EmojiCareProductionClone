@@ -23,6 +23,8 @@ public class Sponge : MovableFurniture {
 			thisAnim.SetBool(AnimatorParameters.Bools.HOLD,true);
 			thisSprite.sortingOrder = 100;
 			soapLiquid.sortingOrder = 101;
+			thisSprite.sortingLayerName = SortingLayers.HELD;
+			soapLiquid.sortingLayerName = SortingLayers.HELD;
 		}
 	}
 
@@ -34,6 +36,8 @@ public class Sponge : MovableFurniture {
 			thisAnim.SetBool(AnimatorParameters.Bools.HOLD,false);
 			thisSprite.sortingOrder = 0;
 			soapLiquid.sortingOrder = 1;
+			thisSprite.sortingLayerName = SortingLayers.MOVABLE_FURNITURE;
+			soapLiquid.sortingLayerName = SortingLayers.MOVABLE_FURNITURE;
 			soapLiquid.enabled = false;
 			StartCoroutine(BackToFixedPosition());
 		}

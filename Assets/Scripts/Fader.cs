@@ -13,10 +13,11 @@ public class Fader : MonoBehaviour {
 
 	void Awake(){
 		panelFader = GetComponent<Image>();
+		panelFader.enabled = true;
 	}
 
 	void Start(){
-		FadeIn();
+//		FadeIn();
 	}
 
 	public void FadeIn(){

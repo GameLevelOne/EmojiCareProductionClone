@@ -88,6 +88,11 @@ public class Emoji : MonoBehaviour {
 	#region delegate events
 	public delegate void EmojiTickStats();
 	public event EmojiTickStats OnEmojiTickStats;
+
+	//sementara
+	public delegate void EmojiDoneLoading();
+	public event EmojiDoneLoading OnEmojiDoneLoading;
+
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region attribute
@@ -191,6 +196,8 @@ public class Emoji : MonoBehaviour {
 
 			hunger = hygene = happiness = stamina = 50f;
 			health = 100f;
+
+			if(OnEmojiDoneLoading != null) OnEmojiDoneLoading();
 		}
 	}
 
