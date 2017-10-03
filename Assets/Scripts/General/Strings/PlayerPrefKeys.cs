@@ -11,9 +11,15 @@ public static class PlayerPrefKeys {
 	}
 
 	public static class Player{
-		public const string PLAYER_AUTH_TOKEN = "PlayerAuthToken";
+		public const string PLAYER_AUTH_TOKEN = "Player/AuthToken";
 
-		public const string LAST_TIME_PLAYED = "Player/LatsTimePlay";
+		public const string PLAYER_COIN = "Player/Coin";
+		public const string PLAYER_GEM = "Player/Gem";
+
+		//example
+		public const string PLAYER_EMOJI_TYPE = "Player/EmojiType";
+
+		public const string LAST_TIME_PLAYED = "Player/LastLogin";
 		public const string TIME_ON_PAUSE = "Player/TimeOnPause";
 	}
 }

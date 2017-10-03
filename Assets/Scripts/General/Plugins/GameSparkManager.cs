@@ -19,7 +19,8 @@ public class GameSparkManager : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region delegate events
-
+	public delegate void LoginSuccessful();
+	public event LoginSuccessful OnLoginSuccessful;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
@@ -27,9 +28,9 @@ public class GameSparkManager : MonoBehaviour {
 	{
 		new FacebookConnectRequest().SetAccessToken(facebookAccessToken).Send((response)=>{
 			if(!response.HasErrors){
-				PlayerData.Instance.AuthToken = response.AuthToken;
-				Debug.Log("Connected to GameSpark. Auth Token = "+PlayerData.Instance.AuthToken);
-
+				PlayerData.Instance.PlayerAuthToken = response.AuthToken;
+				Debug.Log("Connected to GameSpark. Auth Token = "+PlayerData.Instance.PlayerAuthToken);
+				if(OnLoginSuccessful != null) OnLoginSuccessful();
 			}else{
 				Debug.Log("GameSparks Login Error: "+response.Errors.JSON.ToString());
 			}
@@ -41,7 +42,8 @@ public class GameSparkManager : MonoBehaviour {
 		new GameSparks.Api.Requests.DeviceAuthenticationRequest().Send((response)=>{
 			if(!response.HasErrors){
 				print("success login device");
-				GetDownloadableURL(EmojiType.Emoji);	
+				
+				if(OnLoginSuccessful != null) OnLoginSuccessful();
 			}else{
 				print("Error: "+response.Errors.JSON.ToString());
 			}
@@ -71,7 +73,7 @@ public class GameSparkManager : MonoBehaviour {
 			}	
 		});
 	}
-		
+
 
 	public void DoSetDiary()
 	{
@@ -89,12 +91,6 @@ public class GameSparkManager : MonoBehaviour {
 				} 
 			});
 		}
-	}
-
-	public void DoLogout()
-	{
-		GS.Reset();
-		FacebookManager.Instance.DoLogout();
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------

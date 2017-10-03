@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EmojiStats{
+public enum EmojiStatss{
 	Hunger,
 	hygene,
 	Happiness,
@@ -141,11 +141,11 @@ public class Emoji : MonoBehaviour {
 	#region mechanic
 	public void TickStats(float tick = 1f)
 	{
-		hungerTick = statsFactor[(int)EmojiStats.Hunger] + roomFactor[(int)EmojiStats.Hunger];
-		hygeneTick = statsFactor[(int)EmojiStats.Hunger] + roomFactor[(int)EmojiStats.Hunger];
-		happinessTick = statsFactor[(int)EmojiStats.Hunger] + roomFactor[(int)EmojiStats.Hunger];
-		staminaTick = statsFactor[(int)EmojiStats.Hunger] + roomFactor[(int)EmojiStats.Hunger];
-		healthTick = statsFactor[(int)EmojiStats.Hunger] + roomFactor[(int)EmojiStats.Hunger];
+		hungerTick = statsFactor[(int)EmojiStatss.Hunger] + roomFactor[(int)EmojiStatss.Hunger];
+		hygeneTick = statsFactor[(int)EmojiStatss.Hunger] + roomFactor[(int)EmojiStatss.Hunger];
+		happinessTick = statsFactor[(int)EmojiStatss.Hunger] + roomFactor[(int)EmojiStatss.Hunger];
+		staminaTick = statsFactor[(int)EmojiStatss.Hunger] + roomFactor[(int)EmojiStatss.Hunger];
+		healthTick = statsFactor[(int)EmojiStatss.Hunger] + roomFactor[(int)EmojiStatss.Hunger];
 
 		if(hunger > 0f) 	hunger 		-= ( tick * hungerTick);
 		if(hygene > 0f) 	hygene 		-= ( tick * hygeneTick);
@@ -159,14 +159,14 @@ public class Emoji : MonoBehaviour {
 		if(OnEmojiTickStats != null) OnEmojiTickStats();
 	}
 
-	public void ModStats(EmojiStats statsType, float mod = 0)
+	public void ModStats(EmojiStatss statsType, float mod = 0)
 	{
 		switch(statsType){
-		case EmojiStats.Hunger: if(hunger > 0f) hunger += mod; break;
-		case EmojiStats.hygene: if(hygene > 0f) hygene += mod; break;
-		case EmojiStats.Happiness: if(happiness > 0f) happiness += mod; break;
-		case EmojiStats.Stamina: if(stamina > 0f) stamina += mod; break;
-		case EmojiStats.Health: if(health > 0f) health += mod; break;
+		case EmojiStatss.Hunger: if(hunger > 0f) hunger += mod; break;
+		case EmojiStatss.hygene: if(hygene > 0f) hygene += mod; break;
+		case EmojiStatss.Happiness: if(happiness > 0f) happiness += mod; break;
+		case EmojiStatss.Stamina: if(stamina > 0f) stamina += mod; break;
+		case EmojiStatss.Health: if(health > 0f) health += mod; break;
 		default: break;
 		}
 

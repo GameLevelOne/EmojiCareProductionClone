@@ -59,10 +59,6 @@ public class FacebookManager : MonoBehaviour {
 	{
 		
 	}
-
-	public void DoLogout(){
-		FB.LogOut();
-	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region Responses
