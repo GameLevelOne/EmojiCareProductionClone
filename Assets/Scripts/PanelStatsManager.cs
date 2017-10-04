@@ -28,22 +28,22 @@ public class PanelStatsManager : MonoBehaviour {
 	void OnEnable(){
 //		Emoji.Instance.InitEmojiData();
 		CalculateStats();
-		Emoji.Instance.OnEmojiTickStats += CalculateStats;
+//		Emoji.Instance.OnEmojiTickStats += CalculateStats;
 	}
 
 	void OnDisable(){
-		Emoji.Instance.OnEmojiTickStats -= CalculateStats;
+//		Emoji.Instance.OnEmojiTickStats -= CalculateStats;
 	}
 
 	void CalculateStats(){
-		Emoji currData = Emoji.Instance;
+//		Emoji currData = Emoji.Instance;
 		float tempMaxStats = 100f; //temp
 
-		float ratioHunger = currData.hunger / tempMaxStats;
-		float ratioHygiene = currData.hygene / tempMaxStats;
-		float ratioHappiness = currData.happiness / tempMaxStats;
-		float ratioStamina = currData.stamina / tempMaxStats;
-		float ratioHealth = currData.health / tempMaxStats;
+//		float ratioHunger = currData.hunger / tempMaxStats;
+//		float ratioHygiene = currData.hygene / tempMaxStats;
+//		float ratioHappiness = currData.happiness / tempMaxStats;
+//		float ratioStamina = currData.stamina / tempMaxStats;
+//		float ratioHealth = currData.health / tempMaxStats;
 
 //		float ratioHunger = 0.85f;
 //		float ratioHygiene = 0.65f;
@@ -51,11 +51,11 @@ public class PanelStatsManager : MonoBehaviour {
 //		float ratioStamina = 0.2f;
 //		float ratioHealth = 0.1f;
 
-		barFillHunger.fillAmount = ratioHunger;
-		barFillHygiene.fillAmount = ratioHygiene;
-		barFillHappiness.fillAmount = ratioHappiness;
-		barFillStamina.fillAmount = ratioStamina;
-		barFillHealth.fillAmount = ratioHealth;
+//		barFillHunger.fillAmount = ratioHunger;
+//		barFillHygiene.fillAmount = ratioHygiene;
+//		barFillHappiness.fillAmount = ratioHappiness;
+//		barFillStamina.fillAmount = ratioStamina;
+//		barFillHealth.fillAmount = ratioHealth;
 
 //		InitStats(parentArrowHunger,barFillHunger,ratioHunger);
 //		InitStats(parentArrowHygiene,barFillHygiene,ratioHygiene);

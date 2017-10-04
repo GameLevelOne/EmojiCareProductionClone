@@ -11,7 +11,7 @@ public class SceneMainManager : MonoBehaviour {
 	#region initialization
 	void Start()
 	{
-		Emoji.Instance.OnEmojiDoneLoading += OnEmojiDoneLoading;
+//		Emoji.Instance.OnEmojiDoneLoading += OnEmojiDoneLoading;
 
 		InitMain();
 	}

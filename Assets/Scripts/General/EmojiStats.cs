@@ -4,77 +4,68 @@ using System;
 
 public class EmojiStats : MonoBehaviour {
 	#region attributes
-	public delegate void StatsUpdated();
+	public delegate void StatsUpdated(float statValue, float maxStatValue, float totalModifier);
 	public event StatsUpdated OnStatsUpdated;
 
-	float statValue;
-	float maxStatValue;
+	//constructor
+	public EmojiStats(string prefKey, float emojiModifier, float maxStatValue, float startValue){
+		this.prefKey = prefKey;
+		this.emojiModifier = emojiModifier;
+		this.maxStatValue = maxStatValue;
+		if(PlayerPrefs.HasKey(prefKey) == false) this.StatValue = startValue;
+	}
 
-	float tickModifier = -1f;
+	string prefKey;
+
+	float maxStatValue;
+	float emojiModifier;
+	float roomModifier = 0f;
+
 	float tickDelay = 60f;
 
 	bool isTicking = false;
 
-	public float Value{
-		get{return statValue;}
-		set{this.statValue = value;}
+	/// <summary>
+	/// for PanelStatsManager, GET.
+	/// </summary>
+	public float StatValue{
+		get{return PlayerPrefs.GetFloat(prefKey);}
+		set{PlayerPrefs.SetFloat(prefKey,value);}
 	}
 
-	public float MaxValue{
-		get{return maxStatValue;}
-		set{maxStatValue = value;}
-	}
-
-	public float TickModifier{
-		get{return tickModifier;}
-		set{tickModifier = value;}
+	public float RoomModifier{
+		set{roomModifier = value;}
 	}
 
 	public float TickDelay{
-		get{return tickDelay;}
 		set{tickDelay = value;}
-	}
-
-	DateTime lastTimePlayed{
-		get{return DateTime.Parse(PlayerPrefs.GetString(PlayerPrefKeys.Player.LAST_TIME_PLAYED));}
-		set{PlayerPrefs.SetString(PlayerPrefKeys.Player.LAST_TIME_PLAYED,value.ToString());}
-	}
-
-	DateTime timeOnPause{
-		get{return DateTime.Parse(PlayerPrefs.GetString(PlayerPrefKeys.Player.TIME_ON_PAUSE));}
-		set{PlayerPrefs.SetString(PlayerPrefKeys.Player.TIME_ON_PAUSE,value.ToString());}
-	}
-	#endregion
-//-------------------------------------------------------------------------------------------------------------------------------------------------
-	#region initialization
-	public void Init()
-	{
-		UpdateStatsAfterLogin();
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
-	public void UpdateStatsAfterLogin()
+	public void UpdateStatsAfterLogin(DateTime lastTimePlayed)
 	{
 		if(PlayerPrefs.HasKey(PlayerPrefKeys.Player.LAST_TIME_PLAYED)){
+			
 			if(DateTime.Now.CompareTo(lastTimePlayed) < 0) return;
 
 			else if(DateTime.Now.CompareTo(lastTimePlayed) > 0){
 				float totalTicks = GetTotalTicks(DateTime.Now - lastTimePlayed);
+				ModStats(totalTicks);
 			}
 		}
 
 		StartCoroutine(StartTicking());
 	}
 
-	public void UpdateStatsAfterPause()
+	public void UpdateStatsAfterPause(DateTime timeOnPause)
 	{
 		if(PlayerPrefs.HasKey(PlayerPrefKeys.Player.TIME_ON_PAUSE)){
 			if(DateTime.Now.CompareTo(timeOnPause) < 0) return;
 
 			else if(DateTime.Now.CompareTo(timeOnPause) > 0){
 				float totalTicks = GetTotalTicks(DateTime.Now - timeOnPause);
-
+				ModStats(totalTicks);
 			}
 		}
 
@@ -86,52 +77,40 @@ public class EmojiStats : MonoBehaviour {
 		float dayToSec = duration.Days * 24 * 60 * 60;
 		float hourToSec = duration.Hours * 60 * 60;
 		float minToSec = duration.Minutes * 60;
-		float sec = duration.Seconds;
 
-		float totalSec = dayToSec + hourToSec + minToSec + sec;
+		float totalSec = dayToSec + hourToSec + minToSec;
 
-		return Mathf.Floor(totalSec/tickDelay);
+		return -1f * (Mathf.Floor(totalSec/tickDelay));
 	}
 		
 	void OnApplicationPause(bool isPaused)
 	{
-		if(isPaused){
-			StopAllCoroutines();
-			isTicking = false;
-			timeOnPause = DateTime.Now;
-		}else{
-			if(PlayerPrefs.HasKey(PlayerPrefKeys.Player.TIME_ON_PAUSE)){
-				UpdateStatsAfterPause();
-			}
-		}
-	}
-
-	void OnApplicationQuit()
-	{
-		StopAllCoroutines();
-		isTicking = false;
-		lastTimePlayed = DateTime.Now;
-		PlayerPrefs.Save();
+		if(isPaused) isTicking = false;
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
 	public void TickStats()
 	{
-		if(statValue <= 0) statValue += tickModifier;
+		StatValue += (emojiModifier + roomModifier);
 
-		//if value is more than max value, readjust to max value
-		if(OnStatsUpdated != null) OnStatsUpdated();
+		if(StatValue <= 0) StatValue = 0;
+		else if(StatValue >= maxStatValue) StatValue = maxStatValue;
+
+		if(OnStatsUpdated != null) OnStatsUpdated(StatValue, maxStatValue, (emojiModifier + roomModifier));
 	}
 
+	/// <summary>
+	/// negative value is written with '-' operator e.g. -1f.
+	/// </summary>
 	public void ModStats(float mod)
 	{
-		statValue += mod;
+		StatValue += mod;
 
-		if(statValue <= 0) statValue = 0;
-		//else if(value >= maxStatValue) value = maxStatValue;
+		if(StatValue <= 0) StatValue = 0;
+		else if(StatValue >= maxStatValue) StatValue = maxStatValue;
 
-		if(OnStatsUpdated != null) OnStatsUpdated();
+		if(OnStatsUpdated != null) OnStatsUpdated(StatValue, maxStatValue, (emojiModifier + roomModifier));
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------	

@@ -36,7 +36,7 @@ public class SceneTitleManager : MonoBehaviour {
 
 	public void DownloadEmojiObject()
 	{
-		GameSparkManager.Instance.GetDownloadableURL(PlayerData.Instance.PlayerEmojiType);
+//		GameSparkManager.Instance.GetDownloadableURL(PlayerData.Instance.PlayerEmojiType);
 	}
 
 	public void GoToSceneMain()

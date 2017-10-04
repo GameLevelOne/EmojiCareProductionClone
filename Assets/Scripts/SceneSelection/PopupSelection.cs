@@ -35,7 +35,7 @@ public class PopupSelection : MonoBehaviour {
 //		} else{
 			buttonOk.SetActive(false);
 			buttonPay.SetActive(true);
-			textPrice.text = data.emojiPrice.ToString();
+//			textPrice.text = data.emojiPrice.ToString();
 //		}
 		anim.SetTrigger(triggerPopupOpen);
 	}
@@ -46,7 +46,7 @@ public class PopupSelection : MonoBehaviour {
 
 	public void ChooseEmoji(){
 //		Debug.Log("Name: "+currEmojiData.emojiName);
-		Debug.Log("Price: "+currEmojiData.emojiPrice);
+//		Debug.Log("Price: "+currEmojiData.emojiPrice);
 		anim.SetTrigger(triggerPopupClose);
 		panelCelebration.ShowNewEmoji(currEmojiData);
 	}

@@ -59,7 +59,7 @@ public class RoomController : MonoBehaviour {
 			float x = getWorldPositionFromTouchInput().x;
 			distance = transform.localPosition.x - x;
 
-			Emoji.Instance.emojiObject.GetComponent<EmojiObject>().OnRoomChangingStart();
+//			Emoji.Instance.emojiObject.GetComponent<EmojiObject>().OnRoomChangingStart();
 		}
 	}
 		
@@ -124,7 +124,7 @@ public class RoomController : MonoBehaviour {
 		float t = 0;
 
 		currentRoom = GetCurrentRoom(endPos.x);
-		Emoji.Instance.roomFactor = rooms[(int)currentRoom].statsFactor;
+//		Emoji.Instance.roomFactor = rooms[(int)currentRoom].statsFactor;
 
 		foreach(Room r in rooms) r.OnRoomChanged(currentRoom);
 
@@ -135,7 +135,7 @@ public class RoomController : MonoBehaviour {
 		}
 
 		transform.position = endPos;
-		Emoji.Instance.emojiObject.GetComponent<EmojiObject>().OnRoomChangingEnd();
+//		Emoji.Instance.emojiObject.GetComponent<EmojiObject>().OnRoomChangingEnd();
 		snapping = false;
 		yield return null;
 	}

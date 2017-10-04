@@ -77,20 +77,20 @@ public class GameSparkManager : MonoBehaviour {
 
 	public void DoSetDiary()
 	{
-		if(Emoji.Instance.emojiStatus != EmojiStatus.Alive){
-			string emojiName = Emoji.Instance.emojiName;
-			string emojiType = Emoji.Instance.emojiType.ToString();
-			string emojiStatus = Emoji.Instance.emojiStatus.ToString();
-			string date = System.DateTime.Now.ToString();
-
-			new LogChallengeEventRequest_SET_DIARY().Set_EMOJI_NAME(emojiName).Set_EMOJI_TYPE(emojiType).Set_EMOJI_STATUS(emojiStatus).Set_DATE(date).Send((response) =>{
-				if(!response.HasErrors){
-					Debug.Log("data sent succesfully")	;
-				}else{
-					Debug.Log("Error: "+response.Errors.JSON.ToString());
-				} 
-			});
-		}
+//		if(Emoji.Instance.emojiStatus != EmojiStatus.Alive){
+//			string emojiName = Emoji.Instance.emojiName;
+//			string emojiType = Emoji.Instance.emojiType.ToString();
+//			string emojiStatus = Emoji.Instance.emojiStatus.ToString();
+//			string date = System.DateTime.Now.ToString();
+//
+//			new LogChallengeEventRequest_SET_DIARY().Set_EMOJI_NAME(emojiName).Set_EMOJI_TYPE(emojiType).Set_EMOJI_STATUS(emojiStatus).Set_DATE(date).Send((response) =>{
+//				if(!response.HasErrors){
+//					Debug.Log("data sent succesfully")	;
+//				}else{
+//					Debug.Log("Error: "+response.Errors.JSON.ToString());
+//				} 
+//			});
+//		}
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
