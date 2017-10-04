@@ -28,15 +28,10 @@ public class ScreenStats : BaseUI {
 
 	public override void InitUI(){
 		Debug.Log("stats");
+	}
+
+	void Update(){
 		UpdateUI();
-	}
-
-	void OnEnable(){
-		Emoji.Instance.OnEmojiTickStats += UpdateUI;
-	}
-
-	void OnDisable(){
-		Emoji.Instance.OnEmojiTickStats -= UpdateUI;
 	}
 
 	void UpdateUI(){
@@ -45,14 +40,13 @@ public class ScreenStats : BaseUI {
 	}
 
 	void UpdateStatsValue(){
-		Emoji currentData = Emoji.Instance;
-		float tempMaxStats = 100f; //temp
+		Emoji currentData = PlayerData.Instance.PlayerEmoji;
 
-		float ratioHunger = currentData.hunger / tempMaxStats;
-		float ratioHygiene = currentData.hygene / tempMaxStats;
-		float ratioHappiness = currentData.happiness / tempMaxStats;
-		float ratioStamina = currentData.stamina / tempMaxStats;
-		float ratioHealth = currentData.health / tempMaxStats;
+		float ratioHunger = currentData.hunger.StatValue / currentData.hunger.MaxStatValue;
+		float ratioHygiene = currentData.hygene.StatValue / currentData.hygene.MaxStatValue;
+		float ratioHappiness = currentData.happiness.StatValue / currentData.happiness.MaxStatValue;
+		float ratioStamina = currentData.stamina.StatValue / currentData.stamina.MaxStatValue;
+		float ratioHealth = currentData.health.StatValue / currentData.health.MaxStatValue;
 
 //		float ratioHunger = 0.85f;
 //		float ratioHygiene = 0.65f;
