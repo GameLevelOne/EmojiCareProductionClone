@@ -17,7 +17,7 @@ public class Fader : MonoBehaviour {
 	}
 
 	void Start(){
-//		FadeIn();
+		FadeIn();
 	}
 
 	public void FadeIn(){
@@ -34,11 +34,9 @@ public class Fader : MonoBehaviour {
 		float elapsedTime = 0f;
 
 		while(elapsedTime < 1f){
-			if(fadeIn){
-				panelFader.color = Color.Lerp(Color.black,Color.clear,elapsedTime);
-			} else {
-				panelFader.color = Color.Lerp(Color.clear,Color.black,elapsedTime);
-			}
+			if(fadeIn) panelFader.color = Color.Lerp(Color.black,Color.clear,elapsedTime);
+			else  panelFader.color = Color.Lerp(Color.clear,Color.black,elapsedTime);
+			
 			elapsedTime += Time.deltaTime;
 
 			yield return null;

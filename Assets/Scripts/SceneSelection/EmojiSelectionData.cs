@@ -18,10 +18,10 @@ public class EmojiSelectionData : MonoBehaviour, IPointerClickHandler {
 			priceBox.SetActive(false);	
 //		} else{
 			priceBox.SetActive(true);
-			textPrice.text = emojiData.emojiPrice.ToString();
+//			textPrice.text = emojiData.emojiPrice.ToString();
 //		}
 //		gameObject.name = emojiData.emojiName;
-		gameObject.GetComponent<Image>().sprite = emojiData.emojiSelectionIcon;
+//		gameObject.GetComponent<Image>().sprite = emojiData.emojiSelectionIcon;
 	}
 
 	public void OnPointerClick(PointerEventData ped){

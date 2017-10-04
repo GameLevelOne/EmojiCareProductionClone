@@ -19,7 +19,8 @@ public class GameSparkManager : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region delegate events
-
+	public delegate void LoginSuccessful();
+	public event LoginSuccessful OnLoginSuccessful;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
@@ -27,9 +28,9 @@ public class GameSparkManager : MonoBehaviour {
 	{
 		new FacebookConnectRequest().SetAccessToken(facebookAccessToken).Send((response)=>{
 			if(!response.HasErrors){
-				PlayerData.Instance.AuthToken = response.AuthToken;
-				Debug.Log("Connected to GameSpark. Auth Token = "+PlayerData.Instance.AuthToken);
-
+				PlayerData.Instance.PlayerAuthToken = response.AuthToken;
+				Debug.Log("Connected to GameSpark. Auth Token = "+PlayerData.Instance.PlayerAuthToken);
+				if(OnLoginSuccessful != null) OnLoginSuccessful();
 			}else{
 				Debug.Log("GameSparks Login Error: "+response.Errors.JSON.ToString());
 			}
@@ -41,7 +42,8 @@ public class GameSparkManager : MonoBehaviour {
 		new GameSparks.Api.Requests.DeviceAuthenticationRequest().Send((response)=>{
 			if(!response.HasErrors){
 				print("success login device");
-				GetDownloadableURL(EmojiType.Emoji);	
+				
+				if(OnLoginSuccessful != null) OnLoginSuccessful();
 			}else{
 				print("Error: "+response.Errors.JSON.ToString());
 			}
@@ -71,30 +73,24 @@ public class GameSparkManager : MonoBehaviour {
 			}	
 		});
 	}
-		
+
 
 	public void DoSetDiary()
 	{
-		if(Emoji.Instance.emojiStatus != EmojiStatus.Alive){
-			string emojiName = Emoji.Instance.emojiName;
-			string emojiType = Emoji.Instance.emojiType.ToString();
-			string emojiStatus = Emoji.Instance.emojiStatus.ToString();
-			string date = System.DateTime.Now.ToString();
-
-			new LogChallengeEventRequest_SET_DIARY().Set_EMOJI_NAME(emojiName).Set_EMOJI_TYPE(emojiType).Set_EMOJI_STATUS(emojiStatus).Set_DATE(date).Send((response) =>{
-				if(!response.HasErrors){
-					Debug.Log("data sent succesfully")	;
-				}else{
-					Debug.Log("Error: "+response.Errors.JSON.ToString());
-				} 
-			});
-		}
-	}
-
-	public void DoLogout()
-	{
-		GS.Reset();
-		FacebookManager.Instance.DoLogout();
+//		if(Emoji.Instance.emojiStatus != EmojiStatus.Alive){
+//			string emojiName = Emoji.Instance.emojiName;
+//			string emojiType = Emoji.Instance.emojiType.ToString();
+//			string emojiStatus = Emoji.Instance.emojiStatus.ToString();
+//			string date = System.DateTime.Now.ToString();
+//
+//			new LogChallengeEventRequest_SET_DIARY().Set_EMOJI_NAME(emojiName).Set_EMOJI_TYPE(emojiType).Set_EMOJI_STATUS(emojiStatus).Set_DATE(date).Send((response) =>{
+//				if(!response.HasErrors){
+//					Debug.Log("data sent succesfully")	;
+//				}else{
+//					Debug.Log("Error: "+response.Errors.JSON.ToString());
+//				} 
+//			});
+//		}
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------

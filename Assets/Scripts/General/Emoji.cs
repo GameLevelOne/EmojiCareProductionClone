@@ -1,20 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public enum EmojiStats{
+public enum EmojiStatss{
 	Hunger,
 	hygene,
 	Happiness,
 	Stamina,
 	Health
-}
-
-public enum EmojiStatus{
-	Alive,
-	Dead,
-	Abandoned,
-	SentOff
 }
 
 public enum BodyAnimation{
@@ -69,136 +63,116 @@ public enum FaceAnimation{
 }
 
 public class Emoji : MonoBehaviour {
-	#region singleton
-	private static Emoji instance = null;
-	public static Emoji Instance {
-		get{ return instance;}
-	}
-
-	void Awake()
-	{
-//		PlayerPrefs.DeleteAll();
-		if(instance != null && instance != this) Destroy(this.gameObject);
-		else instance = this;
-
-		DontDestroyOnLoad(this.gameObject);
-	}
-	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region delegate events
 	public delegate void EmojiTickStats();
 	public event EmojiTickStats OnEmojiTickStats;
-
-	//sementara
-	public delegate void EmojiDoneLoading();
-	public event EmojiDoneLoading OnEmojiDoneLoading;
-
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region attribute
-	[Header("Data")]
-	public EmojiSO[] emojiSOs;
-
-	[Header("Reference")]
-	public string emojiName = string.Empty;
-	public EmojiType emojiType;
-	public List<FaceAnimation> unlockedExpression = new List<FaceAnimation>();
-	public EmojiStatus emojiStatus;
-
+	public string emojiName;
 	public GameObject emojiObject;
 
-	public float[] statsFactor;
-	public float[] roomFactor = new float[5]{0,0,0,0,0};
-
-	bool hasInitData = false;
-	bool hasInitObject = false;
-
-	public float hunger{
-		get{return PlayerPrefs.GetFloat(PlayerPrefKeys.Emoji.HUNGER);}
-		set{PlayerPrefs.SetFloat(PlayerPrefKeys.Emoji.HUNGER,value);}
-	}
-	public float hygene{
-		get{return PlayerPrefs.GetFloat(PlayerPrefKeys.Emoji.HYGENE);}
-		set{PlayerPrefs.SetFloat(PlayerPrefKeys.Emoji.HYGENE,value);}
-	}
-	public float happiness{
-		get{return PlayerPrefs.GetFloat(PlayerPrefKeys.Emoji.HAPPINESS);}
-		set{PlayerPrefs.SetFloat(PlayerPrefKeys.Emoji.HAPPINESS,value);}
-	}
-	public float stamina{
-		get{return PlayerPrefs.GetFloat(PlayerPrefKeys.Emoji.STAMINA);}
-		set{PlayerPrefs.SetFloat(PlayerPrefKeys.Emoji.STAMINA,value);}
-	}
-	public float health{
-		get{return PlayerPrefs.GetFloat(PlayerPrefKeys.Emoji.HEALTH);}
-		set{PlayerPrefs.SetFloat(PlayerPrefKeys.Emoji.HEALTH,value);}
-	}
-
 	[HideInInspector]
-	public float hungerTick = 0f, hygeneTick = 0f, happinessTick = 0f, staminaTick = 0f, healthTick = 0f;
+	public EmojiStats hunger, hygene,happiness,stamina, health;
+
+	public List<FaceAnimation> unlockedExpression = new List<FaceAnimation>();
+
+	DateTime lastTimePlayed{
+		get{return DateTime.Parse(PlayerPrefs.GetString(PlayerPrefKeys.Player.LAST_TIME_PLAYED));}
+		set{PlayerPrefs.SetString(PlayerPrefKeys.Player.LAST_TIME_PLAYED,value.ToString());}
+	}
+
+	DateTime timeOnPause{
+		get{return DateTime.Parse(PlayerPrefs.GetString(PlayerPrefKeys.Player.TIME_ON_PAUSE));}
+		set{PlayerPrefs.SetString(PlayerPrefKeys.Player.TIME_ON_PAUSE,value.ToString());}
+	}
+
+	public EmojiSO emojiBaseData;
+
+	bool hasInit = false;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanic
-	public void TickStats(float tick = 1f)
-	{
-		hungerTick = statsFactor[(int)EmojiStats.Hunger] + roomFactor[(int)EmojiStats.Hunger];
-		hygeneTick = statsFactor[(int)EmojiStats.Hunger] + roomFactor[(int)EmojiStats.Hunger];
-		happinessTick = statsFactor[(int)EmojiStats.Hunger] + roomFactor[(int)EmojiStats.Hunger];
-		staminaTick = statsFactor[(int)EmojiStats.Hunger] + roomFactor[(int)EmojiStats.Hunger];
-		healthTick = statsFactor[(int)EmojiStats.Hunger] + roomFactor[(int)EmojiStats.Hunger];
 
-		if(hunger > 0f) 	hunger 		-= ( tick * hungerTick);
-		if(hygene > 0f) 	hygene 		-= ( tick * hygeneTick);
-		if(happiness > 0f)  happiness 	-= ( tick * happinessTick);
-		if(stamina > 0f) 	stamina 	-= ( tick * staminaTick);
 
-		if(hunger <= 0f || hygene <= 0f || happiness <= 0f || stamina <= 0f){
-			if(health > 0f) health -= ( tick * healthTick);
-		}
 
-		if(OnEmojiTickStats != null) OnEmojiTickStats();
-	}
-
-	public void ModStats(EmojiStats statsType, float mod = 0)
-	{
-		switch(statsType){
-		case EmojiStats.Hunger: if(hunger > 0f) hunger += mod; break;
-		case EmojiStats.hygene: if(hygene > 0f) hygene += mod; break;
-		case EmojiStats.Happiness: if(happiness > 0f) happiness += mod; break;
-		case EmojiStats.Stamina: if(stamina > 0f) stamina += mod; break;
-		case EmojiStats.Health: if(health > 0f) health += mod; break;
-		default: break;
-		}
-
-		if(OnEmojiTickStats != null) OnEmojiTickStats();
-	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public module
-	public void InitEmojiData(string name,int type, int[] expressions)
+	public void Init(string name, int[] expressions)
 	{
-		if(!hasInitData){
-			hasInitData = true;
-
+		if(!hasInit){
+			hasInit = true;
 			emojiName = name;
-			emojiType = (EmojiType) type;
+
+			InitEmojiStats();
+
 			for(int i = 0;i<expressions.Length;i++) unlockedExpression.Add((FaceAnimation)expressions[i]);
 		}
 	}
 
-	public void InitEmojiObject(GameObject emojiObject)
+	//stats
+	void InitEmojiStats()
 	{
-		if(!hasInitObject){
-			hasInitObject = true;
+		hunger = new EmojiStats(
+			PlayerPrefKeys.Emoji.HUNGER,
+			emojiBaseData.hungerModifier,
+			emojiBaseData.maxStatValue,
+			emojiBaseData.hungerStart
+		);
 
-			GameObject tempObj = emojiObject;
-			this.emojiObject = Instantiate(tempObj,this.transform);
+		hygene = new EmojiStats(
+			PlayerPrefKeys.Emoji.HYGENE,
+			emojiBaseData.hygeneModifier,
+			emojiBaseData.maxStatValue,
+			emojiBaseData.hygeneStart
+		);
 
-			hunger = hygene = happiness = stamina = 50f;
-			health = 100f;
+		happiness = new EmojiStats(
+			PlayerPrefKeys.Emoji.HAPPINESS,
+			emojiBaseData.happinessModifier,
+			emojiBaseData.maxStatValue,
+			emojiBaseData.happinessStart
+		);
 
-			if(OnEmojiDoneLoading != null) OnEmojiDoneLoading();
-		}
+		stamina = new EmojiStats(
+			PlayerPrefKeys.Emoji.STAMINA,
+			emojiBaseData.staminaModifier,
+			emojiBaseData.maxStatValue,
+			emojiBaseData.staminaStart
+		);
+
+		health = new EmojiStats(
+			PlayerPrefKeys.Emoji.HEALTH,
+			emojiBaseData.healthModifier,
+			emojiBaseData.maxStatValue,
+			emojiBaseData.healthStart
+		);
+
+		hunger.UpdateStatsAfterLogin(lastTimePlayed);
+		hygene.UpdateStatsAfterLogin(lastTimePlayed);
+		happiness.UpdateStatsAfterLogin(lastTimePlayed);
+		stamina.UpdateStatsAfterLogin(lastTimePlayed);
+		health.UpdateStatsAfterLogin(lastTimePlayed);
+	}
+
+	void StopTickingStats()
+	{
+		hunger.StopAllCoroutines();
+		hygene.StopAllCoroutines();
+		happiness.StopAllCoroutines();
+		stamina.StopAllCoroutines();
+		health.StopAllCoroutines();
+	}
+
+	void ResumeTickingStats()
+	{
+		hunger.UpdateStatsAfterPause(timeOnPause);
+		hygene.UpdateStatsAfterPause(timeOnPause);
+		happiness.UpdateStatsAfterPause(timeOnPause);
+		stamina.UpdateStatsAfterPause(timeOnPause);
+		health.UpdateStatsAfterPause(timeOnPause);
 	}
 
 	public void OnEditMode(bool editMode)
@@ -208,4 +182,21 @@ public class Emoji : MonoBehaviour {
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
+	void OnApplicationPause(bool isPaused)
+	{
+		if(isPaused){ 
+			StopTickingStats();
+			timeOnPause = DateTime.Now;
+		}
+		else{
+			ResumeTickingStats();
+		}
+	}
+
+	void OnApplicationQuit()
+	{
+		StopTickingStats();
+		lastTimePlayed = DateTime.Now;
+		PlayerPrefs.Save();
+	}
 }

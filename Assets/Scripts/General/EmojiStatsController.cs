@@ -80,7 +80,7 @@ public class EmojiStatsController : MonoBehaviour {
 			else if(DateTime.Now.CompareTo(lastTimePlayed) > 0){
 
 				float totalTicks = GetTotalTicks(DateTime.Now - lastTimePlayed);
-				Emoji.Instance.TickStats(totalTicks);
+//				Emoji.Instance.TickStats(totalTicks);
 				PlayerPrefs.DeleteKey(PlayerPrefKeys.Player.LAST_TIME_PLAYED);
 
 			}
@@ -94,7 +94,7 @@ public class EmojiStatsController : MonoBehaviour {
 
 			else if(DateTime.Now.CompareTo(TimeOnPause) > 0){
 				float totalTicks = GetTotalTicks(DateTime.Now - TimeOnPause);
-				Emoji.Instance.TickStats(totalTicks);
+//				Emoji.Instance.TickStats(totalTicks);
 				PlayerPrefs.DeleteKey(PlayerPrefKeys.Player.TIME_ON_PAUSE);
 			}
 		}
@@ -106,7 +106,7 @@ public class EmojiStatsController : MonoBehaviour {
 	{
 		while(true){
 			yield return new WaitForSeconds(tickDelay);
-			Emoji.Instance.TickStats();
+//			Emoji.Instance.TickStats();
 		}
 	}
 	#endregion

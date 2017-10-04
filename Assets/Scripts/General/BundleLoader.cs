@@ -13,7 +13,7 @@ public class BundleLoader : MonoBehaviour {
 		if(instance != null && instance != this) Destroy(this.gameObject);
 		else instance = this;
 
-		DontDestroyOnLoad(gameObject);
+//		DontDestroyOnLoad(gameObject);
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -41,7 +41,8 @@ public class BundleLoader : MonoBehaviour {
 			if(bundle == null){
 				throw new System.Exception("Error: Bundle is null");
 			}else{
-				Emoji.Instance.InitEmojiObject((GameObject) bundle.LoadAsset(EmojiObjectName.EMOJI_OBJECTS[(int)emojiType]));
+//				Emoji.Instance.InitEmojiObject((GameObject) bundle.LoadAsset(EmojiObjectName.EMOJI_OBJECTS[(int)emojiType]));
+//				PlayerData.Instance.
 			}
 		}
 	}
