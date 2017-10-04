@@ -7,4 +7,17 @@ public class EmojiBody : MonoBehaviour {
 		GetComponent<Animator>().SetInteger(AnimatorParameters.Ints.BODY_STATE,(int)BodyAnimation.Idle);
 	}
 
+
+	public void BeginDrag()
+	{
+		
+	}
+	public void Drag()
+	{
+		
+	}
+	public void EndDrag()
+	{
+		
+	}
 }

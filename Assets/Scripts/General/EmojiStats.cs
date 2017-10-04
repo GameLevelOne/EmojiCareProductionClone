@@ -33,6 +33,14 @@ public class EmojiStats : MonoBehaviour {
 		set{PlayerPrefs.SetFloat(prefKey,value);}
 	}
 
+	public float MaxStatValue{
+		get{return maxStatValue;}
+	}
+
+	public float totalModifier{
+		get{return (emojiModifier + roomModifier);}
+	}
+
 	public float RoomModifier{
 		set{roomModifier = value;}
 	}

@@ -10,11 +10,13 @@ public class PlayerData : MonoBehaviour {
 	int defaultCoin = 100;
 	int defulatGem = 0;
 
-	bool hasInitEmojiObject = false;
+	public Transform emojiParentTransform;
 
-	int playerEmojiType = 0;
+	public int playerEmojiType = 0;
 
 	Emoji playerEmoji;
+
+	bool hasInitEmojiObject = false;
 
 	public Emoji PlayerEmoji{
 		get{return playerEmoji;}
@@ -42,8 +44,12 @@ public class PlayerData : MonoBehaviour {
 		DontDestroyOnLoad(this.gameObject);
 	}
 
-	public void Init()
+	public void InitPlayerEmoji(GameObject playerEmoji)
 	{
-		
+		GameObject temp = (GameObject) Instantiate(playerEmoji);
+		temp.transform.SetParent(emojiParentTransform,true);
+
+		this.playerEmoji = temp.GetComponent<Emoji>();
+		this.playerEmoji.Init();
 	}
 }

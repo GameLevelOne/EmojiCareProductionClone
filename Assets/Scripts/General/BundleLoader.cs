@@ -43,6 +43,7 @@ public class BundleLoader : MonoBehaviour {
 			}else{
 //				Emoji.Instance.InitEmojiObject((GameObject) bundle.LoadAsset(EmojiObjectName.EMOJI_OBJECTS[(int)emojiType]));
 //				PlayerData.Instance.
+				PlayerData.Instance.InitPlayerEmoji((GameObject) bundle.LoadAsset(EmojiObjectName.EMOJI_OBJECTS[(int)emojiType]));
 			}
 		}
 	}

@@ -12,7 +12,7 @@ public class SceneMainManager : MonoBehaviour {
 	void Start()
 	{
 //		Emoji.Instance.OnEmojiDoneLoading += OnEmojiDoneLoading;
-
+		PlayerData.Instance.emojiParentTransform = roomController.transform;
 		InitMain();
 	}
 
@@ -23,15 +23,7 @@ public class SceneMainManager : MonoBehaviour {
 
 	void InitMain()
 	{
-//		roomController.GoToRoom(RoomName.LivingRoom);
-//		GameSparkManager.Instance.GetDownloadableURL(Emoji.Instance.emojiType);
-		StartCoroutine(a());
-	}
-
-	IEnumerator a()
-	{
-		yield return new WaitForSeconds(1f);
-		GameSparkManager.Instance.DeviceAuth();
+		GameSparkManager.Instance.GetDownloadableURL((EmojiType)PlayerData.Instance.playerEmojiType);
 	}
 
 	#endregion

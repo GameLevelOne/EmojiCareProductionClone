@@ -37,7 +37,7 @@ public class GameSparkManager : MonoBehaviour {
 		});
 	}
 
-	public void DeviceAuth()
+	public void DoGuestLogin()
 	{
 		new GameSparks.Api.Requests.DeviceAuthenticationRequest().Send((response)=>{
 			if(!response.HasErrors){

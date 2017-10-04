@@ -95,20 +95,18 @@ public class Emoji : MonoBehaviour {
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanic
 
-
-
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public module
-	public void Init(string name, int[] expressions)
+	public void Init()
 	{
 		if(!hasInit){
 			hasInit = true;
-			emojiName = name;
+//			emojiName = name;
 
 			InitEmojiStats();
 
-			for(int i = 0;i<expressions.Length;i++) unlockedExpression.Add((FaceAnimation)expressions[i]);
+//			for(int i = 0;i<expressions.Length;i++) unlockedExpression.Add((FaceAnimation)expressions[i]);
 		}
 	}
 
