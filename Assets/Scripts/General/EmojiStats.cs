@@ -4,8 +4,6 @@ using System;
 
 public class EmojiStats : MonoBehaviour {
 	#region attributes
-	public delegate void StatsUpdated(float statValue, float maxStatValue, float totalModifier);
-	public event StatsUpdated OnStatsUpdated;
 
 	//constructor
 	public EmojiStats(string prefKey, float emojiModifier, float maxStatValue, float startValue){
@@ -104,8 +102,6 @@ public class EmojiStats : MonoBehaviour {
 
 		if(StatValue <= 0) StatValue = 0;
 		else if(StatValue >= maxStatValue) StatValue = maxStatValue;
-
-		if(OnStatsUpdated != null) OnStatsUpdated(StatValue, maxStatValue, (emojiModifier + roomModifier));
 	}
 
 	/// <summary>
@@ -117,8 +113,6 @@ public class EmojiStats : MonoBehaviour {
 
 		if(StatValue <= 0) StatValue = 0;
 		else if(StatValue >= maxStatValue) StatValue = maxStatValue;
-
-		if(OnStatsUpdated != null) OnStatsUpdated(StatValue, maxStatValue, (emojiModifier + roomModifier));
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------	
