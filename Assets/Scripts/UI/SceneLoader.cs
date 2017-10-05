@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class LoadingBar : MonoBehaviour {
+public class SceneLoader : MonoBehaviour {
 	public Fader fader;
 	public Image progressBar;
 	string nextScene;

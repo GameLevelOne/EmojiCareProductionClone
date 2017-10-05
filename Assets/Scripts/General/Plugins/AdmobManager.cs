@@ -25,6 +25,9 @@ public class AdmobManager : MonoBehaviour {
 		InitAdmob();
 	}
 
+	void OnEnable(){
+	}
+
 	void InitAdmob(){
 		ad = Admob.Instance();
 		#if UNITY_ANDROID
@@ -34,6 +37,7 @@ public class AdmobManager : MonoBehaviour {
 		#if UNITY_IOS
 		ad.initAdmob(iosBannerID,"");
 		#endif
+
 	}
 
 	public void ShowBanner(){

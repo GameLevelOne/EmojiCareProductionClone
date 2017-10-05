@@ -1,19 +1,21 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
-public class EmojiSelectionData : MonoBehaviour, IPointerClickHandler {
+public class EmojiSelectionData : MonoBehaviour {
+
 	public EmojiSO currEmojiData;
 	public GameObject priceBox;
 	public PopupSelection confirmationPopup;
 	public Text textPrice;
 
-	public delegate void EmojiClicked();
+	public delegate void EmojiClicked(bool needToBuy);
 	public static event EmojiClicked OnEmojiClicked;
 
+	public bool needToBuy=false;
+
 	public void InitEmoji(EmojiSO emojiData){
-		currEmojiData = emojiData;
+		//currEmojiData = emojiData;
 //		if(emojiData.isUnlocked){
 			priceBox.SetActive(false);	
 //		} else{
@@ -24,8 +26,8 @@ public class EmojiSelectionData : MonoBehaviour, IPointerClickHandler {
 //		gameObject.GetComponent<Image>().sprite = emojiData.emojiSelectionIcon;
 	}
 
-	public void OnPointerClick(PointerEventData ped){
-		PopupSelection.Instance.ShowPopup(currEmojiData);
+	public void OnClick(){
+		OnEmojiClicked(needToBuy);
 	}
 
 }

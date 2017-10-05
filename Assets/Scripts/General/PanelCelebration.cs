@@ -7,7 +7,7 @@ public class PanelCelebration : MonoBehaviour {
 
 	private EmojiSO currEmojiData;
 
-	public LoadingBar panelLoadingBar;
+	public SceneLoader panelLoadingBar;
 	public GameObject panelNewEmoji;
 	public GameObject panelNewExpression;
 	public GameObject panelSendOff;

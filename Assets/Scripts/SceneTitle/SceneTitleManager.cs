@@ -5,8 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class SceneTitleManager : MonoBehaviour {
 	public Fader fader;
-	public LoadingBar panelLoadingBar;
-	public GameObject loading;
+	public SceneLoader sceneLoader;
 
 	string nextScene;
 
@@ -18,9 +17,12 @@ public class SceneTitleManager : MonoBehaviour {
 	void HandleFadeOutFinished(){
 //		panelLoadingBar.gameObject.SetActive(true);
 //		panelLoadingBar.NextScene = nextScene;
+		sceneLoader.gameObject.SetActive(true);
+		sceneLoader.NextScene = "SceneMain";
 		Fader.OnFadeOutFinished -= HandleFadeOutFinished;
 
-		SceneManager.LoadScene("SceneMain");
+		//SceneManager.LoadScene("SceneMain");
+
 	}
 
 	public void TapToStart ()
@@ -39,9 +41,9 @@ public class SceneTitleManager : MonoBehaviour {
 //		GameSparkManager.Instance.GetDownloadableURL(PlayerData.Instance.PlayerEmojiType);
 	}
 
-	public void GoToSceneMain()
+	void GoToSceneMain()
 	{
-		loading.SetActive(false);
+		fader.gameObject.SetActive(true);
 		fader.FadeOut();
 	}
 

@@ -6,17 +6,26 @@ using UnityEngine.UI;
 public class ScreenLocations : BaseUI {
 	public Sprite[] bgRoomSprites;
 	public Image[] buttonRooms;
+	public Sprite spriteClosedRoom;
+
+	int currentRoomIndex=2; //living room
 
 	public override void InitUI ()
 	{
 		Debug.Log("locations");
-
+		UpdateDisplay(currentRoomIndex);
 		//get current active room
 	}
 
 	public void OnClickRoom(int roomIndex){
-		buttonRooms[roomIndex].sprite = bgRoomSprites[roomIndex];
+		UpdateDisplay(roomIndex);
 		//StartCoroutine(WaitToChangeRoom());
+	}
+
+	void UpdateDisplay(int currentRoomIndex){
+		buttonRooms[this.currentRoomIndex].sprite = spriteClosedRoom;
+		this.currentRoomIndex = currentRoomIndex;
+		buttonRooms[currentRoomIndex].sprite = bgRoomSprites[currentRoomIndex];
 	}
 
 	IEnumerator WaitToChangeRoom(){

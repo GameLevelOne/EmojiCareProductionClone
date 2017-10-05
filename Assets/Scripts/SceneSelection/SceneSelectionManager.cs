@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class SceneSelectionManager : MonoBehaviour {
+	public ScreenPopup screenPopup;
 	public EmojiSO[] emojiSO;
 	public Transform parentObj;
 	public EmojiSelectionData emojiObj;
@@ -14,7 +15,24 @@ public class SceneSelectionManager : MonoBehaviour {
 	Vector3[] selectionPos = new Vector3[]{new Vector3(-200,80,0),new Vector3(200,80,0),new Vector3(0,-250,0)};
 
 	void Start(){
-		GenerateSelectionPool();
+		//GenerateSelectionPool();
+	}
+
+	void OnEnable(){
+		EmojiSelectionData.OnEmojiClicked += OnEmojiClicked;
+	}
+
+	void OnDisable(){
+		EmojiSelectionData.OnEmojiClicked -= OnEmojiClicked;
+	}
+
+	void OnEmojiClicked (bool needToBuy)
+	{
+		if(needToBuy){
+			ConfirmBuyEmoji();
+		} else{
+			ConfirmSelectEmoji();
+		}
 	}
 
 	public void GenerateSelectionPool(){
@@ -47,6 +65,14 @@ public class SceneSelectionManager : MonoBehaviour {
 			obj.transform.localPosition = selectionPos[i];
 			obj.GetComponent<EmojiSelectionData>().InitEmoji(emojiSO[currIdx]);
 		}
+	}
+
+	void ConfirmSelectEmoji(){
+		screenPopup.ShowUI(PopupType.Confirmation,PopupEventType.SelectEmoji,false);
+	}
+
+	void ConfirmBuyEmoji(){
+		screenPopup.ShowUI(PopupType.Confirmation,PopupEventType.BuyEmoji,true);
 	}
 
 }
