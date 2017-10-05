@@ -1,16 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public enum RoomType{
-	Garden,
-	Playroom,
-	LivingRoom,
-	Kitchen,
-	Bedroom,
-	Bathroom
-}
-
-public class BaseRoom : MonoBehaviour {
+public class ActionableFurniture : BaseFurniture {
 	#region attributes
 	
 	#endregion
@@ -24,7 +15,10 @@ public class BaseRoom : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
-	
+	public void PointerClick()
+	{
+		
+	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------	
 }

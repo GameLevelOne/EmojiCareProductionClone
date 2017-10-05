@@ -1,23 +1,50 @@
-﻿using System.Collections;
+﻿using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class EmojiBody : MonoBehaviour {
+	public Animator thisAnim;
+	public Collider2D thisCollider;
+	public Rigidbody2D parentRigidbody;
+	
+	public int previousRoom = -1, currentRoom = -1;
+
+	//animation event
 	public void Reset()
 	{
 		GetComponent<Animator>().SetInteger(AnimatorParameters.Ints.BODY_STATE,(int)BodyAnimation.Idle);
+		parentRigidbody.simulated = true;
 	}
 
+	public void DisableParentRigidBody()
+	{
+		parentRigidbody.simulated = false;
+	}
 
-	public void BeginDrag()
+	void OnCollisionEnter2D(Collision2D other)
 	{
-		
+		if(other.gameObject.tag == Tags.MOVABLE_FURNITURE){
+			Physics2D.IgnoreCollision(thisCollider,other.collider,true);
+		} 
 	}
-	public void Drag()
+
+	public void BounceToCurrentRoom()
 	{
-		
+		StopCoroutine(bounceToCurrentRoom);
+		StartCoroutine(bounceToCurrentRoom);
 	}
-	public void EndDrag()
+
+	const string bounceToCurrentRoom = "BounceToCurrentRoom";
+	IEnumerator _BounceToCurrentRoom(int currRoom)
 	{
-		
+		currentRoom = currRoom;
+		yield return new WaitForSeconds(0.5f);
+		if(previousRoom != -1){
+			if(currentRoom > previousRoom){
+				thisAnim.SetInteger(AnimatorParameters.Ints.BODY_STATE,(int)BodyAnimation.BounceFromLeft);
+			}else if(currentRoom < previousRoom){
+				thisAnim.SetInteger(AnimatorParameters.Ints.BODY_STATE,(int)BodyAnimation.BounceFromRight);
+			}
+		}
 	}
 }

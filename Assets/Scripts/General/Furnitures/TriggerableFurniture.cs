@@ -1,39 +1,23 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class SceneMainManager : MonoBehaviour {
+public class TriggerableFurniture : BaseFurniture {
 	#region attributes
-	public RoomController roomController;
-	public Fader fader;
-
-	//sementara
-	public GameObject emojiSample;
-
+	
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
-	void Start()
-	{
-//		Emoji.Instance.OnEmojiDoneLoading += OnEmojiDoneLoading;
-		PlayerData.Instance.emojiParentTransform = roomController.transform;
-		InitMain();
-	}
-
-	void OnEmojiDoneLoading ()
-	{
-		fader.FadeIn();
-	}
-
-	void InitMain()
-	{
-//		GameSparkManager.Instance.GetDownloadableURL((EmojiType)PlayerData.Instance.playerEmojiType);
-		PlayerData.Instance.InitPlayerEmoji(emojiSample);
-	}
-
+	
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
-	
+	//triggers and collisions
+	void OnTriggerEnter2D(Collider2D other)
+	{
+		if(other.tag == Tags.EMOJI){
+			//do something
+		}
+	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules

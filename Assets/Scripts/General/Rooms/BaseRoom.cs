@@ -1,35 +1,24 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class SceneMainManager : MonoBehaviour {
+public enum RoomType{
+	Garden,
+	Playroom,
+	LivingRoom,
+	Kitchen,
+	Bedroom,
+	Bathroom
+}
+
+public class BaseRoom : MonoBehaviour {
 	#region attributes
-	public RoomController roomController;
-	public Fader fader;
-
-	//sementara
-	public GameObject emojiSample;
-
+	public BaseFurniture[] furnitures;
+	public float[] roomMod;
+	public bool flagEditMode = false;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
-	void Start()
-	{
-//		Emoji.Instance.OnEmojiDoneLoading += OnEmojiDoneLoading;
-		PlayerData.Instance.emojiParentTransform = roomController.transform;
-		InitMain();
-	}
-
-	void OnEmojiDoneLoading ()
-	{
-		fader.FadeIn();
-	}
-
-	void InitMain()
-	{
-//		GameSparkManager.Instance.GetDownloadableURL((EmojiType)PlayerData.Instance.playerEmojiType);
-		PlayerData.Instance.InitPlayerEmoji(emojiSample);
-	}
-
+	
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
@@ -37,7 +26,15 @@ public class SceneMainManager : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
-	
+	public void OnEditMode(bool editMode)
+	{
+		flagEditMode = editMode;
+		if(editMode){
+			//enter edit mode
+		}else{
+			//exit edit mode
+		}
+	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------	
 }

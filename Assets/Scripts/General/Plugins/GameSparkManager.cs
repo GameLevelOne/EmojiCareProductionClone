@@ -67,7 +67,7 @@ public class GameSparkManager : MonoBehaviour {
 	{
 		new GameSparks.Api.Requests.GetDownloadableRequest().SetShortCode(ShortCode.EMOJIS[(int)emojiType]).Send((response)=>{
 			if(!response.HasErrors){
-				BundleLoader.Instance.DoLoadBundle(response.Url,emojiType);
+//				BundleLoader.Instance.DoLoadBundle(response.Url,emojiType);
 			}else{
 				Debug.Log("Error: "+response.Errors.JSON);
 			}	
