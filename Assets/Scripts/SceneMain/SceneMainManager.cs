@@ -6,6 +6,9 @@ public class SceneMainManager : MonoBehaviour {
 	public RoomController roomController;
 	public Fader fader;
 
+	//sementara
+	public GameObject emojiSample;
+
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
@@ -23,7 +26,8 @@ public class SceneMainManager : MonoBehaviour {
 
 	void InitMain()
 	{
-		GameSparkManager.Instance.GetDownloadableURL((EmojiType)PlayerData.Instance.playerEmojiType);
+//		GameSparkManager.Instance.GetDownloadableURL((EmojiType)PlayerData.Instance.playerEmojiType);
+		PlayerData.Instance.InitPlayerEmoji(emojiSample);
 	}
 
 	#endregion

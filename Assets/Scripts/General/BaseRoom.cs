@@ -12,7 +12,7 @@ public enum RoomType{
 
 public class BaseRoom : MonoBehaviour {
 	#region attributes
-	
+	public BaseFurniture[] furnitures;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
