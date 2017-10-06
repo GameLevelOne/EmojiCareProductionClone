@@ -23,13 +23,20 @@ public class ScreenPopup : BaseUI {
 	public GameObject buttonShop;
 	public Text popupText;
 
-	public GameObject temp;
+	Sprite tempEmojiSprite;
+	string tempEmojiName;
+
+	#region events
+	public delegate void CelebrationNewEmoji(Sprite sprite,string emojiName);
+	public static event CelebrationNewEmoji OnCelebrationNewEmoji;
+	#endregion
 
 	PopupEventType currentEventType;
 	PopupType currentPopupType;
 
-	public void ShowUI(PopupType type,PopupEventType eventType,bool toShop){
+	public void ShowPopup(PopupType type,PopupEventType eventType,bool toShop,Sprite sprite = null,string emojiName = null){
 		currentEventType = eventType;
+		currentPopupType = type;
 		popupText.text = SetPopupText(eventType);
 		if(type == PopupType.Warning){
 			buttonGroupWarning.SetActive(true);
@@ -43,6 +50,14 @@ public class ScreenPopup : BaseUI {
 				buttonOk.SetActive(true);
 			}
 		}
+
+		if(sprite!=null){
+			tempEmojiSprite=sprite;
+		}
+		if(emojiName!=null){
+			tempEmojiName=emojiName;
+		}
+
 		base.ShowUI(popupObject);
 	}
 
@@ -59,14 +74,15 @@ public class ScreenPopup : BaseUI {
 	public void OnClickButtonOk ()
 	{
 		if (currentPopupType == PopupType.Confirmation) {
+			CloseUI (this.gameObject);
 			if (currentEventType == PopupEventType.SelectEmoji || currentEventType == PopupEventType.BuyEmoji) {
-				CloseUI (this.gameObject);
-				//base.ShowUI(base.UICelebrationPanels[0]);
-				base.ShowUI (temp);
+				Debug.Log("1");
+				OnCelebrationNewEmoji(tempEmojiSprite,tempEmojiName);
 			} else {
-				CloseUI (this.gameObject); //temp
+				Debug.Log("2");
 			}
 		} else{
+			Debug.Log("3");
 			CloseUI(this.gameObject);
 		}
 

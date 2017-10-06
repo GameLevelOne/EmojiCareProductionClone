@@ -15,18 +15,9 @@ public enum PanelType{
 	Popup,
 }
 
-public enum PanelCelebrationType{
-	NewEmoji = 0,
-	NewExpression,
-	EmojiSentOff,
-	EmojiDead,
-	EmojiTransferred
-}
-
 public class BaseUI : MonoBehaviour {
 
 	public GameObject[] UIPanels;
-	public GameObject[] UICelebrationPanels = new GameObject[5];
 	string triggerShowUI = "Show";
 	string triggerCloseUI = "Close";
 
