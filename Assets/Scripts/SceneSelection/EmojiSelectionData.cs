@@ -4,30 +4,35 @@ using UnityEngine.UI;
 
 public class EmojiSelectionData : MonoBehaviour {
 
-	public EmojiSO currEmojiData;
+	public EmojiSO currentEmojiData;
 	public GameObject priceBox;
 	public PopupSelection confirmationPopup;
 	public Text textPrice;
 
-	public delegate void EmojiClicked(bool needToBuy);
+	public delegate void EmojiClicked(bool needToBuy,Sprite sprite,string emojiName);
 	public static event EmojiClicked OnEmojiClicked;
 
 	public bool needToBuy=false;
 
-	public void InitEmoji(EmojiSO emojiData){
-		//currEmojiData = emojiData;
-//		if(emojiData.isUnlocked){
+	Sprite tempEmojiIcon;
+
+	public void InitEmoji(EmojiSO emojiData,Sprite emojiIcon){
+		currentEmojiData = emojiData;
+		tempEmojiIcon=emojiIcon;
+		if(emojiData.isUnlocked){
 			priceBox.SetActive(false);	
-//		} else{
+			needToBuy=false;
+		} else{
 			priceBox.SetActive(true);
-//			textPrice.text = emojiData.emojiPrice.ToString();
-//		}
-//		gameObject.name = emojiData.emojiName;
-//		gameObject.GetComponent<Image>().sprite = emojiData.emojiSelectionIcon;
+			textPrice.text = emojiData.price;
+			needToBuy=true;
+		}
+		gameObject.name = emojiData.emojiType.ToString();
+		gameObject.GetComponent<Image>().sprite = emojiIcon;
 	}
 
 	public void OnClick(){
-		OnEmojiClicked(needToBuy);
+		OnEmojiClicked(needToBuy,tempEmojiIcon,currentEmojiData.name);
 	}
 
 }

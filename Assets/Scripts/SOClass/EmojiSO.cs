@@ -33,5 +33,8 @@ public class EmojiSO : ScriptableObject {
 	public float healthModifier 	= -0.01f;
 	[Header(" ")]
 	public Sprite[] expressionIcons;
+	[Header("TEMPDATA")]
+	public bool isUnlocked = false;
+	public string price;
 
 }

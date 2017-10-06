@@ -1,17 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class ScreenNewEmoji : MonoBehaviour {
+public class ScreenNewEmoji : BaseUI {
 	public Fader fader;
 	public SceneLoader sceneLoader;
+
+	public Image emojiIcon;
+	public Text emojiNameText;
 
 	void OnEnable(){
 		Fader.OnFadeOutFinished += OnFadeOutFinished;
 	}
 
 	void OnDisable(){
-		
+		Fader.OnFadeOutFinished -= OnFadeOutFinished;
 	}
 
 	void OnFadeOutFinished ()
@@ -23,5 +27,11 @@ public class ScreenNewEmoji : MonoBehaviour {
 
 	public void OnClickContinue(){
 		fader.FadeOut();
+	}
+
+	public void ShowUI(Sprite sprite,string emojiName,GameObject obj){
+		emojiIcon.sprite = sprite;
+		emojiNameText.text = emojiName;
+		base.ShowUI(obj);
 	}
 }

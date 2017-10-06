@@ -96,7 +96,7 @@ public class ScreenProgress : BaseUI {
 
 	public void ConfirmSendOff(){
 		if(canSendOff){
-			screenPopup.ShowUI(PopupType.Confirmation,PopupEventType.SendOff,false);
+			screenPopup.ShowPopup(PopupType.Confirmation,PopupEventType.SendOff,false);
 		}
 	}
 }
