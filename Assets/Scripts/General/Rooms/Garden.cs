@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class Garden : Room {
+public class Garden : BaseRoom {
 	
 }

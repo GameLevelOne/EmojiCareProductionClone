@@ -31,4 +31,7 @@ public class EmojiSO : ScriptableObject {
 	public float happinessModifier 	= -0.01f;
 	public float staminaModifier 	= -0.01f;
 	public float healthModifier 	= -0.01f;
+	[Header(" ")]
+	public Sprite[] expressionIcons;
+
 }

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class Kitchen : Room {
+public class Kitchen : BaseRoom {
 
 
 }

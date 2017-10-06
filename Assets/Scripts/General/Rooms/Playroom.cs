@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class Playroom : Room {
+public class Playroom : BaseRoom {
 	
 }

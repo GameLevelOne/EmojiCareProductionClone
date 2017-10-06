@@ -9,10 +9,10 @@ public class RoomController : MonoBehaviour {
 	const float roomHeight = 12.8f;
 
 	public float snapSpeed = 6f;
-	public Room[] rooms;
+	public BaseRoom[] rooms;
 
 	BoxCollider2D thisCollider;
-	public RoomName currentRoom = RoomName.LivingRoom;
+	public RoomType currentRoom = RoomType.LivingRoom;
 
 	int roomTotal = 0;
 	float distance = 0;
@@ -30,7 +30,7 @@ public class RoomController : MonoBehaviour {
 	{
 		thisCollider = GetComponent<BoxCollider2D>();
 		currentRoom = GetCurrentRoom(transform.localPosition.x);
-		foreach(Room r in rooms) if(r!=null) r.OnRoomChanged(currentRoom);
+//		foreach(BaseRoom r in rooms) if(r!=null) r.OnRoomChanged(currentRoom);
 		AdjustTouchAreaSize();
 	}
 
@@ -43,7 +43,7 @@ public class RoomController : MonoBehaviour {
 	/// </summary>
 	void AdjustTouchAreaSize()
 	{
-		roomTotal = Enum.GetNames(typeof(RoomName)).Length;
+		roomTotal = Enum.GetNames(typeof(RoomType)).Length;
 		thisCollider.size = new Vector2((roomWidth*roomTotal),roomHeight);
 		thisCollider.offset = new Vector2((thisCollider.size.x/2f)-(roomWidth/2f),0f);
 	}
@@ -110,10 +110,21 @@ public class RoomController : MonoBehaviour {
 	/// <summary>
 	/// I don't know what happens, but when I use (int) casting instead, the system misscalculate. 21.6 / 7.2 is 3 in float, but 2 in int. thus I use Mathf.CeilToInt
 	/// </summary>
-	RoomName GetCurrentRoom(float xPos)
+	RoomType GetCurrentRoom(float xPos)
 	{
 		int roomIndex = Mathf.CeilToInt(Mathf.Abs(xPos / roomWidth));
-		return (RoomName)roomIndex;
+		return (RoomType)roomIndex;
+	}
+	#endregion
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+	#region public methods
+	public void GoToRoom(RoomType destination)
+	{
+		if(destination == currentRoom) return;
+
+		Vector3 startPos = transform.position;
+		Vector3 endpos = new Vector3((roomWidth*(int)destination*-1f),0f,0f);
+		StartCoroutine(SmoothSnap(startPos,endpos));
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -124,9 +135,9 @@ public class RoomController : MonoBehaviour {
 		float t = 0;
 
 		currentRoom = GetCurrentRoom(endPos.x);
-//		Emoji.Instance.roomFactor = rooms[(int)currentRoom].statsFactor;
+		//		Emoji.Instance.roomFactor = rooms[(int)currentRoom].statsFactor;
 
-		foreach(Room r in rooms) r.OnRoomChanged(currentRoom);
+//		foreach(BaseRoom r in rooms) r.OnRoomChanged(currentRoom);
 
 		while(t <= 1){
 			t += Time.fixedDeltaTime * snapSpeed;
@@ -135,20 +146,9 @@ public class RoomController : MonoBehaviour {
 		}
 
 		transform.position = endPos;
-//		Emoji.Instance.emojiObject.GetComponent<EmojiObject>().OnRoomChangingEnd();
+		//		Emoji.Instance.emojiObject.GetComponent<EmojiObject>().OnRoomChangingEnd();
 		snapping = false;
 		yield return null;
-	}
-	#endregion
-//-------------------------------------------------------------------------------------------------------------------------------------------------
-	#region public methods
-	public void GoToRoom(RoomName destination)
-	{
-		if(destination == currentRoom) return;
-
-		Vector3 startPos = transform.position;
-		Vector3 endpos = new Vector3((roomWidth*(int)destination*-1f),0f,0f);
-		StartCoroutine(SmoothSnap(startPos,endpos));
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
