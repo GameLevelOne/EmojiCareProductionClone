@@ -7,8 +7,8 @@ public class RoomController : MonoBehaviour {
 	//constants
 	const float roomWidth = 7.2f;
 	const float roomHeight = 12.8f;
+	float snapSpeed = 6f;
 
-	public float snapSpeed = 6f;
 	public BaseRoom[] rooms;
 
 	BoxCollider2D thisCollider;
@@ -21,16 +21,18 @@ public class RoomController : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initializations
-	void Awake()
-	{
-		Init();
-	}
-
-	void Init()
+	public void Init()
 	{
 		thisCollider = GetComponent<BoxCollider2D>();
 		currentRoom = GetCurrentRoom(transform.localPosition.x);
-//		foreach(BaseRoom r in rooms) if(r!=null) r.OnRoomChanged(currentRoom);
+
+		PlayerData.Instance.PlayerEmoji.body.currentRoom = (int)currentRoom;
+		PlayerData.Instance.PlayerEmoji.body.previousRoom = (int)currentRoom;
+
+		foreach(BaseRoom r in rooms) if(r != null){
+				r.InitRoom();
+				r.OnRoomChanged(currentRoom);
+			}
 		AdjustTouchAreaSize();
 	}
 
@@ -75,7 +77,6 @@ public class RoomController : MonoBehaviour {
 			Vector3 endpos = new Vector3(getXEndPosition(startPos.x),0f,0f);
 
 			StartCoroutine(SmoothSnap(startPos,endpos));
-
 		}
 	}
 
@@ -117,7 +118,12 @@ public class RoomController : MonoBehaviour {
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
-	#region public methods
+	#region public modules
+	public void SetEditMode(bool editMode)
+	{
+		thisCollider.enabled = editMode;
+	}
+
 	public void GoToRoom(RoomType destination)
 	{
 		if(destination == currentRoom) return;
@@ -135,9 +141,8 @@ public class RoomController : MonoBehaviour {
 		float t = 0;
 
 		currentRoom = GetCurrentRoom(endPos.x);
-		//		Emoji.Instance.roomFactor = rooms[(int)currentRoom].statsFactor;
 
-//		foreach(BaseRoom r in rooms) r.OnRoomChanged(currentRoom);
+		foreach(BaseRoom r in rooms) if(r != null) r.OnRoomChanged(currentRoom);
 
 		while(t <= 1){
 			t += Time.fixedDeltaTime * snapSpeed;
@@ -146,8 +151,10 @@ public class RoomController : MonoBehaviour {
 		}
 
 		transform.position = endPos;
-		//		Emoji.Instance.emojiObject.GetComponent<EmojiObject>().OnRoomChangingEnd();
 		snapping = false;
+
+		PlayerData.Instance.PlayerEmoji.body.BounceToCurrentRoom((int)currentRoom);
+
 		yield return null;
 	}
 	#endregion

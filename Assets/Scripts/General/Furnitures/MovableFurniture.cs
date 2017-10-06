@@ -3,79 +3,60 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 
-public class MovableFurniture : Furniture {
+public class MovableFurniture : MonoBehaviour {
 	#region attributes
-	List<Collider2D> floorColliders = new List<Collider2D>();
+	[Header("MovableFurniture Attributes")]
+	public Collider2D thisCollider;
+	public Animator thisAnim;
+	public SpriteRenderer thisSprite;
+	public bool flagEditMode = false;
 
-	protected Animator thisAnim;
-	protected Rigidbody2D thisRigidbody;
-	protected Collider2D thisCollider;
-	protected SpriteRenderer thisSprite;
-
+	[Header("leave empty for BathroomAppliances Object")] [SerializeField] private Rigidbody2D thisRigidbody;
+	protected List<Collider2D> collidersToIgnore = new List<Collider2D>();
 	protected bool endDrag = false;
-
-	#endregion
-//-------------------------------------------------------------------------------------------------------------------------------------------------
-	#region initializations
-	protected void Awake()
-	{
-		Init();
-	}
-
-	protected virtual void Init()
-	{
-		if(transform.GetChild(0).GetComponent<Animator>() != null) thisAnim = transform.GetChild(0).GetComponent<Animator>();
-		if(transform.GetChild(0).GetComponent<SpriteRenderer>() != null) thisSprite = transform.GetChild(0).GetComponent<SpriteRenderer>();
-		if(GetComponent<Rigidbody2D>() != null) thisRigidbody = GetComponent<Rigidbody2D>();
-		if(GetComponent<Collider2D>() != null) thisCollider = GetComponent<Collider2D>();
-	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
-
 	//collider modules
 	protected void OnTriggerEnter2D(Collider2D other)
 	{
-//		print("Trigger: "+other.name);
-		if(other.tag == Tags.FLOOR || other.tag == Tags.IMMOVABLE_FURNITURE) {
-			floorColliders.Add(other.transform.parent.GetComponent<Collider2D>());
-		}
+		if(other.tag == Tags.FLOOR || other.tag == Tags.IMMOVABLE_FURNITURE) collidersToIgnore.Add(other.transform.parent.GetComponent<Collider2D>());
 	}
 
-	protected void OnCollisionEnter2D(Collision2D other){
-//		print("Collider: "+other.gameObject.name);
-		if(other.gameObject.tag == Tags.MOVABLE_FURNITURE){
-			Physics2D.IgnoreCollision(other.gameObject.GetComponent<Collider2D>(),thisCollider);
-		}
+	//collider modules
+	protected void OnCollisionEnter2D(Collision2D other)
+	{
+		if(other.gameObject.tag == Tags.MOVABLE_FURNITURE) Physics2D.IgnoreCollision(other.gameObject.GetComponent<Collider2D>(),thisCollider);
 	}
 
 	//event trigger modules
 	public virtual void BeginDrag()
 	{
-		if(!editMode || !endDrag){
+		if(!flagEditMode && !endDrag){
 			thisAnim.SetBool(AnimatorParameters.Bools.HOLD,true);
 			thisRigidbody.simulated = false;
-			thisSprite.sortingOrder = 100;
 			thisSprite.sortingLayerName = SortingLayers.HELD;
 
-			if(floorColliders.Count != 0){
-				foreach(Collider2D c in floorColliders) Physics2D.IgnoreCollision(c,thisCollider,false);
+			if(collidersToIgnore.Count != 0){
+				foreach(Collider2D c in collidersToIgnore) Physics2D.IgnoreCollision(c,thisCollider,false);
 			}
-			floorColliders.Clear();
+			collidersToIgnore.Clear();
 		}
 	}
 
+	//event trigger modules
 	public void Drag()
 	{
-		if(!editMode || !endDrag){
+		if(!flagEditMode && !endDrag){
 			Vector3 tempMousePosition = new Vector3(Input.mousePosition.x,Input.mousePosition.y,9f);
 			transform.localPosition = Camera.main.ScreenToWorldPoint(tempMousePosition);
 		}
 	}
 
+	//event trigger modules
 	public virtual void EndDrag()
 	{
-		if(!editMode || !endDrag){
+		if(!flagEditMode && !endDrag){
 			endDrag = true;
 
 			thisAnim.SetBool(AnimatorParameters.Bools.HOLD,false);
@@ -89,8 +70,9 @@ public class MovableFurniture : Furniture {
 
 	protected virtual void AdjustSortingOrder()
 	{
-		if(transform.localPosition.y >= 0) thisSprite.sortingOrder = 0;
-		else{
+		if(transform.localPosition.y >= 0){ 
+			thisSprite.sortingOrder = 0;
+		}else{
 			int sortingOrder = 0;
 			float abs = Mathf.Abs(transform.localPosition.y);
 			float absSisa = abs - Mathf.Floor(abs);
@@ -101,6 +83,9 @@ public class MovableFurniture : Furniture {
 			thisSprite.sortingOrder = sortingOrder;
 		}
 
+		float zPos = Mathf.Abs(transform.localPosition.z);
+		transform.localPosition = new Vector3(transform.localPosition.x,transform.localPosition.y,-1f * (zPos+thisSprite.sortingOrder));
+
 		thisSprite.sortingLayerName = SortingLayers.MOVABLE_FURNITURE;
 	}
 	#endregion
@@ -110,9 +95,9 @@ public class MovableFurniture : Furniture {
 	{
 		yield return null;
 		if (endDrag) {
-			if(floorColliders.Count != 0){
-				foreach(Collider2D c in floorColliders){ 
-					Physics2D.IgnoreCollision(c,thisCollider);
+			if(collidersToIgnore.Count != 0){
+				foreach(Collider2D c in collidersToIgnore){ 
+					Physics2D.IgnoreCollision(thisCollider,c);
 				}
 			}
 			endDrag = false;

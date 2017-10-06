@@ -16,6 +16,12 @@ public class EmojiBody : MonoBehaviour {
 		parentRigidbody.simulated = true;
 	}
 
+	//animation event
+	public void Reposition()
+	{
+		transform.parent.position = Vector3.zero;
+	}
+
 	public void DisableParentRigidBody()
 	{
 		parentRigidbody.simulated = false;
@@ -28,13 +34,13 @@ public class EmojiBody : MonoBehaviour {
 		} 
 	}
 
-	public void BounceToCurrentRoom()
+	public void BounceToCurrentRoom(int currRoom)
 	{
 		StopCoroutine(bounceToCurrentRoom);
-		StartCoroutine(bounceToCurrentRoom);
+		StartCoroutine(bounceToCurrentRoom,currRoom);
 	}
 
-	const string bounceToCurrentRoom = "BounceToCurrentRoom";
+	const string bounceToCurrentRoom = "_BounceToCurrentRoom";
 	IEnumerator _BounceToCurrentRoom(int currRoom)
 	{
 		currentRoom = currRoom;
@@ -46,5 +52,6 @@ public class EmojiBody : MonoBehaviour {
 				thisAnim.SetInteger(AnimatorParameters.Ints.BODY_STATE,(int)BodyAnimation.BounceFromRight);
 			}
 		}
+		previousRoom = currRoom;
 	}
 }

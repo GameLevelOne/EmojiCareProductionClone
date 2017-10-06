@@ -1,17 +1,17 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class AlarmClock : MovableFurniture {
-
+public class AlarmClock : ActionableFurniture {
 	bool ringing = false;
 
-	public void PointerClick()
+	//event triggers
+	public override void PointerClick()
 	{
 		if(!ringing){
 			StartCoroutine(Ring());
 		}
 	}
-
+		
 	IEnumerator Ring()
 	{
 		ringing = true;

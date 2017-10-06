@@ -2,8 +2,10 @@
 using UnityEngine;
 using System;
 
-public class Clock : ImmovableFurniture {
-	public Transform hourHand, minuteHand;
+public class Clock : BaseFurniture {
+	[Header("Clock Attributes")]
+	public Transform hourHand;
+	public Transform minuteHand;
 
 	const float hoursToDegrees = 360f/12f;
 	const float minutesToDegrees = 360f/60f;

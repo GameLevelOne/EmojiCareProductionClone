@@ -14,8 +14,6 @@ public class SceneMainManager : MonoBehaviour {
 	#region initialization
 	void Start()
 	{
-//		Emoji.Instance.OnEmojiDoneLoading += OnEmojiDoneLoading;
-		PlayerData.Instance.emojiParentTransform = roomController.transform;
 		InitMain();
 	}
 
@@ -26,8 +24,9 @@ public class SceneMainManager : MonoBehaviour {
 
 	void InitMain()
 	{
-//		GameSparkManager.Instance.GetDownloadableURL((EmojiType)PlayerData.Instance.playerEmojiType);
+		PlayerData.Instance.emojiParentTransform = roomController.transform;
 		PlayerData.Instance.InitPlayerEmoji(emojiSample);
+		roomController.Init();
 	}
 
 	#endregion

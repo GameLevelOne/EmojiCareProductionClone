@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 public enum RoomType{
 	Garden,
@@ -12,38 +11,39 @@ public enum RoomType{
 
 public class BaseRoom : MonoBehaviour {
 	#region attributes
+	[Header("BaseRoom Attributes")]
 	public RoomType thisRoom;
 	public BaseFurniture[] furnitures;
+	public MovableFurniture[] movableFurnitures;
 	public float[] roomMod;
 	public bool flagEditMode = false;
 
 	Vector3[] furnitureDefaultPosition;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
-	#region initialization
-	protected void Awake()
-	{
-		InitRoom();
-		
-	}
-	#endregion
-//-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
-	protected void InitRoom()
+	public void InitRoom()
 	{
-		for(int i = 0;i<furnitures.Length;i++) furnitureDefaultPosition[i] = furnitures[i].transform.localPosition;
+		if(furnitures.Length == 0) return;
+
+		furnitureDefaultPosition = new Vector3[furnitures.Length];
+		for(int i = 0;i<furnitures.Length;i++){ 
+			furnitures[i].InitVariant();
+			furnitureDefaultPosition[i] = furnitures[i].gameObject.transform.localPosition;
+		}
+			
+		MovableFurnituresIgnoreEachOther();
 	}
 
-	void ResetFurniturePositions()
+	protected void MovableFurnituresIgnoreEachOther()
 	{
-		for(int i = 0;i<furnitures.Length;i++) furnitures[i].transform.localPosition = furnitureDefaultPosition[i];
-		
+		for(int i = 0;i<movableFurnitures.Length;i++){
+			for(int j = i;j<movableFurnitures.Length;j++){
+				Physics2D.IgnoreCollision(movableFurnitures[i].thisCollider, movableFurnitures[j].thisCollider);
+			}
+		}
 	}
 
-	bool HasComponent <T>(GameObject obj) where T : Component{
-		return obj.GetComponent<T>() != null;
-
-	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
@@ -63,10 +63,14 @@ public class BaseRoom : MonoBehaviour {
 		flagEditMode = editMode;
 		if(editMode){
 			//enter edit mode
-			ResetFurniturePositions();
+			for(int i = 0;i<furnitures.Length;i++){ 
+				furnitures[i].transform.localPosition = furnitureDefaultPosition[i];
+				furnitures[i].EnterEditmode();
+			}
 
 		}else{
 			//exit edit mode
+			foreach(BaseFurniture f in furnitures) f.ExitEditmode();
 		}
 	}
 	#endregion

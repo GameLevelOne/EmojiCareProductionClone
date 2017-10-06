@@ -1,24 +1,3 @@
-﻿using System.Collections;
-using UnityEngine;
-
-public class ActionableFurniture : BaseFurniture {
-	#region attributes
-	
-	#endregion
-//-------------------------------------------------------------------------------------------------------------------------------------------------
-	#region initialization
-	
-	#endregion
-//-------------------------------------------------------------------------------------------------------------------------------------------------
-	#region mechanics
-	
-	#endregion
-//-------------------------------------------------------------------------------------------------------------------------------------------------
-	#region public modules
-	public void PointerClick()
-	{
-		
-	}
-	#endregion
-//-------------------------------------------------------------------------------------------------------------------------------------------------	
+﻿public abstract class ActionableFurniture : BaseFurniture {
+	public abstract void PointerClick();
 }

@@ -1,23 +1,23 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Gordyn : ImmovableFurniture {
-	public Sprite gordynOpen, gordynClose;
+public class Gordyn : ActionableFurniture {
+	Sprite open, close;
 
-	SpriteRenderer image;
-
-	void Awake()
+	public override void InitVariant ()
 	{
-		image = transform.GetChild(0).GetComponent<SpriteRenderer>();
+		base.InitVariant();
+		open = variant[currentVariant].sprite[0];
+		close = variant[currentVariant].sprite[1];
+		print("HAI");
 	}
 
 	public override void PointerClick()
 	{
-		if(image.sprite == gordynOpen){
-			image.sprite = gordynClose;
+		if(thisSprite[0].sprite == open){
+			thisSprite[0].sprite = close;
 			//reduce light
 		}else{
-			image.sprite = gordynOpen;
+			thisSprite[0].sprite = open;
 			//add light
 		}
 	}

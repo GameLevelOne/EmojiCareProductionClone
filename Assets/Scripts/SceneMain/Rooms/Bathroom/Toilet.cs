@@ -1,41 +1,35 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class Toilet : ImmovableFurniture {
+public class Toilet : ActionableFurniture {
 	#region attributes
-	public SpriteRenderer lidOpened, lidClosed, flush;
+	[Header("Toilet Attributes")]
+	public SpriteRenderer lidOpened;
+	public SpriteRenderer lidClosed;
+	public SpriteRenderer flush;
 	public Sprite flushDown, flushUp;
-	bool lidOpen, isFlusing;
+
+	bool lidOpen = false, isFlusing;
 	#endregion
-
-	void Awake()
+//------------------------------------------------------------------------------------------------------------------------------------------------
+	public override void InitVariant ()
 	{
-		Init();
+		base.InitVariant ();
+		lidOpened.sprite = variant[currentVariant].sprite[1];
+		lidClosed.sprite = variant[currentVariant].sprite[2];
+		flushUp = variant[currentVariant].sprite[3];
+		flushDown = variant[currentVariant].sprite[4];
 	}
 
-	void Init()
-	{
-		lidOpen = isFlusing = false;
-		SwitchLid(lidOpen);
-	}
-
-	void SwitchLid(bool state)
-	{
-		if(state == true){
-			lidOpened.enabled = true;
-			lidClosed.enabled = false;
-		}else{
-			lidOpened.enabled = false;
-			lidClosed.enabled = true;
-		}
-	}
-
-	public void PointerClick()
+	//event triggers
+	public override void PointerClick()
 	{
 		lidOpen = !lidOpen;
-		SwitchLid(lidOpen);
+		lidOpened.enabled = lidOpen;
+		lidClosed.enabled = !lidOpen;
 	}
 
+	//event triggers
 	public void FlushPointerClick()
 	{
 		if(!isFlusing) StartCoroutine(flushing());
@@ -46,8 +40,7 @@ public class Toilet : ImmovableFurniture {
 		isFlusing = true;
 		flush.sprite = flushUp;
 		yield return new WaitForSeconds(2f);
-		isFlusing = false;
 		flush.sprite = flushDown;
+		isFlusing = false;
 	}
-	
 }
