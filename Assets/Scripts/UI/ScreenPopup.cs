@@ -26,6 +26,7 @@ public class ScreenPopup : BaseUI {
 	public GameObject temp;
 
 	PopupEventType currentEventType;
+	PopupType currentPopupType;
 
 	public void ShowUI(PopupType type,PopupEventType eventType,bool toShop){
 		currentEventType = eventType;
@@ -55,13 +56,18 @@ public class ScreenPopup : BaseUI {
 		}
 	} 
 
-	public void OnClickButtonOk(){
-		if(currentEventType == PopupEventType.SelectEmoji || currentEventType == PopupEventType.BuyEmoji){
-			CloseUI(this.gameObject);
-			//base.ShowUI(base.UICelebrationPanels[0]);
-			base.ShowUI(temp);
+	public void OnClickButtonOk ()
+	{
+		if (currentPopupType == PopupType.Confirmation) {
+			if (currentEventType == PopupEventType.SelectEmoji || currentEventType == PopupEventType.BuyEmoji) {
+				CloseUI (this.gameObject);
+				//base.ShowUI(base.UICelebrationPanels[0]);
+				base.ShowUI (temp);
+			} else {
+				CloseUI (this.gameObject); //temp
+			}
 		} else{
-			CloseUI(this.gameObject); //temp
+			CloseUI(this.gameObject);
 		}
 
 	}
