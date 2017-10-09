@@ -29,6 +29,9 @@ public class ScreenPopup : BaseUI {
 	#region events
 	public delegate void CelebrationNewEmoji(Sprite sprite,string emojiName);
 	public static event CelebrationNewEmoji OnCelebrationNewEmoji;
+
+	public delegate void SendOffEmoji(Sprite sprite,string emojiName);
+	public static event SendOffEmoji OnSendOffEmoji;
 	#endregion
 
 	PopupEventType currentEventType;
@@ -78,8 +81,9 @@ public class ScreenPopup : BaseUI {
 			if (currentEventType == PopupEventType.SelectEmoji || currentEventType == PopupEventType.BuyEmoji) {
 				Debug.Log("1");
 				OnCelebrationNewEmoji(tempEmojiSprite,tempEmojiName);
-			} else {
+			} else if(currentEventType == PopupEventType.SendOff){
 				Debug.Log("2");
+				OnSendOffEmoji(tempEmojiSprite,tempEmojiName);
 			}
 		} else{
 			Debug.Log("3");

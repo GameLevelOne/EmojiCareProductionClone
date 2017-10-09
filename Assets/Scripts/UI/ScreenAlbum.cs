@@ -10,50 +10,73 @@ public class ScreenAlbum : BaseUI {
 	public Scrollbar scrollbar;
 	public Image emojiBigIcon;
 
-	public Sprite[] emojiIcons = new Sprite[12];
+	public Sprite[] emojiIcons = new Sprite[10];
 	public Sprite lockedEmoji;
 
-	int totalEmoji = 10;
+	List<EmojiType> emojiData = new List<EmojiType>();
+
+	int tileCount = 6; //initial display
 	int tileWidth = 3;
-	int tileHeight = 4;
+	int tileHeight = 2;
+	int currentRecordCount = 1;
+
 	float boxSize = 150;
 	float contentBoxMarginX = 50;
 
-	public override void InitUI ()
-	{
-		Debug.Log("album");
-
-		int tempIdx = 0;
-		emojiContentBox.sizeDelta = new Vector2 (0, ((float)tileHeight * boxSize) + contentBoxMarginX);
-
-		for (int i = 0; i < tileHeight; i++) {
-			for (int j = 0; j < tileWidth; j++) {
-				GameObject obj = Instantiate (emojiBoxPrefab, emojiContentBox, false) as GameObject;
-				obj.GetComponent<RectTransform> ().anchoredPosition = new Vector2 (-140 + j * 140, 230 - i * 150);
-				obj.GetComponent<AlbumTile>().exprType = (FaceAnimation)tempIdx;
-				if (emojiIcons [tempIdx] != null) {
-					Debug.Log("asd");
-					obj.transform.GetChild (0).GetComponent<Image> ().sprite = emojiIcons [tempIdx];
-				}else{
-					obj.transform.GetChild(0).GetComponent<Image>().sprite = lockedEmoji;
-					obj.GetComponent<Button>().interactable=false;
-				}
-				tempIdx++;
-			}
-		}
-		scrollbar.size = 0.1f;
-	}
-
 	void OnEnable(){
+		//PlayerData.Instance.PlayerEmoji.OnEmojiDead += OnEmojiDead;
 		AlbumTile.OnSelectExpression += OnSelectExpression;
 	}
 
 	void OnDisable(){
+		//PlayerData.Instance.PlayerEmoji.OnEmojiDead -= OnEmojiDead;
 		AlbumTile.OnSelectExpression -= OnSelectExpression;
+	}
+
+	void OnEmojiDead ()
+	{
+		currentRecordCount++;
+		if(currentRecordCount > tileCount){
+			tileCount = currentRecordCount;
+		}
+		emojiData.Add(PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType);
+		PlayerPrefs.SetInt(PlayerPrefKeys.Player.EMOJI_RECORD_COUNT,currentRecordCount);
 	}
 
 	void OnSelectExpression (FaceAnimation item)
 	{
 		emojiBigIcon.sprite = emojiIcons[(int)item];
 	}
+
+	public override void InitUI ()
+	{
+		Debug.Log ("album");
+
+		tileHeight = Mathf.CeilToInt (tileCount / tileWidth);
+
+		int tempIdx = 0;
+		emojiContentBox.sizeDelta = new Vector2 (0, ((float)tileHeight * boxSize) + contentBoxMarginX);
+
+		emojiData.Add(EmojiType.Emoji);
+
+		for (int i = 0; i < tileHeight; i++) {
+			for (int j = 0; j < tileWidth; j++) {
+				GameObject obj = Instantiate (emojiBoxPrefab, emojiContentBox, false) as GameObject;
+				obj.GetComponent<RectTransform> ().anchoredPosition = new Vector2 (90 + j * 140, -85 - i * 150);
+
+				if (emojiData.Count != 0 && (currentRecordCount-1) >=tempIdx) {
+					if (emojiData [tempIdx] != null) {
+						Debug.Log ("asd");
+						obj.transform.GetChild (0).GetComponent<Image> ().sprite = emojiIcons [(int)emojiData [tempIdx]];
+					} else {
+						obj.GetComponent<Button> ().interactable = false;
+					}
+					tempIdx++;
+				}
+			}
+		}
+		scrollbar.size = 0.1f;
+	}
+
+
 }

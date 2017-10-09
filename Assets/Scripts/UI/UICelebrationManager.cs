@@ -11,11 +11,13 @@ public class UICelebrationManager : MonoBehaviour {
 
 	void OnEnable(){
 		ScreenPopup.OnCelebrationNewEmoji += OnCelebrationNewEmoji;
+		ScreenPopup.OnSendOffEmoji += OnSendOffEmoji;
 		PlayerData.Instance.PlayerEmoji.OnEmojiDead += OnEmojiDead;
 	}
 
 	void OnDisable(){
 		ScreenPopup.OnCelebrationNewEmoji -= OnCelebrationNewEmoji;
+		ScreenPopup.OnSendOffEmoji -= OnSendOffEmoji;
 		PlayerData.Instance.PlayerEmoji.OnEmojiDead -= OnEmojiDead;
 	}
 
@@ -23,6 +25,12 @@ public class UICelebrationManager : MonoBehaviour {
 	{
 		Debug.Log("new emoji");
 		screenNewEmoji.ShowUI(sprite,emojiName,screenNewEmoji.gameObject);
+	}
+
+	void OnSendOffEmoji (Sprite sprite, string emojiName)
+	{
+		Debug.Log("send off");
+		screenSendOff.ShowUI(sprite,emojiName,screenSendOff.gameObject);
 	}
 
 	void OnEmojiDead ()
