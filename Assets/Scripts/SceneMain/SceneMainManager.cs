@@ -27,6 +27,8 @@ public class SceneMainManager : MonoBehaviour {
 		PlayerData.Instance.emojiParentTransform = roomController.transform;
 		PlayerData.Instance.InitPlayerEmoji(emojiSample);
 		roomController.Init();
+
+		AdmobManager.Instance.ShowBanner();
 	}
 
 	#endregion

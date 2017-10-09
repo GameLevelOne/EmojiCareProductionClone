@@ -17,7 +17,8 @@ public enum PanelType{
 
 public class BaseUI : MonoBehaviour {
 
-	public GameObject[] UIPanels;
+	public GameObject[] UIPanels = new GameObject[9];
+	public HotkeysAnimation hotkeyAnim;
 	string triggerShowUI = "Show";
 	string triggerCloseUI = "Close";
 
@@ -27,9 +28,6 @@ public class BaseUI : MonoBehaviour {
 
 	public void ShowUI (GameObject obj)
 	{
-		if (SceneManager.GetActiveScene().name == "SceneMain") {
-			AdmobManager.Instance.HideBanner ();
-		}
 		obj.SetActive(true);
 		obj.GetComponent<Animator>().SetTrigger(triggerShowUI);	
 		InitUI();
@@ -40,11 +38,13 @@ public class BaseUI : MonoBehaviour {
 		StartCoroutine(WaitForAnim(obj));
 	}
 
+	public void ClosePanel(PanelType panel){
+		GameObject obj = UIPanels[(int)panel];
+		CloseUI(obj);
+	}
+
 	IEnumerator WaitForAnim(GameObject obj){
 		yield return new WaitForSeconds(0.16f);
 		obj.SetActive(false);
-		if (SceneManager.GetActiveScene().name == "SceneMain") {
-			AdmobManager.Instance.ShowBanner ();
-		}
 	}
 }

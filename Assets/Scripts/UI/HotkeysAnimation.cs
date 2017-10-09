@@ -6,8 +6,8 @@ public class HotkeysAnimation : MonoBehaviour {
 	public GameObject hotkeyPanel;
 
 	Animator hotkeyAnim;
-	string triggerOpenHotkey = "ShowHotkeys";
-	string triggerCloseHotkey = "CloseHotkeys";
+	string triggerOpenHotkey = "Show";
+	string triggerCloseHotkey = "Close";
 
 	void Start(){
 		hotkeyAnim = hotkeyPanel.GetComponent<Animator>();

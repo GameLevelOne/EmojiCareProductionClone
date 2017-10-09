@@ -7,19 +7,18 @@ public class ScreenLocations : BaseUI {
 	public Sprite[] bgRoomSprites;
 	public Image[] buttonRooms;
 	public Sprite spriteClosedRoom;
+	public RoomController roomController;
 
 	int currentRoomIndex=2; //living room
 
 	public override void InitUI ()
 	{
 		Debug.Log("locations");
-		UpdateDisplay(currentRoomIndex);
-		//get current active room
 	}
 
 	public void OnClickRoom(int roomIndex){
 		UpdateDisplay(roomIndex);
-		//StartCoroutine(WaitToChangeRoom());
+		StartCoroutine(WaitToChangeRoom(roomIndex));
 	}
 
 	void UpdateDisplay(int currentRoomIndex){
@@ -28,12 +27,10 @@ public class ScreenLocations : BaseUI {
 		buttonRooms[currentRoomIndex].sprite = bgRoomSprites[currentRoomIndex];
 	}
 
-	IEnumerator WaitToChangeRoom(){
-		yield return new WaitForSeconds(2);
-		// GoToRoom()
-
-		CloseUI(UIPanels[(int)PanelType.Locations]);
-		yield return new WaitForSeconds(0.5f);
-		CloseUI(UIPanels[(int)PanelType.Hotkey]);
+	IEnumerator WaitToChangeRoom(int roomIndex){
+		yield return new WaitForSeconds(1);
+		roomController.GoToRoom((RoomType)roomIndex);
+		hotkeyAnim.CloseHotkeys();
+		CloseUI(this.gameObject);
 	}
 }
