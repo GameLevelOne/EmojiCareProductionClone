@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AlbumTile : MonoBehaviour {
-	public delegate void SelectExpression(FaceAnimation item);
+	public delegate void SelectExpression(FaceExpression item);
 	public static event SelectExpression OnSelectExpression;
 
-	public FaceAnimation exprType;
+	public FaceExpression exprType;
 
 	// Use this for initialization
 	void Start () {

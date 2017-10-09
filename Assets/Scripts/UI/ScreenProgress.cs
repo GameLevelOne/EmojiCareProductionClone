@@ -34,13 +34,13 @@ public class ScreenProgress : BaseUI {
 
 		int exprTileIdx = 0;
 		int unlockedExprIdx = 0;
-		List<FaceAnimation> exprList = new List<FaceAnimation>(); //temp
+		List<FaceExpression> exprList = new List<FaceExpression>(); //temp
 
 		//for testing
-		exprList.Add(FaceAnimation.Default);
-		exprList.Add(FaceAnimation.Cry);
-		exprList.Add(FaceAnimation.Fidget);
-		exprList.Add(FaceAnimation.Amused);
+		exprList.Add(FaceExpression.Default);
+		exprList.Add(FaceExpression.Cry);
+		exprList.Add(FaceExpression.Fidget);
+		exprList.Add(FaceExpression.Amused);
 
 		contentBox.sizeDelta = new Vector2(0,((float)tileHeight*expressionBoxWidth)+contentBoxMarginX);
 
@@ -48,7 +48,7 @@ public class ScreenProgress : BaseUI {
 			for(int j=0;j<tileWidth;j++){
 				GameObject obj = Instantiate(expressionBoxPrefab,contentBox,false) as GameObject;
 				obj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-160+j*105,500-i*105);
-				obj.GetComponent<AlbumTile>().exprType = (FaceAnimation)exprTileIdx;
+				obj.GetComponent<AlbumTile>().exprType = (FaceExpression)exprTileIdx;
 				obj.name = "Expr"+exprTileIdx.ToString();
 				if(unlockedExprIdx < exprList.Count){
 					if((int)exprList[unlockedExprIdx]-1 == exprTileIdx){
@@ -89,7 +89,7 @@ public class ScreenProgress : BaseUI {
 		AlbumTile.OnSelectExpression -= OnSelectExpression;
 	}
 
-	void OnSelectExpression (FaceAnimation item)
+	void OnSelectExpression (FaceExpression item)
 	{
 		expressionIcon.sprite = expressionIcons[(int)item];
 	}

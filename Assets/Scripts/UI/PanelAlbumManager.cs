@@ -30,7 +30,7 @@ public class PanelAlbumManager : MonoBehaviour {
 		AlbumTile.OnSelectExpression -= OnSelectExpression;
 	}
 
-	void OnSelectExpression (FaceAnimation item)
+	void OnSelectExpression (FaceExpression item)
 	{
 		emojiBigIcon.sprite = emojiIcons[(int)item];
 	}
@@ -44,7 +44,7 @@ public class PanelAlbumManager : MonoBehaviour {
 			for (int j = 0; j < tileWidth; j++) {
 				GameObject obj = Instantiate (emojiBoxPrefab, emojiContentBox, false) as GameObject;
 				obj.GetComponent<RectTransform> ().anchoredPosition = new Vector2 (-140 + j * 140, 230 - i * 150);
-				obj.GetComponent<AlbumTile>().exprType = (FaceAnimation)tempIdx;
+				obj.GetComponent<AlbumTile>().exprType = (FaceExpression)tempIdx;
 				if (emojiIcons [tempIdx] != null) {
 					Debug.Log("asd");
 					obj.transform.GetChild (0).GetComponent<Image> ().sprite = emojiIcons [tempIdx];

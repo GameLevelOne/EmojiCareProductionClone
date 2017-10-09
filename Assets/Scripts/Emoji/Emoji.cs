@@ -21,49 +21,6 @@ public enum BodyAnimation{
 	BounceFromRight
 }
 
-public enum FaceAnimation{
-	Default = 1,//01
-	Smile,		//02
-	Yummy,		//03
-	Hungry,		//04
-	Starving,	//05
-	Blushed,	//06
-	Embarrassed,//07
-	Worried,	//08
-	Excited,	//09
-	Upset,		//10
-	Cry,		//11
-	Lively,		//12
-	Fidget,		//13
-	Sick,		//14
-	Energized,	//15
-	Weary,		//16
-	Exhausted,	//17
-	Eat,		//18
-	Oh,			//19
-	Content,	//20
-	Eyeroll,	//21
-	Whistle,	//22
-	Amused,		//23
-	Blessed,	//24
-	Sleep,		//25
-	Nerd,		//26
-	Cool,		//27
-	Happy,		//28
-	Calm,		//29
-	Hearty,		//30
-	Mouthzip,	//31
-	Terrified,	//32
-	Kisswink,	//33
-	Lick,		//34
-	Overjoyed,	//35
-	Glee,		//36
-	Angry,		//37
-	Drool,		//38
-	Dizzy,		//39
-	Surprised	//40
-}
-
 public class Emoji : MonoBehaviour {
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region delegate events
@@ -83,7 +40,7 @@ public class Emoji : MonoBehaviour {
 
 	[Header("")]
 	public string emojiName;
-	public List<FaceAnimation> unlockedExpression = new List<FaceAnimation>();
+	public EmojiExpression emojiExpressions;
 	public EmojiStats hunger, hygene,happiness,stamina, health;
 
 	DateTime lastTimePlayed{

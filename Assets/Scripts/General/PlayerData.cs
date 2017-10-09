@@ -12,8 +12,6 @@ public class PlayerData : MonoBehaviour {
 
 	public Transform emojiParentTransform;
 
-	public int playerEmojiType = 0;
-
 	Emoji playerEmoji;
 
 	bool hasInitEmojiObject = false;
@@ -35,6 +33,11 @@ public class PlayerData : MonoBehaviour {
 	public string PlayerAuthToken{
 		get{return PlayerPrefs.GetString(PlayerPrefKeys.Player.PLAYER_AUTH_TOKEN);}
 		set{PlayerPrefs.SetString(PlayerPrefKeys.Player.PLAYER_AUTH_TOKEN,value);}
+	}
+
+	public int playerEmojiType{
+		get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.PLAYER_EMOJI_TYPE,0);}
+		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.PLAYER_EMOJI_TYPE,value);}
 	}
 
 	void Awake()
