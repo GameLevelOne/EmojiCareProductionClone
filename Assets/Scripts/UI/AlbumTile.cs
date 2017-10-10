@@ -1,24 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AlbumTile : MonoBehaviour {
-	public delegate void SelectExpression(FaceExpression item);
-	public static event SelectExpression OnSelectExpression;
+	public delegate void SelectEmoji(EmojiType item);
+	public static event SelectEmoji OnSelectEmoji;
 
-	public FaceExpression exprType;
+	public Image icon;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+	public EmojiType emojiType;
+
+	public void InitTile(Sprite sprite){
+		icon.sprite = sprite;
 	}
 
 	public void OnClickTile(){
-		OnSelectExpression(exprType);
+		OnSelectEmoji(emojiType);
 	}
 }

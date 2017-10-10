@@ -6,7 +6,6 @@ public class EmojiSelectionData : MonoBehaviour {
 
 	public EmojiSO currentEmojiData;
 	public GameObject priceBox;
-	public PopupSelection confirmationPopup;
 	public Text textPrice;
 
 	public delegate void EmojiClicked(bool needToBuy,Sprite sprite,string emojiName);

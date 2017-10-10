@@ -1,16 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class ScreenNewExpression : MonoBehaviour {
+public class ScreenNewExpression : BaseUI {
+	public ExpressionIcons expressionIcons;
+	public Image expressionImage;
+	public Text expressionNameText;
+	public Text unlockDetailsText;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+	public void ShowUI(int expression){
+		EmojiType currentEmoji = PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType;
+
+		expressionImage.sprite = expressionIcons.GetExpressionIcon(currentEmoji,expression);
+
 	}
 }

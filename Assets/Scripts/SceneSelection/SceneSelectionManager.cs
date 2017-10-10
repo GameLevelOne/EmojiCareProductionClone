@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class SceneSelectionManager : MonoBehaviour {
 	public ScreenPopup screenPopup;
+	public EmojiIcons emojiIcons;
 	public EmojiSO[] emojiSO;
-	public Sprite[] emojiIcons;
 	public Transform parentObj;
 	public EmojiSelectionData emojiObj;
 
@@ -60,7 +60,7 @@ public class SceneSelectionManager : MonoBehaviour {
 
 			GameObject obj = Instantiate(emojiObj.gameObject,parentObj,false);
 			obj.transform.localPosition = selectionPos[i];
-			obj.GetComponent<EmojiSelectionData>().InitEmoji(emojiSO[currIdx],emojiIcons[currIdx]);
+			obj.GetComponent<EmojiSelectionData>().InitEmoji(emojiSO[currIdx],emojiIcons.GetEmojiIcon((EmojiType)currIdx));
 		}
 	}
 

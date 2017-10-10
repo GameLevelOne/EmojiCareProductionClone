@@ -10,7 +10,7 @@ public class ScreenAlbum : BaseUI {
 	public Scrollbar scrollbar;
 	public Image emojiBigIcon;
 
-	public Sprite[] emojiIcons = new Sprite[10];
+	public EmojiIcons emojiIcons;
 	public Sprite lockedEmoji;
 
 	List<EmojiType> emojiData = new List<EmojiType>();
@@ -25,27 +25,33 @@ public class ScreenAlbum : BaseUI {
 
 	void OnEnable(){
 		//PlayerData.Instance.PlayerEmoji.OnEmojiDead += OnEmojiDead;
-		AlbumTile.OnSelectExpression += OnSelectExpression;
+		AlbumTile.OnSelectEmoji += OnSelectEmoji;
+		ScreenPopup.OnSendOffEmoji += OnSendOffEmoji;
 	}
 
 	void OnDisable(){
 		//PlayerData.Instance.PlayerEmoji.OnEmojiDead -= OnEmojiDead;
-		AlbumTile.OnSelectExpression -= OnSelectExpression;
+		AlbumTile.OnSelectEmoji -= OnSelectEmoji;
+		ScreenPopup.OnSendOffEmoji -= OnSendOffEmoji;
 	}
 
 	void OnEmojiDead ()
 	{
-		currentRecordCount++;
-		if(currentRecordCount > tileCount){
-			tileCount = currentRecordCount;
-		}
-		emojiData.Add(PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType);
-		PlayerPrefs.SetInt(PlayerPrefKeys.Player.EMOJI_RECORD_COUNT,currentRecordCount);
+		AddEmojiRecord();
 	}
 
-	void OnSelectExpression (FaceAnimation item)
+	void OnSelectEmoji (EmojiType item)
 	{
-		emojiBigIcon.sprite = emojiIcons[(int)item];
+		emojiBigIcon.sprite = emojiIcons.GetEmojiIcon(item);
+	}
+
+	void OnSendOffEmoji(Sprite sprite,string name){
+		AddEmojiRecord();
+	}
+
+	//TODO: create event
+	void OnEmojiTransfer(){
+		AddEmojiRecord();
 	}
 
 	public override void InitUI ()
@@ -67,7 +73,8 @@ public class ScreenAlbum : BaseUI {
 				if (emojiData.Count != 0 && (currentRecordCount-1) >=tempIdx) {
 					if (emojiData [tempIdx] != null) {
 						Debug.Log ("asd");
-						obj.transform.GetChild (0).GetComponent<Image> ().sprite = emojiIcons [(int)emojiData [tempIdx]];
+						Sprite sprite = emojiIcons.GetEmojiIcon(emojiData[tempIdx]);
+						obj.GetComponent<AlbumTile>().InitTile(sprite);
 					} else {
 						obj.GetComponent<Button> ().interactable = false;
 					}
@@ -78,5 +85,14 @@ public class ScreenAlbum : BaseUI {
 		scrollbar.size = 0.1f;
 	}
 
+	public void AddEmojiRecord(){
+		currentRecordCount++;
+		if(currentRecordCount > tileCount){
+			tileCount = currentRecordCount;
+		}
+		emojiData.Add(PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType);
+		PlayerPrefs.SetInt(PlayerPrefKeys.Player.EMOJI_RECORD_COUNT,currentRecordCount);
 
+		//set emoji status
+	}
 }
