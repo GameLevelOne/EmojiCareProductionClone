@@ -9,15 +9,20 @@ public class UICelebrationManager : MonoBehaviour {
 	public ScreenEmojiDeath screenEmojiDeath;
 	public ScreenEmojiTransfer screenEmojiTransfer;
 
+	public Transform canvasParent;
+	public ScreenNewExpression screenNewExpressionPrefab;
+
 	void OnEnable(){
 		ScreenPopup.OnCelebrationNewEmoji += OnCelebrationNewEmoji;
 		ScreenPopup.OnSendOffEmoji += OnSendOffEmoji;
+		PlayerData.Instance.PlayerEmoji.emojiExpressions.OnNewExpression += OnNewExpression;
 		PlayerData.Instance.PlayerEmoji.OnEmojiDead += OnEmojiDead;
 	}
 
 	void OnDisable(){
 		ScreenPopup.OnCelebrationNewEmoji -= OnCelebrationNewEmoji;
 		ScreenPopup.OnSendOffEmoji -= OnSendOffEmoji;
+		PlayerData.Instance.PlayerEmoji.emojiExpressions.OnNewExpression -= OnNewExpression;
 		PlayerData.Instance.PlayerEmoji.OnEmojiDead -= OnEmojiDead;
 	}
 
@@ -27,9 +32,16 @@ public class UICelebrationManager : MonoBehaviour {
 		screenNewEmoji.ShowUI(sprite,emojiName,screenNewEmoji.gameObject);
 	}
 
+	void OnNewExpression (int newExpression)
+	{
+		ScreenNewExpression obj = Instantiate(screenNewExpressionPrefab,canvasParent,false) as ScreenNewExpression;
+		obj.ShowUI(newExpression);
+	}
+
 	void OnSendOffEmoji (Sprite sprite, string emojiName)
 	{
 		Debug.Log("send off");
+		Emoji currentEmoji = PlayerData.Instance.PlayerEmoji;
 		screenSendOff.ShowUI(sprite,emojiName,screenSendOff.gameObject);
 	}
 

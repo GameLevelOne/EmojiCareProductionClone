@@ -43,6 +43,16 @@ public class BaseUI : MonoBehaviour {
 		CloseUI(obj);
 	}
 
+	public void ShowPanelInHotkey(GameObject obj){
+		hotkeyAnim.CloseHotkeys();
+		ShowUI(obj);
+	}
+
+	public void ClosePanelInHotkey(GameObject obj){
+		hotkeyAnim.ShowHotkeys();
+		CloseUI(obj);
+	}
+
 	IEnumerator WaitForAnim(GameObject obj){
 		yield return new WaitForSeconds(0.16f);
 		obj.SetActive(false);

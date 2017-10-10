@@ -11,7 +11,8 @@ public enum PopupType{
 public enum PopupEventType{
 	SelectEmoji,
 	BuyEmoji,
-	SendOff,
+	AbleToSendOff,
+	NotAbleToSendOff,
 	BuyItem
 }
 
@@ -43,8 +44,10 @@ public class ScreenPopup : BaseUI {
 		popupText.text = SetPopupText(eventType);
 		if(type == PopupType.Warning){
 			buttonGroupWarning.SetActive(true);
+			buttonGroupConfirmation.SetActive(false);
 		} else{
 			buttonGroupConfirmation.SetActive(true);
+			buttonGroupWarning.SetActive(false);
 			if(toShop){
 				buttonShop.SetActive(true);
 				buttonOk.SetActive(false);
@@ -64,11 +67,16 @@ public class ScreenPopup : BaseUI {
 		base.ShowUI(popupObject);
 	}
 
-	string SetPopupText(PopupEventType eventType){
-		if(eventType == PopupEventType.SelectEmoji){
+	string SetPopupText (PopupEventType eventType)
+	{
+		if (eventType == PopupEventType.SelectEmoji) {
 			return "Do you want to choose this emoji?";
-		} else if(eventType == PopupEventType.BuyEmoji){
+		} else if (eventType == PopupEventType.BuyEmoji) {
 			return "Do you want to buy this emoji?";
+		} else if (eventType == PopupEventType.AbleToSendOff) {
+			return "Send off this emoji?";
+		} else if (eventType == PopupEventType.NotAbleToSendOff) {
+			return "Cannot send off yet";
 		} else{
 			return "";
 		}
@@ -81,7 +89,7 @@ public class ScreenPopup : BaseUI {
 			if (currentEventType == PopupEventType.SelectEmoji || currentEventType == PopupEventType.BuyEmoji) {
 				Debug.Log("1");
 				OnCelebrationNewEmoji(tempEmojiSprite,tempEmojiName);
-			} else if(currentEventType == PopupEventType.SendOff){
+			} else if(currentEventType == PopupEventType.AbleToSendOff){
 				Debug.Log("2");
 				OnSendOffEmoji(tempEmojiSprite,tempEmojiName);
 			}

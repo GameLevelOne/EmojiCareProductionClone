@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class ScreenNewEmoji : BaseUI {
 	public Fader fader;
 	public SceneLoader sceneLoader;
+	public EmojiIcons emojiIcons;
 
 	public Image emojiIcon;
 	public Text emojiNameText;

@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class ScreenProgress : BaseUI {
 	public ScreenPopup screenPopup;
+	public ExpressionIcons expressionIcons;
+	public EmojiIcons emojiIcons;
 
 	public GameObject buttonSend;
 	public Image progressBarFill;
@@ -16,7 +18,6 @@ public class ScreenProgress : BaseUI {
 	public GameObject expressionBoxPrefab;
 	public RectTransform contentBox;
 
-	public Sprite[] expressionIcons = new Sprite[40];
 	public Sprite lockedExpression;
 
 	int expressionTotalCount = 40;
@@ -27,6 +28,7 @@ public class ScreenProgress : BaseUI {
 	bool canSendOff = false;
 	string popupOpenTrigger = "PopupOpen";
 	string popupCloseTrigger = "PopupClose";
+	Emoji currentEmojiData;
 
 	public override void InitUI ()
 	{
@@ -34,7 +36,10 @@ public class ScreenProgress : BaseUI {
 
 		int exprTileIdx = 0;
 		int unlockedExprIdx = 0;
-		List<FaceExpression> exprList = new List<FaceExpression>(); //temp
+		currentEmojiData = PlayerData.Instance.PlayerEmoji;
+		List<FaceExpression> exprList = currentEmojiData.emojiExpressions.unlockedExpressions;
+
+		SortList(exprList);
 
 		//for testing
 		exprList.Add(FaceExpression.Default);
@@ -48,21 +53,22 @@ public class ScreenProgress : BaseUI {
 			for(int j=0;j<tileWidth;j++){
 				GameObject obj = Instantiate(expressionBoxPrefab,contentBox,false) as GameObject;
 				obj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-160+j*105,500-i*105);
-				obj.GetComponent<AlbumTile>().exprType = (FaceExpression)exprTileIdx;
+				obj.GetComponent<ProgressTile>().exprType = (FaceExpression)exprTileIdx;
 				obj.name = "Expr"+exprTileIdx.ToString();
+
 				if(unlockedExprIdx < exprList.Count){
 					if((int)exprList[unlockedExprIdx]-1 == exprTileIdx){
-						Debug.Log((int)exprList[unlockedExprIdx]);
-						obj.transform.GetChild(0).GetComponent<Image>().sprite = expressionIcons[exprTileIdx];
+						Sprite sprite = expressionIcons.GetExpressionIcon(currentEmojiData.emojiBaseData.emojiType,unlockedExprIdx);
+						obj.GetComponent<ProgressTile>().InitTile(sprite,false);
 						unlockedExprIdx++;
 					}else{
-						obj.transform.GetChild(0).GetComponent<Image>().sprite = lockedExpression;
-						obj.GetComponent<Button>().interactable=false;
+						obj.GetComponent<ProgressTile>().InitTile(lockedExpression,true);
+						//obj.GetComponent<Button>().interactable=false;
 					}
 
 				}else{
-					obj.transform.GetChild(0).GetComponent<Image>().sprite = lockedExpression;
-					obj.GetComponent<Button>().interactable=false;
+					obj.GetComponent<ProgressTile>().InitTile(lockedExpression,true);
+					//obj.GetComponent<Button>().interactable=false;
 				}
 
 				exprTileIdx++;
@@ -74,29 +80,50 @@ public class ScreenProgress : BaseUI {
 			canSendOff=true;
 		}
 
-		if(canSendOff){
-			buttonSend.SetActive(true);
-		} else{
-			buttonSend.SetActive(false);
-		}
-	}
-
-	void OnEnable(){
-		AlbumTile.OnSelectExpression += OnSelectExpression;
-	}
-
-	void OnDisable(){
-		AlbumTile.OnSelectExpression -= OnSelectExpression;
-	}
-
-	void OnSelectExpression (FaceExpression item)
-	{
-		expressionIcon.sprite = expressionIcons[(int)item];
+//		if(canSendOff){
+//			buttonSend.SetActive(true);
+//		} else{
+//			buttonSend.SetActive(false);
+//		}
 	}
 
 	public void ConfirmSendOff(){
+		//EmojiType type = currentEmojiData.emojiBaseData.emojiType;
+		EmojiType type = EmojiType.Emoji;
+		Sprite sprite = emojiIcons.GetEmojiIcon(type);
+		string emojiName = type.ToString();
 		if(canSendOff){
-			screenPopup.ShowPopup(PopupType.Confirmation,PopupEventType.SendOff,false);
+			screenPopup.ShowPopup(PopupType.Confirmation,PopupEventType.AbleToSendOff,false,sprite,emojiName);
+		}else{
+			screenPopup.ShowPopup(PopupType.Warning,PopupEventType.NotAbleToSendOff,false);
+		}
+	} 
+
+	void OnEnable(){
+		ProgressTile.OnSelectExpression += OnSelectExpression;
+	}
+
+	void OnDisable(){
+		ProgressTile.OnSelectExpression -= OnSelectExpression;
+	}
+
+	void OnSelectExpression (FaceExpression item, bool isLocked)
+	{
+		if (!isLocked) {
+			expressionIcon.sprite = expressionIcons.GetExpressionIcon(currentEmojiData.emojiBaseData.emojiType,(int)item);
+		}
+	}
+
+	void SortList(List<FaceExpression> list){
+		FaceExpression temp = FaceExpression.Default;
+		for(int i=1;i<list.Count;i++){
+			for(int j=0;j<i;j++){
+				if(list[i]<list[j]){
+					temp = list[i];
+					list[i]=list[j];
+					list[j]=temp;
+				}
+			}
 		}
 	}
 }
