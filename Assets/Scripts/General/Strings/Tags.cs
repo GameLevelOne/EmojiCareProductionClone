@@ -6,4 +6,8 @@ public static class Tags {
 	public const string MOVABLE_FURNITURE = "MovableFurniture";
 	public const string EMOJI = "Emoji";
 	public const string BED = "Bed";
+
+	public const string SHOWER = "Shower";
+	public const string SPONGE = "Sponge";
+	public const string TOWEL = "Towel";
 }

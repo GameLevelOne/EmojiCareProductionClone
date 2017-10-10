@@ -43,7 +43,7 @@ public class ScreenAlbum : BaseUI {
 		PlayerPrefs.SetInt(PlayerPrefKeys.Player.EMOJI_RECORD_COUNT,currentRecordCount);
 	}
 
-	void OnSelectExpression (FaceAnimation item)
+	void OnSelectExpression (FaceExpression item)
 	{
 		emojiBigIcon.sprite = emojiIcons[(int)item];
 	}

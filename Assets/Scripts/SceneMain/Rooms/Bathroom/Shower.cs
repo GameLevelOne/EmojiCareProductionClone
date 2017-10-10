@@ -2,26 +2,11 @@
 using UnityEngine;
 
 public class Shower : TriggerableFurniture {
-	//collider modules
-
-//	//event triggers
-//	public override void BeginDrag()
-//	{
-//		if(!flagEditMode && !endDrag){
-//			thisAnim.SetBool(AnimatorParameters.Bools.HOLD,true);
-//			thisSprite.sortingLayerName = SortingLayers.HELD;
-//		}
-//	}
-//
-//	//event triggers
-//	public override void EndDrag()
-//	{
-//		if(!flagEditMode && !endDrag){
-//			endDrag = true;
-//
-//			thisAnim.SetBool(AnimatorParameters.Bools.HOLD,false);
-//			thisSprite.sortingLayerName = SortingLayers.MOVABLE_FURNITURE;
-//			StartCoroutine(BackToFixedPosition());
-//		}
-//	}
+	public EmojiExpressionController expressionController;
+	public override void OnTriggerEnter2D(Collider2D other)
+	{
+		if(other.tag == Tags.EMOJI){
+			expressionController.SetEmojiExpression(FaceExpression.Blushed);
+		}
+	}
 }
