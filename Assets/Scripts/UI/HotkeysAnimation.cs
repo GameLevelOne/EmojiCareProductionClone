@@ -6,8 +6,8 @@ public class HotkeysAnimation : MonoBehaviour {
 	public GameObject hotkeyPanel;
 
 	Animator hotkeyAnim;
-	string triggerOpenHotkey = "Show";
-	string triggerCloseHotkey = "Close";
+	string triggerOpenHotkey = "ShowHotkeys";
+	string triggerCloseHotkey = "CloseHotkeys";
 
 	void Start(){
 		hotkeyAnim = hotkeyPanel.GetComponent<Animator>();
@@ -26,7 +26,7 @@ public class HotkeysAnimation : MonoBehaviour {
 
 	IEnumerator WaitForAnim(GameObject obj){
 		yield return new WaitForSeconds(0.31f);
-		obj.SetActive(false);
 		AdmobManager.Instance.ShowBanner();
+		obj.SetActive(false);
 	}
 }

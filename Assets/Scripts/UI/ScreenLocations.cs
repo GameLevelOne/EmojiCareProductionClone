@@ -30,7 +30,6 @@ public class ScreenLocations : BaseUI {
 	IEnumerator WaitToChangeRoom(int roomIndex){
 		yield return new WaitForSeconds(1);
 		roomController.GoToRoom((RoomType)roomIndex);
-		hotkeyAnim.CloseHotkeys();
 		CloseUI(this.gameObject);
 	}
 }

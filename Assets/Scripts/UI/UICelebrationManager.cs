@@ -11,6 +11,7 @@ public class UICelebrationManager : MonoBehaviour {
 
 	public Transform canvasParent;
 	public ScreenNewExpression screenNewExpressionPrefab;
+	public ExpressionIcons expressionIcons;
 
 	void OnEnable(){
 		ScreenPopup.OnCelebrationNewEmoji += OnCelebrationNewEmoji;
@@ -35,7 +36,7 @@ public class UICelebrationManager : MonoBehaviour {
 	void OnNewExpression (int newExpression)
 	{
 		ScreenNewExpression obj = Instantiate(screenNewExpressionPrefab,canvasParent,false) as ScreenNewExpression;
-		obj.ShowUI(newExpression);
+		obj.ShowUI(newExpression,expressionIcons);
 	}
 
 	void OnSendOffEmoji (Sprite sprite, string emojiName)
