@@ -12,7 +12,9 @@ public class ScreenNewExpression : BaseUI {
 		EmojiType currentEmoji = PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType;
 
 		expressionImage.sprite = expressionIcons.GetExpressionIcon(currentEmoji,expression);
-		expressionNameText.text = currentEmoji.ToString();
+		expressionNameText.text = expressionIcons.GetExpressionName(currentEmoji,expression-1);
+		unlockDetailsText.text = expressionIcons.GetExpressionUnlockCondition(currentEmoji,expression-1);
+		base.ShowUI(this.gameObject);
 	}
 
 	public void OnClickContinue(){

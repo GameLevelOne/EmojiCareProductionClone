@@ -50,7 +50,7 @@ public enum FaceExpression{
 public class EmojiExpression {
 	#region event delegates
 	public delegate void NewExpression(int newExpression);
-	public event NewExpression OnNewExpression;
+	public static event NewExpression OnNewExpression;
 
 	public delegate void ChangeExpression(bool expressionStay);
 	public event ChangeExpression OnChangeExpression;

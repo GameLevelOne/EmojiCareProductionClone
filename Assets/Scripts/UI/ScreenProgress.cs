@@ -36,16 +36,18 @@ public class ScreenProgress : BaseUI {
 
 		int exprTileIdx = 0;
 		int unlockedExprIdx = 0;
+		string condition = "";
+		string name = "";
 		currentEmojiData = PlayerData.Instance.PlayerEmoji;
 		List<FaceExpression> exprList = currentEmojiData.emojiExpressions.unlockedExpressions;
 
 		SortList(exprList);
 
 		//for testing
-		exprList.Add(FaceExpression.Default);
-		exprList.Add(FaceExpression.Cry);
-		exprList.Add(FaceExpression.Fidget);
-		exprList.Add(FaceExpression.Amused);
+//		exprList.Add(FaceExpression.Default);
+//		exprList.Add(FaceExpression.Cry);
+//		exprList.Add(FaceExpression.Fidget);
+//		exprList.Add(FaceExpression.Amused);
 
 		contentBox.sizeDelta = new Vector2(0,((float)tileHeight*expressionBoxWidth)+contentBoxMarginX);
 
@@ -55,19 +57,22 @@ public class ScreenProgress : BaseUI {
 				obj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-160+j*105,500-i*105);
 				obj.GetComponent<ProgressTile>().exprType = (FaceExpression)exprTileIdx;
 				obj.name = "Expr"+exprTileIdx.ToString();
+				condition = expressionIcons.GetExpressionUnlockCondition(currentEmojiData.emojiBaseData.emojiType,exprTileIdx);
+				name = expressionIcons.GetExpressionName(currentEmojiData.emojiBaseData.emojiType,exprTileIdx);
 
 				if(unlockedExprIdx < exprList.Count){
 					if((int)exprList[unlockedExprIdx]-1 == exprTileIdx){
-						Sprite sprite = expressionIcons.GetExpressionIcon(currentEmojiData.emojiBaseData.emojiType,unlockedExprIdx);
-						obj.GetComponent<ProgressTile>().InitTile(sprite,false);
+						Sprite sprite = expressionIcons.GetExpressionIcon(currentEmojiData.emojiBaseData.emojiType,(int)exprList[unlockedExprIdx]);
+
+						obj.GetComponent<ProgressTile>().InitTile(sprite,name,condition,false);
 						unlockedExprIdx++;
 					}else{
-						obj.GetComponent<ProgressTile>().InitTile(lockedExpression,true);
+						obj.GetComponent<ProgressTile>().InitTile(lockedExpression,name,condition,true);
 						//obj.GetComponent<Button>().interactable=false;
 					}
 
 				}else{
-					obj.GetComponent<ProgressTile>().InitTile(lockedExpression,true);
+					obj.GetComponent<ProgressTile>().InitTile(lockedExpression,name,condition,true);
 					//obj.GetComponent<Button>().interactable=false;
 				}
 
@@ -107,10 +112,12 @@ public class ScreenProgress : BaseUI {
 		ProgressTile.OnSelectExpression -= OnSelectExpression;
 	}
 
-	void OnSelectExpression (FaceExpression item, bool isLocked)
+	void OnSelectExpression (Sprite item, string expressionName,string condition,bool isLocked)
 	{
 		if (!isLocked) {
-			expressionIcon.sprite = expressionIcons.GetExpressionIcon(currentEmojiData.emojiBaseData.emojiType,(int)item);
+			expressionIcon.sprite = item;
+			expressionNameText.text = expressionName;
+			expressionUnlockConditionText.text = condition;
 		}
 	}
 

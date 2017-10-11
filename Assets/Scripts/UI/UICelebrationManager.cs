@@ -14,16 +14,19 @@ public class UICelebrationManager : MonoBehaviour {
 	public ExpressionIcons expressionIcons;
 
 	void OnEnable(){
+		Debug.Log("celebration events");
 		ScreenPopup.OnCelebrationNewEmoji += OnCelebrationNewEmoji;
 		ScreenPopup.OnSendOffEmoji += OnSendOffEmoji;
-		PlayerData.Instance.PlayerEmoji.emojiExpressions.OnNewExpression += OnNewExpression;
+		//PlayerData.Instance.PlayerEmoji.emojiExpressions.OnNewExpression += OnNewExpression;
+		EmojiExpression.OnNewExpression += OnNewExpression;
 		PlayerData.Instance.PlayerEmoji.OnEmojiDead += OnEmojiDead;
 	}
 
 	void OnDisable(){
 		ScreenPopup.OnCelebrationNewEmoji -= OnCelebrationNewEmoji;
 		ScreenPopup.OnSendOffEmoji -= OnSendOffEmoji;
-		PlayerData.Instance.PlayerEmoji.emojiExpressions.OnNewExpression -= OnNewExpression;
+		//PlayerData.Instance.PlayerEmoji.emojiExpressions.OnNewExpression -= OnNewExpression;
+		EmojiExpression.OnNewExpression -= OnNewExpression;
 		PlayerData.Instance.PlayerEmoji.OnEmojiDead -= OnEmojiDead;
 	}
 
@@ -35,8 +38,8 @@ public class UICelebrationManager : MonoBehaviour {
 
 	void OnNewExpression (int newExpression)
 	{
-		ScreenNewExpression obj = Instantiate(screenNewExpressionPrefab,canvasParent,false) as ScreenNewExpression;
-		obj.ShowUI(newExpression,expressionIcons);
+		Debug.Log("new expression");
+		StartCoroutine(WaitForNewExpression(newExpression));
 	}
 
 	void OnSendOffEmoji (Sprite sprite, string emojiName)
@@ -52,6 +55,9 @@ public class UICelebrationManager : MonoBehaviour {
 		screenEmojiDeath.ShowUI(screenEmojiDeath.gameObject);
 	}
 
-
-	
+	IEnumerator WaitForNewExpression(int newExpression){
+		yield return new WaitForSeconds(2);
+		ScreenNewExpression obj = Instantiate(screenNewExpressionPrefab,canvasParent,false) as ScreenNewExpression;
+		obj.ShowUI(newExpression,expressionIcons);
+	}
 }
