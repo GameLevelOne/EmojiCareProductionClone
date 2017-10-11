@@ -50,18 +50,26 @@ public enum FaceExpression{
 public class EmojiExpression {
 	#region event delegates
 	public delegate void NewExpression(int newExpression);
-	public static event NewExpression OnNewExpression;
+	public event NewExpression OnNewExpression;
+
+	public delegate void ChangeExpression(bool expressionStay);
+	public event ChangeExpression OnChangeExpression;
+
+	public bool isExpressing = false;
 	#endregion
 
 	#region attributes
 	[Header("Expressions")]
 	public Animator bodyAnim;
 	public Animator faceAnim;
+	[Header("DON'T MODIFY THIS")]
+	public FaceExpression currentExpression = FaceExpression.Default;
+	public FaceExpression staticExpression;
 	public List<FaceExpression> unlockedExpressions = new List<FaceExpression>();
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
-	
+
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
@@ -74,7 +82,6 @@ public class EmojiExpression {
 			}
 			return true;
 		}
-		
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -82,6 +89,7 @@ public class EmojiExpression {
 	public void SaveEmojiExpression()
 	{
 		//save to json
+
 	}
 
 	public void LoadEmojiExpression()
@@ -90,25 +98,37 @@ public class EmojiExpression {
 
 	}
 
-	public void SetExpression(FaceExpression expression)
+	public void SetExpression(FaceExpression expression, bool expressionStay)
 	{
 		//check for unlocked expression
 		if(IsNewExpression(expression)){
-			if(OnNewExpression != null) OnNewExpression((int)expression);
 			unlockedExpressions.Add(expression);
 			SaveEmojiExpression();
+
+			if(OnNewExpression != null) OnNewExpression((int)expression);
 		}
 
-		faceAnim.SetInteger(AnimatorParameters.Ints.FACE_STATE,(int)expression);
+
+		if(expressionStay) staticExpression = expression;
+		else{ 
+			isExpressing = true;
+			faceAnim.SetInteger(AnimatorParameters.Ints.FACE_STATE,(int)expression);
+			currentExpression = expression;
+		}
+
+		if(expression != currentExpression){
+			if(!isExpressing){
+				faceAnim.SetInteger(AnimatorParameters.Ints.FACE_STATE,(int)expression);
+				currentExpression = expression;
+			}
+
+		}
+
+		if(expression != staticExpression){
+			if(OnChangeExpression != null) OnChangeExpression(expressionStay);
+		}
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------	
-	#region coroutine
-	IEnumerator SetDefaultExpression()
-	{
-		yield return new WaitForSeconds(3f);
-		faceAnim.SetInteger(AnimatorParameters.Ints.FACE_STATE,(int)FaceExpression.Default);
-	}
-	#endregion
 
 }

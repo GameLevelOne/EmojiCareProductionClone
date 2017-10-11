@@ -16,14 +16,14 @@ public class UICelebrationManager : MonoBehaviour {
 	void OnEnable(){
 		ScreenPopup.OnCelebrationNewEmoji += OnCelebrationNewEmoji;
 		ScreenPopup.OnSendOffEmoji += OnSendOffEmoji;
-		EmojiExpression.OnNewExpression += OnNewExpression;
+		PlayerData.Instance.PlayerEmoji.emojiExpressions.OnNewExpression += OnNewExpression;
 		PlayerData.Instance.PlayerEmoji.OnEmojiDead += OnEmojiDead;
 	}
 
 	void OnDisable(){
 		ScreenPopup.OnCelebrationNewEmoji -= OnCelebrationNewEmoji;
 		ScreenPopup.OnSendOffEmoji -= OnSendOffEmoji;
-		EmojiExpression.OnNewExpression -= OnNewExpression;
+		PlayerData.Instance.PlayerEmoji.emojiExpressions.OnNewExpression -= OnNewExpression;
 		PlayerData.Instance.PlayerEmoji.OnEmojiDead -= OnEmojiDead;
 	}
 

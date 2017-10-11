@@ -1,43 +1,28 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class SceneMainManager : MonoBehaviour {
+public class Food : TriggerableFurniture {
 	#region attributes
-	public RoomController roomController;
-	public EmojiExpressionController emojiExpressionController;
-	public Fader fader;
-
-	//sementara
-	public GameObject emojiSample;
-
+	public EmojiExpressionController expressionController;
+	Vector3 startPos;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
 	void Start()
 	{
-		PlayerPrefs.DeleteAll();
-		InitMain();
+		startPos = transform.localPosition;
 	}
-
-	void OnEmojiDoneLoading ()
-	{
-		fader.FadeIn();
-	}
-
-	void InitMain()
-	{
-		PlayerData.Instance.emojiParentTransform = roomController.transform;
-		PlayerData.Instance.InitPlayerEmoji(emojiSample);
-		roomController.Init();
-		emojiExpressionController.Init();
-
-		AdmobManager.Instance.ShowBanner();
-	}
-
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
-	
+	public override void OnTriggerEnter2D(Collider2D other)
+	{
+		if(other.tag == Tags.EMOJI){
+			expressionController.SetEmojiExpression(FaceExpression.Eat);
+			transform.localPosition = startPos;
+		}
+	}
+
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules

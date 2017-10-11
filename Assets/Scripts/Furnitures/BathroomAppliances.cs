@@ -2,6 +2,9 @@
 using UnityEngine;
 
 public class BathroomAppliances : MovableFurniture {
+	public delegate void ApplyEmoji(FaceExpression expression);
+	public event ApplyEmoji OnApplyEmoji;
+
 	#region attributes
 	[Header("BathroomAppliances Attributes")]
 	public float speed;
@@ -22,7 +25,12 @@ public class BathroomAppliances : MovableFurniture {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
-	protected virtual void OnTriggerEnter(Collider2D other){}
+	protected virtual void OnTriggerEnter(Collider2D other)
+	{
+		if(other.tag == Tags.EMOJI){
+			if(OnApplyEmoji != null) OnApplyEmoji(FaceExpression.Blushed);
+		}
+	}
 
 	//event trigger modules
 	public override void BeginDrag()

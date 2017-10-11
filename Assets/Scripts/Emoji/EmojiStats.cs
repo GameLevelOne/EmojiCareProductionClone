@@ -4,7 +4,6 @@ using System;
 
 public class EmojiStats {
 	#region attributes
-
 	//constructor
 	public EmojiStats(string prefKey, float emojiModifier, float maxStatValue, float startValue){
 		this.prefKey = prefKey;
