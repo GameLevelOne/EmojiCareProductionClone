@@ -15,6 +15,7 @@ public class Sponge : TriggerableFurniture {
 		
 	public override void OnTriggerEnter2D(Collider2D other)
 	{
+		base.OnTriggerEnter2D(other);
 		if(other.tag == Tags.EMOJI){
 			expressionController.SetEmojiExpression(FaceExpression.Blushed);
 			StartCoroutine(Bubbles());
@@ -23,6 +24,7 @@ public class Sponge : TriggerableFurniture {
 
 	public void OnTriggerExit2D(Collider2D other)
 	{
+		
 		if(other.tag == Tags.EMOJI){
 			StopAllCoroutines();
 		}
