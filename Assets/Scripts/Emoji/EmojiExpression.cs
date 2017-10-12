@@ -108,7 +108,7 @@ public class EmojiExpression {
 
 			if(OnNewExpression != null) OnNewExpression((int)expression);
 		}
-
+			
 		Debug.Log("expStay = "+expressionStay);
 		if(expressionStay) staticExpression = expression;
 		else{ 
