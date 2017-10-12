@@ -24,7 +24,7 @@ public class ScreenEmojiDead : BaseUI {
 		sceneLoader.NextScene = "SceneSelection";
 	}
 
-	public void ShowUI(Sprite sprite,string emojiName,GameObject obj){
+	public void ShowUI(Sprite sprite,GameObject obj){
 		base.ShowUI(obj);
 		this.sceneLoader = sceneLoader;
 		emojiIcon.sprite = sprite;

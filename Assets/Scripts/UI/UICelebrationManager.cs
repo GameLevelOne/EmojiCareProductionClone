@@ -12,6 +12,7 @@ public class UICelebrationManager : MonoBehaviour {
 	public Transform canvasParent;
 	public ScreenNewExpression screenNewExpressionPrefab;
 	public ExpressionIcons expressionIcons;
+	public EmojiIcons emojiIcons;
 
 	void OnEnable(){
 		Debug.Log("celebration events");
@@ -52,7 +53,8 @@ public class UICelebrationManager : MonoBehaviour {
 	void OnEmojiDead ()
 	{
 		Debug.Log("emoji dead");
-		screenEmojiDead.ShowUI(screenEmojiDead.gameObject);
+		Sprite sprite = emojiIcons.GetEmojiIcon(PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType);
+		screenEmojiDead.ShowUI(sprite,screenEmojiDead.gameObject);
 	}
 
 	IEnumerator WaitForNewExpression(int newExpression){

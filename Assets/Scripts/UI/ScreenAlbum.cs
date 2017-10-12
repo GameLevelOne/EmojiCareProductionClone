@@ -70,10 +70,10 @@ public class ScreenAlbum : BaseUI {
 				GameObject obj = Instantiate (emojiBoxPrefab, emojiContentBox, false) as GameObject;
 				obj.GetComponent<RectTransform> ().anchoredPosition = new Vector2 (90 + j * 140, -85 - i * 150);
 
-				if (emojiData.Count != 0 && (currentRecordCount-1) >=tempIdx) {
-					if (emojiData [tempIdx] != null) {
+				if (PlayerData.Instance.EmojiAlbumData.Count != 0 && (currentRecordCount-1) >=tempIdx) {
+					if (PlayerData.Instance.EmojiAlbumData [tempIdx] != null) {
 						Debug.Log ("asd");
-						Sprite sprite = emojiIcons.GetEmojiIcon(emojiData[tempIdx]);
+						Sprite sprite = emojiIcons.GetEmojiIcon(PlayerData.Instance.EmojiAlbumData[tempIdx]);
 						obj.GetComponent<AlbumTile>().InitTile(sprite);
 					} else {
 						obj.GetComponent<Button> ().interactable = false;
@@ -86,12 +86,12 @@ public class ScreenAlbum : BaseUI {
 	}
 
 	public void AddEmojiRecord(){
+		Debug.Log("add emoji record");
 		currentRecordCount++;
 		if(currentRecordCount > tileCount){
 			tileCount = currentRecordCount;
 		}
-		emojiData = PlayerData.Instance.EmojiAlbumData;
-		emojiData.Add(PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType);
+		PlayerData.Instance.EmojiAlbumData.Add(PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType);
 		PlayerPrefs.SetInt(PlayerPrefKeys.Player.EMOJI_RECORD_COUNT,currentRecordCount);
 
 		//set emoji status
