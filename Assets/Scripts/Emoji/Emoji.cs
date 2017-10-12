@@ -29,7 +29,7 @@ public class Emoji : MonoBehaviour {
 	public delegate void UpdateStatsToExpression(float hunger, float hygiene, float happiness, float stamina, float health);
 
 	public event EmojiTickStats OnEmojiTickStats;
-	public event EmojiDead OnEmojiDead;
+	public static event EmojiDead OnEmojiDead;
 	public event UpdateStatsToExpression OnUpdateStatsToExpression;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------

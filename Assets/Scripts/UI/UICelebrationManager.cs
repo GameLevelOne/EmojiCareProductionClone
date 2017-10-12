@@ -19,7 +19,7 @@ public class UICelebrationManager : MonoBehaviour {
 		ScreenPopup.OnSendOffEmoji += OnSendOffEmoji;
 		//PlayerData.Instance.PlayerEmoji.emojiExpressions.OnNewExpression += OnNewExpression;
 		EmojiExpression.OnNewExpression += OnNewExpression;
-		PlayerData.Instance.PlayerEmoji.OnEmojiDead += OnEmojiDead;
+		Emoji.OnEmojiDead += OnEmojiDead;
 	}
 
 	void OnDisable(){
@@ -27,7 +27,7 @@ public class UICelebrationManager : MonoBehaviour {
 		ScreenPopup.OnSendOffEmoji -= OnSendOffEmoji;
 		//PlayerData.Instance.PlayerEmoji.emojiExpressions.OnNewExpression -= OnNewExpression;
 		EmojiExpression.OnNewExpression -= OnNewExpression;
-		PlayerData.Instance.PlayerEmoji.OnEmojiDead -= OnEmojiDead;
+		Emoji.OnEmojiDead -= OnEmojiDead;
 	}
 
 	void OnCelebrationNewEmoji (Sprite sprite,string emojiName)
