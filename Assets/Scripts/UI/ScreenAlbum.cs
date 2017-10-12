@@ -35,10 +35,10 @@ public class ScreenAlbum : BaseUI {
 		ScreenPopup.OnSendOffEmoji -= OnSendOffEmoji;
 	}
 
-	void OnEmojiDead ()
-	{
-		AddEmojiRecord();
-	}
+//	void OnEmojiDead ()
+//	{
+//		AddEmojiRecord();
+//	}
 
 	void OnSelectEmoji (EmojiType item)
 	{
@@ -63,7 +63,7 @@ public class ScreenAlbum : BaseUI {
 		int tempIdx = 0;
 		emojiContentBox.sizeDelta = new Vector2 (0, ((float)tileHeight * boxSize) + contentBoxMarginX);
 
-		emojiData.Add(EmojiType.Emoji);
+		//emojiData.Add(EmojiType.Emoji);
 
 		for (int i = 0; i < tileHeight; i++) {
 			for (int j = 0; j < tileWidth; j++) {
@@ -90,6 +90,7 @@ public class ScreenAlbum : BaseUI {
 		if(currentRecordCount > tileCount){
 			tileCount = currentRecordCount;
 		}
+		emojiData = PlayerData.Instance.EmojiAlbumData;
 		emojiData.Add(PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType);
 		PlayerPrefs.SetInt(PlayerPrefKeys.Player.EMOJI_RECORD_COUNT,currentRecordCount);
 

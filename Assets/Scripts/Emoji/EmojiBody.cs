@@ -45,7 +45,9 @@ public class EmojiBody : MonoBehaviour {
 		if(other.gameObject.tag == Tags.MOVABLE_FURNITURE){
 			Physics2D.IgnoreCollision(thisCollider,other.collider,true);
 		} 
-
+		if(other.gameObject.tag == Tags.BED){
+			parent.emojiExpressions.SetExpression(FaceExpression.Sleep,true);
+		}
 
 	}
 

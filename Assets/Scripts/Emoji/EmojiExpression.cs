@@ -62,6 +62,7 @@ public class EmojiExpression {
 	[Header("Expressions")]
 	public Animator bodyAnim;
 	public Animator faceAnim;
+	public float expressionProgress = 0f;
 	[Header("DON'T MODIFY THIS")]
 	public FaceExpression currentExpression = FaceExpression.Default;
 	public FaceExpression staticExpression;

@@ -6,7 +6,7 @@ public class UICelebrationManager : MonoBehaviour {
 	public ScreenNewEmoji screenNewEmoji;
 	public ScreenNewExpression screenNewExpression;
 	public ScreenSendOff screenSendOff;
-	public ScreenEmojiDeath screenEmojiDeath;
+	public ScreenEmojiDead screenEmojiDead;
 	public ScreenEmojiTransfer screenEmojiTransfer;
 
 	public Transform canvasParent;
@@ -52,7 +52,7 @@ public class UICelebrationManager : MonoBehaviour {
 	void OnEmojiDead ()
 	{
 		Debug.Log("emoji dead");
-		screenEmojiDeath.ShowUI(screenEmojiDeath.gameObject);
+		screenEmojiDead.ShowUI(screenEmojiDead.gameObject);
 	}
 
 	IEnumerator WaitForNewExpression(int newExpression){

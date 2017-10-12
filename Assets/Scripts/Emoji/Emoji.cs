@@ -169,6 +169,7 @@ public class Emoji : MonoBehaviour {
 			health.TickStats();
 
 			if(health.StatValue <= 0f){
+				Debug.Log("DEAD");
 				emojiDead = true;
 				if(OnEmojiDead != null) OnEmojiDead();
 				return;
