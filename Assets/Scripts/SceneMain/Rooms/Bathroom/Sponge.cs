@@ -13,12 +13,22 @@ public class Sponge : TriggerableFurniture {
 		soapLiquid.sprite = liquidSprite;
 	}
 		
+	public void RemoveSoapLiquid()
+	{
+		soapLiquid.enabled = false;
+	}
+
 	public override void OnTriggerEnter2D(Collider2D other)
 	{
-		base.OnTriggerEnter2D(other);
 		if(other.tag == Tags.EMOJI){
-			expressionController.SetEmojiExpression(FaceExpression.Blushed);
-			StartCoroutine(Bubbles());
+			if(soapLiquid.enabled == true){
+				other.transform.parent.GetComponent<Emoji>().hygiene.ModStats(0.5f);
+				expressionController.SetEmojiExpression(FaceExpression.Blushed);
+				StartCoroutine(Bubbles());
+			}else{
+				other.transform.parent.GetComponent<Emoji>().emojiExpressions.SetExpression(FaceExpression.Upset,false);
+			}
+
 		}
 	}
 
@@ -29,6 +39,8 @@ public class Sponge : TriggerableFurniture {
 			StopAllCoroutines();
 		}
 	}
+
+
 
 	IEnumerator Bubbles()
 	{

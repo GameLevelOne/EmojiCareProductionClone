@@ -108,15 +108,17 @@ public class EmojiExpression {
 			if(OnNewExpression != null) OnNewExpression((int)expression);
 		}
 
-
+		Debug.Log("expStay = "+expressionStay);
 		if(expressionStay) staticExpression = expression;
 		else{ 
+			
 			isExpressing = true;
 			faceAnim.SetInteger(AnimatorParameters.Ints.FACE_STATE,(int)expression);
 			currentExpression = expression;
 		}
 
 		if(expression != currentExpression){
+			Debug.Log("Current = "+currentExpression+", IsExpressing = "+isExpressing);
 			if(!isExpressing){
 				faceAnim.SetInteger(AnimatorParameters.Ints.FACE_STATE,(int)expression);
 				currentExpression = expression;
