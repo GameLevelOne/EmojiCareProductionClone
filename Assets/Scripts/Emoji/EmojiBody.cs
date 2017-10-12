@@ -45,12 +45,17 @@ public class EmojiBody : MonoBehaviour {
 		if(other.gameObject.tag == Tags.MOVABLE_FURNITURE){
 			Physics2D.IgnoreCollision(thisCollider,other.collider,true);
 		} 
+		if(other.gameObject.tag == Tags.BED){
+			parent.emojiExpressions.SetExpression(FaceExpression.Sleep,true);
+		}
+
 	}
 
 	//delegate events
 	void OnChangeExpression (bool expressionStay)
 	{
 		StopCoroutine("resetFaceExpression");
+		Reposition();
 		StartCoroutine("resetFaceExpression",expressionStay);
 	}
 	#endregion
@@ -68,7 +73,7 @@ public class EmojiBody : MonoBehaviour {
 	IEnumerator _BounceToCurrentRoom(int currRoom)
 	{
 		currentRoom = currRoom;
-		yield return new WaitForSeconds(0.5f);
+		yield return new WaitForSeconds(1f);
 		if(previousRoom != -1){
 			if(currentRoom > previousRoom){
 				thisAnim.SetInteger(AnimatorParameters.Ints.BODY_STATE,(int)BodyAnimation.BounceFromLeft);

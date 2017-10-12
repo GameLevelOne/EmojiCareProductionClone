@@ -42,7 +42,7 @@ public class EmojiStats {
 	#region public modules
 	public void TickStats()
 	{
-		StatValue += (emojiModifier + roomModifier);
+		StatValue += (emojiModifier + (-1f * roomModifier));
 
 		if(StatValue <= 0) StatValue = 0;
 		else if(StatValue >= maxStatValue) StatValue = maxStatValue;

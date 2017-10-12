@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ScreenSendOff : BaseUI {
-	public Fader fader;
+public class ScreenEmojiDead : BaseUI {
+	public ScreenAlbum screenAlbum;
 	public SceneLoader sceneLoader;
-
+	public Fader fader;
 	public Image emojiIcon;
-	public Text expressionProgress;
-	public Text reward;
 
 	void OnEnable(){
 		Fader.OnFadeOutFinished += OnFadeOutFinished;
@@ -26,21 +24,23 @@ public class ScreenSendOff : BaseUI {
 		sceneLoader.NextScene = "SceneSelection";
 	}
 
-	public void ShowUI(Sprite sprite,string emojiName,GameObject obj){
+	public void ShowUI(Sprite sprite,GameObject obj){
 		base.ShowUI(obj);
 		this.sceneLoader = sceneLoader;
-
 		emojiIcon.sprite = sprite;
-		expressionProgress.text = "Expression Progress: "+ 
-		(PlayerData.Instance.PlayerEmoji.emojiExpressions.expressionProgress*100).ToString()+"%";
-		reward.text = "Reward: ";
+
+		screenAlbum.AddEmojiRecord();
 	}
 
 	public void OnClickContinue(){
 		fader.FadeOut();
 	}
 
-	public void OnClickShare(){
-		
+	public void TestEmojiDead(){
+		PlayerData.Instance.PlayerEmoji.hunger.StatValue = 0;
+		PlayerData.Instance.PlayerEmoji.hygiene.StatValue = 0;
+		PlayerData.Instance.PlayerEmoji.happiness.StatValue = 0;
+		PlayerData.Instance.PlayerEmoji.stamina.StatValue = 0;
+		PlayerData.Instance.PlayerEmoji.health.StatValue = 0;
 	}
 }

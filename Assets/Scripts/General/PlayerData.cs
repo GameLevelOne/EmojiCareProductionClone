@@ -16,6 +16,8 @@ public class PlayerData : MonoBehaviour {
 
 	bool hasInitEmojiObject = false;
 
+	List<EmojiType> emojiAlbumData = new List<EmojiType>();
+
 	public Emoji PlayerEmoji{
 		get{return playerEmoji;}
 	}
@@ -38,6 +40,10 @@ public class PlayerData : MonoBehaviour {
 	public int playerEmojiType{
 		get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.PLAYER_EMOJI_TYPE,0);}
 		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.PLAYER_EMOJI_TYPE,value);}
+	}
+
+	public List<EmojiType> EmojiAlbumData{
+		get{return emojiAlbumData;}
 	}
 
 	void Awake()

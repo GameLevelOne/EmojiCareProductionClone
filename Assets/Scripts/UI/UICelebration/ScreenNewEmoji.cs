@@ -31,8 +31,9 @@ public class ScreenNewEmoji : BaseUI {
 	}
 
 	public void ShowUI(Sprite sprite,string emojiName,GameObject obj){
+		base.ShowUI(obj);
+
 		emojiIcon.sprite = sprite;
 		emojiNameText.text = emojiName;
-		base.ShowUI(obj);
 	}
 }

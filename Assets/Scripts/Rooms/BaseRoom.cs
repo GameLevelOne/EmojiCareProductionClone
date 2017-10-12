@@ -13,9 +13,9 @@ public class BaseRoom : MonoBehaviour {
 	#region attributes
 	[Header("BaseRoom Attributes")]
 	public RoomType thisRoom;
+	[Range(0f,0.05f)] public float[] roomMod;
 	public BaseFurniture[] furnitures;
 	public MovableFurniture[] movableFurnitures;
-	public float[] roomMod;
 	public bool flagEditMode = false;
 
 	Vector3[] furnitureDefaultPosition;
@@ -44,6 +44,14 @@ public class BaseRoom : MonoBehaviour {
 		}
 	}
 
+	void SetEmojiRoomModifier()
+	{
+		PlayerData.Instance.PlayerEmoji.hunger.RoomModifier = roomMod[0];
+		PlayerData.Instance.PlayerEmoji.hygiene.RoomModifier = roomMod[1];
+		PlayerData.Instance.PlayerEmoji.happiness.RoomModifier = roomMod[2];
+		PlayerData.Instance.PlayerEmoji.stamina.RoomModifier = roomMod[3];
+		PlayerData.Instance.PlayerEmoji.health.RoomModifier = roomMod[4];
+	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
@@ -52,6 +60,7 @@ public class BaseRoom : MonoBehaviour {
 		if(thisRoom == currentRoom){
 			//show furnitures
 			foreach(BaseFurniture f in furnitures) f.gameObject.SetActive(true);
+			SetEmojiRoomModifier();
 		}else{
 			//hide furnitures
 			foreach(BaseFurniture f in furnitures) f.gameObject.SetActive(false);

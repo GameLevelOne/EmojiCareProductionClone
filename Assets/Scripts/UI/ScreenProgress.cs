@@ -20,7 +20,7 @@ public class ScreenProgress : BaseUI {
 
 	public Sprite lockedExpression;
 
-	int expressionTotalCount = 40;
+	int expressionTotalCount = 2;
 	int tileWidth = 4;
 	int tileHeight = 10;
 	float expressionBoxWidth = 110f;
@@ -40,6 +40,8 @@ public class ScreenProgress : BaseUI {
 		string name = "";
 		currentEmojiData = PlayerData.Instance.PlayerEmoji;
 		List<FaceExpression> exprList = currentEmojiData.emojiExpressions.unlockedExpressions;
+
+		currentEmojiData.emojiExpressions.expressionProgress = (float)exprList.Count / (float)expressionTotalCount; 
 
 		SortList(exprList);
 

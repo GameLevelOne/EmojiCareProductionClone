@@ -6,12 +6,13 @@ public class UICelebrationManager : MonoBehaviour {
 	public ScreenNewEmoji screenNewEmoji;
 	public ScreenNewExpression screenNewExpression;
 	public ScreenSendOff screenSendOff;
-	public ScreenEmojiDeath screenEmojiDeath;
+	public ScreenEmojiDead screenEmojiDead;
 	public ScreenEmojiTransfer screenEmojiTransfer;
 
 	public Transform canvasParent;
 	public ScreenNewExpression screenNewExpressionPrefab;
 	public ExpressionIcons expressionIcons;
+	public EmojiIcons emojiIcons;
 
 	void OnEnable(){
 		Debug.Log("celebration events");
@@ -19,7 +20,7 @@ public class UICelebrationManager : MonoBehaviour {
 		ScreenPopup.OnSendOffEmoji += OnSendOffEmoji;
 		//PlayerData.Instance.PlayerEmoji.emojiExpressions.OnNewExpression += OnNewExpression;
 		EmojiExpression.OnNewExpression += OnNewExpression;
-		PlayerData.Instance.PlayerEmoji.OnEmojiDead += OnEmojiDead;
+		Emoji.OnEmojiDead += OnEmojiDead;
 	}
 
 	void OnDisable(){
@@ -27,7 +28,7 @@ public class UICelebrationManager : MonoBehaviour {
 		ScreenPopup.OnSendOffEmoji -= OnSendOffEmoji;
 		//PlayerData.Instance.PlayerEmoji.emojiExpressions.OnNewExpression -= OnNewExpression;
 		EmojiExpression.OnNewExpression -= OnNewExpression;
-		PlayerData.Instance.PlayerEmoji.OnEmojiDead -= OnEmojiDead;
+		Emoji.OnEmojiDead -= OnEmojiDead;
 	}
 
 	void OnCelebrationNewEmoji (Sprite sprite,string emojiName)
@@ -52,7 +53,8 @@ public class UICelebrationManager : MonoBehaviour {
 	void OnEmojiDead ()
 	{
 		Debug.Log("emoji dead");
-		screenEmojiDeath.ShowUI(screenEmojiDeath.gameObject);
+		Sprite sprite = emojiIcons.GetEmojiIcon(PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType);
+		screenEmojiDead.ShowUI(sprite,screenEmojiDead.gameObject);
 	}
 
 	IEnumerator WaitForNewExpression(int newExpression){
