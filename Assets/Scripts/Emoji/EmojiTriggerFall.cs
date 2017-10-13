@@ -11,7 +11,6 @@ public class EmojiTriggerFall : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D other)
 	{
 		if(other.tag == Tags.FLOOR || other.tag == Tags.IMMOVABLE_FURNITURE){
-			print("Triggered "+other.name);
 			if(other.isTrigger) colliderToIgnore.Add(other.transform.parent.GetComponent<Collider2D>());
 		} 
 	}

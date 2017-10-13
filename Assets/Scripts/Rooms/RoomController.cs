@@ -153,6 +153,7 @@ public class RoomController : MonoBehaviour {
 		transform.position = endPos;
 		snapping = false;
 
+		PlayerData.Instance.PlayerEmoji.emojiExpressions.ResetExpressionDuration();
 		PlayerData.Instance.PlayerEmoji.body.BounceToCurrentRoom((int)currentRoom);
 
 		yield return null;

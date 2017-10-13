@@ -63,39 +63,33 @@ public class EmojiExpressionController : MonoBehaviour {
 		
 	public void SetEmojiExpression(FaceExpression expression)
 	{
-		PlayerData.Instance.PlayerEmoji.emojiExpressions.SetExpression(expression, isExpressionStay(expression));
+		PlayerData.Instance.PlayerEmoji.emojiExpressions.SetExpression(expression, getExpressionDuration(expression));
 	}
 
-	bool isExpressionStay(FaceExpression expression)
+	float getExpressionDuration(FaceExpression expression)
 	{
+		float duration = 2f;
 		bool temp = false;
 		switch(expression){
-
-		case FaceExpression.Default		: temp = true; break;  	//01
-		case FaceExpression.Smile		: temp = true; break;	//02
-		case FaceExpression.Hungry		: temp = true; break;	//04
-		case FaceExpression.Starving	: temp = true; break;	//05
-		case FaceExpression.Embarrassed	: temp = true; break;	//07
-		case FaceExpression.Worried		: temp = true; break;	//08
-		case FaceExpression.Upset		: temp = true; break;	//10
-			
-		case FaceExpression.Cry			: temp = true; break;	//11
-		case FaceExpression.Fidget		: temp = true; break;	//13
-		case FaceExpression.Sick		: temp = true; break;	//14
-		case FaceExpression.Weary		: temp = true; break;	//16
-		case FaceExpression.Exhausted	: temp = true; break;	//17
-		case FaceExpression.Oh			: temp = true; break;	//19
-		case FaceExpression.Content		: temp = true; break;	//20
-			
-		case FaceExpression.Happy		: temp = true; break;	//28
-		case FaceExpression.Calm		: temp = true; break;	//29
-			
-		case FaceExpression.Angry		: temp = true; break;	//37
-
+		case FaceExpression.Smile: duration = 0f;break;
+		case FaceExpression.Default: duration = 0f;break;
+		case FaceExpression.Sick: duration = 0f;break;
+		case FaceExpression.Fidget: duration = 0f;break;
+		case FaceExpression.Starving: duration = 0f;break;
+		case FaceExpression.Hungry: duration = 0f;break;
+		case FaceExpression.Yummy: duration = 0f;break;
+		case FaceExpression.Worried: duration = 0f;break;
+		case FaceExpression.Embarrassed: duration = 0f;break;
+		case FaceExpression.Cry: duration = 0f;break;
+		case FaceExpression.Weary: duration = 0f;break;
+		case FaceExpression.Excited: duration = 0f;break;
+		case FaceExpression.Exhausted: duration = 0f; break;
+		case FaceExpression.Upset: duration = 0f; break;
+		case FaceExpression.Energized: duration = 0f; break;
 		default: break;
 		}
 
-		return temp;
+		return duration;
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
