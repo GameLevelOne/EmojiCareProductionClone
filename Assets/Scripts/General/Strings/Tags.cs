@@ -10,4 +10,5 @@ public static class Tags {
 	public const string SHOWER = "Shower";
 	public const string SPONGE = "Sponge";
 	public const string TOWEL = "Towel";
+	public const string PAN = "Pan";
 }

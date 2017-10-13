@@ -8,7 +8,6 @@ public class Gordyn : ActionableFurniture {
 		base.InitVariant();
 		open = variant[currentVariant].sprite[0];
 		close = variant[currentVariant].sprite[1];
-		print("HAI");
 	}
 
 	public override void PointerClick()
