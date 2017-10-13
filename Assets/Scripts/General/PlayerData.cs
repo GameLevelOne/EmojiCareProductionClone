@@ -13,6 +13,7 @@ public class PlayerData : MonoBehaviour {
 	public Transform emojiParentTransform;
 
 	Emoji playerEmoji;
+	EmojiType selectedEmoji;
 
 	bool hasInitEmojiObject = false;
 
@@ -22,6 +23,11 @@ public class PlayerData : MonoBehaviour {
 
 	public Emoji PlayerEmoji{
 		get{return playerEmoji;}
+	}
+
+	public EmojiType SelectedEmoji{
+		set{selectedEmoji=value;}
+		get{return selectedEmoji;}
 	}
 
 	public int PlayerCoin{
@@ -61,6 +67,8 @@ public class PlayerData : MonoBehaviour {
 		if(instance != null && instance != this) Destroy(this.gameObject);
 		else instance = this;
 		DontDestroyOnLoad(this.gameObject);
+
+		selectedEmoji = EmojiType.Emoji;
 	}
 
 	public void InitPlayerEmoji(GameObject playerEmoji)

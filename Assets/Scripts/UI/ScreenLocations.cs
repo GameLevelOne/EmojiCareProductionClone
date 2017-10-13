@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class ScreenLocations : BaseUI {
 	public Sprite[] bgRoomSprites;
+	public GameObject[] doorOpenedSprites;
 	public Image[] buttonRooms;
 	public Sprite spriteClosedRoom;
 	public RoomController roomController;
@@ -23,8 +24,10 @@ public class ScreenLocations : BaseUI {
 
 	void UpdateDisplay(int currentRoomIndex){
 		buttonRooms[this.currentRoomIndex].sprite = spriteClosedRoom;
+		doorOpenedSprites[this.currentRoomIndex].SetActive(false);
 		this.currentRoomIndex = currentRoomIndex;
 		buttonRooms[currentRoomIndex].sprite = bgRoomSprites[currentRoomIndex];
+		doorOpenedSprites[currentRoomIndex].SetActive(true);
 	}
 
 	IEnumerator WaitToChangeRoom(int roomIndex){
