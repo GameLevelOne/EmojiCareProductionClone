@@ -2,11 +2,11 @@
 
 public enum EmojiType{
 	Emoji,
-	Gumiji,
+	Watermeji,
 	Spookiji,
 	Chocoji,
 
-	Watermeji,
+	Gumiji,
 	Toothiji,
 	Nanaji,
 	Boneji,

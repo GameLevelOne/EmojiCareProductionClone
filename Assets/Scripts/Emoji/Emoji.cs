@@ -208,7 +208,14 @@ public class Emoji : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public module
-
+	public void ModAllStats(float[] mod)
+	{
+		hunger.ModStats(mod[0]);
+		hygiene.ModStats(mod[1]);
+		happiness.ModStats(mod[2]);
+		stamina.ModStats(mod[3]);
+		health.ModStats(mod[4]);
+	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region coroutines

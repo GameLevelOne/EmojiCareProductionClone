@@ -8,7 +8,7 @@ public class SceneMainManager : MonoBehaviour {
 	public Fader fader;
 
 	//sementara
-	public GameObject emojiSample;
+	public GameObject[] emojiSamples;
 
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -27,7 +27,7 @@ public class SceneMainManager : MonoBehaviour {
 	void InitMain()
 	{
 		PlayerData.Instance.emojiParentTransform = roomController.transform;
-		PlayerData.Instance.InitPlayerEmoji(emojiSample);
+		PlayerData.Instance.InitPlayerEmoji(emojiSamples[PlayerData.Instance.playerEmojiType]);
 		roomController.Init();
 		emojiExpressionController.Init();
 
