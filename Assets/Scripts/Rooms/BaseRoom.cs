@@ -13,7 +13,7 @@ public class BaseRoom : MonoBehaviour {
 	#region attributes
 	[Header("BaseRoom Attributes")]
 	public RoomType thisRoom;
-	[Range(0f,0.05f)] public float[] roomMod;
+	[Range(-0.05f,0f)] public float[] roomMod;
 	public BaseFurniture[] furnitures;
 	public MovableFurniture[] movableFurnitures;
 	public bool flagEditMode = false;
