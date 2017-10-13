@@ -27,9 +27,9 @@ public class SceneSelectionManager : MonoBehaviour {
 		EmojiSelectionData.OnEmojiClicked -= OnEmojiClicked;
 	}
 
-	void OnEmojiClicked (bool needToBuy,Sprite sprite,string emojiName)
+	void OnEmojiClicked (bool needToBuy,Sprite sprite,EmojiSO emojiData)
 	{
-		ConfirmEmoji(needToBuy,sprite,emojiName);
+		ConfirmEmoji(needToBuy,sprite,emojiData);
 	}
 
 	public void GenerateSelectionPool(){
@@ -64,12 +64,13 @@ public class SceneSelectionManager : MonoBehaviour {
 		}
 	}
 
-	void ConfirmEmoji(bool needToBuy,Sprite sprite,string emojiName){
+	void ConfirmEmoji(bool needToBuy,Sprite sprite,EmojiSO emojiData){
+		PlayerData.Instance.SelectedEmoji = emojiData.emojiType;
 		if(needToBuy){
-			screenPopup.ShowPopup(PopupType.Confirmation,PopupEventType.BuyEmoji,needToBuy,false,sprite,emojiName);
+			screenPopup.ShowPopup(PopupType.Confirmation,PopupEventType.BuyEmoji,needToBuy,false,sprite,emojiData.emojiType.ToString());
 		}
 		else{
-			screenPopup.ShowPopup(PopupType.Confirmation,PopupEventType.SelectEmoji,needToBuy,false,sprite,emojiName);
+			screenPopup.ShowPopup(PopupType.Confirmation,PopupEventType.SelectEmoji,needToBuy,false,sprite,emojiData.emojiType.ToString());
 		}
 	}
 

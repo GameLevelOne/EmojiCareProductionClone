@@ -8,7 +8,7 @@ public class EmojiSelectionData : MonoBehaviour {
 	public GameObject priceBox;
 	public Text textPrice;
 
-	public delegate void EmojiClicked(bool needToBuy,Sprite sprite,string emojiName);
+	public delegate void EmojiClicked(bool needToBuy,Sprite sprite,EmojiSO emojiData);
 	public static event EmojiClicked OnEmojiClicked;
 
 	public bool needToBuy=false;
@@ -23,7 +23,7 @@ public class EmojiSelectionData : MonoBehaviour {
 			needToBuy=false;
 		} else{
 			priceBox.SetActive(true);
-			textPrice.text = emojiData.price;
+			textPrice.text = emojiData.price.ToString();
 			needToBuy=true;
 		}
 		gameObject.name = emojiData.emojiType.ToString();
@@ -31,7 +31,7 @@ public class EmojiSelectionData : MonoBehaviour {
 	}
 
 	public void OnClick(){
-		OnEmojiClicked(needToBuy,tempEmojiIcon,currentEmojiData.name);
+		OnEmojiClicked(needToBuy,tempEmojiIcon,currentEmojiData);
 	}
 
 }

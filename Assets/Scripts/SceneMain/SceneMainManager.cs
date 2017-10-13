@@ -10,6 +10,9 @@ public class SceneMainManager : MonoBehaviour {
 	//sementara
 	public GameObject emojiSample;
 
+	//temp
+	public GameObject[] emojiObj = new GameObject[10];
+
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
@@ -27,7 +30,7 @@ public class SceneMainManager : MonoBehaviour {
 	void InitMain()
 	{
 		PlayerData.Instance.emojiParentTransform = roomController.transform;
-		PlayerData.Instance.InitPlayerEmoji(emojiSample);
+		PlayerData.Instance.InitPlayerEmoji(emojiObj[(int)PlayerData.Instance.SelectedEmoji]);
 		roomController.Init();
 		emojiExpressionController.Init();
 

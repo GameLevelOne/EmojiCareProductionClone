@@ -13,7 +13,8 @@ public enum PopupEventType{
 	BuyEmoji,
 	AbleToSendOff,
 	NotAbleToSendOff,
-	BuyItem
+	BuyItem,
+	NotAbleToBuyEmoji
 }
 
 public class ScreenPopup : BaseUI {
@@ -90,7 +91,10 @@ public class ScreenPopup : BaseUI {
 			return "Send off this emoji?";
 		} else if (eventType == PopupEventType.NotAbleToSendOff) {
 			return "Cannot send off yet";
-		} else{
+		} else if(eventType == PopupEventType.NotAbleToBuyEmoji){
+			return "Not enough gem";
+		} 
+		else{
 			return "";
 		}
 	} 
@@ -99,9 +103,12 @@ public class ScreenPopup : BaseUI {
 	{
 		if (currentPopupType == PopupType.Confirmation) {
 			CloseUI (this.gameObject);
-			if (currentEventType == PopupEventType.SelectEmoji || currentEventType == PopupEventType.BuyEmoji) {
+			if (currentEventType == PopupEventType.SelectEmoji) {
 				Debug.Log("new emoji");
 				OnCelebrationNewEmoji(tempEmojiSprite,tempEmojiName);
+			} else if(currentEventType == PopupEventType.BuyEmoji){
+				Debug.Log("cannot buy");
+				ShowPopup(PopupType.Warning,PopupEventType.NotAbleToBuyEmoji,false,false);
 			} else if(currentEventType == PopupEventType.AbleToSendOff){
 				Debug.Log("send off");
 				OnSendOffEmoji(tempEmojiSprite,tempEmojiName);
