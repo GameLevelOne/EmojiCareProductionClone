@@ -52,10 +52,8 @@ public class EmojiExpression {
 	public delegate void NewExpression(int newExpression);
 	public static event NewExpression OnNewExpression;
 
-	public delegate void ChangeExpression(bool expressionStay);
+	public delegate void ChangeExpression();
 	public event ChangeExpression OnChangeExpression;
-
-	public bool isExpressing = false;
 	#endregion
 
 	#region attributes
@@ -64,7 +62,9 @@ public class EmojiExpression {
 	public Animator faceAnim;
 	public float expressionProgress = 0f;
 	public int totalExpression = 40;
+	public bool isExpressing = false;
 	[Header("DON'T MODIFY THIS")]
+	public float currentDuration = 0f;
 	public FaceExpression currentExpression = FaceExpression.Default;
 	public FaceExpression staticExpression;
 	public List<FaceExpression> unlockedExpressions = new List<FaceExpression>();
@@ -100,7 +100,7 @@ public class EmojiExpression {
 
 	}
 
-	public void SetExpression(FaceExpression expression, bool expressionStay)
+	public void SetExpression(FaceExpression expression, float duration)
 	{
 		//check for unlocked expression
 		if(IsNewExpression(expression)){
@@ -109,28 +109,47 @@ public class EmojiExpression {
 
 			if(OnNewExpression != null) OnNewExpression((int)expression);
 		}
-			
-		Debug.Log("expStay = "+expressionStay);
-		if(expressionStay) staticExpression = expression;
-		else{ 
-			
-			isExpressing = true;
+
+		if(duration == -1f){ //sleep, bath, override other expressions
+
 			faceAnim.SetInteger(AnimatorParameters.Ints.FACE_STATE,(int)expression);
 			currentExpression = expression;
+			currentDuration = duration;
+
+		}else if(duration > 0 && currentDuration != -1f){ //non-static expression, have certain duration
+
+			faceAnim.SetInteger(AnimatorParameters.Ints.FACE_STATE,(int)expression);
+			currentExpression = expression;
+			currentDuration = duration;
+
+			if(OnChangeExpression != null) OnChangeExpression();
+		}else if(currentDuration == 0 && duration == 0){//static expression, like stats expression
+
+			faceAnim.SetInteger(AnimatorParameters.Ints.FACE_STATE,(int)expression);
+			currentExpression = expression;
+			currentDuration = duration;
 		}
 
-		if(expression != currentExpression){
-			Debug.Log("Current = "+currentExpression+", IsExpressing = "+isExpressing);
-			if(!isExpressing){
-				faceAnim.SetInteger(AnimatorParameters.Ints.FACE_STATE,(int)expression);
-				currentExpression = expression;
-			}
+//		if(expressionStay){ 
+//			staticExpression = expression;
+//			if(expression != staticExpression)
+//				faceAnim.SetInteger(AnimatorParameters.Ints.FACE_STATE,(int)expression);
+//		}
+//		else{ 
+//			isExpressing = true;
+//			if(expression != currentExpression){
+//				faceAnim.SetInteger(AnimatorParameters.Ints.FACE_STATE,(int)expression);
+//				if(OnChangeExpression != null) OnChangeExpression(expressionStay);
+//
+//			}
+//		}
+//
+//		currentExpression = expression;
+	}
 
-		}
-
-		if(expression != staticExpression){
-			if(OnChangeExpression != null) OnChangeExpression(expressionStay);
-		}
+	public void ResetExpressionDuration()
+	{
+		currentDuration = 0f;
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------	

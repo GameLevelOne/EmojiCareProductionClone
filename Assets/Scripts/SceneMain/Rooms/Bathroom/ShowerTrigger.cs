@@ -7,7 +7,7 @@ public class ShowerTrigger : MonoBehaviour {
 	{
 		if(other.tag == Tags.EMOJI){
 			other.transform.parent.GetComponent<Emoji>().hygiene.ModStats(0.5f);
-			other.transform.parent.GetComponent<Emoji>().emojiExpressions.SetExpression(FaceExpression.Blushed,false);
+			other.transform.parent.GetComponent<Emoji>().emojiExpressions.SetExpression(FaceExpression.Blushed,-1);
 			StartCoroutine(ShowerWater());
 		}
 
@@ -17,6 +17,8 @@ public class ShowerTrigger : MonoBehaviour {
 	{
 		if(other.tag == Tags.EMOJI){
 			StopAllCoroutines();
+			Debug.Log("exit bath");
+			other.transform.parent.GetComponent<Emoji>().emojiExpressions.ResetExpressionDuration();
 		}
 
 	}

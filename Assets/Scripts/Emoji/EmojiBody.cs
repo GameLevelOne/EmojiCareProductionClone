@@ -29,7 +29,7 @@ public class EmojiBody : MonoBehaviour {
 		
 	public void Reposition()
 	{
-		transform.parent.position = Vector3.zero;
+		transform.parent.position = new Vector3(0,0,-2f);
 	}
 
 	public void DisableParentRigidBody()
@@ -42,21 +42,21 @@ public class EmojiBody : MonoBehaviour {
 	//colliders
 	void OnCollisionEnter2D(Collision2D other)
 	{
-		if(other.gameObject.tag == Tags.MOVABLE_FURNITURE){
+		
+		if(other.gameObject.tag == Tags.MOVABLE_FURNITURE || other.gameObject.tag == Tags.IMMOVABLE_FURNITURE){
 			Physics2D.IgnoreCollision(thisCollider,other.collider,true);
 		} 
 		if(other.gameObject.tag == Tags.BED){
-			parent.emojiExpressions.SetExpression(FaceExpression.Sleep,true);
+			parent.emojiExpressions.SetExpression(FaceExpression.Sleep,-1);
 		}
 
 	}
 
 	//delegate events
-	void OnChangeExpression (bool expressionStay)
+	void OnChangeExpression ()
 	{
-		StopCoroutine("resetFaceExpression");
-		Reposition();
-		StartCoroutine("resetFaceExpression",expressionStay);
+		StopCoroutine(resetFaceExpression);
+		StartCoroutine(resetFaceExpression);
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -84,13 +84,13 @@ public class EmojiBody : MonoBehaviour {
 		previousRoom = currRoom;
 	}
 
-	IEnumerator resetFaceExpression(bool expressionStay)
+	const string resetFaceExpression = "ResetFaceExpression";
+	IEnumerator ResetFaceExpression()
 	{
-		if(!expressionStay){
-			yield return new WaitForSeconds(3f);
-			parent.emojiExpressions.SetExpression(parent.emojiExpressions.staticExpression,true);
-			parent.emojiExpressions.isExpressing = false;
+		while(parent.emojiExpressions.currentDuration >= 0){
+			parent.emojiExpressions.currentDuration -= Time.deltaTime;
 		}
+		parent.emojiExpressions.currentDuration = 0;
 		yield return null;
 	}
 	#endregion

@@ -5,7 +5,6 @@ public class Sponge : TriggerableFurniture {
 	[Header("Sponge Attributes")]
 	public SpriteRenderer soapLiquid;
 	public GameObject bubble;
-	public EmojiExpressionController expressionController;
 
 	public void ApplySoapLiquid(Sprite liquidSprite)
 	{
@@ -23,10 +22,10 @@ public class Sponge : TriggerableFurniture {
 		if(other.tag == Tags.EMOJI){
 			if(soapLiquid.enabled == true){
 				other.transform.parent.GetComponent<Emoji>().hygiene.ModStats(0.5f);
-				expressionController.SetEmojiExpression(FaceExpression.Blushed);
+				other.transform.parent.GetComponent<Emoji>().emojiExpressions.SetExpression(FaceExpression.Blushed,-1);
 				StartCoroutine(Bubbles());
 			}else{
-				other.transform.parent.GetComponent<Emoji>().emojiExpressions.SetExpression(FaceExpression.Upset,false);
+				other.transform.parent.GetComponent<Emoji>().emojiExpressions.SetExpression(FaceExpression.Upset,-1);
 			}
 
 		}
@@ -37,6 +36,7 @@ public class Sponge : TriggerableFurniture {
 		
 		if(other.tag == Tags.EMOJI){
 			StopAllCoroutines();
+			other.transform.parent.GetComponent<Emoji>().emojiExpressions.ResetExpressionDuration();
 		}
 	}
 

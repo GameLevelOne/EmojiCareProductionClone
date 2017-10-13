@@ -25,7 +25,7 @@ public class BathroomAppliances : MovableFurniture {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
-	protected virtual void OnTriggerEnter(Collider2D other)
+	protected virtual void OnTriggerEnter2D(Collider2D other)
 	{
 		if(other.tag == Tags.EMOJI){
 			if(OnApplyEmoji != null) OnApplyEmoji(FaceExpression.Blushed);

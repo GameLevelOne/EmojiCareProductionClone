@@ -118,6 +118,8 @@ public class Emoji : MonoBehaviour {
 			thisRigidbody.simulated = false;
 			body.thisCollider.enabled = false;
 			triggerFall.ClearColliderList();
+
+			emojiExpressions.ResetExpressionDuration();
 		}
 	}
 
