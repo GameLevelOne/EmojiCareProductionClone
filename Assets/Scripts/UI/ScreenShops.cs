@@ -7,6 +7,6 @@ public class ScreenShops : BaseUI {
 	public ScreenPopup screenPopup;
 
 	public void ConfirmToBuyItem(){
-		screenPopup.ShowPopup(PopupType.Confirmation,PopupEventType.BuyItem,false);
+		screenPopup.ShowPopup(PopupType.Confirmation,PopupEventType.BuyItem,false,false);
 	}
 }

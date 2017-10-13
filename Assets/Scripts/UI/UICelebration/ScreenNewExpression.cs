@@ -25,6 +25,9 @@ public class ScreenNewExpression : BaseUI {
 		expressionNameText.text = expressionIcons.GetExpressionName(currentEmoji,expression-1);
 		unlockDetailsText.text = expressionIcons.GetExpressionUnlockCondition(currentEmoji,expression-1);
 
+		EmojiExpression emojiExpression = PlayerData.Instance.PlayerEmoji.emojiExpressions;
+
+		emojiExpression.expressionProgress = ((float)emojiExpression.unlockedExpressions.Count / (float) emojiExpression.totalExpression)*100;
 	}
 
 	public void OnClickContinue(){

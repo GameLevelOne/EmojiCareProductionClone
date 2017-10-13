@@ -11,6 +11,8 @@ public class ScreenSendOff : BaseUI {
 	public Text expressionProgress;
 	public Text reward;
 
+	public ScreenAlbum screenAlbum;
+
 	void OnEnable(){
 		Fader.OnFadeOutFinished += OnFadeOutFinished;
 	}
@@ -34,6 +36,8 @@ public class ScreenSendOff : BaseUI {
 		expressionProgress.text = "Expression Progress: "+ 
 		(PlayerData.Instance.PlayerEmoji.emojiExpressions.expressionProgress*100).ToString()+"%";
 		reward.text = "Reward: ";
+
+		screenAlbum.AddEmojiRecord();
 	}
 
 	public void OnClickContinue(){

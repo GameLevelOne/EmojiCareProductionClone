@@ -1,16 +1,38 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class ScreenEmojiTransfer : MonoBehaviour {
+public class ScreenEmojiTransfer : BaseUI {
+	public SceneLoader sceneLoader;
+	public Fader fader;
+	public Image emojiIcon;
+	public ScreenAlbum screenAlbum;
 
-	// Use this for initialization
-	void Start () {
-		
+	void OnEnable(){
+		Fader.OnFadeOutFinished += OnFadeOutFinished;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+
+	void OnDisable(){
+		Fader.OnFadeOutFinished -= OnFadeOutFinished;
+	}
+
+	void OnFadeOutFinished ()
+	{
+		Fader.OnFadeOutFinished -= OnFadeOutFinished;
+		sceneLoader.gameObject.SetActive(true);
+		sceneLoader.NextScene = "SceneSelection";
+	}
+
+	public void ShowUI(Sprite sprite,GameObject obj){
+		base.ShowUI(obj);
+		this.sceneLoader = sceneLoader;
+		emojiIcon.sprite = sprite;
+
+		screenAlbum.AddEmojiRecord();
+	}
+
+	public void OnClickContinue(){
+		fader.FadeOut();
 	}
 }

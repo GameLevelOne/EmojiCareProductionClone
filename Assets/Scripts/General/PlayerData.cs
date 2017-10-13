@@ -17,6 +17,8 @@ public class PlayerData : MonoBehaviour {
 	bool hasInitEmojiObject = false;
 
 	List<EmojiType> emojiAlbumData = new List<EmojiType>();
+	List<string> emojiAlbumEntryTime = new List<string>();
+	List<float> emojiCompletionRate = new List<float>();
 
 	public Emoji PlayerEmoji{
 		get{return playerEmoji;}
@@ -44,6 +46,14 @@ public class PlayerData : MonoBehaviour {
 
 	public List<EmojiType> EmojiAlbumData{
 		get{return emojiAlbumData;}
+	}
+
+	public List<string> EmojiAlbumEntryTime{
+		get{return emojiAlbumEntryTime;}
+	}
+
+	public List<float> EmojiCompletionRate{
+		get{return emojiCompletionRate;}
 	}
 
 	void Awake()

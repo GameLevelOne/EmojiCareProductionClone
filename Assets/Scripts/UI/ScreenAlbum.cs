@@ -9,6 +9,8 @@ public class ScreenAlbum : BaseUI {
 	public RectTransform emojiContentBox;
 	public Scrollbar scrollbar;
 	public Image emojiBigIcon;
+	public Text emojiEntryTime;
+	public Text emojiCompletionRate;
 
 	public EmojiIcons emojiIcons;
 	public Sprite lockedEmoji;
@@ -40,9 +42,11 @@ public class ScreenAlbum : BaseUI {
 //		AddEmojiRecord();
 //	}
 
-	void OnSelectEmoji (EmojiType item)
+	void OnSelectEmoji (Sprite sprite,string time,float completionRate)
 	{
-		emojiBigIcon.sprite = emojiIcons.GetEmojiIcon(item);
+		emojiBigIcon.sprite = sprite;
+		emojiEntryTime.text = "Sent off at "+time;
+		emojiCompletionRate.text = "Completion rate: "+completionRate.ToString()+"%";
 	}
 
 	void OnSendOffEmoji(Sprite sprite,string name){
@@ -74,7 +78,9 @@ public class ScreenAlbum : BaseUI {
 					if (PlayerData.Instance.EmojiAlbumData [tempIdx] != null) {
 						Debug.Log ("asd");
 						Sprite sprite = emojiIcons.GetEmojiIcon(PlayerData.Instance.EmojiAlbumData[tempIdx]);
-						obj.GetComponent<AlbumTile>().InitTile(sprite);
+						string entryTime = PlayerData.Instance.EmojiAlbumEntryTime[tempIdx];
+						float completionRate = PlayerData.Instance.EmojiCompletionRate[tempIdx];
+						obj.GetComponent<AlbumTile>().InitTile(sprite,entryTime,completionRate);
 					} else {
 						obj.GetComponent<Button> ().interactable = false;
 					}
@@ -91,7 +97,10 @@ public class ScreenAlbum : BaseUI {
 		if(currentRecordCount > tileCount){
 			tileCount = currentRecordCount;
 		}
+
 		PlayerData.Instance.EmojiAlbumData.Add(PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType);
+		PlayerData.Instance.EmojiAlbumEntryTime.Add(System.DateTime.Now.ToString());
+		PlayerData.Instance.EmojiCompletionRate.Add(PlayerData.Instance.PlayerEmoji.emojiExpressions.expressionProgress);
 		PlayerPrefs.SetInt(PlayerPrefKeys.Player.EMOJI_RECORD_COUNT,currentRecordCount);
 
 		//set emoji status

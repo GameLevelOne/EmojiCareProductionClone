@@ -66,10 +66,10 @@ public class SceneSelectionManager : MonoBehaviour {
 
 	void ConfirmEmoji(bool needToBuy,Sprite sprite,string emojiName){
 		if(needToBuy){
-			screenPopup.ShowPopup(PopupType.Confirmation,PopupEventType.BuyEmoji,needToBuy,sprite,emojiName);
+			screenPopup.ShowPopup(PopupType.Confirmation,PopupEventType.BuyEmoji,needToBuy,false,sprite,emojiName);
 		}
 		else{
-			screenPopup.ShowPopup(PopupType.Confirmation,PopupEventType.SelectEmoji,needToBuy,sprite,emojiName);
+			screenPopup.ShowPopup(PopupType.Confirmation,PopupEventType.SelectEmoji,needToBuy,false,sprite,emojiName);
 		}
 	}
 

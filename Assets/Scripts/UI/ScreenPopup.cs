@@ -22,10 +22,13 @@ public class ScreenPopup : BaseUI {
 	public GameObject buttonGroupConfirmation;
 	public GameObject buttonOk;
 	public GameObject buttonShop;
+	public GameObject buttonTransfer;
 	public Text popupText;
 
 	Sprite tempEmojiSprite;
 	string tempEmojiName;
+
+	bool emojiTransfer = false;
 
 	#region events
 	public delegate void CelebrationNewEmoji(Sprite sprite,string emojiName);
@@ -33,14 +36,18 @@ public class ScreenPopup : BaseUI {
 
 	public delegate void SendOffEmoji(Sprite sprite,string emojiName);
 	public static event SendOffEmoji OnSendOffEmoji;
+
+	public delegate void TransferEmoji();
+	public static event TransferEmoji OnTransferEmoji;
 	#endregion
 
 	PopupEventType currentEventType;
 	PopupType currentPopupType;
 
-	public void ShowPopup(PopupType type,PopupEventType eventType,bool toShop,Sprite sprite = null,string emojiName = null){
+	public void ShowPopup(PopupType type,PopupEventType eventType,bool toShop,bool toTransfer,Sprite sprite = null,string emojiName = null){
 		currentEventType = eventType;
 		currentPopupType = type;
+		emojiTransfer = toTransfer;
 		popupText.text = SetPopupText(eventType);
 		if(type == PopupType.Warning){
 			buttonGroupWarning.SetActive(true);
@@ -50,9 +57,15 @@ public class ScreenPopup : BaseUI {
 			buttonGroupWarning.SetActive(false);
 			if(toShop){
 				buttonShop.SetActive(true);
+				buttonTransfer.SetActive(false);
+				buttonOk.SetActive(false);
+			} else if(toTransfer){
+				buttonShop.SetActive(false);
+				buttonTransfer.SetActive(true);
 				buttonOk.SetActive(false);
 			} else{
 				buttonShop.SetActive(false);
+				buttonTransfer.SetActive(false);
 				buttonOk.SetActive(true);
 			}
 		}
@@ -87,11 +100,14 @@ public class ScreenPopup : BaseUI {
 		if (currentPopupType == PopupType.Confirmation) {
 			CloseUI (this.gameObject);
 			if (currentEventType == PopupEventType.SelectEmoji || currentEventType == PopupEventType.BuyEmoji) {
-				Debug.Log("1");
+				Debug.Log("new emoji");
 				OnCelebrationNewEmoji(tempEmojiSprite,tempEmojiName);
 			} else if(currentEventType == PopupEventType.AbleToSendOff){
-				Debug.Log("2");
+				Debug.Log("send off");
 				OnSendOffEmoji(tempEmojiSprite,tempEmojiName);
+			} else if(currentEventType == PopupEventType.NotAbleToSendOff && emojiTransfer){
+				Debug.Log("transfer");
+				OnTransferEmoji();
 			}
 		} else{
 			Debug.Log("3");

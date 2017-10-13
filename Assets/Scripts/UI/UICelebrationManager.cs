@@ -18,7 +18,7 @@ public class UICelebrationManager : MonoBehaviour {
 		Debug.Log("celebration events");
 		ScreenPopup.OnCelebrationNewEmoji += OnCelebrationNewEmoji;
 		ScreenPopup.OnSendOffEmoji += OnSendOffEmoji;
-		//PlayerData.Instance.PlayerEmoji.emojiExpressions.OnNewExpression += OnNewExpression;
+		ScreenPopup.OnTransferEmoji += OnTransferEmoji;
 		EmojiExpression.OnNewExpression += OnNewExpression;
 		Emoji.OnEmojiDead += OnEmojiDead;
 	}
@@ -26,7 +26,7 @@ public class UICelebrationManager : MonoBehaviour {
 	void OnDisable(){
 		ScreenPopup.OnCelebrationNewEmoji -= OnCelebrationNewEmoji;
 		ScreenPopup.OnSendOffEmoji -= OnSendOffEmoji;
-		//PlayerData.Instance.PlayerEmoji.emojiExpressions.OnNewExpression -= OnNewExpression;
+		ScreenPopup.OnTransferEmoji -= OnTransferEmoji;
 		EmojiExpression.OnNewExpression -= OnNewExpression;
 		Emoji.OnEmojiDead -= OnEmojiDead;
 	}
@@ -55,6 +55,13 @@ public class UICelebrationManager : MonoBehaviour {
 		Debug.Log("emoji dead");
 		Sprite sprite = emojiIcons.GetEmojiIcon(PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType);
 		screenEmojiDead.ShowUI(sprite,screenEmojiDead.gameObject);
+	}
+
+	void OnTransferEmoji ()
+	{
+		Debug.Log("emoji transferred");
+		Sprite sprite = emojiIcons.GetEmojiIcon(PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType);
+		screenEmojiTransfer.ShowUI(sprite,screenEmojiTransfer.gameObject);
 	}
 
 	IEnumerator WaitForNewExpression(int newExpression){
