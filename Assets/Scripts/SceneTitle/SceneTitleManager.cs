@@ -10,7 +10,7 @@ public class SceneTitleManager : MonoBehaviour {
 	string nextScene;
 
 	void Start(){
-		PlayerPrefs.DeleteAll();
+//		PlayerPrefs.DeleteAll();
 		Fader.OnFadeOutFinished += HandleFadeOutFinished;
 		GameSparkManager.Instance.OnLoginSuccessful += GoToSceneMain;
 
@@ -18,7 +18,7 @@ public class SceneTitleManager : MonoBehaviour {
 			//authenticate with playertoken.(BUT HOW????)
 		}
 
-		StartCoroutine(FaderFadeIn());
+//		StartCoroutine(FaderFadeIn());
 	}
 
 	IEnumerator FaderFadeIn()

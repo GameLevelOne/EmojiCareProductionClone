@@ -46,7 +46,7 @@ public class PlayerData : MonoBehaviour {
 	}
 
 	public int playerEmojiType{
-		get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.PLAYER_EMOJI_TYPE,1);}
+		get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.PLAYER_EMOJI_TYPE,0);}
 		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.PLAYER_EMOJI_TYPE,value);}
 	}
 

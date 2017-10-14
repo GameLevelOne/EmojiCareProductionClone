@@ -15,7 +15,7 @@ public class SceneMainManager : MonoBehaviour {
 	#region initialization
 	void Start()
 	{
-		PlayerPrefs.DeleteAll();
+//		PlayerPrefs.DeleteAll();
 		InitMain();
 	}
 
