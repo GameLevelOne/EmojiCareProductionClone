@@ -68,7 +68,7 @@ public class PlayerData : MonoBehaviour {
 		else instance = this;
 		DontDestroyOnLoad(this.gameObject);
 
-		selectedEmoji = EmojiType.Emoji;
+		//selectedEmoji = EmojiType.Emoji;
 	}
 
 	public void InitPlayerEmoji(GameObject playerEmoji)

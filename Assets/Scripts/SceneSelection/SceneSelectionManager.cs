@@ -66,6 +66,7 @@ public class SceneSelectionManager : MonoBehaviour {
 
 	void ConfirmEmoji(bool needToBuy,Sprite sprite,EmojiSO emojiData){
 		PlayerData.Instance.SelectedEmoji = emojiData.emojiType;
+		PlayerData.Instance.playerEmojiType = (int)emojiData.emojiType;
 		if(needToBuy){
 			screenPopup.ShowPopup(PopupType.Confirmation,PopupEventType.BuyEmoji,needToBuy,false,sprite,emojiData.emojiType.ToString());
 		}

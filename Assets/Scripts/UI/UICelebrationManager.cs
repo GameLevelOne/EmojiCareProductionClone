@@ -52,6 +52,7 @@ public class UICelebrationManager : MonoBehaviour {
 
 	void OnEmojiDead ()
 	{
+		ResetData ();
 		Debug.Log("emoji dead");
 		Sprite sprite = emojiIcons.GetEmojiIcon(PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType);
 		screenEmojiDead.ShowUI(sprite,screenEmojiDead.gameObject);
@@ -68,5 +69,14 @@ public class UICelebrationManager : MonoBehaviour {
 		yield return new WaitForSeconds(2);
 		ScreenNewExpression obj = Instantiate(screenNewExpressionPrefab,canvasParent,false) as ScreenNewExpression;
 		obj.ShowUI(newExpression,expressionIcons);
+	}
+
+	void ResetData(){
+		PlayerPrefs.DeleteKey (PlayerPrefKeys.Emoji.HUNGER);
+		PlayerPrefs.DeleteKey (PlayerPrefKeys.Emoji.HYGENE);
+		PlayerPrefs.DeleteKey (PlayerPrefKeys.Emoji.HAPPINESS);
+		PlayerPrefs.DeleteKey (PlayerPrefKeys.Emoji.STAMINA);
+		PlayerPrefs.DeleteKey (PlayerPrefKeys.Emoji.HEALTH);
+		PlayerPrefs.DeleteKey (PlayerPrefKeys.Player.LAST_TIME_PLAYED);
 	}
 }
