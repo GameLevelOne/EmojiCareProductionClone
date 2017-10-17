@@ -18,6 +18,7 @@ public class RoomController : MonoBehaviour {
 	float distance = 0;
 	float xOnBeginDrag;
 	bool snapping = false;
+	bool interactable = true;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initializations
@@ -34,6 +35,16 @@ public class RoomController : MonoBehaviour {
 				r.OnRoomChanged(currentRoom);
 			}
 		AdjustTouchAreaSize();
+	}
+
+	public void RegisterLockRoomEvent()
+	{
+		PlayerData.Instance.PlayerEmoji.body.OnEmojiBouncingToCurrentRoom += OnEmojiBouncingToCurrentRoom;
+	}
+
+	void OnEmojiBouncingToCurrentRoom ()
+	{
+		StartCoroutine(_lockRoomChanging);	
 	}
 
 	/// <summary>
@@ -157,6 +168,14 @@ public class RoomController : MonoBehaviour {
 		PlayerData.Instance.PlayerEmoji.body.BounceToCurrentRoom((int)currentRoom);
 
 		yield return null;
+	}
+
+	const string _lockRoomChanging = "LockRoomChanging";
+	IEnumerator LockRoomChanging()
+	{
+		interactable = false;
+		yield return new WaitForSeconds(1f);
+		interactable = true;
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------

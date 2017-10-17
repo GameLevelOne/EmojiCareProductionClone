@@ -3,6 +3,9 @@ using System.Collections;
 using UnityEngine;
 
 public class EmojiBody : MonoBehaviour {
+	public delegate void EmojiBouncingToCurrentRoom();
+	public event EmojiBouncingToCurrentRoom OnEmojiBouncingToCurrentRoom;
+
 	#region attributes
 	public Animator thisAnim;
 	public Collider2D thisCollider;
