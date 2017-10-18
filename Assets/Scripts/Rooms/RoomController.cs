@@ -5,7 +5,7 @@ using UnityEngine;
 public class RoomController : MonoBehaviour {
 	#region attributes
 	//constants
-	const float roomWidth = 7.2f;
+	const float roomWidth = 8f;
 	const float roomHeight = 12.8f;
 	float snapSpeed = 6f;
 
@@ -44,6 +44,7 @@ public class RoomController : MonoBehaviour {
 
 	void OnEmojiBouncingToCurrentRoom ()
 	{
+		print("JALAN");
 		StartCoroutine(_lockRoomChanging);	
 	}
 
@@ -57,6 +58,7 @@ public class RoomController : MonoBehaviour {
 	void AdjustTouchAreaSize()
 	{
 		roomTotal = Enum.GetNames(typeof(RoomType)).Length;
+		print("Total Room = "+roomTotal);
 		thisCollider.size = new Vector2((roomWidth*roomTotal),roomHeight);
 		thisCollider.offset = new Vector2((thisCollider.size.x/2f)-(roomWidth/2f),0f);
 	}
@@ -67,27 +69,34 @@ public class RoomController : MonoBehaviour {
 	//event triggers
 	public void BeginDrag()
 	{
-		if(!snapping){
-			xOnBeginDrag = transform.localPosition.x;
-			float x = getWorldPositionFromTouchInput().x;
-			distance = transform.localPosition.x - x;
+		if(interactable){
+			if(!snapping){
+				xOnBeginDrag = transform.localPosition.x;
+				float x = getWorldPositionFromTouchInput().x;
+				distance = transform.localPosition.x - x;
 
-//			Emoji.Instance.emojiObject.GetComponent<EmojiObject>().OnRoomChangingStart();
+				//			Emoji.Instance.emojiObject.GetComponent<EmojiObject>().OnRoomChangingStart();
+			}
 		}
+
 	}
 		
 	public void Drag()
 	{
-		if(!snapping) transform.position = new Vector3(getWorldPositionFromTouchInput().x + distance,0f,0f);
+		if(interactable){
+			if(!snapping) transform.position = new Vector3(getWorldPositionFromTouchInput().x + distance,0f,0f);
+		}
 	}
 
 	public void EndDrag()
 	{
-		if(!snapping){
-			Vector3 startPos = transform.position;
-			Vector3 endpos = new Vector3(getXEndPosition(startPos.x),0f,0f);
+		if(interactable){
+			if(!snapping){
+				Vector3 startPos = transform.position;
+				Vector3 endpos = new Vector3(getXEndPosition(startPos.x),0f,0f);
 
-			StartCoroutine(SmoothSnap(startPos,endpos));
+				StartCoroutine(SmoothSnap(startPos,endpos));
+			}
 		}
 	}
 
@@ -100,10 +109,10 @@ public class RoomController : MonoBehaviour {
 
 	float getXEndPosition(float xPosOnEndDrag)
 	{
-		if(xPosOnEndDrag >= 3.6f){
+		if(xPosOnEndDrag >= 3.6f){ //most left of rooms = nothing
 			return 0;
-		}else if(xPosOnEndDrag <= -1 * (roomTotal * (roomWidth-1))){
-			return (-1 * (roomWidth * (roomTotal-1)) );
+		}else if(xPosOnEndDrag <= -1 * ((roomTotal-1) * roomWidth)){ //most right of rooms = nothing
+			return (-1 * ((roomTotal-1) * roomWidth));
 		}else{
 			float ratio = Mathf.Abs(xPosOnEndDrag) / roomWidth;
 			float tenths = ratio - Mathf.Floor(ratio);

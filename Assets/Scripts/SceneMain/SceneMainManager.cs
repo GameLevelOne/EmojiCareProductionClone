@@ -31,7 +31,7 @@ public class SceneMainManager : MonoBehaviour {
 		roomController.Init();
 		emojiExpressionController.Init();
 		roomController.RegisterLockRoomEvent();
-		AdmobManager.Instance.ShowBanner();
+		if(AdmobManager.Instance) AdmobManager.Instance.ShowBanner();
 	}
 
 	#endregion
