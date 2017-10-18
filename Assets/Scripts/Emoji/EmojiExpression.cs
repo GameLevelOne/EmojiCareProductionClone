@@ -129,22 +129,6 @@ public class EmojiExpression {
 			currentExpression = expression;
 			currentDuration = duration;
 		}
-
-//		if(expressionStay){ 
-//			staticExpression = expression;
-//			if(expression != staticExpression)
-//				faceAnim.SetInteger(AnimatorParameters.Ints.FACE_STATE,(int)expression);
-//		}
-//		else{ 
-//			isExpressing = true;
-//			if(expression != currentExpression){
-//				faceAnim.SetInteger(AnimatorParameters.Ints.FACE_STATE,(int)expression);
-//				if(OnChangeExpression != null) OnChangeExpression(expressionStay);
-//
-//			}
-//		}
-//
-//		currentExpression = expression;
 	}
 
 	public void ResetExpressionDuration()

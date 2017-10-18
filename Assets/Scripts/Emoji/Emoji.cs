@@ -44,6 +44,7 @@ public class Emoji : MonoBehaviour {
 	public string emojiName;
 	public EmojiExpression emojiExpressions;
 	public EmojiStats hunger, hygiene,happiness,stamina, health;
+	public bool interactable = true;
 
 	DateTime lastTimePlayed{
 		get{return DateTime.Parse(PlayerPrefs.GetString(PlayerPrefKeys.Player.LAST_TIME_PLAYED));}
@@ -58,6 +59,11 @@ public class Emoji : MonoBehaviour {
 	bool isTickingStat = false;
 	bool hasInit = false;
 	bool emojiDead = false;
+
+	//interactions
+	bool hold = false;
+	bool isDoubleTap = false;
+	int doubleTapCounter = 0;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
@@ -110,39 +116,92 @@ public class Emoji : MonoBehaviour {
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
-	#region mechanic
-	//event trigger
+	#region event triggers
+	public void PointerClick()
+	{
+		if(interactable){
+			if(!isDoubleTap){
+				isDoubleTap = true;
+				StartCoroutine(_OnTap);
+			}else{
+				StopCoroutine(_OnTap);
+				doubleTapCounter++;
+				switch(doubleTapCounter){
+				case 1: break;
+				case 2: break;
+				case 3: break;
+				case 4: break;
+				case 5: 
+					//lock interactions
+					//lock roomchanging
+					//Cooldown
+					doubleTapCounter = 0;
+					interactable = false;
+					break;
+				default: break;
+				}
+			}
+		}
+
+	}
+		
+	public void PointerEnter()
+	{
+		if(interactable) StartCoroutine(_HoldDelay);
+	}
+		
 	public void BeginDrag()
 	{
-		if(CanDragEmoji()){
-			thisRigidbody.simulated = false;
-			body.thisCollider.enabled = false;
-			triggerFall.ClearColliderList();
+		if(interactable){
+			StopCoroutine(_HoldDelay);
 
-			emojiExpressions.ResetExpressionDuration();
+			if(hold){
+				thisRigidbody.simulated = false;
+				body.thisCollider.enabled = false;
+				triggerFall.ClearColliderList();
+
+				emojiExpressions.ResetExpressionDuration();
+			}
 		}
 	}
-
-	//event trigger
+		
 	public void Drag()
 	{
-		if(CanDragEmoji()){
-			Vector3 tempMousePosition = new Vector3(Input.mousePosition.x,Input.mousePosition.y,8f);
-			transform.position = Camera.main.ScreenToWorldPoint(tempMousePosition);
+		if(interactable){
+			if(!hold){
+				Vector3 tempMousePosition = new Vector3(Input.mousePosition.x,Input.mousePosition.y,8f);
+				Vector3 touchWorldPosition = Camera.main.ScreenToWorldPoint(tempMousePosition);
+				float y = touchWorldPosition.y;
+				if(y <= 0f){
+					//stroke left
+					Debug.Log("Stroke left");
+				}else{
+					//stroke right
+					Debug.Log("Stroke Right");
+				}
+			}else{
+				Vector3 tempMousePosition = new Vector3(Input.mousePosition.x,Input.mousePosition.y,8f);
+				Vector3 touchWorldPosition = Camera.main.ScreenToWorldPoint(tempMousePosition);
+				transform.position = new Vector3(touchWorldPosition.x,touchWorldPosition.y+0.5f,touchWorldPosition.z);
+			}
 		}
 	}
-
-	//event trigger
+		
 	public void EndDrag()
 	{
-		if(CanDragEmoji()){
-			thisRigidbody.velocity = Vector2.zero;
-			thisRigidbody.simulated = true;
+		if(interactable){
+			if(hold){
+				hold = false;
+				thisRigidbody.velocity = Vector2.zero;
+				thisRigidbody.simulated = true;
 
-			StartCoroutine(IgnoreCollision());
+				StartCoroutine(IgnoreCollision());
+			}
 		}
 	}
-
+	#endregion
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+	#region mechanic
 	void ResumeTickingStats()
 	{
 		int totalTicks = 0;
@@ -199,12 +258,6 @@ public class Emoji : MonoBehaviour {
 
 		return totalSec;
 	}
-
-	bool CanDragEmoji()
-	{
-		
-		return true;
-	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public module
@@ -238,6 +291,27 @@ public class Emoji : MonoBehaviour {
 		triggerFall.isFalling = false;
 	}
 
+	const string _OnTap = "OnTap";
+	IEnumerator OnTap()
+	{
+		yield return new WaitForSeconds(0.2f);
+		isDoubleTap = false;
+	}
+
+	//interactions
+	const string _HoldDelay = "HoldDelay";
+	IEnumerator HoldDelay()
+	{
+		yield return new WaitForSeconds(0.5f);
+		hold = true;
+	}
+
+	IEnumerator LockInteractions()
+	{
+		interactable = false;
+		yield return new WaitForSeconds(5f);
+		interactable = true;
+	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 
