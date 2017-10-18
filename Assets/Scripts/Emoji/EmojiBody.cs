@@ -76,12 +76,14 @@ public class EmojiBody : MonoBehaviour {
 	IEnumerator _BounceToCurrentRoom(int currRoom)
 	{
 		currentRoom = currRoom;
-		yield return new WaitForSeconds(1f);
+		yield return new WaitForSeconds(0.5f);
 		if(previousRoom != -1){
 			if(currentRoom > previousRoom){
 				thisAnim.SetInteger(AnimatorParameters.Ints.BODY_STATE,(int)BodyAnimation.BounceFromLeft);
+				if(OnEmojiBouncingToCurrentRoom != null) OnEmojiBouncingToCurrentRoom();
 			}else if(currentRoom < previousRoom){
 				thisAnim.SetInteger(AnimatorParameters.Ints.BODY_STATE,(int)BodyAnimation.BounceFromRight);
+				if(OnEmojiBouncingToCurrentRoom != null) OnEmojiBouncingToCurrentRoom();
 			}
 		}
 		previousRoom = currRoom;

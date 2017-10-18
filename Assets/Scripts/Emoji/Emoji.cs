@@ -62,8 +62,12 @@ public class Emoji : MonoBehaviour {
 
 	//interactions
 	bool hold = false;
+	bool flagHoldTrigger = false;
 	bool isDoubleTap = false;
 	int doubleTapCounter = 0;
+
+	int shakeCounter = 0;
+	float prevX = 0;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
@@ -147,15 +151,24 @@ public class Emoji : MonoBehaviour {
 		
 	public void PointerEnter()
 	{
-		if(interactable) StartCoroutine(_HoldDelay);
+		Vector3 tempMousePosition = new Vector3(Input.mousePosition.x,Input.mousePosition.y,8f);
+		Vector3 touchWorldPosition = Camera.main.ScreenToWorldPoint(tempMousePosition);
+		Vector3 newPos = new Vector3(touchWorldPosition.x,touchWorldPosition.y+0.5f,touchWorldPosition.z);
+
+		if(interactable) StartCoroutine(_HoldDelay,newPos);
 	}
 		
+	public void PointerExit()
+	{
+		if(!flagHoldTrigger) hold = false;
+		flagHoldTrigger = false;
+	}
+
 	public void BeginDrag()
 	{
 		if(interactable){
-			StopCoroutine(_HoldDelay);
-
-			if(hold){
+			if(hold == false) StopCoroutine(_HoldDelay);
+			else{
 				thisRigidbody.simulated = false;
 				body.thisCollider.enabled = false;
 				triggerFall.ClearColliderList();
@@ -167,12 +180,13 @@ public class Emoji : MonoBehaviour {
 		
 	public void Drag()
 	{
+		print("hold = "+hold);
 		if(interactable){
 			if(!hold){
 				Vector3 tempMousePosition = new Vector3(Input.mousePosition.x,Input.mousePosition.y,8f);
 				Vector3 touchWorldPosition = Camera.main.ScreenToWorldPoint(tempMousePosition);
-				float y = touchWorldPosition.y;
-				if(y <= 0f){
+				float x = touchWorldPosition.x;
+				if(x <= transform.localPosition.x){
 					//stroke left
 					Debug.Log("Stroke left");
 				}else{
@@ -182,11 +196,14 @@ public class Emoji : MonoBehaviour {
 			}else{
 				Vector3 tempMousePosition = new Vector3(Input.mousePosition.x,Input.mousePosition.y,8f);
 				Vector3 touchWorldPosition = Camera.main.ScreenToWorldPoint(tempMousePosition);
-				transform.position = new Vector3(touchWorldPosition.x,touchWorldPosition.y+0.5f,touchWorldPosition.z);
+				Vector3 newPos = new Vector3(touchWorldPosition.x,touchWorldPosition.y+0.5f,touchWorldPosition.z);
+				transform.position = newPos;
+				float x = transform.position.x;
+
 			}
 		}
 	}
-		
+
 	public void EndDrag()
 	{
 		if(interactable){
@@ -198,6 +215,7 @@ public class Emoji : MonoBehaviour {
 				StartCoroutine(IgnoreCollision());
 			}
 		}
+		shakeCounter = 0;
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -300,10 +318,10 @@ public class Emoji : MonoBehaviour {
 
 	//interactions
 	const string _HoldDelay = "HoldDelay";
-	IEnumerator HoldDelay()
+	IEnumerator HoldDelay(Vector3 destination)
 	{
-		yield return new WaitForSeconds(0.5f);
-		hold = true;
+		yield return new WaitForSeconds(1f);
+		flagHoldTrigger = hold = true;
 	}
 
 	IEnumerator LockInteractions()
@@ -311,6 +329,13 @@ public class Emoji : MonoBehaviour {
 		interactable = false;
 		yield return new WaitForSeconds(5f);
 		interactable = true;
+	}
+
+	const string _DelayResetShakeCounter = "DelayResetShakeCounter";
+	IEnumerator DelayResetShakeCounter()
+	{
+		yield return new WaitForSeconds(0.35f);
+		shakeCounter = 0;
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------

@@ -14,7 +14,7 @@ public class HotkeysAnimation : MonoBehaviour {
 	}
 
 	public void ShowHotkeys(){
-		AdmobManager.Instance.HideBanner();
+		if(AdmobManager.Instance) AdmobManager.Instance.HideBanner();
 		hotkeyPanel.SetActive(true);
 		hotkeyAnim.SetTrigger(triggerOpenHotkey);
 	}
@@ -26,7 +26,7 @@ public class HotkeysAnimation : MonoBehaviour {
 
 	IEnumerator WaitForAnim(GameObject obj){
 		yield return new WaitForSeconds(0.31f);
-		AdmobManager.Instance.ShowBanner();
+		if(AdmobManager.Instance) AdmobManager.Instance.ShowBanner();
 		obj.SetActive(false);
 	}
 }
