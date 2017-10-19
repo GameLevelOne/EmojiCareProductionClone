@@ -2,6 +2,22 @@
 using System.Collections;
 using UnityEngine;
 
+public enum BodyAnimation{
+	Idle,
+	Bounce,
+	Play,
+	HappyBounce,
+	Falling,
+	BounceFromLeft,
+	BounceFromRight,
+	Eat,
+	Bath,
+	StrokeRight,
+	StrokeLeft,
+	Lift,
+	Tap
+}
+
 public class EmojiBody : MonoBehaviour {
 	public delegate void EmojiBouncingToCurrentRoom();
 	public event EmojiBouncingToCurrentRoom OnEmojiBouncingToCurrentRoom;
@@ -27,7 +43,7 @@ public class EmojiBody : MonoBehaviour {
 	public void Reset()
 	{
 		GetComponent<Animator>().SetInteger(AnimatorParameters.Ints.BODY_STATE,(int)BodyAnimation.Idle);
-		parentRigidbody.simulated = true;
+		if(parentRigidbody.simulated == false) parentRigidbody.simulated = true;
 	}
 		
 	public void Reposition()

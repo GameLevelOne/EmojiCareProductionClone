@@ -44,7 +44,6 @@ public class RoomController : MonoBehaviour {
 
 	void OnEmojiBouncingToCurrentRoom ()
 	{
-		print("JALAN");
 		StartCoroutine(_lockRoomChanging);	
 	}
 
