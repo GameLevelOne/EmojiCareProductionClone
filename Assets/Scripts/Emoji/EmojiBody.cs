@@ -2,7 +2,26 @@
 using System.Collections;
 using UnityEngine;
 
+public enum BodyAnimation{
+	Idle,
+	Bounce,
+	Play,
+	HappyBounce,
+	Falling,
+	BounceFromLeft,
+	BounceFromRight,
+	Eat,
+	Bath,
+	StrokeRight,
+	StrokeLeft,
+	Lift,
+	Tap
+}
+
 public class EmojiBody : MonoBehaviour {
+	public delegate void EmojiBouncingToCurrentRoom();
+	public event EmojiBouncingToCurrentRoom OnEmojiBouncingToCurrentRoom;
+
 	#region attributes
 	public Animator thisAnim;
 	public Collider2D thisCollider;
@@ -24,7 +43,7 @@ public class EmojiBody : MonoBehaviour {
 	public void Reset()
 	{
 		GetComponent<Animator>().SetInteger(AnimatorParameters.Ints.BODY_STATE,(int)BodyAnimation.Idle);
-		parentRigidbody.simulated = true;
+		if(parentRigidbody.simulated == false) parentRigidbody.simulated = true;
 	}
 		
 	public void Reposition()
@@ -73,12 +92,14 @@ public class EmojiBody : MonoBehaviour {
 	IEnumerator _BounceToCurrentRoom(int currRoom)
 	{
 		currentRoom = currRoom;
-		yield return new WaitForSeconds(1f);
+		yield return new WaitForSeconds(0.5f);
 		if(previousRoom != -1){
 			if(currentRoom > previousRoom){
 				thisAnim.SetInteger(AnimatorParameters.Ints.BODY_STATE,(int)BodyAnimation.BounceFromLeft);
+				if(OnEmojiBouncingToCurrentRoom != null) OnEmojiBouncingToCurrentRoom();
 			}else if(currentRoom < previousRoom){
 				thisAnim.SetInteger(AnimatorParameters.Ints.BODY_STATE,(int)BodyAnimation.BounceFromRight);
+				if(OnEmojiBouncingToCurrentRoom != null) OnEmojiBouncingToCurrentRoom();
 			}
 		}
 		previousRoom = currRoom;

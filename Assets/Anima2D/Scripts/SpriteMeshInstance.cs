@@ -12,7 +12,7 @@ namespace Anima2D
 	public class SpriteMeshInstance : MonoBehaviour
 	{
 		[SerializeField][FormerlySerializedAs("spriteMesh")]
-		SpriteMesh m_SpriteMesh;
+		public SpriteMesh m_SpriteMesh;
 		
 		[SerializeField]
 		Color m_Color = Color.white;

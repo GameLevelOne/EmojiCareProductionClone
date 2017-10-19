@@ -30,8 +30,8 @@ public class SceneMainManager : MonoBehaviour {
 		PlayerData.Instance.InitPlayerEmoji(emojiSamples[PlayerData.Instance.PlayerEmojiType]);
 		roomController.Init();
 		emojiExpressionController.Init();
-
-		AdmobManager.Instance.ShowBanner();
+		roomController.RegisterLockRoomEvent();
+		if(AdmobManager.Instance) AdmobManager.Instance.ShowBanner();
 	}
 
 	#endregion
