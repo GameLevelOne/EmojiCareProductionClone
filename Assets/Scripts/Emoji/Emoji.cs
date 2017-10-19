@@ -32,8 +32,9 @@ public class Emoji : MonoBehaviour {
 
 	[Header("")]
 	public string emojiName;
-	public EmojiExpression emojiExpressions;
 	public EmojiStats hunger, hygiene,happiness,stamina, health;
+	public EmojiExpression emojiExpressions;
+	public EmojiActivity activity;
 	public bool interactable = true;
 
 	DateTime lastTimePlayed{
