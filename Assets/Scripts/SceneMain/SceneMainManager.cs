@@ -27,7 +27,7 @@ public class SceneMainManager : MonoBehaviour {
 	void InitMain()
 	{
 		PlayerData.Instance.emojiParentTransform = roomController.transform;
-		PlayerData.Instance.InitPlayerEmoji(emojiSamples[PlayerData.Instance.playerEmojiType]);
+		PlayerData.Instance.InitPlayerEmoji(emojiSamples[PlayerData.Instance.PlayerEmojiType]);
 		roomController.Init();
 		emojiExpressionController.Init();
 

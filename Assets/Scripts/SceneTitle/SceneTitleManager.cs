@@ -31,7 +31,13 @@ public class SceneTitleManager : MonoBehaviour {
 //		panelLoadingBar.gameObject.SetActive(true);
 //		panelLoadingBar.NextScene = nextScene;
 		sceneLoader.gameObject.SetActive(true);
-		sceneLoader.NextScene = "SceneMain";
+
+		if(PlayerData.Instance.PlayerFirstPlay == 0){
+			sceneLoader.NextScene = "ScenePrologue";
+		} else{
+			sceneLoader.NextScene = "SceneMain";
+		}
+
 		Fader.OnFadeOutFinished -= HandleFadeOutFinished;
 
 		//SceneManager.LoadScene("SceneMain");
