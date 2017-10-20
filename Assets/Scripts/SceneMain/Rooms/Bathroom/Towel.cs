@@ -7,7 +7,7 @@ public class Towel : TriggerableFurniture {
 	{
 		base.OnTriggerEnter2D(other);
 		if(other.tag == Tags.EMOJI){
-			other.transform.parent.GetComponent<Emoji>().emojiExpressions.SetExpression(FaceExpression.Blushed,-1);
+//			other.transform.parent.GetComponent<Emoji>().emojiExpressions.SetExpression(EmojiExpressionState.Blushed,-1);
 		}
 	}
 

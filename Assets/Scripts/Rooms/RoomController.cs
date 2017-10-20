@@ -93,7 +93,8 @@ public class RoomController : MonoBehaviour {
 			if(!snapping){
 				Vector3 startPos = transform.position;
 				Vector3 endpos = new Vector3(getXEndPosition(startPos.x),0f,0f);
-
+				print("StartPos = "+startPos);
+				print("EndPos = "+endpos);
 				StartCoroutine(SmoothSnap(startPos,endpos));
 			}
 		}

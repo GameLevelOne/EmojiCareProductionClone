@@ -22,7 +22,7 @@ public class Food : TriggerableFurniture {
 		print(other.name);
 		if(other.tag == Tags.EMOJI){
 			StopAllCoroutines();
-			other.transform.parent.GetComponent<Emoji>().emojiExpressions.SetExpression(FaceExpression.Eat,2f);
+			other.transform.parent.GetComponent<Emoji>().emojiExpressions.SetExpression(EmojiExpressionState.EATING,2f);
 			other.transform.parent.GetComponent<Emoji>().ModAllStats(foodFactor);
 			Destroy(this.gameObject);
 		}
