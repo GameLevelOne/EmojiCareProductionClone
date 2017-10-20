@@ -28,7 +28,9 @@ public class Emoji : MonoBehaviour {
 	public Rigidbody2D thisRigidbody;
 	public EmojiBody body;
 	public EmojiTriggerFall triggerFall;
+	public EmojiPlayerInput playerInput;
 	public EmojiSO emojiBaseData;
+
 
 	[Header("")]
 	public string emojiName;

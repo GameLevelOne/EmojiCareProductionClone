@@ -2,6 +2,9 @@
 using UnityEngine;
 
 public class EmojiPlayerInput : MonoBehaviour {
+	public delegate void EmojiPouting();
+	public event EmojiPouting OnEmojiPouting;
+
 	public bool interactable;
 	public Emoji emoji;
 	public GameObject touchInputObject;
@@ -119,6 +122,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 			case 5: print("Pouting"); 
 				emoji.emojiExpressions.ResetExpressionDuration();
 				emoji.emojiExpressions.SetExpression(EmojiExpressionState.POUTING,-1f);
+				if(OnEmojiPouting != null) OnEmojiPouting();
 				animDelay = 10; 
 				//emoji.happiness.ModStats(-3);
 				break;
@@ -188,7 +192,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 	const string _DelayHold = "DelayHold";
 	IEnumerator DelayHold()
 	{
-		yield return new WaitForSeconds(1.5f);
+		//yield return new WaitForSeconds(1.5f);
 		flagHold = true;
 
 		Vector3 touchPos = getTouchToWorldPosition();
@@ -228,6 +232,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 		interactable = false;
 		yield return new WaitForSeconds(cooldown);
 		print("INTERACTIONS Enabled!");
+		emoji.emojiExpressions.ResetExpressionDuration();
 		interactable = true;
 	}
 
