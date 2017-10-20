@@ -46,11 +46,11 @@ public class BaseRoom : MonoBehaviour {
 
 	void SetEmojiRoomModifier()
 	{
-		PlayerData.Instance.PlayerEmoji.hunger.RoomModifier = roomMod[0];
-		PlayerData.Instance.PlayerEmoji.hygiene.RoomModifier = roomMod[1];
-		PlayerData.Instance.PlayerEmoji.happiness.RoomModifier = roomMod[2];
-		PlayerData.Instance.PlayerEmoji.stamina.RoomModifier = roomMod[3];
-		PlayerData.Instance.PlayerEmoji.health.RoomModifier = roomMod[4];
+//		PlayerData.Instance.PlayerEmoji.hunger.RoomModifier = roomMod[0];
+//		PlayerData.Instance.PlayerEmoji.hygiene.RoomModifier = roomMod[1];
+//		PlayerData.Instance.PlayerEmoji.happiness.RoomModifier = roomMod[2];
+//		PlayerData.Instance.PlayerEmoji.stamina.RoomModifier = roomMod[3];
+//		PlayerData.Instance.PlayerEmoji.health.RoomModifier = roomMod[4];
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------

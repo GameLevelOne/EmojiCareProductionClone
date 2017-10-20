@@ -128,7 +128,7 @@ public class EmojiExpression {
 	/// </summary>
 	public void SetExpression(EmojiExpressionState expression, float duration)
 	{
-		Debug.Log(expression+", "+duration+", "+currentDuration);
+//		Debug.Log(expression+", "+duration+", "+currentDuration);
 
 		//check for unlocked expression
 		if(IsNewExpression(expression)){

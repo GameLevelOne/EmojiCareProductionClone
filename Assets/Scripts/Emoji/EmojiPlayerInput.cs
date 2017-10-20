@@ -199,7 +199,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 		Vector3 targetPos = new Vector3(touchPos.x,touchPos.y+0.5f,touchPos.z);
 
 		emoji.emojiExpressions.SetExpression(EmojiExpressionState.HOLD,-1);
-
+		emoji.triggerFall.ClearColliderList();
 		float t = 0;
 		while(t < 1f){
 			transform.position = Vector3.Lerp(currentPos,targetPos,t);

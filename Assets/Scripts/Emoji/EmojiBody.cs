@@ -43,6 +43,10 @@ public class EmojiBody : MonoBehaviour {
 	public void Reset()
 	{
 		if(parentRigidbody.simulated == false) parentRigidbody.simulated = true;
+
+		//sementara
+		parent.emojiExpressions.ResetExpressionDuration();
+		parent.transform.localScale = Vector3.one;
 	}
 		
 	public void Reposition()
@@ -97,9 +101,12 @@ public class EmojiBody : MonoBehaviour {
 		if(previousRoom != -1){
 			if(currentRoom > previousRoom){
 				//thisAnim.SetInteger(AnimatorParameters.Ints.BODY_STATE,(int)BodyAnimation.BounceFromLeft);
+				parent.emojiExpressions.SetExpression(EmojiExpressionState.CHANGE_ROOM,-1f);
 				if(OnEmojiBouncingToCurrentRoom != null) OnEmojiBouncingToCurrentRoom();
 			}else if(currentRoom < previousRoom){
 				//thisAnim.SetInteger(AnimatorParameters.Ints.BODY_STATE,(int)BodyAnimation.BounceFromRight);
+				parent.transform.localScale = new Vector3(-1f,1f,1f);
+				parent.emojiExpressions.SetExpression(EmojiExpressionState.CHANGE_ROOM,-1f);
 				if(OnEmojiBouncingToCurrentRoom != null) OnEmojiBouncingToCurrentRoom();
 			}
 		}
