@@ -45,9 +45,14 @@ public class PlayerData : MonoBehaviour {
 		set{PlayerPrefs.SetString(PlayerPrefKeys.Player.PLAYER_AUTH_TOKEN,value);}
 	}
 
-	public int playerEmojiType{
+	public int PlayerEmojiType{
 		get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.PLAYER_EMOJI_TYPE,0);}
 		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.PLAYER_EMOJI_TYPE,value);}
+	}
+
+	public int PlayerFirstPlay{
+		get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.FIRST_PLAY,0);}
+		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.FIRST_PLAY,value);}
 	}
 
 	public List<EmojiType> EmojiAlbumData{

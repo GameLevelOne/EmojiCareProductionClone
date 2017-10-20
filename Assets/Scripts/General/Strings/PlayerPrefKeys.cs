@@ -22,6 +22,8 @@ public static class PlayerPrefKeys {
 		public const string LAST_TIME_PLAYED = "Player/LastLogin";
 		public const string TIME_ON_PAUSE = "Player/TimeOnPause";
 
-		public const string EMOJI_RECORD_COUNT = "Player?EmojiRecordCount";
+		public const string EMOJI_RECORD_COUNT = "Player/EmojiRecordCount";
+
+		public const string FIRST_PLAY = "Player/FirstPlay";
 	}
 }
