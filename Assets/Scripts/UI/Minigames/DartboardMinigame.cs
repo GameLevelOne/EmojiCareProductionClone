@@ -21,6 +21,7 @@ public class DartboardMinigame : MonoBehaviour {
 			stopPosition = arrow.localPosition;
 			dartMark.transform.localPosition = new Vector3(stopPosition.x,-166,0);
 		}
+		StartCoroutine(ClosePanel());
 	}
 
 	IEnumerator MoveArrow(){
@@ -28,5 +29,10 @@ public class DartboardMinigame : MonoBehaviour {
 			arrow.localPosition = new Vector3 ((Mathf.PingPong (Time.time*500, 400) - 200), -500, 0);
 			yield return null;
 		}
+	}
+
+	IEnumerator ClosePanel(){
+		yield return new WaitForSeconds(1);
+		this.gameObject.SetActive(false);
 	}
 }
