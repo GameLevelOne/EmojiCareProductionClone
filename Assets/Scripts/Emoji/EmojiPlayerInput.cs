@@ -13,14 +13,21 @@ public class EmojiPlayerInput : MonoBehaviour {
 
 	float emojiXPos;
 
-	public float holdThreshold = 1.5f;
-	float startTap;
+	//SEMENTARA
+	IEnumerator Start()
+	{
+		while(true){
+			yield return new WaitForSeconds(1);
+			if(interactable) emoji.emojiExpressions.SetExpression(EmojiExpressionState.DEFAULT,0);
+		}
+
+	}
+
 
 	#region event trigger		
 	public void PointerDown()
 	{
 		if(interactable){
-			startTap = Time.timeSinceLevelLoad;
 			flagHold = false;
 			flagStroke = false;
 			StartCoroutine(_DelayHold);
@@ -35,8 +42,10 @@ public class EmojiPlayerInput : MonoBehaviour {
 				Poke();
 			} else if (flagHold) {
 				StartCoroutine(_Falling);
+				flagHold = false;
 			} else {
 				EndStroke();
+				flagStroke = false;
 			}
 		}
 		touchInputObject.GetComponent<Collider2D>().enabled = true;
@@ -88,20 +97,30 @@ public class EmojiPlayerInput : MonoBehaviour {
 			tapCounter++;
 			switch(tapCounter){
 			case 1: print("Poked 1"); 
+				emoji.emojiExpressions.ResetExpressionDuration();
+				emoji.emojiExpressions.SetExpression(EmojiExpressionState.POKED,1f);
 				animDelay = 4; 
 				break;
 			case 2: print("Poked 2"); 
+				emoji.emojiExpressions.ResetExpressionDuration();
+				emoji.emojiExpressions.SetExpression(EmojiExpressionState.POKED,1f);
 				animDelay = 4; 
 				break;
 			case 3: print("Annoyed 1"); 
+				emoji.emojiExpressions.ResetExpressionDuration();
+				emoji.emojiExpressions.SetExpression(EmojiExpressionState.ANNOYED,1f);
 				animDelay = 5; 
 				break;
 			case 4: print("Annoyed 2"); 
+				emoji.emojiExpressions.ResetExpressionDuration();
+				emoji.emojiExpressions.SetExpression(EmojiExpressionState.ANNOYED,1f);
 				animDelay = 5; 
 				break;
 			case 5: print("Pouting"); 
+				emoji.emojiExpressions.ResetExpressionDuration();
+				emoji.emojiExpressions.SetExpression(EmojiExpressionState.POUTING,-1f);
 				animDelay = 10; 
-				emoji.happiness.ModStats(-3);
+				//emoji.happiness.ModStats(-3);
 				break;
 			}
 
@@ -118,7 +137,6 @@ public class EmojiPlayerInput : MonoBehaviour {
 
 	void Hold()
 	{
-		print("Hold");
 		Vector3 touchPos = getTouchToWorldPosition();
 		Vector3 emojiHoldPos = new Vector3(touchPos.x,touchPos.y+0.5f,touchPos.z);
 		transform.position = emojiHoldPos;
@@ -126,14 +144,14 @@ public class EmojiPlayerInput : MonoBehaviour {
 
 	void Stroke()
 	{
-		//set anim
-		print("Stroke");
+		if(emoji.emojiExpressions.currentExpression != EmojiExpressionState.CARESSED)
+			emoji.emojiExpressions.SetExpression(EmojiExpressionState.CARESSED,-1);
 	}
 
 	void EndStroke()
 	{
-		//set anim
-		print("EndStroke");
+		emoji.emojiExpressions.ResetExpressionDuration();
+		emoji.emojiExpressions.SetExpression(EmojiExpressionState.DEFAULT,0);
 		touchInputObject.transform.localScale = Vector3.one;
 	}
 
@@ -180,7 +198,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 		Vector3 currentPos = transform.position;
 		Vector3 targetPos = new Vector3(touchPos.x,touchPos.y+0.5f,touchPos.z);
 
-		//animation here
+		emoji.emojiExpressions.SetExpression(EmojiExpressionState.HOLD,-1);
 
 		float t = 0;
 		while(t < 1f){
@@ -197,6 +215,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 		emoji.body.thisCollider.enabled = true;
 		emoji.thisRigidbody.velocity = Vector2.zero;
 		emoji.thisRigidbody.simulated = true;
+		emoji.emojiExpressions.SetExpression(EmojiExpressionState.FALL,-1);
 		yield return null;
 		emoji.triggerFall.IgnoreCollision();
 

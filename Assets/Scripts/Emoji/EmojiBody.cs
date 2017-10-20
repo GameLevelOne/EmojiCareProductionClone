@@ -42,7 +42,6 @@ public class EmojiBody : MonoBehaviour {
 	#region animation event
 	public void Reset()
 	{
-		GetComponent<Animator>().SetInteger(AnimatorParameters.Ints.BODY_STATE,(int)BodyAnimation.Idle);
 		if(parentRigidbody.simulated == false) parentRigidbody.simulated = true;
 	}
 		
@@ -62,20 +61,22 @@ public class EmojiBody : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D other)
 	{
 		
-		if(other.gameObject.tag == Tags.MOVABLE_FURNITURE || other.gameObject.tag == Tags.IMMOVABLE_FURNITURE){
+		if(other.gameObject.tag == Tags.MOVABLE_FURNITURE){
 			Physics2D.IgnoreCollision(thisCollider,other.collider,true);
 		} 
 		if(other.gameObject.tag == Tags.BED){
-			parent.emojiExpressions.SetExpression(FaceExpression.Sleep,-1);
+			//parent.emojiExpressions.SetExpression(FaceExpression.Sleep,-1);
 		}
+		parent.emojiExpressions.ResetExpressionDuration();
+		parent.emojiExpressions.SetExpression(EmojiExpressionState.DEFAULT,0);
 
 	}
 
 	//delegate events
 	void OnChangeExpression ()
 	{
-		StopCoroutine(resetFaceExpression);
-		StartCoroutine(resetFaceExpression);
+		StopCoroutine(_ResetFaceExpression);
+		StartCoroutine(_ResetFaceExpression);
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -95,17 +96,17 @@ public class EmojiBody : MonoBehaviour {
 		yield return new WaitForSeconds(0.5f);
 		if(previousRoom != -1){
 			if(currentRoom > previousRoom){
-				thisAnim.SetInteger(AnimatorParameters.Ints.BODY_STATE,(int)BodyAnimation.BounceFromLeft);
+				//thisAnim.SetInteger(AnimatorParameters.Ints.BODY_STATE,(int)BodyAnimation.BounceFromLeft);
 				if(OnEmojiBouncingToCurrentRoom != null) OnEmojiBouncingToCurrentRoom();
 			}else if(currentRoom < previousRoom){
-				thisAnim.SetInteger(AnimatorParameters.Ints.BODY_STATE,(int)BodyAnimation.BounceFromRight);
+				//thisAnim.SetInteger(AnimatorParameters.Ints.BODY_STATE,(int)BodyAnimation.BounceFromRight);
 				if(OnEmojiBouncingToCurrentRoom != null) OnEmojiBouncingToCurrentRoom();
 			}
 		}
 		previousRoom = currRoom;
 	}
 
-	const string resetFaceExpression = "ResetFaceExpression";
+	const string _ResetFaceExpression = "ResetFaceExpression";
 	IEnumerator ResetFaceExpression()
 	{
 		while(parent.emojiExpressions.currentDuration >= 0){

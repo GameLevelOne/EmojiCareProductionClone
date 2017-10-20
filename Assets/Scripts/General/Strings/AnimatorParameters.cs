@@ -9,8 +9,7 @@ public static class AnimatorParameters {
 
 	public static class Ints
 	{
-		public const string BODY_STATE = "BodyState";
-		public const string FACE_STATE = "FaceState";
+		public const string EMOJI_ANIM_STATE = "ExpState";
 	}
 
 	public static class Floats

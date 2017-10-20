@@ -108,157 +108,12 @@ public class Emoji : MonoBehaviour {
 
 	void InitEmojiExpression()
 	{
-		emojiExpressions.unlockedExpressions.Add(FaceExpression.Default);
-	}
-	#endregion
-//-------------------------------------------------------------------------------------------------------------------------------------------------
-	#region event triggers
-	public void PointerClick()
-	{
-//		if(interactable){
-//			if(!isDoubleTap){
-//				isDoubleTap = true;
-//				StartCoroutine(_OnTap);
-//			}else{
-//				StopCoroutine(_OnTap);
-//				doubleTapCounter++;
-//				switch(doubleTapCounter){
-//				case 1: break;
-//				case 2: break;
-//				case 3: break;
-//				case 4: break;
-//				case 5: 
-//					//lock interactions
-//					//lock roomchanging
-//					//Cooldown
-//					doubleTapCounter = 0;
-//					StartCoroutine(_LockInteractions);
-//					break;
-//				default: break;
-//				}
-//			}
-//		}
-
-	}
-		
-	public void PointerEnter()
-	{
-//		Vector3 tempMousePosition = new Vector3(Input.mousePosition.x,Input.mousePosition.y,8f);
-//		Vector3 touchWorldPosition = Camera.main.ScreenToWorldPoint(tempMousePosition);
-//		Vector3 newPos = new Vector3(touchWorldPosition.x,touchWorldPosition.y+0.5f,touchWorldPosition.z);
-//
-//		if(interactable) StartCoroutine(_HoldDelay,newPos);
-		if(!flagStroke){
-			StartCoroutine(_HoldDelay);
-		}else{
-			//set anim stroke
-		}
-
-	}
-		
-	public void PointerExit()
-	{
-//		StopCoroutine(_HoldDelay);
-		if(flagStroke){
-			//set anim default
-		}
-	}
-
-	public void BeginDrag()
-	{
-//		if(interactable){
-//			if(hold == false){ 
-//				print("hold still false");
-//				StopCoroutine(_HoldDelay);
-//				stroking = true;
-//			}
-//			else{
-//				print("hold is true");
-//				thisRigidbody.simulated = false;
-//				body.thisCollider.enabled = false;
-//				triggerFall.ClearColliderList();
-//
-//				emojiExpressions.ResetExpressionDuration();
-//			}
-//		}
-
-		if(flagHold == false){
-			StopCoroutine(_HoldDelay);
-			flagStroke = true;
-		}else{
-			//nothing
-		}
-	}
-		
-	public void Drag()
-	{
-//		if(interactable){
-//			if(!hold){
-//				Vector3 touchPosition = getTouchToWorldPosition();
-//				float x = touchPosition.x;
-//				if(x <= transform.localPosition.x){
-//					//stroke left
-//					Debug.Log("Stroke left");
-//				}else{
-//					//stroke right
-//					Debug.Log("Stroke Right");
-//				}
-//			}else{
-//				Vector3 touchPosition = getTouchToWorldPosition();
-//				Vector3 newPos = new Vector3(touchPosition.x,touchPosition.y+0.5f,touchPosition.z);
-//				transform.position = newPos;
-//				float x = transform.position.x;
-//
-//			}
-//		}
-
-		if(flagHold == true){
-			Hold();
-		}else if(flagStroke == true){
-			Stroke();
-		}
-	}
-
-	public void EndDrag()
-	{
-//		if(interactable){
-//			
-//				
-//				thisRigidbody.velocity = Vector2.zero;
-//				thisRigidbody.simulated = true;
-//
-//				StartCoroutine(IgnoreCollision());
-//
-//		}
-//		shakeCounter = 0;
-
+		emojiExpressions.SetExpression(EmojiExpressionState.DEFAULT,0); //sementara
+		emojiExpressions.unlockedExpressions.Add(EmojiExpressionState.DEFAULT);
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanic
-	//interactions
-	void Stroke()
-	{
-		
-	}
-
-	void Hold()
-	{
-		transform.position = getEmojiPositionOnHold(getTouchToWorldPosition());
-	}
-
-	Vector3 getEmojiPositionOnHold(Vector3 touchWorldPosition)
-	{
-		return new Vector3(touchWorldPosition.x,touchWorldPosition.y+0.5f,touchWorldPosition.z);
-	}
-
-	Vector3 getTouchToWorldPosition()
-	{
-		//Emoji z position should be -2. Camera position is 0,0,-10f thus -10 + 8 = -2. 
-		Vector3 tempMousePosition = new Vector3(Input.mousePosition.x,Input.mousePosition.y,8f);
-		return Camera.main.ScreenToWorldPoint(tempMousePosition);
-	}
-
 	void ResumeTickingStats()
 	{
 		int totalTicks = 0;
@@ -347,35 +202,6 @@ public class Emoji : MonoBehaviour {
 		triggerFall.IgnoreCollision();
 		triggerFall.isFalling = false;
 	}
-
-	const string _OnTap = "OnTap";
-	IEnumerator OnTap()
-	{
-		yield return new WaitForSeconds(0.2f);
-		isDoubleTap = false;
-	}
-
-	//interactions
-	const string _HoldDelay = "HoldDelay";
-	IEnumerator HoldDelay(Vector3 destination)
-	{
-		yield return new WaitForSeconds(1f);
-		flagHold = true;
-
-		thisRigidbody.simulated = false;
-		body.thisCollider.enabled = false;
-		triggerFall.ClearColliderList(); //must be fixed!
-
-		Vector3 currentPosition = transform.position;
-
-		float t = 0;
-		while(t < 1f){
-			transform.position = Vector3.Lerp(currentPosition,getEmojiPositionOnHold(getTouchToWorldPosition()),t);
-			t += Time.deltaTime*6f;
-			yield return new WaitForSeconds(Time.deltaTime);
-		}
-		transform.position = getEmojiPositionOnHold(getTouchToWorldPosition());
-	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -387,7 +213,7 @@ public class Emoji : MonoBehaviour {
 			timeOnPause = DateTime.Now;
 		}
 		else{
-			ResumeTickingStats();
+//			ResumeTickingStats();
 		}
 	}
 
