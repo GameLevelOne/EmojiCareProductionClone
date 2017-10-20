@@ -4,18 +4,19 @@ using UnityEngine;
 public class EmojiPlayerInput : MonoBehaviour {
 	public bool interactable;
 	public Emoji emoji;
-	public Transform emojiTransform;
-	public EmojiBody body;
+
 
 	bool flagTapCooldown = false;
 	public bool flagHold = false;
 	public bool flagStroke = false;
-	bool flagTouch = false;
 	int tapCounter = 0;
+
+	float emojiXPos;
 
 	#region event trigger
 	public void PointerClick()
 	{
+		print("CLICK");
 		int animDelay = 0;
 		if(interactable){
 			if(!flagHold && !flagStroke){
@@ -50,13 +51,16 @@ public class EmojiPlayerInput : MonoBehaviour {
 					}
 				}
 			}
+			StopCoroutine(_HoldDelay);
+			flagHold = false;
+			flagStroke = false;
 		}
 	}
 		
-	public void PointerEnter()
+	public void PointerDown()
 	{
 		if(interactable){
-			if(!flagTouch) StartCoroutine(_HoldDelay,getTouchToWorldPosition());
+			StartCoroutine(_HoldDelay,getTouchToWorldPosition());
 		}
 	}
 
@@ -72,11 +76,13 @@ public class EmojiPlayerInput : MonoBehaviour {
 	public void BeginDrag()
 	{
 		if(interactable){
-			flagTouch = true;
 			if(!flagHold){
 				StopCoroutine(_HoldDelay);
 				flagStroke = true;
 				print("START STROKE");
+			}else{
+				emojiXPos = transform.position.x;
+				emoji.triggerFall.ClearColliderList();
 			}
 		}
 	}
@@ -85,9 +91,11 @@ public class EmojiPlayerInput : MonoBehaviour {
 	{
 		if(interactable){
 			if(flagHold){
+				print("HOLDING");
 				Hold();
+				CheckShake();
 			}else if(flagStroke){
-				print("STROKE");
+				print("STROKING");
 				Stroke();
 			}
 		}
@@ -96,9 +104,9 @@ public class EmojiPlayerInput : MonoBehaviour {
 	public void EndDrag()
 	{
 		if(interactable){
-			flagTouch = false;
 			if(flagHold){
 				flagHold = false;
+				StartCoroutine(_StartFalling);
 				print("END HOLD");
 			}else if(flagStroke){
 				flagStroke = false;
@@ -109,11 +117,29 @@ public class EmojiPlayerInput : MonoBehaviour {
 	#endregion
 
 	#region mechanics
+	void StartHold()
+	{
+		emoji.body.thisCollider.enabled = false;
+		emoji.thisRigidbody.simulated = false;
+	}
+
 	void Hold()
 	{
 		Vector3 touchPos = getTouchToWorldPosition();
 		Vector3 emojiHoldPos = new Vector3(touchPos.x,touchPos.y+0.5f,touchPos.z);
-		emojiTransform.position = emojiHoldPos;
+		transform.position = emojiHoldPos;
+	}
+
+	void EndHold()
+	{
+		emoji.body.thisCollider.enabled = true;
+		emoji.thisRigidbody.velocity = Vector2.zero;
+		emoji.thisRigidbody.simulated = true;
+	}
+
+	void CheckShake()
+	{
+		
 	}
 
 	void Stroke(){}
@@ -153,26 +179,35 @@ public class EmojiPlayerInput : MonoBehaviour {
 		yield return new WaitForSeconds(1.5f);
 		flagHold = true;
 
-		body.thisCollider.enabled = false;
+		emoji.body.thisCollider.enabled = false;
 		emoji.thisRigidbody.simulated = false;
 
-		Vector3 currentPos = emojiTransform.position;
+		Vector3 currentPos = transform.position;
 		Vector3 targetPos = new Vector3(destination.x,destination.y+0.5f,destination.z);
 
 		//animation here
 
 		float t = 0;
 		while(t < 1f){
-			emojiTransform.position = Vector3.Lerp(currentPos,targetPos,t);
+			transform.position = Vector3.Lerp(currentPos,targetPos,t);
 			t+= Time.deltaTime*6;
 			yield return new WaitForSeconds(Time.deltaTime);
 		}
-		emojiTransform.position = targetPos;
+		transform.position = targetPos;
+	}
+
+	const string _StartFalling = "StartFalling";
+	IEnumerator StartFalling()
+	{
+		yield return null;
+		emoji.triggerFall.IgnoreCollision();
+		EndHold();
 	}
 
 	const string _LockInteractions = "LockInteractions";
 	IEnumerator LockInteractions(int cooldown)
 	{
+		print("INTERACTIONS ARE LOCKED!");
 		interactable = false;
 		yield return new WaitForSeconds(cooldown);
 		interactable = true;

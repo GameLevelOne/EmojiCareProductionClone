@@ -376,21 +376,6 @@ public class Emoji : MonoBehaviour {
 		}
 		transform.position = getEmojiPositionOnHold(getTouchToWorldPosition());
 	}
-
-	const string _LockInteractions = "LockInteractions";
-	IEnumerator LockInteractions()
-	{
-		interactable = false;
-		yield return new WaitForSeconds(5f);
-		interactable = true;
-	}
-
-	const string _DelayResetShakeCounter = "DelayResetShakeCounter";
-	IEnumerator DelayResetShakeCounter()
-	{
-		yield return new WaitForSeconds(0.35f);
-		shakeCounter = 0;
-	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 
