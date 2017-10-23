@@ -2,6 +2,14 @@
 using UnityEngine;
 using System;
 
+public enum EmojiStatsState{
+	Hunger,
+	Hygiene,
+	Happiness,
+	Stamina,
+	Health
+}
+
 public class EmojiStats {
 	#region attributes
 	//constructor
@@ -17,7 +25,7 @@ public class EmojiStats {
 	float maxStatValue;
 	float emojiModifier;
 	float roomModifier = 0f;
-
+	public bool Debug = false;
 	/// <summary>
 	/// for PanelStatsManager, GET.
 	/// </summary>
@@ -30,6 +38,10 @@ public class EmojiStats {
 		get{return maxStatValue;}
 	}
 
+	public float statsModifier{
+		set{emojiModifier = value;}
+	}
+
 	public float totalModifier{
 		get{return (emojiModifier + roomModifier);}
 	}
@@ -37,12 +49,17 @@ public class EmojiStats {
 	public float RoomModifier{
 		set{roomModifier = value;}
 	}
+		
+	public float DebugMultiplier{
+		get{return Debug ? 150f : 1f;}
+	}
+
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
 	public void TickStats()
 	{
-		StatValue += (emojiModifier + roomModifier);
+		StatValue += (emojiModifier + roomModifier) * DebugMultiplier;
 
 		if(StatValue <= 0) StatValue = 0;
 		else if(StatValue >= maxStatValue) StatValue = maxStatValue;

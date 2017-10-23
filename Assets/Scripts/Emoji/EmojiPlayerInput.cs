@@ -2,6 +2,7 @@
 using UnityEngine;
 
 public class EmojiPlayerInput : MonoBehaviour {
+	#region attributes
 	public delegate void EmojiPouting();
 	public event EmojiPouting OnEmojiPouting;
 
@@ -13,6 +14,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 	public bool flagHold = false;
 	public bool flagStroke = false;
 	public bool flagTouching = false;
+	public bool flagFalling = false;
 	int tapCounter = 0;
 
 	float emojiXPos;
@@ -20,20 +22,8 @@ public class EmojiPlayerInput : MonoBehaviour {
 	float touchX;
 	Vector2 shakeVector;
 	int shakeCounter = 0;
-
-	//SEMENTARA
-//	IEnumerator Start()
-//	{
-//		while(true){
-//			yield return new WaitForSeconds(1);
-//			if(interactable) if(emoji.emojiExpressions.currentExpression != EmojiExpressionState.EATING)  {
-//				Debug.Log("Set Eating");
-//				emoji.emojiExpressions.SetExpression(EmojiExpressionState.EATING,2);	
-//			}
-//		}
-//	}
-
-
+	#endregion
+//-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region event trigger		
 	public void PointerDown()
 	{
@@ -99,7 +89,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 		}
 	}
 	#endregion
-
+//-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
 	void Poke()
 	{
@@ -213,7 +203,15 @@ public class EmojiPlayerInput : MonoBehaviour {
 		return Camera.main.ScreenToWorldPoint(tempMousePosition);
 	}
 	#endregion
-
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+	#region public modules
+	public void Landing()
+	{
+		flagFalling = false;
+		emoji.emojiExpressions.ResetExpressionDuration();
+	}
+	#endregion
+//-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region coroutines
 	const string _TapCooldown = "TapCooldown";
 	IEnumerator TapCooldown()
@@ -255,7 +253,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 			
 			transform.position = Vector3.Lerp(currentPos,touchTargetPosition,t);
 			t+= Time.deltaTime*5;
-			yield return new WaitForSeconds(Time.deltaTime);
+			yield return null;
 		}
 		transform.position = touchTargetPosition;
 		shakeVector = new Vector2(touchTargetPosition.x,touchTargetPosition.y);
@@ -266,6 +264,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 	const string _Falling = "Falling";
 	IEnumerator Falling()
 	{
+		flagFalling = true;
 		emoji.body.thisCollider.enabled = true;
 		emoji.thisRigidbody.velocity = Vector2.zero;
 		emoji.thisRigidbody.simulated = true;
@@ -292,4 +291,5 @@ public class EmojiPlayerInput : MonoBehaviour {
 		yield return null;
 	}
 	#endregion
+//-------------------------------------------------------------------------------------------------------------------------------------------------
 }

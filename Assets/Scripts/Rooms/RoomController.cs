@@ -78,6 +78,10 @@ public class RoomController : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
+	public void PointerDown()
+	{
+		PlayerData.Instance.PlayerEmoji.body.CancelBouncing();
+	}
 
 	//event triggers
 	public void BeginDrag()
@@ -189,7 +193,7 @@ public class RoomController : MonoBehaviour {
 		transform.position = endPos;
 		snapping = false;
 
-		PlayerData.Instance.PlayerEmoji.emojiExpressions.ResetExpressionDuration();
+		PlayerData.Instance.PlayerEmoji.transform.parent = rooms[(int)currentRoom].transform;
 		PlayerData.Instance.PlayerEmoji.body.BounceToCurrentRoom((int)currentRoom);
 
 		yield return null;

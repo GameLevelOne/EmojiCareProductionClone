@@ -31,7 +31,6 @@ public class Emoji : MonoBehaviour {
 	public EmojiPlayerInput playerInput;
 	public EmojiSO emojiBaseData;
 
-
 	[Header("")]
 	public string emojiName;
 	public EmojiStats hunger, hygiene,happiness,stamina, health;
@@ -48,6 +47,12 @@ public class Emoji : MonoBehaviour {
 		get{return DateTime.Parse(PlayerPrefs.GetString(PlayerPrefKeys.Player.TIME_ON_PAUSE));}
 		set{PlayerPrefs.SetString(PlayerPrefKeys.Player.TIME_ON_PAUSE,value.ToString());}
 	}
+
+	//stats
+	const float statsTresholdHigh = 0.9f;
+	const float statsTresholdMed = 0.4f;
+	const float statsTresholdLow = 0.2f;
+	float[] healthTick = new float[]{0.0001f,0.0003f,0.0006f,0.0012f};
 
 	bool isTickingStat = false;
 	bool hasInit = false;
@@ -68,8 +73,9 @@ public class Emoji : MonoBehaviour {
 	public void Init()
 	{
 		if(!hasInit){
-//			InitEmojiStats();
 			hasInit = true;
+			InitEmojiStats();
+			InitEmojiExpression();
 		}
 	}
 
@@ -95,23 +101,14 @@ public class Emoji : MonoBehaviour {
 		}
 
 		if(!emojiDead){ 
-			StartCoroutine(coroutineTickingStats);
-			if(OnUpdateStatsToExpression != null) 
-				OnUpdateStatsToExpression(
-					hunger.StatValue	/ hunger.MaxStatValue,
-					hygiene.StatValue	/ hygiene.MaxStatValue,
-					happiness.StatValue	/ happiness.MaxStatValue,
-					stamina.StatValue	/ stamina.MaxStatValue,
-					health.StatValue	/ health.MaxStatValue
-				);
+			StartCoroutine(_TickingStats);
 		}
 
 	}
 
 	void InitEmojiExpression()
 	{
-		emojiExpressions.SetExpression(EmojiExpressionState.DEFAULT,0); //sementara
-//		emojiExpressions.unlockedExpressions.Add(EmojiExpressionState.DEFAULT);
+		emojiExpressions.SetExpression(EmojiExpressionState.DEFAULT,0);
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -129,8 +126,7 @@ public class Emoji : MonoBehaviour {
 			if(emojiDead) break;
 			TickStats();
 		}
-
-		StartCoroutine(coroutineTickingStats);
+		if(!emojiDead)	StartCoroutine(_TickingStats);
 	}
 
 	void TickStats()
@@ -139,17 +135,7 @@ public class Emoji : MonoBehaviour {
 		hygiene.TickStats();
 		happiness.TickStats();
 		stamina.TickStats();
-
-		if(hunger.StatValue <= 0f || hygiene.StatValue <= 0f || happiness.StatValue <= 0f || stamina.StatValue <= 0f){
-			health.TickStats();
-
-			if(health.StatValue <= 0f){
-				Debug.Log("DEAD");
-				emojiDead = true;
-				if(OnEmojiDead != null) OnEmojiDead();
-				return;
-			}
-		}
+		TickHealth();
 
 		if(OnUpdateStatsToExpression != null) 
 			OnUpdateStatsToExpression(
@@ -159,6 +145,38 @@ public class Emoji : MonoBehaviour {
 				stamina.StatValue	/ stamina.MaxStatValue,
 				health.StatValue	/ health.MaxStatValue
 			);
+	}
+
+	void TickHealth()
+	{
+		float hungerValue = hunger.StatValue/hunger.MaxStatValue;
+		float hygieneValue = hygiene.StatValue/hygiene.MaxStatValue;
+		float happinessValue = happiness.StatValue/happiness.MaxStatValue;
+		float staminaValue = stamina.StatValue/stamina.MaxStatValue;
+
+		int LowStatsCounter = 0;
+		if(hungerValue < statsTresholdLow) LowStatsCounter++;
+		if(hygieneValue < statsTresholdLow) LowStatsCounter++;
+		if(happinessValue < statsTresholdLow) LowStatsCounter++;
+		if(staminaValue < statsTresholdLow) LowStatsCounter++;
+
+		if(LowStatsCounter < 2){
+			int highStatsCounter = 0;
+			if(hungerValue >= statsTresholdHigh) highStatsCounter++;
+			if(hygieneValue >= statsTresholdHigh) highStatsCounter++;
+			if(happinessValue >= statsTresholdHigh) highStatsCounter++;
+			if(staminaValue >= statsTresholdHigh) highStatsCounter++;
+
+			if(highStatsCounter > 0){
+				health.statsModifier = healthTick[highStatsCounter-1];
+			}else{
+				health.statsModifier = 0f;
+			}
+		}else{
+			health.statsModifier = -1 * healthTick[LowStatsCounter-1];
+		}
+
+		health.TickStats();
 	}
 
 	int GetTotalTicks(TimeSpan duration)
@@ -183,11 +201,21 @@ public class Emoji : MonoBehaviour {
 		stamina.ModStats(mod[3]);
 		health.ModStats(mod[4]);
 	}
+
+	public void SwitchDebugMode(bool debug)
+	{
+		hunger.Debug = debug;
+		hygiene.Debug = debug;
+		happiness.Debug = debug;
+		stamina.Debug = debug;
+		health.Debug = debug;
+
+	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region coroutines
-	const string coroutineTickingStats = "_StartTickingStats";
-	IEnumerator _StartTickingStats()
+	const string _TickingStats = "StartTickingStats";
+	IEnumerator StartTickingStats()
 	{
 		isTickingStat = true;
 
@@ -211,7 +239,7 @@ public class Emoji : MonoBehaviour {
 	{
 		if(isPaused){ 
 			isTickingStat = false;
-			StopCoroutine(coroutineTickingStats);
+			StopCoroutine(_TickingStats);
 			timeOnPause = DateTime.Now;
 		}
 		else{
@@ -222,7 +250,7 @@ public class Emoji : MonoBehaviour {
 	void OnApplicationQuit()
 	{
 		isTickingStat = false;
-		StopCoroutine(coroutineTickingStats);
+		StopCoroutine(_TickingStats);
 		lastTimePlayed = DateTime.Now;
 	}
 }
