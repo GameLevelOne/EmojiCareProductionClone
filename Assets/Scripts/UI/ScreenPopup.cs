@@ -14,7 +14,8 @@ public enum PopupEventType{
 	AbleToSendOff,
 	NotAbleToSendOff,
 	BuyItem,
-	NotAbleToBuyEmoji
+	NotAbleToBuyEmoji,
+	AlbumLocked
 }
 
 public class ScreenPopup : BaseUI {
@@ -93,7 +94,9 @@ public class ScreenPopup : BaseUI {
 			return "Cannot send off yet";
 		} else if(eventType == PopupEventType.NotAbleToBuyEmoji){
 			return "Not enough gem";
-		} 
+		} else if(eventType == PopupEventType.AlbumLocked){
+			return "Finish your first emoji to unlock this menu";
+		}
 		else{
 			return "";
 		}

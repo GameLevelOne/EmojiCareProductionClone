@@ -41,7 +41,6 @@ public class ScreenStats : BaseUI {
 
 	void UpdateStatsValue(){
 		Emoji currentData = PlayerData.Instance.PlayerEmoji;
-
 		float ratioHunger = currentData.hunger.StatValue / currentData.hunger.MaxStatValue;
 		float ratioHygiene = currentData.hygiene.StatValue / currentData.hygiene.MaxStatValue;
 		float ratioHappiness = currentData.happiness.StatValue / currentData.happiness.MaxStatValue;

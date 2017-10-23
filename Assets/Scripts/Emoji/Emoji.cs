@@ -68,7 +68,7 @@ public class Emoji : MonoBehaviour {
 	public void Init()
 	{
 		if(!hasInit){
-//			InitEmojiStats();
+			InitEmojiStats();
 			hasInit = true;
 		}
 	}
@@ -112,6 +112,7 @@ public class Emoji : MonoBehaviour {
 	{
 		emojiExpressions.SetExpression(EmojiExpressionState.DEFAULT,0); //sementara
 		emojiExpressions.unlockedExpressions.Add(EmojiExpressionState.DEFAULT);
+		emojiExpressions.totalExpression = System.Enum.GetValues(typeof(EmojiExpressionState)).Length;
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------

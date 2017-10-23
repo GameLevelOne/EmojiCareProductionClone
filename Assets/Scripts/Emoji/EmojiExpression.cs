@@ -82,7 +82,7 @@ public class EmojiExpression {
 	public Animator faceAnim;
 	public Animator effectAnim;
 	public float expressionProgress = 0f;
-	public int totalExpression = 40;
+	public int totalExpression = 60;
 	public bool isExpressing = false;
 	[Header("DON'T MODIFY THIS")]
 	public float currentDuration = 0f;
