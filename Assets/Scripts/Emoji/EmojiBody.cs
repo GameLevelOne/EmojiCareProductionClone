@@ -68,11 +68,10 @@ public class EmojiBody : MonoBehaviour {
 			Physics2D.IgnoreCollision(thisCollider,other.collider,true);
 		} 
 		if(other.gameObject.tag == Tags.BED){
-			parent.emojiExpressions.ResetExpressionDuration();
-			parent.emojiExpressions.SetExpression(EmojiExpressionState.SLEEP,-1);
-		}else{
-			parent.emojiExpressions.ResetExpressionDuration();
-			parent.emojiExpressions.SetExpression(EmojiExpressionState.DEFAULT,0);
+//			parent.emojiExpressions.ResetExpressionDuration();
+//			parent.emojiExpressions.SetExpression(EmojiExpressionState.SLEEP,-1);
+			//set sleep
+
 		}
 	}
 
@@ -117,10 +116,11 @@ public class EmojiBody : MonoBehaviour {
 	IEnumerator ResetFaceExpression()
 	{
 		while(parent.emojiExpressions.currentDuration >= 0){
+			Debug.Log("CurDur: "+parent.emojiExpressions.currentDuration);
 			parent.emojiExpressions.currentDuration -= Time.deltaTime;
+			yield return null;
 		}
 		parent.emojiExpressions.currentDuration = 0;
-		yield return null;
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------

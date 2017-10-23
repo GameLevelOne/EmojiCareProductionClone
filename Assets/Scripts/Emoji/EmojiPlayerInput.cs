@@ -22,13 +22,16 @@ public class EmojiPlayerInput : MonoBehaviour {
 	int shakeCounter = 0;
 
 	//SEMENTARA
-	IEnumerator Start()
-	{
-		while(true){
-			yield return new WaitForSeconds(1);
-			if(interactable) emoji.emojiExpressions.SetExpression(EmojiExpressionState.DEFAULT,0);
-		}
-	}
+//	IEnumerator Start()
+//	{
+//		while(true){
+//			yield return new WaitForSeconds(1);
+//			if(interactable) if(emoji.emojiExpressions.currentExpression != EmojiExpressionState.EATING)  {
+//				Debug.Log("Set Eating");
+//				emoji.emojiExpressions.SetExpression(EmojiExpressionState.EATING,2);	
+//			}
+//		}
+//	}
 
 
 	#region event trigger		
@@ -163,12 +166,21 @@ public class EmojiPlayerInput : MonoBehaviour {
 		}else{//fast move
 			StopCoroutine(_ShakeCooldown);
 			shakeCounter++;
-			if(shakeCounter >= 8){
-				if(emoji.emojiExpressions.currentExpression != EmojiExpressionState.DIZZY)
+			print("ShakeCounter = "+shakeCounter);
+			if(shakeCounter >= 8 && shakeCounter < 20){
+				
+				if(emoji.emojiExpressions.currentExpression != EmojiExpressionState.DIZZY && emoji.emojiExpressions.currentExpression != EmojiExpressionState.HOLD_BARF){
+					emoji.emojiExpressions.ResetExpressionDuration();
 					emoji.emojiExpressions.SetExpression(EmojiExpressionState.DIZZY,-1f);
+				}
+					
 			}else if(shakeCounter >= 20){
-				if(emoji.emojiExpressions.currentExpression != EmojiExpressionState.HOLD_BARF)
+				if(emoji.emojiExpressions.currentExpression != EmojiExpressionState.HOLD_BARF){
+
+					emoji.emojiExpressions.ResetExpressionDuration();
 					emoji.emojiExpressions.SetExpression(EmojiExpressionState.HOLD_BARF,-1f);
+				}
+					
 			}
 			StartCoroutine(_ShakeCooldown);
 //			print("ShakeCounter = "+shakeCounter);

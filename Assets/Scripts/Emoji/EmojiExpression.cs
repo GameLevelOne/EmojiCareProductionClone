@@ -170,6 +170,7 @@ public class EmojiExpression {
 	/// </summary>
 	public void ResetExpressionDuration()
 	{
+		Debug.Log("ResetDuration");
 		currentDuration = 0f;
 	}
 	#endregion

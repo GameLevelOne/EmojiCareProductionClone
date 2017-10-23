@@ -111,7 +111,7 @@ public class Emoji : MonoBehaviour {
 	void InitEmojiExpression()
 	{
 		emojiExpressions.SetExpression(EmojiExpressionState.DEFAULT,0); //sementara
-		emojiExpressions.unlockedExpressions.Add(EmojiExpressionState.DEFAULT);
+//		emojiExpressions.unlockedExpressions.Add(EmojiExpressionState.DEFAULT);
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
