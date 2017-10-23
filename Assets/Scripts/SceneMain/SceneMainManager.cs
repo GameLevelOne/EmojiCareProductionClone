@@ -4,7 +4,7 @@ using UnityEngine;
 public class SceneMainManager : MonoBehaviour {
 	#region attributes
 	public RoomController roomController;
-	public EmojiExpressionController emojiExpressionController;
+	public EmojiStatsExpressionController statsExpressionController;
 	public Fader fader;
 
 	//sementara
@@ -15,7 +15,7 @@ public class SceneMainManager : MonoBehaviour {
 	#region initialization
 	void Start()
 	{
-//		PlayerPrefs.DeleteAll();
+		PlayerPrefs.DeleteAll();
 		InitMain();
 	}
 
@@ -26,10 +26,11 @@ public class SceneMainManager : MonoBehaviour {
 
 	void InitMain()
 	{
-		PlayerData.Instance.emojiParentTransform = roomController.transform;
+		
+		PlayerData.Instance.emojiParentTransform = roomController.rooms[(int)roomController.currentRoom].transform;
 		PlayerData.Instance.InitPlayerEmoji(emojiSamples[PlayerData.Instance.PlayerEmojiType]);
+		statsExpressionController.Init();
 		roomController.Init();
-		emojiExpressionController.Init();
 		roomController.RegisterLockRoomEvent();
 		if(AdmobManager.Instance) AdmobManager.Instance.ShowBanner();
 	}
@@ -41,7 +42,11 @@ public class SceneMainManager : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
-	
+	public void OnToggleDebug(bool debug)
+	{
+		print("debug = "+debug);
+		PlayerData.Instance.PlayerEmoji.SwitchDebugMode(debug);
+	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------	
 }

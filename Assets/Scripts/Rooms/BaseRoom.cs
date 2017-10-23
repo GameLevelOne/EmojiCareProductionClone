@@ -24,6 +24,7 @@ public class BaseRoom : MonoBehaviour {
 	#region mechanics
 	public void InitRoom()
 	{
+		print(furnitures.Length);
 		if(furnitures.Length == 0) return;
 
 		furnitureDefaultPosition = new Vector3[furnitures.Length];
