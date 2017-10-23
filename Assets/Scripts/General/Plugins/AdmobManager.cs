@@ -5,7 +5,7 @@ using admob;
 
 public class AdmobManager : MonoBehaviour {
 	static AdmobManager instance;
-	string androidBannerID;
+	string androidBannerID = "ca-app-pub-3940256099942544/6300978111";
 	string iosBannerID;
 
 	Admob ad;

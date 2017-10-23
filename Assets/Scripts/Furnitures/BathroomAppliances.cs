@@ -2,7 +2,7 @@
 using UnityEngine;
 
 public class BathroomAppliances : MovableFurniture {
-	public delegate void ApplyEmoji(FaceExpression expression);
+	public delegate void ApplyEmoji(EmojiExpressionState expression);
 	public event ApplyEmoji OnApplyEmoji;
 
 	#region attributes
@@ -28,7 +28,7 @@ public class BathroomAppliances : MovableFurniture {
 	protected virtual void OnTriggerEnter2D(Collider2D other)
 	{
 		if(other.tag == Tags.EMOJI){
-			if(OnApplyEmoji != null) OnApplyEmoji(FaceExpression.Blushed);
+//			if(OnApplyEmoji != null) OnApplyEmoji(EmojiExpressionState.Blushed);
 		}
 	}
 

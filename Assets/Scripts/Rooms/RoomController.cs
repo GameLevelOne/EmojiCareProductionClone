@@ -13,12 +13,13 @@ public class RoomController : MonoBehaviour {
 
 	BoxCollider2D thisCollider;
 	public RoomType currentRoom = RoomType.LivingRoom;
+	public GameObject danceMat; //SEMENTARA
 
 	int roomTotal = 0;
 	float distance = 0;
 	float xOnBeginDrag;
 	bool snapping = false;
-	bool interactable = true;
+	public bool interactable = true;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initializations
@@ -40,11 +41,24 @@ public class RoomController : MonoBehaviour {
 	public void RegisterLockRoomEvent()
 	{
 		PlayerData.Instance.PlayerEmoji.body.OnEmojiBouncingToCurrentRoom += OnEmojiBouncingToCurrentRoom;
+		PlayerData.Instance.PlayerEmoji.playerInput.OnEmojiPouting += OnEmojiPouting;
+	}
+
+	public void OnDestroy()
+	{
+		PlayerData.Instance.PlayerEmoji.body.OnEmojiBouncingToCurrentRoom -= OnEmojiBouncingToCurrentRoom;
+		PlayerData.Instance.PlayerEmoji.playerInput.OnEmojiPouting -= OnEmojiPouting;
+	}
+
+	void OnEmojiPouting ()
+	{
+		print("LOCK ROOM INTERACTION 10 SECS");
+		StartCoroutine(_lockRoomChanging,10f);
 	}
 
 	void OnEmojiBouncingToCurrentRoom ()
 	{
-		StartCoroutine(_lockRoomChanging);	
+		StartCoroutine(_lockRoomChanging,1f);	
 	}
 
 	/// <summary>
@@ -93,7 +107,8 @@ public class RoomController : MonoBehaviour {
 			if(!snapping){
 				Vector3 startPos = transform.position;
 				Vector3 endpos = new Vector3(getXEndPosition(startPos.x),0f,0f);
-
+				print("StartPos = "+startPos);
+				print("EndPos = "+endpos);
 				StartCoroutine(SmoothSnap(startPos,endpos));
 			}
 		}
@@ -162,6 +177,8 @@ public class RoomController : MonoBehaviour {
 		currentRoom = GetCurrentRoom(endPos.x);
 
 		foreach(BaseRoom r in rooms) if(r != null) r.OnRoomChanged(currentRoom);
+		if(currentRoom != RoomType.Playroom) danceMat.SetActive(false);
+		else danceMat.SetActive(true);
 
 		while(t <= 1){
 			t += Time.fixedDeltaTime * snapSpeed;
@@ -179,10 +196,10 @@ public class RoomController : MonoBehaviour {
 	}
 
 	const string _lockRoomChanging = "LockRoomChanging";
-	IEnumerator LockRoomChanging()
+	IEnumerator LockRoomChanging(float duration)
 	{
 		interactable = false;
-		yield return new WaitForSeconds(1f);
+		yield return new WaitForSeconds(duration);
 		interactable = true;
 	}
 	#endregion

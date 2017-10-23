@@ -3,47 +3,67 @@ using System.Collections;
 using UnityEngine;
 using SimpleJSON;
 
-public enum FaceExpression{
-	Default = 1,//01
-	Smile,		//02
-	Yummy,		//03
-	Hungry,		//04
-	Starving,	//05
-	Blushed,	//06
-	Embarrassed,//07
-	Worried,	//08
-	Excited,	//09
-	Upset,		//10
-	Cry,		//11
-	Lively,		//12
-	Fidget,		//13
-	Sick,		//14
-	Energized,	//15
-	Weary,		//16
-	Exhausted,	//17
-	Eat,		//18
-	Oh,			//19
-	Content,	//20
-	Eyeroll,	//21
-	Whistle,	//22
-	Amused,		//23
-	Blessed,	//24
-	Sleep,		//25
-	Nerd,		//26
-	Cool,		//27
-	Happy,		//28
-	Calm,		//29
-	Hearty,		//30
-	Mouthzip,	//31
-	Terrified,	//32
-	Kisswink,	//33
-	Lick,		//34
-	Overjoyed,	//35
-	Glee,		//36
-	Angry,		//37
-	Drool,		//38
-	Dizzy,		//39
-	Surprised	//40
+public enum EmojiExpressionState {
+	DEFAULT,
+	SLEEP,
+	CARESSED,
+	HOLD,
+	WORRIED,
+	AFRAID,
+	DIZZY,
+	HOLD_BARF,
+	HUMMING,
+	FALL,
+	CHANGE_ROOM,
+	POKED,
+	ANNOYED,
+	POUTING,
+	AWAKE_LAZILY,
+	AWAKE_NORMALLY,
+	AWAKE_ENERGETICALLY,
+	EATING,
+	REJECT,
+	BATHING,
+	PLAYING_GUITAR,
+	BORED,
+	HAPPY,
+	ANGERED,
+	EATING_SADLY,
+	HURT,
+	CURIOUS,
+	WHISTLE,
+	LIKE,
+	NERD,
+	LANDING,
+	SAD_SMILE,
+	CRY,
+	HEARTY,
+	SOBBING,
+	ANGELIC,
+	SIGH,
+	DEVILISH,
+	MOUTHZIP,
+	SURPRISED,
+	SCARED,
+	COOL,
+	SHAME,
+	STARVING,
+	HUNGRY,
+	FULL,
+	POLLUTED,
+	DIRTY,
+	SPOTLESS,
+	GRIEVING,
+	MAD,
+	SAD,
+	ANGRY,
+	BLISS,
+	EXHAUSTED,
+	TIRED,
+	HYPED,
+	SUFFERING,
+	SICK,
+	FIT
 }
 
 [System.Serializable]
@@ -60,14 +80,14 @@ public class EmojiExpression {
 	[Header("Expressions")]
 	public Animator bodyAnim;
 	public Animator faceAnim;
+	public Animator effectAnim;
 	public float expressionProgress = 0f;
 	public int totalExpression = 40;
 	public bool isExpressing = false;
 	[Header("DON'T MODIFY THIS")]
 	public float currentDuration = 0f;
-	public FaceExpression currentExpression = FaceExpression.Default;
-	public FaceExpression staticExpression;
-	public List<FaceExpression> unlockedExpressions = new List<FaceExpression>();
+	public EmojiExpressionState currentExpression = EmojiExpressionState.DEFAULT;
+	public List<EmojiExpressionState> unlockedExpressions = new List<EmojiExpressionState>();
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
@@ -75,11 +95,11 @@ public class EmojiExpression {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
-	bool IsNewExpression(FaceExpression expression)
+	bool IsNewExpression(EmojiExpressionState expression)
 	{
 		if(unlockedExpressions.Count <= 0) return true;
 		else{
-			foreach(FaceExpression exp in unlockedExpressions){
+			foreach(EmojiExpressionState exp in unlockedExpressions){
 				if(exp == expression) return false;
 			}
 			return true;
@@ -100,8 +120,16 @@ public class EmojiExpression {
 
 	}
 
-	public void SetExpression(FaceExpression expression, float duration)
+	/// <summary>
+	/// <para>Duration:</para>
+	/// <para>-1 = override other expressions, first priority</para>
+	/// <para>0 = static expressions</para>
+	/// <para>>0 = has duration, return to static expressions if duration reach 0</para>
+	/// </summary>
+	public void SetExpression(EmojiExpressionState expression, float duration)
 	{
+//		Debug.Log(expression+", "+duration+", "+currentDuration);
+
 		//check for unlocked expression
 		if(IsNewExpression(expression)){
 			unlockedExpressions.Add(expression);
@@ -111,26 +139,38 @@ public class EmojiExpression {
 		}
 
 		if(duration == -1f){ //sleep, bath, override other expressions
-
-			faceAnim.SetInteger(AnimatorParameters.Ints.FACE_STATE,(int)expression);
+			Debug.Log("A");
+			SetEmojiAnim((int)expression);
 			currentExpression = expression;
 			currentDuration = duration;
 
-		}else if(duration > 0 && currentDuration != -1f){ //non-static expression, have certain duration
-
-			faceAnim.SetInteger(AnimatorParameters.Ints.FACE_STATE,(int)expression);
+		}else if(currentDuration != -1f && duration > 0){ //non-static expression, have certain duration
+			Debug.Log("B");
+			SetEmojiAnim((int)expression);
 			currentExpression = expression;
 			currentDuration = duration;
-
 			if(OnChangeExpression != null) OnChangeExpression();
-		}else if(currentDuration == 0 && duration == 0){//static expression, like stats expression
 
-			faceAnim.SetInteger(AnimatorParameters.Ints.FACE_STATE,(int)expression);
+		}else if(currentDuration == 0 && duration == 0){//static expression, like stats expression
+			Debug.Log("C");
+			SetEmojiAnim((int)expression);
 			currentExpression = expression;
 			currentDuration = duration;
+
 		}
 	}
 
+	void SetEmojiAnim(int index)
+	{
+		bodyAnim.SetInteger(AnimatorParameters.Ints.EMOJI_ANIM_STATE,index);
+		faceAnim.SetInteger(AnimatorParameters.Ints.EMOJI_ANIM_STATE,index);
+		effectAnim.SetInteger(AnimatorParameters.Ints.EMOJI_ANIM_STATE,index);
+	}
+
+
+	/// <summary>
+	/// Reset overrided animation to static animation
+	/// </summary>
 	public void ResetExpressionDuration()
 	{
 		currentDuration = 0f;

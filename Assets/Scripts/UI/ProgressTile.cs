@@ -7,7 +7,7 @@ public class ProgressTile : MonoBehaviour {
 	public delegate void SelectExpression(Sprite item,string name,string condition,bool isLocked);
 	public static event SelectExpression OnSelectExpression;
 
-	public FaceExpression exprType;
+	public EmojiExpressionState exprType;
 	public Image expressionIcon;
 	string unlockCondition;
 	string expressionName;

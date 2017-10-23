@@ -6,6 +6,20 @@ using UnityEngine.UI;
 public class ScreenEditRooms : BaseUI {
 	public ScreenPopup screenPopup;
 
+	//register event on click furniture
+	void OnEnable(){
+
+	}
+
+	void OnDisable(){
+
+	}
+
+	void OnClickFurnitureItem(){
+		//laod furniture variant data
+		//display in UI
+	}
+
 	public override void InitUI ()
 	{
 		Debug.Log("edit room");	

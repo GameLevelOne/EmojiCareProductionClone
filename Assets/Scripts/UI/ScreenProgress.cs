@@ -39,7 +39,7 @@ public class ScreenProgress : BaseUI {
 		string condition = "";
 		string name = "";
 		currentEmojiData = PlayerData.Instance.PlayerEmoji;
-		List<FaceExpression> exprList = currentEmojiData.emojiExpressions.unlockedExpressions;
+		List<EmojiExpressionState> exprList = currentEmojiData.emojiExpressions.unlockedExpressions;
 
 		currentEmojiData.emojiExpressions.expressionProgress = (float)exprList.Count / (float)expressionTotalCount; 
 
@@ -57,7 +57,7 @@ public class ScreenProgress : BaseUI {
 			for(int j=0;j<tileWidth;j++){
 				GameObject obj = Instantiate(expressionBoxPrefab,contentBox,false) as GameObject;
 				obj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-160+j*105,500-i*105);
-				obj.GetComponent<ProgressTile>().exprType = (FaceExpression)exprTileIdx;
+				obj.GetComponent<ProgressTile>().exprType = (EmojiExpressionState)exprTileIdx;
 				obj.name = "Expr"+exprTileIdx.ToString();
 				condition = expressionIcons.GetExpressionUnlockCondition(currentEmojiData.emojiBaseData.emojiType,exprTileIdx);
 				name = expressionIcons.GetExpressionName(currentEmojiData.emojiBaseData.emojiType,exprTileIdx);
@@ -123,8 +123,8 @@ public class ScreenProgress : BaseUI {
 		}
 	}
 
-	void SortList(List<FaceExpression> list){
-		FaceExpression temp = FaceExpression.Default;
+	void SortList(List<EmojiExpressionState> list){
+		EmojiExpressionState temp = EmojiExpressionState.DEFAULT;
 		for(int i=1;i<list.Count;i++){
 			for(int j=0;j<i;j++){
 				if(list[i]<list[j]){
