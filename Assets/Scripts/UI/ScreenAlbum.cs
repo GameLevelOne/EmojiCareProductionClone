@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ScreenAlbum : BaseUI {
-
+	public ScreenPopup screenPopup;
 	public GameObject emojiBoxPrefab;
 	public RectTransform emojiContentBox;
 	public Scrollbar scrollbar;
@@ -104,5 +104,13 @@ public class ScreenAlbum : BaseUI {
 		PlayerPrefs.SetInt(PlayerPrefKeys.Player.EMOJI_RECORD_COUNT,currentRecordCount);
 
 		//set emoji status
+	}
+
+	public void ShowAlbum(){
+		if(currentRecordCount > 1){
+			ShowPanelInHotkey(this.gameObject);
+		} else{
+			screenPopup.ShowPopup(PopupType.Warning,PopupEventType.AlbumLocked,false,false);
+		}
 	}
 }

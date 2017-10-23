@@ -5,15 +5,15 @@ using UnityEngine.UI;
 
 public class ExpressionIcons : MonoBehaviour {
 
-	public Sprite[] emojiExpressionIcons = new Sprite[40];
-	public Sprite[] gumijiExpressionIcons = new Sprite[40];
-	public string[] emojiExpressionUnlockCondition = new string[40];
+	public Sprite[] emojiExpressionIcons = new Sprite[60];
+	public Sprite[] gumijiExpressionIcons = new Sprite[60];
+	public string[] emojiExpressionUnlockCondition = new string[60];
 
 	public Sprite GetExpressionIcon(EmojiType emojiType, int expression){
 		if(emojiType == EmojiType.Emoji){
-			return emojiExpressionIcons[expression-1];
+			return emojiExpressionIcons[expression];
 		} else if(emojiType == EmojiType.Gumiji){
-			return gumijiExpressionIcons[expression-1];
+			return gumijiExpressionIcons[expression];
 		}
 		else return emojiExpressionIcons[0]; //temp default
 	}

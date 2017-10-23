@@ -20,14 +20,12 @@ public class ScreenProgress : BaseUI {
 
 	public Sprite lockedExpression;
 
-	int expressionTotalCount = 2;
+	int expressionTotalCount;
 	int tileWidth = 4;
-	int tileHeight = 10;
+	int tileHeight = 15;
 	float expressionBoxWidth = 110f;
 	float contentBoxMarginX = 50f;
 	bool canSendOff = false;
-	string popupOpenTrigger = "PopupOpen";
-	string popupCloseTrigger = "PopupClose";
 	Emoji currentEmojiData;
 
 	public override void InitUI ()
@@ -40,6 +38,8 @@ public class ScreenProgress : BaseUI {
 		string name = "";
 		currentEmojiData = PlayerData.Instance.PlayerEmoji;
 		List<EmojiExpressionState> exprList = currentEmojiData.emojiExpressions.unlockedExpressions;
+
+		expressionTotalCount = currentEmojiData.emojiExpressions.totalExpression;
 
 		currentEmojiData.emojiExpressions.expressionProgress = (float)exprList.Count / (float)expressionTotalCount; 
 
