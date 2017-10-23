@@ -149,9 +149,9 @@ public class EmojiPlayerInput : MonoBehaviour {
 		Vector2 tempTouchWorldPos = new Vector2(getTouchToWorldPosition().x,getTouchToWorldPosition().y);
 		float factor = Mathf.Sqrt( Mathf.Pow(Mathf.Abs(tempTouchWorldPos.x - shakeVector.x),2) + Mathf.Pow(Mathf.Abs(tempTouchWorldPos.y - shakeVector.y),2) );
 
-		if(factor <= 3f){//slow move
+		if(factor <= 2f){//slow move
 
-		}else if(factor >3f && factor <= 6f){//medium move
+		}else if(factor >2f && factor <= 4f){//medium move
 
 		}else{//fast move
 			StopCoroutine(_ShakeCooldown);
