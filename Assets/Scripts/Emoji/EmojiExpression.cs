@@ -139,20 +139,17 @@ public class EmojiExpression {
 		}
 
 		if(duration == -1f){ //sleep, bath, override other expressions
-			Debug.Log("A");
 			SetEmojiAnim((int)expression);
 			currentExpression = expression;
 			currentDuration = duration;
 
 		}else if(currentDuration != -1f && duration > 0){ //non-static expression, have certain duration
-			Debug.Log("B");
 			SetEmojiAnim((int)expression);
 			currentExpression = expression;
 			currentDuration = duration;
 			if(OnChangeExpression != null) OnChangeExpression();
 
 		}else if(currentDuration == 0 && duration == 0){//static expression, like stats expression
-			Debug.Log("C");
 			SetEmojiAnim((int)expression);
 			currentExpression = expression;
 			currentDuration = duration;

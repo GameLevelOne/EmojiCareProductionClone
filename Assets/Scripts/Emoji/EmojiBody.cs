@@ -64,16 +64,16 @@ public class EmojiBody : MonoBehaviour {
 	//colliders
 	void OnCollisionEnter2D(Collision2D other)
 	{
-		
 		if(other.gameObject.tag == Tags.MOVABLE_FURNITURE){
 			Physics2D.IgnoreCollision(thisCollider,other.collider,true);
 		} 
 		if(other.gameObject.tag == Tags.BED){
-			//parent.emojiExpressions.SetExpression(FaceExpression.Sleep,-1);
+			parent.emojiExpressions.ResetExpressionDuration();
+			parent.emojiExpressions.SetExpression(EmojiExpressionState.SLEEP,-1);
+		}else{
+			parent.emojiExpressions.ResetExpressionDuration();
+			parent.emojiExpressions.SetExpression(EmojiExpressionState.DEFAULT,0);
 		}
-		parent.emojiExpressions.ResetExpressionDuration();
-		parent.emojiExpressions.SetExpression(EmojiExpressionState.DEFAULT,0);
-
 	}
 
 	//delegate events
