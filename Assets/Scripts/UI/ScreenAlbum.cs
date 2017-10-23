@@ -67,8 +67,6 @@ public class ScreenAlbum : BaseUI {
 		int tempIdx = 0;
 		emojiContentBox.sizeDelta = new Vector2 (0, ((float)tileHeight * boxSize) + contentBoxMarginX);
 
-		//emojiData.Add(EmojiType.Emoji);
-
 		for (int i = 0; i < tileHeight; i++) {
 			for (int j = 0; j < tileWidth; j++) {
 				GameObject obj = Instantiate (emojiBoxPrefab, emojiContentBox, false) as GameObject;
