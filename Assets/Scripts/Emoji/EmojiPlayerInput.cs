@@ -233,12 +233,14 @@ public class EmojiPlayerInput : MonoBehaviour {
 	{
 		emoji.emojiExpressions.SetExpression(EmojiExpressionState.EATING,3f);
 		StartCoroutine(_LockInteractions,3f);
+		emoji.body.OnEmojiEatOrReject(3f);
 	}
 
 	public void Reject()
 	{
 		emoji.emojiExpressions.SetExpression(EmojiExpressionState.REJECT,1.5f);
 		StartCoroutine(_LockInteractions,1.5f);
+		emoji.body.OnEmojiEatOrReject(1.5f);
 	}
 
 	public void Landing()
