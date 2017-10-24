@@ -173,7 +173,6 @@ public class EmojiExpression {
 			SetEmojiAnim((int)expression);
 			currentExpression = expression;
 			currentDuration = duration;
-
 		}
 	}
 

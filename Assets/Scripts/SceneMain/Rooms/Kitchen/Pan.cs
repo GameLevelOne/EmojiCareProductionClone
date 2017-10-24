@@ -65,7 +65,7 @@ public class Pan : TriggerableFurniture {
 
 	public void PointerClick()
 	{
-		ClearIngredient();
+		if(!isCooking) ClearIngredient();
 	}
 
 	IEnumerator StoveOn()
@@ -102,5 +102,6 @@ public class Pan : TriggerableFurniture {
 		cookingBar.SetActive(false);
 		isCooking = false;
 		StopAllCoroutines();
+		ClearIngredient();
 	}
 }

@@ -43,24 +43,37 @@ public class RoomController : MonoBehaviour {
 	public void RegisterLockRoomEvent()
 	{
 		PlayerData.Instance.PlayerEmoji.body.OnEmojiBouncingToCurrentRoom += OnEmojiBouncingToCurrentRoom;
+		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent += OnEmojiSleepEvent;
 		PlayerData.Instance.PlayerEmoji.playerInput.OnEmojiPouting += OnEmojiPouting;
+		PlayerData.Instance.PlayerEmoji.body.OnEmojiEatEvent += OnEmojiEatEvent;
 	}
 
+
+	void OnEmojiSleepEvent (bool sleeping)
+	{
+		interactable = !sleeping;
+	}
+		
 	public void OnDestroy()
 	{
 		PlayerData.Instance.PlayerEmoji.body.OnEmojiBouncingToCurrentRoom -= OnEmojiBouncingToCurrentRoom;
+		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent -= OnEmojiSleepEvent;
 		PlayerData.Instance.PlayerEmoji.playerInput.OnEmojiPouting -= OnEmojiPouting;
+	}
+
+	void OnEmojiEatEvent (float lockDuration)
+	{
+		LockInteraction(lockDuration);
 	}
 
 	void OnEmojiPouting ()
 	{
-		print("LOCK ROOM INTERACTION 10 SECS");
-		StartCoroutine(_lockRoomChanging,10f);
+		LockInteraction(10f);
 	}
 
 	void OnEmojiBouncingToCurrentRoom ()
 	{
-		StartCoroutine(_lockRoomChanging,1f);	
+		LockInteraction(1f);
 	}
 
 	/// <summary>
@@ -113,8 +126,8 @@ public class RoomController : MonoBehaviour {
 			if(!snapping){
 				Vector3 startPos = transform.position;
 				Vector3 endpos = new Vector3(getXEndPosition(startPos.x),0f,0f);
-				print("StartPos = "+startPos);
-				print("EndPos = "+endpos);
+//				print("StartPos = "+startPos);
+//				print("EndPos = "+endpos);
 				StartCoroutine(SmoothSnap(startPos,endpos));
 			}
 		}
@@ -159,6 +172,11 @@ public class RoomController : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
+	public void LockInteraction(float duration)
+	{
+		StartCoroutine(_lockRoomChanging,duration);
+	}
+
 	public void SetEditMode(bool editMode)
 	{
 		thisCollider.enabled = editMode;

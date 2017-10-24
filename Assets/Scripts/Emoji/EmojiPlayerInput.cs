@@ -29,25 +29,31 @@ public class EmojiPlayerInput : MonoBehaviour {
 	public void PointerDown()
 	{
 		if(interactable){
-			flagHold = false;
-			flagStroke = false;
-			flagTouching = true;
+			if(!flagSleeping){
+				flagHold = false;
+				flagStroke = false;
+				flagTouching = true;
+			}
 		}
 	}
 
 	public void PointerUp()
 	{
 		if(interactable){
-			if ((!flagHold) && (!flagStroke)) {
-				Poke();
-			} else if (flagHold) {
-				StartCoroutine(_Falling);
-			} else {
-				EndStroke();
+			if(!flagSleeping){
+				if ((!flagHold) && (!flagStroke)) {
+					Poke();
+				} else if (flagHold) {
+					StartCoroutine(_Falling);
+				} else {
+					EndStroke();
+				}
+				flagHold = false;
+				flagStroke = false;
+				flagTouching = false;
+			}else{
+				Wake();
 			}
-			flagHold = false;
-			flagStroke = false;
-			flagTouching = false;
 		}
 	}
 
@@ -65,27 +71,31 @@ public class EmojiPlayerInput : MonoBehaviour {
 	public void BeginDrag()
 	{
 		if(interactable){
-			touchX = getTouchToWorldPosition().x;
+			if(!flagSleeping){
+				touchX = getTouchToWorldPosition().x;
+			}
 		}
 	}
 
 	public void Drag()
 	{
 		if(interactable){
-			Vector3 touchPos = getTouchToWorldPosition();
-			touchTargetPosition = new Vector3(touchPos.x,touchPos.y+0.5f,touchPos.z);
-			if(flagTouching){
-				float temp = touchPos.x;
-				float deltaX = temp-touchX;
-				if(Mathf.Abs(deltaX) > 0.03f){
-					flagTouching = false;
-					flagStroke = true;
+			if(!flagSleeping){
+				Vector3 touchPos = getTouchToWorldPosition();
+				touchTargetPosition = new Vector3(touchPos.x,touchPos.y+0.5f,touchPos.z);
+				if(flagTouching){
+					float temp = touchPos.x;
+					float deltaX = temp-touchX;
+					if(Mathf.Abs(deltaX) > 0.03f){
+						flagTouching = false;
+						flagStroke = true;
+					}
+				}else if (flagHold) {
+					Hold();
+					CheckShake();
+				} else if(flagStroke){
+					Stroke();
 				}
-			}else if (flagHold) {
-				Hold();
-				CheckShake();
-			} else if(flagStroke){
-				Stroke();
 			}
 		}
 	}
@@ -191,6 +201,19 @@ public class EmojiPlayerInput : MonoBehaviour {
 		emoji.emojiExpressions.SetExpression(EmojiExpressionState.DEFAULT,0);
 	}
 
+	void Wake()
+	{
+		float staminaValue = emoji.stamina.StatValue / emoji.stamina.MaxStatValue;
+		if(staminaValue < 0.4f){//awake lazily
+			emoji.emojiExpressions.SetExpression(EmojiExpressionState.AWAKE_LAZILY,-1);
+		}else if(staminaValue >= 0.4f && staminaValue < 0.8f){ //awake normally
+			emoji.emojiExpressions.SetExpression(EmojiExpressionState.AWAKE_NORMALLY,-1);
+		}else{//awake energetically
+			emoji.emojiExpressions.SetExpression(EmojiExpressionState.AWAKE_ENERGETICALLY,-1);
+		}
+		emoji.ResetEmojiStatsModifier();
+		interactable = false;
+	}
 	//----------------------------------------------------------------=====NON-VOID MODULES=====----------------------------------------------------------------
 	Vector3 getEmojiPositionOnHold(Vector3 touchWorldPosition)
 	{
@@ -206,10 +229,31 @@ public class EmojiPlayerInput : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
+	public void Eat()
+	{
+		emoji.emojiExpressions.SetExpression(EmojiExpressionState.EATING,3f);
+		StartCoroutine(_LockInteractions,3f);
+	}
+
+	public void Reject()
+	{
+		emoji.emojiExpressions.SetExpression(EmojiExpressionState.REJECT,1.5f);
+		StartCoroutine(_LockInteractions,1.5f);
+	}
+
 	public void Landing()
 	{
 		flagFalling = false;
 		emoji.emojiExpressions.ResetExpressionDuration();
+	}
+
+	public void Sleep()
+	{
+		if(!flagSleeping){
+			flagSleeping = true;
+			emoji.stamina.statsModifier = 0.004f;
+			emoji.emojiExpressions.SetExpression(EmojiExpressionState.SLEEP,-1);
+		}
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -280,10 +324,17 @@ public class EmojiPlayerInput : MonoBehaviour {
 	{
 		print("INTERACTIONS disabled!");
 		interactable = false;
+
+		emoji.thisRigidbody.simulated = false;
+		emoji.body.thisCollider.enabled = false;
+
 		yield return new WaitForSeconds(cooldown);
 		print("INTERACTIONS Enabled!");
 		emoji.emojiExpressions.ResetExpressionDuration();
 		interactable = true;
+
+		emoji.body.thisCollider.enabled = true;
+		emoji.thisRigidbody.simulated = true;
 	}
 
 	const string _DelayResetShakeCounter = "DelayResetShakeCounter";

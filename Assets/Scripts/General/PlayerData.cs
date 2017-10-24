@@ -67,6 +67,11 @@ public class PlayerData : MonoBehaviour {
 		get{return emojiCompletionRate;}
 	}
 
+	public RoomType LastCurrentRoom{
+		get{return (RoomType)PlayerPrefs.GetInt(PlayerPrefKeys.Player.LAST_CURRENT_ROOM,2);}
+		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.LAST_CURRENT_ROOM,(int)value);}
+	}
+
 	void Awake()
 	{
 		if(instance != null && instance != this) Destroy(this.gameObject);
