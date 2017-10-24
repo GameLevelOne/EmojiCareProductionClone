@@ -74,12 +74,11 @@ public class Emoji : MonoBehaviour {
 	{
 		if(!hasInit){
 			hasInit = true;
-			InitEmojiStats();
 			InitEmojiExpression();
+			InitEmojiStats();
 		}
 	}
 
-	//stats
 	void InitEmojiStats()
 	{
 		hunger = 	new EmojiStats( PlayerPrefKeys.Emoji.HUNGER, 	emojiBaseData.hungerModifier, 	 emojiBaseData.maxStatValue, emojiBaseData.hungerStart );
@@ -103,11 +102,11 @@ public class Emoji : MonoBehaviour {
 		if(!emojiDead){ 
 			StartCoroutine(_TickingStats);
 		}
-
 	}
 
 	void InitEmojiExpression()
 	{
+		emojiExpressions.Init();
 		emojiExpressions.SetExpression(EmojiExpressionState.DEFAULT,0);
 	}
 	#endregion

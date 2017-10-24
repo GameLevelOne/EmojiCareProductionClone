@@ -14,6 +14,8 @@ public class RoomController : MonoBehaviour {
 	BoxCollider2D thisCollider;
 	public RoomType currentRoom = RoomType.LivingRoom;
 	public GameObject danceMat; //SEMENTARA
+	public GameObject cookBar; //SEMENTARA
+	public Pan pan;
 
 	int roomTotal = 0;
 	float distance = 0;
@@ -181,8 +183,16 @@ public class RoomController : MonoBehaviour {
 		currentRoom = GetCurrentRoom(endPos.x);
 
 		foreach(BaseRoom r in rooms) if(r != null) r.OnRoomChanged(currentRoom);
+
+		//SEMENTARA
 		if(currentRoom != RoomType.Playroom) danceMat.SetActive(false);
 		else danceMat.SetActive(true);
+
+		//SEMENTARA
+		if(currentRoom != RoomType.Kitchen) cookBar.SetActive(false);
+		else{
+			if(pan.isCooking) cookBar.SetActive(true);
+		} 
 
 		while(t <= 1){
 			t += Time.fixedDeltaTime * snapSpeed;
