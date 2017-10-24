@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class UICelebrationManager : MonoBehaviour {
 	public ScreenNewEmoji screenNewEmoji;
-	public ScreenNewExpression screenNewExpression;
+	public NotificationNewExpression screenNewExpressionPrefab;
 	public ScreenSendOff screenSendOff;
 	public ScreenEmojiDead screenEmojiDead;
 	public ScreenEmojiTransfer screenEmojiTransfer;
 
 	public Transform canvasParent;
-	public ScreenNewExpression screenNewExpressionPrefab;
 	public ExpressionIcons expressionIcons;
 	public EmojiIcons emojiIcons;
 
@@ -67,7 +66,7 @@ public class UICelebrationManager : MonoBehaviour {
 
 	IEnumerator WaitForNewExpression(int newExpression){
 		yield return new WaitForSeconds(2);
-		ScreenNewExpression obj = Instantiate(screenNewExpressionPrefab,canvasParent,false) as ScreenNewExpression;
+		NotificationNewExpression obj = Instantiate(screenNewExpressionPrefab,canvasParent,false) as NotificationNewExpression;
 		obj.ShowUI(newExpression,expressionIcons);
 	}
 

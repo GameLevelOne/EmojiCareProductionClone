@@ -68,12 +68,12 @@ public class ScreenStats : BaseUI {
 
 	void UpdateArrowsDisplay(){
 		//room mod?
-
-		CheckArrows(parentArrowHunger);
-		CheckArrows(parentArrowHygiene);
-		CheckArrows(parentArrowHappiness);
-		CheckArrows(parentArrowStamina);
-		CheckArrows(parentArrowHealth);
+		Emoji currentData = PlayerData.Instance.PlayerEmoji;
+		CheckArrows(parentArrowHunger,currentData.hunger.totalModifier);
+		CheckArrows(parentArrowHygiene,currentData.hygiene.totalModifier);
+		CheckArrows(parentArrowHappiness,currentData.happiness.totalModifier);
+		CheckArrows(parentArrowStamina,currentData.stamina.totalModifier);
+		CheckArrows(parentArrowHealth,currentData.health.totalModifier);
 	}
 
 	void CheckBarSprite(float value,Image barFill){
