@@ -65,17 +65,14 @@ public class EmojiStatsExpressionController : MonoBehaviour {
 	{
 		if(value < statsTresholdLow){
 			if(emoji.emojiExpressions.currentExpression != lowState[index]){
-				print(lowState[index]);
 				emoji.emojiExpressions.SetExpression(lowState[index],0);
 			}
 		}else if(value >= statsTresholdLow && value < statsTresholdMed){
 			if(emoji.emojiExpressions.currentExpression != mediumState[index]){
-				print(mediumState[index]);
 				emoji.emojiExpressions.SetExpression(mediumState[index],0);
 			}
 		}else if (value >= statsTresholdHigh){
 			if(emoji.emojiExpressions.currentExpression != highState[index]){
-				print(highState[index]);
 				emoji.emojiExpressions.SetExpression(highState[index],0);
 			}
 		}

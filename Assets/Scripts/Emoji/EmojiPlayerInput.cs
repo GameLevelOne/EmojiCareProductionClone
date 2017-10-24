@@ -29,10 +29,8 @@ public class EmojiPlayerInput : MonoBehaviour {
 	public void PointerDown()
 	{
 		if(interactable){
-			if(!flagSleeping){
-				flagHold = false;
-				flagStroke = false;
-			}
+			flagHold = false;
+			flagStroke = false;
 			flagTouching = true;
 		}
 	}
@@ -40,29 +38,22 @@ public class EmojiPlayerInput : MonoBehaviour {
 	public void PointerUp()
 	{
 		if(interactable){
-			if(flagSleeping){
-				//wake up
-				//disable interaction 
-				//set animation wake up
-			}else{
-				if ((!flagHold) && (!flagStroke)) {
-					Poke();
-				} else if (flagHold) {
-					StartCoroutine(_Falling);
-				} else {
-					EndStroke();
-				}
-				flagHold = false;
-				flagStroke = false;
-				flagTouching = false;
+			if ((!flagHold) && (!flagStroke)) {
+				Poke();
+			} else if (flagHold) {
+				StartCoroutine(_Falling);
+			} else {
+				EndStroke();
 			}
-
+			flagHold = false;
+			flagStroke = false;
+			flagTouching = false;
 		}
 	}
 
 	public void PointerExit()
 	{
-		if(interactable && !flagSleeping){
+		if(interactable){
 			if(flagStroke){
 				flagStroke = false;
 				touchInputObject.transform.localScale = Vector3.one;
@@ -73,14 +64,14 @@ public class EmojiPlayerInput : MonoBehaviour {
 
 	public void BeginDrag()
 	{
-		if(interactable && !flagSleeping){
+		if(interactable){
 			touchX = getTouchToWorldPosition().x;
 		}
 	}
 
 	public void Drag()
 	{
-		if(interactable && !flagSleeping){
+		if(interactable){
 			Vector3 touchPos = getTouchToWorldPosition();
 			touchTargetPosition = new Vector3(touchPos.x,touchPos.y+0.5f,touchPos.z);
 			if(flagTouching){

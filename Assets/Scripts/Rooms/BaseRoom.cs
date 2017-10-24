@@ -13,7 +13,7 @@ public class BaseRoom : MonoBehaviour {
 	#region attributes
 	[Header("BaseRoom Attributes")]
 	public RoomType thisRoom;
-	[Range(-0.05f,0f)] public float[] roomMod;
+	public float[] roomMod;
 	public BaseFurniture[] furnitures;
 	public MovableFurniture[] movableFurnitures;
 	public bool flagEditMode = false;
@@ -41,6 +41,7 @@ public class BaseRoom : MonoBehaviour {
 			for(int j = i;j<movableFurnitures.Length;j++){
 				Physics2D.IgnoreCollision(movableFurnitures[i].thisCollider, movableFurnitures[j].thisCollider);
 			}
+			Physics2D.IgnoreCollision(movableFurnitures[i].thisCollider, PlayerData.Instance.PlayerEmoji.body.thisCollider);
 		}
 	}
 

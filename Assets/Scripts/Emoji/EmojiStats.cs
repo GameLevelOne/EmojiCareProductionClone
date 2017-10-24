@@ -43,7 +43,7 @@ public class EmojiStats {
 	}
 
 	public float totalModifier{
-		get{return (emojiModifier + roomModifier);}
+		get{return (emojiModifier + roomModifier) * DebugMultiplier;}
 	}
 
 	public float RoomModifier{

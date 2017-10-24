@@ -72,8 +72,7 @@ public class EmojiBody : MonoBehaviour {
 		} 
 		if(other.gameObject.tag == Tags.BED){
 			if(!emoji.playerInput.flagSleeping){
-				emoji.playerInput.flagSleeping = true;
-				emoji.emojiExpressions.SetExpression(EmojiExpressionState.SLEEP,-1);
+				
 			}
 		}
 	}

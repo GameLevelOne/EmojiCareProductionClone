@@ -91,7 +91,7 @@ public class ScreenStats : BaseUI {
 
 	void CheckArrows (GameObject[] arrowObj, float totalRoomMod = 1f)
 	{
-		Debug.Log ("totalMod:" + totalRoomMod);
+//		Debug.Log ("totalMod:" + totalRoomMod);
 		bool isPositive = false;
 		bool noMod = false;
 		int arrowCount = 0;
