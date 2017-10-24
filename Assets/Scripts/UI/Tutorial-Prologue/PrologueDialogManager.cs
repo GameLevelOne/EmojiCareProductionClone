@@ -22,7 +22,7 @@ public class PrologueDialogManager : MonoBehaviour {
 	public Sprite[] storkSprites;
 
 	int dialogCount=0;
-	int userChoice = -1; //yes=-1,no1=0,no2=1
+	int userChoice = 0; //yes=-1,no1=0,no2=1
 	bool loadNextDialog = true;
 
 	void Start () {
@@ -43,8 +43,7 @@ public class PrologueDialogManager : MonoBehaviour {
 		if (dialogCount < dialogList.Count) {
 			dialogTextBox.text = dialogList [dialogCount];
 		}else{
-			fader.FadeOut();
-			dialogCount=0;
+			
 		}
 	}
 
@@ -54,7 +53,7 @@ public class PrologueDialogManager : MonoBehaviour {
 			ShowPopup ();
 			loadNextDialog = false;
 		} else if (dialogCount == 2) {
-			dialogTextBox.text = dialogList [dialogCount] + popupName.username;
+			dialogTextBox.text = dialogList [dialogCount] + popupName.username +",";
 		} else if (dialogCount == 8) {
 			ChangeStorkSprite (StorkType.Happy);
 		} else if (dialogCount == 9) {
@@ -66,15 +65,19 @@ public class PrologueDialogManager : MonoBehaviour {
 		} else if (dialogCount == 21) {
 			TogglePanelYesNo (true);
 			loadNextDialog = false;
-		} else if ((dialogCount >= 22 && dialogCount <= 24) || dialogCount >= 26 && dialogCount <= 29) {
+		} else if ((dialogCount >= 22 && dialogCount <= 24) || dialogCount >= 26 && dialogCount <= 27) {
 			ChangeStorkSprite (StorkType.Sad);
 		} else if (dialogCount == 25) {
 			ChangeStorkSprite (StorkType.Normal);
+			loadNextDialog=false;
+			TogglePanelYesNo(true);
+		} else if(dialogCount == 28){
+			ChangeStorkSprite(StorkType.Normal);
 		} else if (dialogCount == 29) {
-			dialogCount = 25;
 			loadNextDialog = false;
+			TogglePanelYesNo(true);
 		} else if (dialogCount == 30 || dialogCount == 31) {
-			ChangeStorkSprite (StorkType.Sad);
+			ChangeStorkSprite (StorkType.Happy);
 		} else if (dialogCount == 32) {
 			ChangeStorkSprite (StorkType.Carry);
 		} else {
@@ -85,8 +88,13 @@ public class PrologueDialogManager : MonoBehaviour {
 			dialogTextBox.text = dialogList [dialogCount];
 		}
 
-		if (loadNextDialog) {
-			dialogCount++;
+		if (dialogCount < (dialogList.Count-1)) {
+			if (loadNextDialog) {
+				dialogCount++;
+			}
+		} else{
+			fader.FadeOut();
+			dialogCount=0;
 		}
 	}
 
@@ -110,6 +118,22 @@ public class PrologueDialogManager : MonoBehaviour {
 	}
 
 	public void OnClickYes(){
-		
+		dialogCount=30;
+		loadNextDialog=true;
+		OnClickNext();
+		TogglePanelYesNo(false);
+	}
+
+	public void OnClickNo(){
+		if(userChoice == 0){
+			dialogCount=22;
+			userChoice=1;
+		} else if(userChoice == 1){
+			dialogCount=26;
+			userChoice=0;
+		}
+		loadNextDialog=true;
+		OnClickNext();
+		TogglePanelYesNo(false);
 	}
 }
