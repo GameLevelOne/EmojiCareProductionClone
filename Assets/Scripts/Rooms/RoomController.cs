@@ -197,7 +197,7 @@ public class RoomController : MonoBehaviour {
 		while(t <= 1){
 			t += Time.fixedDeltaTime * snapSpeed;
 			transform.position = Vector3.Lerp(startPos, endPos, Mathf.SmoothStep(0, 1, t));
-			yield return new WaitForSeconds(Time.deltaTime);
+			yield return null;
 		}
 
 		transform.position = endPos;
