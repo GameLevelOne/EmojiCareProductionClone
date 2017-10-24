@@ -88,9 +88,15 @@ public class EmojiExpression {
 	public float currentDuration = 0f;
 	public EmojiExpressionState currentExpression = EmojiExpressionState.DEFAULT;
 	public List<EmojiExpressionState> unlockedExpressions = new List<EmojiExpressionState>();
+
+	const string RESOURCE_DATA = "EmojiUnlockedExpressions";
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
+	public void Init()
+	{
+		LoadEmojiExpression();
+	}
 
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -111,12 +117,26 @@ public class EmojiExpression {
 	public void SaveEmojiExpression()
 	{
 		//save to json
+		string data = "{\""+RESOURCE_DATA+"\":[";
 
+		for(int i = 0;i<unlockedExpressions.Count;i++){
+			data += ((int)unlockedExpressions[i]).ToString();
+			if(i != unlockedExpressions.Count-1) data += ",";
+		}
+		data += "]}";
+		PlayerPrefs.SetString(PlayerPrefKeys.Emoji.UNLOCKED_EXPRESSIONS,data);
 	}
 
 	public void LoadEmojiExpression()
 	{
 		//load from json	
+		if(PlayerPrefs.HasKey(PlayerPrefKeys.Emoji.UNLOCKED_EXPRESSIONS)){
+			string data = PlayerPrefs.GetString(PlayerPrefKeys.Emoji.UNLOCKED_EXPRESSIONS);
+			JSONNode node = JSON.Parse(data);
+			for(int i = 0;i< node[RESOURCE_DATA].Count;i++){
+				unlockedExpressions.Add((EmojiExpressionState)node[RESOURCE_DATA][i].AsInt);
+			}
+		}
 
 	}
 
@@ -157,14 +177,6 @@ public class EmojiExpression {
 		}
 	}
 
-	void SetEmojiAnim(int index)
-	{
-		bodyAnim.SetInteger(AnimatorParameters.Ints.EMOJI_ANIM_STATE,index);
-		faceAnim.SetInteger(AnimatorParameters.Ints.EMOJI_ANIM_STATE,index);
-		effectAnim.SetInteger(AnimatorParameters.Ints.EMOJI_ANIM_STATE,index);
-	}
-
-
 	/// <summary>
 	/// Reset overrided animation to static animation
 	/// </summary>
@@ -175,5 +187,10 @@ public class EmojiExpression {
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------	
-
+	void SetEmojiAnim(int index)
+	{
+		bodyAnim.SetInteger(AnimatorParameters.Ints.EMOJI_ANIM_STATE,index);
+		faceAnim.SetInteger(AnimatorParameters.Ints.EMOJI_ANIM_STATE,index);
+		effectAnim.SetInteger(AnimatorParameters.Ints.EMOJI_ANIM_STATE,index);
+	}
 }

@@ -8,6 +8,8 @@ public static class PlayerPrefKeys {
 		public const string HAPPINESS = "Emoji/Happiness";
 		public const string STAMINA = "Emoji/Stamina";
 		public const string HEALTH = "Emoji/Health";
+
+		public const string UNLOCKED_EXPRESSIONS = "Emoji/UnlockedExpressions";
 	}
 
 	public static class Player{
