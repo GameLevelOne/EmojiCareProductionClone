@@ -192,6 +192,14 @@ public class Emoji : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public module
+	public void ResetEmojiStatsModifier()
+	{
+		hunger.statsModifier = emojiBaseData.hungerModifier;
+		hygiene.statsModifier = emojiBaseData.hygeneModifier;
+		happiness.statsModifier = emojiBaseData.happinessModifier;
+		stamina.statsModifier = emojiBaseData.staminaModifier;
+	}
+
 	public void ModAllStats(float[] mod)
 	{
 		hunger.ModStats(mod[0]);

@@ -53,7 +53,6 @@ public class EmojiStatsExpressionController : MonoBehaviour {
 					}
 				}
 			}else{
-				print("DEFAULT");
 				if(emoji.emojiExpressions.currentExpression != EmojiExpressionState.DEFAULT){
 					emoji.emojiExpressions.SetExpression(EmojiExpressionState.DEFAULT,0);
 				}

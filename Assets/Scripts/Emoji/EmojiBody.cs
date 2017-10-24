@@ -29,6 +29,8 @@ public class EmojiBody : MonoBehaviour {
 	public Emoji emoji;
 
 	public int previousRoom = -1, currentRoom = -1;
+
+	public float foamState = 1f;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
@@ -69,7 +71,10 @@ public class EmojiBody : MonoBehaviour {
 			Physics2D.IgnoreCollision(thisCollider,other.collider,true);
 		} 
 		if(other.gameObject.tag == Tags.BED){
-			
+			if(!emoji.playerInput.flagSleeping){
+				emoji.playerInput.flagSleeping = true;
+				emoji.emojiExpressions.SetExpression(EmojiExpressionState.SLEEP,-1);
+			}
 		}
 	}
 
@@ -90,6 +95,16 @@ public class EmojiBody : MonoBehaviour {
 	public void CancelBouncing()
 	{
 		StopCoroutine(_Bounce);
+	}
+
+	public void StartFoaming()
+	{
+		StartCoroutine(_Foamed);
+	}
+
+	public void StopFoaming()
+	{
+		StopCoroutine(_Foamed);
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -125,6 +140,17 @@ public class EmojiBody : MonoBehaviour {
 			yield return null;
 		}
 		emoji.emojiExpressions.currentDuration = 0;
+	}
+
+	const string _Foamed = "Foamed";
+	IEnumerator Foamed()
+	{
+		while(foamState < 10f){
+			foamState += (Time.deltaTime * (10f/3f));
+			print(foamState);
+			yield return null;
+		}
+		foamState = 10f;
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------

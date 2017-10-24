@@ -18,10 +18,10 @@ public class EmojiStats {
 		this.emojiModifier = emojiModifier;
 		this.maxStatValue = maxStatValue;
 		if(PlayerPrefs.HasKey(prefKey) == false) this.StatValue = startValue;
+
 	}
 
 	string prefKey;
-
 	float maxStatValue;
 	float emojiModifier;
 	float roomModifier = 0f;

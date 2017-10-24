@@ -11,7 +11,7 @@ public class Sponge : TriggerableFurniture {
 		if(soapLiquid.enabled == false) soapLiquid.enabled = true;
 		soapLiquid.sprite = liquidSprite;
 	}
-		
+
 	public void RemoveSoapLiquid()
 	{
 		soapLiquid.enabled = false;
@@ -19,29 +19,25 @@ public class Sponge : TriggerableFurniture {
 
 	public override void OnTriggerEnter2D(Collider2D other)
 	{
-		if(other.tag == Tags.EMOJI){
+		if(other.tag == Tags.EMOJI_BODY){
 			if(soapLiquid.enabled == true){
-				other.transform.parent.GetComponent<Emoji>().hygiene.ModStats(0.5f);
-//				other.transform.parent.GetComponent<Emoji>().emojiExpressions.SetExpression(FaceExpression.Blushed,-1);
-				StartCoroutine(Bubbles());
-			}else{
-//				other.transform.parent.GetComponent<Emoji>().emojiExpressions.SetExpression(FaceExpression.Upset,-1);
+				other.GetComponent<EmojiBody>().StartFoaming();
+				other.transform.parent.GetComponent<Emoji>().emojiExpressions.SetExpression(EmojiExpressionState.BATHING,-1);
+				StartCoroutine(_Bubbles);
 			}
-
 		}
 	}
 
 	public void OnTriggerExit2D(Collider2D other)
 	{
-		
-		if(other.tag == Tags.EMOJI){
-			StopAllCoroutines();
+		if(other.tag == Tags.EMOJI_BODY){
+			StopCoroutine(_Bubbles);
+			other.GetComponent<EmojiBody>().StopFoaming();
 			other.transform.parent.GetComponent<Emoji>().emojiExpressions.ResetExpressionDuration();
 		}
 	}
 
-
-
+	const string _Bubbles = "Bubbles";
 	IEnumerator Bubbles()
 	{
 		while(true){
