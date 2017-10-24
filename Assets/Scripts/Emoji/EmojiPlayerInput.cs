@@ -2,6 +2,7 @@
 using UnityEngine;
 
 public class EmojiPlayerInput : MonoBehaviour {
+	#region attributes
 	public delegate void EmojiPouting();
 	public event EmojiPouting OnEmojiPouting;
 
@@ -12,55 +13,51 @@ public class EmojiPlayerInput : MonoBehaviour {
 	bool flagTapCooldown = false;
 	public bool flagHold = false;
 	public bool flagStroke = false;
+	public bool flagTouching = false;
+	public bool flagFalling = false;
+	public bool flagSleeping = false;
 	int tapCounter = 0;
 
 	float emojiXPos;
-
-	//SEMENTARA
-	IEnumerator Start()
-	{
-		while(true){
-			yield return new WaitForSeconds(1);
-			if(interactable) emoji.emojiExpressions.SetExpression(EmojiExpressionState.DEFAULT,0);
-		}
-
-	}
-
-
+	Vector3 touchTargetPosition;
+	float touchX;
+	Vector2 shakeVector;
+	int shakeCounter = 0;
+	#endregion
+//-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region event trigger		
 	public void PointerDown()
 	{
 		if(interactable){
 			flagHold = false;
 			flagStroke = false;
-			StartCoroutine(_DelayHold);
+			flagTouching = true;
 		}
 	}
 
 	public void PointerUp()
 	{
-		StopCoroutine(_DelayHold);
 		if(interactable){
 			if ((!flagHold) && (!flagStroke)) {
 				Poke();
 			} else if (flagHold) {
 				StartCoroutine(_Falling);
-				flagHold = false;
 			} else {
 				EndStroke();
-				flagStroke = false;
 			}
+			flagHold = false;
+			flagStroke = false;
+			flagTouching = false;
 		}
-		touchInputObject.GetComponent<Collider2D>().enabled = true;
 	}
-
 
 	public void PointerExit()
 	{
 		if(interactable){
 			if(flagStroke){
-				EndStroke();
-				touchInputObject.GetComponent<Collider2D>().enabled = false;
+				flagStroke = false;
+				touchInputObject.transform.localScale = Vector3.one;
+				StartCoroutine(_StartHold);
 			}
 		}
 	}
@@ -68,33 +65,35 @@ public class EmojiPlayerInput : MonoBehaviour {
 	public void BeginDrag()
 	{
 		if(interactable){
-			if(!flagHold){
-				print("coroutine stopped");
-				StopCoroutine(_DelayHold);
-				flagHold = false;
-				flagStroke = true;
-				Stroke();
-				touchInputObject.transform.localScale = new Vector3(1.5f,1.5f,1f);
-			}
+			touchX = getTouchToWorldPosition().x;
 		}
 	}
 
 	public void Drag()
 	{
 		if(interactable){
-			if (flagHold) {
+			Vector3 touchPos = getTouchToWorldPosition();
+			touchTargetPosition = new Vector3(touchPos.x,touchPos.y+0.5f,touchPos.z);
+			if(flagTouching){
+				float temp = touchPos.x;
+				float deltaX = temp-touchX;
+				if(Mathf.Abs(deltaX) > 0.03f){
+					flagTouching = false;
+					flagStroke = true;
+				}
+			}else if (flagHold) {
 				Hold();
-			} else {
+				CheckShake();
+			} else if(flagStroke){
 				Stroke();
 			}
 		}
 	}
 	#endregion
-
+//-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
 	void Poke()
 	{
-		print("Poke");
 		int animDelay = 0;
 		if(!flagTapCooldown){
 			tapCounter++;
@@ -146,6 +145,39 @@ public class EmojiPlayerInput : MonoBehaviour {
 		transform.position = emojiHoldPos;
 	}
 
+	void CheckShake()
+	{
+		Vector2 tempTouchWorldPos = new Vector2(getTouchToWorldPosition().x,getTouchToWorldPosition().y);
+		float factor = Mathf.Sqrt( Mathf.Pow(Mathf.Abs(tempTouchWorldPos.x - shakeVector.x),2) + Mathf.Pow(Mathf.Abs(tempTouchWorldPos.y - shakeVector.y),2) );
+
+		if(factor <= 2f){//slow move
+
+		}else if(factor >2f && factor <= 4f){//medium move
+
+		}else{//fast move
+			StopCoroutine(_ShakeCooldown);
+			shakeCounter++;
+			print("ShakeCounter = "+shakeCounter);
+			if(shakeCounter >= 8 && shakeCounter < 20){
+				
+				if(emoji.emojiExpressions.currentExpression != EmojiExpressionState.DIZZY && emoji.emojiExpressions.currentExpression != EmojiExpressionState.HOLD_BARF){
+					emoji.emojiExpressions.ResetExpressionDuration();
+					emoji.emojiExpressions.SetExpression(EmojiExpressionState.DIZZY,-1f);
+				}
+					
+			}else if(shakeCounter >= 20){
+				if(emoji.emojiExpressions.currentExpression != EmojiExpressionState.HOLD_BARF){
+
+					emoji.emojiExpressions.ResetExpressionDuration();
+					emoji.emojiExpressions.SetExpression(EmojiExpressionState.HOLD_BARF,-1f);
+				}
+					
+			}
+			StartCoroutine(_ShakeCooldown);
+//			print("ShakeCounter = "+shakeCounter);
+		}
+	}
+
 	void Stroke()
 	{
 		if(emoji.emojiExpressions.currentExpression != EmojiExpressionState.CARESSED)
@@ -154,9 +186,9 @@ public class EmojiPlayerInput : MonoBehaviour {
 
 	void EndStroke()
 	{
+		touchInputObject.transform.localScale = Vector3.one;
 		emoji.emojiExpressions.ResetExpressionDuration();
 		emoji.emojiExpressions.SetExpression(EmojiExpressionState.DEFAULT,0);
-		touchInputObject.transform.localScale = Vector3.one;
 	}
 
 	//----------------------------------------------------------------=====NON-VOID MODULES=====----------------------------------------------------------------
@@ -172,7 +204,15 @@ public class EmojiPlayerInput : MonoBehaviour {
 		return Camera.main.ScreenToWorldPoint(tempMousePosition);
 	}
 	#endregion
-
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+	#region public modules
+	public void Landing()
+	{
+		flagFalling = false;
+		emoji.emojiExpressions.ResetExpressionDuration();
+	}
+	#endregion
+//-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region coroutines
 	const string _TapCooldown = "TapCooldown";
 	IEnumerator TapCooldown()
@@ -189,33 +229,43 @@ public class EmojiPlayerInput : MonoBehaviour {
 		tapCounter = 0;
 	}
 
-	const string _DelayHold = "DelayHold";
-	IEnumerator DelayHold()
+	const string _ShakeCooldown = "ShakeCooldown";
+	IEnumerator ShakeCooldown()
 	{
-		//yield return new WaitForSeconds(1.5f);
-		flagHold = true;
+		yield return new WaitForSeconds(0.5f);
+		shakeCounter = 0;
+	}
 
-		Vector3 touchPos = getTouchToWorldPosition();
+	const string _StartHold = "StartHold";
+	IEnumerator StartHold()
+	{
 		emoji.body.thisCollider.enabled = false;
 		emoji.thisRigidbody.simulated = false;
 
-		Vector3 currentPos = transform.position;
-		Vector3 targetPos = new Vector3(touchPos.x,touchPos.y+0.5f,touchPos.z);
-
+		emoji.emojiExpressions.ResetExpressionDuration();
 		emoji.emojiExpressions.SetExpression(EmojiExpressionState.HOLD,-1);
+
 		emoji.triggerFall.ClearColliderList();
+
+		Vector3 currentPos = transform.position;
+
 		float t = 0;
 		while(t < 1f){
-			transform.position = Vector3.Lerp(currentPos,targetPos,t);
-			t+= Time.deltaTime*10;
-			yield return new WaitForSeconds(Time.deltaTime);
+			
+			transform.position = Vector3.Lerp(currentPos,touchTargetPosition,t);
+			t+= Time.deltaTime*5;
+			yield return null;
 		}
-		transform.position = targetPos;
+		transform.position = touchTargetPosition;
+		shakeVector = new Vector2(touchTargetPosition.x,touchTargetPosition.y);
+		flagHold = true;
+		Hold();
 	}
 
 	const string _Falling = "Falling";
 	IEnumerator Falling()
 	{
+		flagFalling = true;
 		emoji.body.thisCollider.enabled = true;
 		emoji.thisRigidbody.velocity = Vector2.zero;
 		emoji.thisRigidbody.simulated = true;
@@ -242,4 +292,5 @@ public class EmojiPlayerInput : MonoBehaviour {
 		yield return null;
 	}
 	#endregion
+//-------------------------------------------------------------------------------------------------------------------------------------------------
 }

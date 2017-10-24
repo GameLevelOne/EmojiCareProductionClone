@@ -26,15 +26,17 @@ public class EmojiBody : MonoBehaviour {
 	public Animator thisAnim;
 	public Collider2D thisCollider;
 	public Rigidbody2D parentRigidbody;
-	public Emoji parent;
+	public Emoji emoji;
 
 	public int previousRoom = -1, currentRoom = -1;
+
+	public float foamState = 1f;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
 	void Awake()
 	{
-		parent.emojiExpressions.OnChangeExpression += OnChangeExpression;
+		emoji.emojiExpressions.OnChangeExpression += OnChangeExpression;
 	}
 		
 	#endregion
@@ -45,13 +47,13 @@ public class EmojiBody : MonoBehaviour {
 		if(parentRigidbody.simulated == false) parentRigidbody.simulated = true;
 
 		//sementara
-		parent.emojiExpressions.ResetExpressionDuration();
-		parent.transform.localScale = Vector3.one;
+		emoji.emojiExpressions.ResetExpressionDuration();
+		emoji.transform.localScale = Vector3.one;
 	}
 		
 	public void Reposition()
 	{
-		transform.parent.position = new Vector3(0,0,-2f);
+		transform.parent.localPosition = new Vector3(0,0,-2f);
 	}
 
 	public void DisableParentRigidBody()
@@ -64,16 +66,15 @@ public class EmojiBody : MonoBehaviour {
 	//colliders
 	void OnCollisionEnter2D(Collision2D other)
 	{
-		
+		if(emoji.playerInput.flagFalling == true) emoji.playerInput.Landing();
 		if(other.gameObject.tag == Tags.MOVABLE_FURNITURE){
 			Physics2D.IgnoreCollision(thisCollider,other.collider,true);
 		} 
 		if(other.gameObject.tag == Tags.BED){
-			//parent.emojiExpressions.SetExpression(FaceExpression.Sleep,-1);
+			if(!emoji.playerInput.flagSleeping){
+				
+			}
 		}
-		parent.emojiExpressions.ResetExpressionDuration();
-		parent.emojiExpressions.SetExpression(EmojiExpressionState.DEFAULT,0);
-
 	}
 
 	//delegate events
@@ -87,26 +88,43 @@ public class EmojiBody : MonoBehaviour {
 	#region public modules
 	public void BounceToCurrentRoom(int currRoom)
 	{
-		StopCoroutine(bounceToCurrentRoom);
-		StartCoroutine(bounceToCurrentRoom,currRoom);
+		StartCoroutine(_Bounce,currRoom);
+	}
+
+	public void CancelBouncing()
+	{
+		StopCoroutine(_Bounce);
+	}
+
+	public void StartFoaming()
+	{
+		StartCoroutine(_Foamed);
+	}
+
+	public void StopFoaming()
+	{
+		StopCoroutine(_Foamed);
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region coroutines
-	const string bounceToCurrentRoom = "_BounceToCurrentRoom";
-	IEnumerator _BounceToCurrentRoom(int currRoom)
+	const string _Bounce = "Bounce";
+	IEnumerator Bounce(int currRoom)
 	{
 		currentRoom = currRoom;
 		yield return new WaitForSeconds(0.5f);
 		if(previousRoom != -1){
 			if(currentRoom > previousRoom){
-				//thisAnim.SetInteger(AnimatorParameters.Ints.BODY_STATE,(int)BodyAnimation.BounceFromLeft);
-				parent.emojiExpressions.SetExpression(EmojiExpressionState.CHANGE_ROOM,-1f);
+				
+				PlayerData.Instance.PlayerEmoji.emojiExpressions.ResetExpressionDuration();
+				emoji.emojiExpressions.SetExpression(EmojiExpressionState.CHANGE_ROOM,-1f);
 				if(OnEmojiBouncingToCurrentRoom != null) OnEmojiBouncingToCurrentRoom();
+
 			}else if(currentRoom < previousRoom){
-				//thisAnim.SetInteger(AnimatorParameters.Ints.BODY_STATE,(int)BodyAnimation.BounceFromRight);
-				parent.transform.localScale = new Vector3(-1f,1f,1f);
-				parent.emojiExpressions.SetExpression(EmojiExpressionState.CHANGE_ROOM,-1f);
+				
+				emoji.transform.localScale = new Vector3(-1f,1f,1f);
+				PlayerData.Instance.PlayerEmoji.emojiExpressions.ResetExpressionDuration();
+				emoji.emojiExpressions.SetExpression(EmojiExpressionState.CHANGE_ROOM,-1f);
 				if(OnEmojiBouncingToCurrentRoom != null) OnEmojiBouncingToCurrentRoom();
 			}
 		}
@@ -116,11 +134,22 @@ public class EmojiBody : MonoBehaviour {
 	const string _ResetFaceExpression = "ResetFaceExpression";
 	IEnumerator ResetFaceExpression()
 	{
-		while(parent.emojiExpressions.currentDuration >= 0){
-			parent.emojiExpressions.currentDuration -= Time.deltaTime;
+		while(emoji.emojiExpressions.currentDuration >= 0){
+			emoji.emojiExpressions.currentDuration -= Time.deltaTime;
+			yield return null;
 		}
-		parent.emojiExpressions.currentDuration = 0;
-		yield return null;
+		emoji.emojiExpressions.currentDuration = 0;
+	}
+
+	const string _Foamed = "Foamed";
+	IEnumerator Foamed()
+	{
+		while(foamState < 10f){
+			foamState += (Time.deltaTime * (10f/3f));
+			print(foamState);
+			yield return null;
+		}
+		foamState = 10f;
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------

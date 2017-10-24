@@ -22,8 +22,8 @@ public class ScreenNewExpression : BaseUI {
 		continueButton.onClick.AddListener(OnClickContinue);
 
 		expressionImage.sprite = expressionIcons.GetExpressionIcon(currentEmoji,expression);
-		expressionNameText.text = expressionIcons.GetExpressionName(currentEmoji,expression-1);
-		unlockDetailsText.text = expressionIcons.GetExpressionUnlockCondition(currentEmoji,expression-1);
+		expressionNameText.text = expressionIcons.GetExpressionName(currentEmoji,expression);
+		unlockDetailsText.text = expressionIcons.GetExpressionUnlockCondition(currentEmoji,expression);
 
 		EmojiExpression emojiExpression = PlayerData.Instance.PlayerEmoji.emojiExpressions;
 

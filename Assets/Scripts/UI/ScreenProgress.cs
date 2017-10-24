@@ -20,14 +20,12 @@ public class ScreenProgress : BaseUI {
 
 	public Sprite lockedExpression;
 
-	int expressionTotalCount = 2;
+	int expressionTotalCount;
 	int tileWidth = 4;
-	int tileHeight = 10;
+	int tileHeight = 15;
 	float expressionBoxWidth = 110f;
 	float contentBoxMarginX = 50f;
 	bool canSendOff = false;
-	string popupOpenTrigger = "PopupOpen";
-	string popupCloseTrigger = "PopupClose";
 	Emoji currentEmojiData;
 
 	public override void InitUI ()
@@ -40,6 +38,8 @@ public class ScreenProgress : BaseUI {
 		string name = "";
 		currentEmojiData = PlayerData.Instance.PlayerEmoji;
 		List<EmojiExpressionState> exprList = currentEmojiData.emojiExpressions.unlockedExpressions;
+
+		expressionTotalCount = currentEmojiData.emojiExpressions.totalExpression;
 
 		currentEmojiData.emojiExpressions.expressionProgress = (float)exprList.Count / (float)expressionTotalCount; 
 
@@ -56,14 +56,14 @@ public class ScreenProgress : BaseUI {
 		for(int i=0;i<tileHeight;i++){
 			for(int j=0;j<tileWidth;j++){
 				GameObject obj = Instantiate(expressionBoxPrefab,contentBox,false) as GameObject;
-				obj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-160+j*105,500-i*105);
+				obj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-160+j*105,780-i*105);
 				obj.GetComponent<ProgressTile>().exprType = (EmojiExpressionState)exprTileIdx;
 				obj.name = "Expr"+exprTileIdx.ToString();
 				condition = expressionIcons.GetExpressionUnlockCondition(currentEmojiData.emojiBaseData.emojiType,exprTileIdx);
 				name = expressionIcons.GetExpressionName(currentEmojiData.emojiBaseData.emojiType,exprTileIdx);
 
 				if(unlockedExprIdx < exprList.Count){
-					if((int)exprList[unlockedExprIdx]-1 == exprTileIdx){
+					if((int)exprList[unlockedExprIdx] == exprTileIdx){
 						Sprite sprite = expressionIcons.GetExpressionIcon(currentEmojiData.emojiBaseData.emojiType,(int)exprList[unlockedExprIdx]);
 
 						obj.GetComponent<ProgressTile>().InitTile(sprite,name,condition,false);

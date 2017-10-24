@@ -4,9 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ScreenSettings : BaseUI {
-	public Slider sliderMusic;
-	public Slider sliderSFX;
-	public Slider sliderVoice;
+	public Slider[] sliders;
 
 	public void OnClickTAndC(){
 
@@ -16,4 +14,7 @@ public class ScreenSettings : BaseUI {
 
 	}
 
+	public void AdjustMusicVolume(int type){
+		SoundManager.Instance.SetAudioVolume(type,sliders[type].value);
+	}
 }

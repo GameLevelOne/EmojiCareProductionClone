@@ -14,6 +14,8 @@ public class RoomController : MonoBehaviour {
 	BoxCollider2D thisCollider;
 	public RoomType currentRoom = RoomType.LivingRoom;
 	public GameObject danceMat; //SEMENTARA
+	public GameObject cookBar; //SEMENTARA
+	public Pan pan;
 
 	int roomTotal = 0;
 	float distance = 0;
@@ -78,6 +80,10 @@ public class RoomController : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
+	public void PointerDown()
+	{
+		PlayerData.Instance.PlayerEmoji.body.CancelBouncing();
+	}
 
 	//event triggers
 	public void BeginDrag()
@@ -177,19 +183,27 @@ public class RoomController : MonoBehaviour {
 		currentRoom = GetCurrentRoom(endPos.x);
 
 		foreach(BaseRoom r in rooms) if(r != null) r.OnRoomChanged(currentRoom);
+
+		//SEMENTARA
 		if(currentRoom != RoomType.Playroom) danceMat.SetActive(false);
 		else danceMat.SetActive(true);
+
+		//SEMENTARA
+		if(currentRoom != RoomType.Kitchen) cookBar.SetActive(false);
+		else{
+			if(pan.isCooking) cookBar.SetActive(true);
+		} 
 
 		while(t <= 1){
 			t += Time.fixedDeltaTime * snapSpeed;
 			transform.position = Vector3.Lerp(startPos, endPos, Mathf.SmoothStep(0, 1, t));
-			yield return new WaitForSeconds(Time.deltaTime);
+			yield return null;
 		}
 
 		transform.position = endPos;
 		snapping = false;
 
-		PlayerData.Instance.PlayerEmoji.emojiExpressions.ResetExpressionDuration();
+		PlayerData.Instance.PlayerEmoji.transform.parent = rooms[(int)currentRoom].transform;
 		PlayerData.Instance.PlayerEmoji.body.BounceToCurrentRoom((int)currentRoom);
 
 		yield return null;

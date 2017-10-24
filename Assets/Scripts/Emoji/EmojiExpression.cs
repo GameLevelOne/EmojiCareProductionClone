@@ -82,15 +82,21 @@ public class EmojiExpression {
 	public Animator faceAnim;
 	public Animator effectAnim;
 	public float expressionProgress = 0f;
-	public int totalExpression = 40;
+	public int totalExpression = 60;
 	public bool isExpressing = false;
 	[Header("DON'T MODIFY THIS")]
 	public float currentDuration = 0f;
 	public EmojiExpressionState currentExpression = EmojiExpressionState.DEFAULT;
 	public List<EmojiExpressionState> unlockedExpressions = new List<EmojiExpressionState>();
+
+	const string RESOURCE_DATA = "EmojiUnlockedExpressions";
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
+	public void Init()
+	{
+		LoadEmojiExpression();
+	}
 
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -111,12 +117,26 @@ public class EmojiExpression {
 	public void SaveEmojiExpression()
 	{
 		//save to json
+		string data = "{\""+RESOURCE_DATA+"\":[";
 
+		for(int i = 0;i<unlockedExpressions.Count;i++){
+			data += ((int)unlockedExpressions[i]).ToString();
+			if(i != unlockedExpressions.Count-1) data += ",";
+		}
+		data += "]}";
+		PlayerPrefs.SetString(PlayerPrefKeys.Emoji.UNLOCKED_EXPRESSIONS,data);
 	}
 
 	public void LoadEmojiExpression()
 	{
 		//load from json	
+		if(PlayerPrefs.HasKey(PlayerPrefKeys.Emoji.UNLOCKED_EXPRESSIONS)){
+			string data = PlayerPrefs.GetString(PlayerPrefKeys.Emoji.UNLOCKED_EXPRESSIONS);
+			JSONNode node = JSON.Parse(data);
+			for(int i = 0;i< node[RESOURCE_DATA].Count;i++){
+				unlockedExpressions.Add((EmojiExpressionState)node[RESOURCE_DATA][i].AsInt);
+			}
+		}
 
 	}
 
@@ -139,20 +159,17 @@ public class EmojiExpression {
 		}
 
 		if(duration == -1f){ //sleep, bath, override other expressions
-			Debug.Log("A");
 			SetEmojiAnim((int)expression);
 			currentExpression = expression;
 			currentDuration = duration;
 
 		}else if(currentDuration != -1f && duration > 0){ //non-static expression, have certain duration
-			Debug.Log("B");
 			SetEmojiAnim((int)expression);
 			currentExpression = expression;
 			currentDuration = duration;
 			if(OnChangeExpression != null) OnChangeExpression();
 
 		}else if(currentDuration == 0 && duration == 0){//static expression, like stats expression
-			Debug.Log("C");
 			SetEmojiAnim((int)expression);
 			currentExpression = expression;
 			currentDuration = duration;
@@ -160,22 +177,20 @@ public class EmojiExpression {
 		}
 	}
 
+	/// <summary>
+	/// Reset overrided animation to static animation
+	/// </summary>
+	public void ResetExpressionDuration()
+	{
+//		Debug.Log("ResetDuration");
+		currentDuration = 0f;
+	}
+	#endregion
+//-------------------------------------------------------------------------------------------------------------------------------------------------	
 	void SetEmojiAnim(int index)
 	{
 		bodyAnim.SetInteger(AnimatorParameters.Ints.EMOJI_ANIM_STATE,index);
 		faceAnim.SetInteger(AnimatorParameters.Ints.EMOJI_ANIM_STATE,index);
 		effectAnim.SetInteger(AnimatorParameters.Ints.EMOJI_ANIM_STATE,index);
 	}
-
-
-	/// <summary>
-	/// Reset overrided animation to static animation
-	/// </summary>
-	public void ResetExpressionDuration()
-	{
-		currentDuration = 0f;
-	}
-	#endregion
-//-------------------------------------------------------------------------------------------------------------------------------------------------	
-
 }

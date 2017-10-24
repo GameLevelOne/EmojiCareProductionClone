@@ -5,24 +5,27 @@ public class ShowerTrigger : MonoBehaviour {
 	public GameObject showerWater;
 	void OnTriggerEnter2D(Collider2D other)
 	{
-		if(other.tag == Tags.EMOJI){
-			other.transform.parent.GetComponent<Emoji>().hygiene.ModStats(0.5f);
-//			other.transform.parent.GetComponent<Emoji>().emojiExpressions.SetExpression(FaceExpression.Blushed,-1);
-			StartCoroutine(ShowerWater());
+		if(other.tag == Tags.EMOJI_BODY){
+			float hygieneMod = other.GetComponent<EmojiBody>().foamState;
+			other.transform.parent.GetComponent<Emoji>().hygiene.statsModifier = hygieneMod;
+			other.transform.parent.GetComponent<Emoji>().emojiExpressions.SetExpression(EmojiExpressionState.BATHING,-1);
+			StartCoroutine(_ShowerWater);
 		}
 
 	}
 
 	void OnTriggerExit2D(Collider2D other)
 	{
-		if(other.tag == Tags.EMOJI){
-			StopAllCoroutines();
-			Debug.Log("exit bath");
+		if(other.tag == Tags.EMOJI_BODY){
+			StopCoroutine(_ShowerWater);
+			other.GetComponent<EmojiBody>().foamState = 1f;
+			other.transform.parent.GetComponent<Emoji>().ResetEmojiStatsModifier();
 			other.transform.parent.GetComponent<Emoji>().emojiExpressions.ResetExpressionDuration();
 		}
 
 	}
 
+	const string _ShowerWater = "ShowerWater";
 	IEnumerator ShowerWater()
 	{
 		while(true){

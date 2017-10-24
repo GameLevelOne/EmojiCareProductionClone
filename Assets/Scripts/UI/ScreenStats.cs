@@ -24,6 +24,12 @@ public class ScreenStats : BaseUI {
 	public Transform parentArrowStamina;
 	public Transform parentArrowHealth;
 
+	public GameObject[] arrowHunger;
+	public GameObject[] arrowHygiene;
+	public GameObject[] arrowHappiness;
+	public GameObject[] arrowStamina;
+	public GameObject[] arrowHealth;
+
 	bool moveArrows = true;
 
 	public override void InitUI(){
@@ -41,7 +47,6 @@ public class ScreenStats : BaseUI {
 
 	void UpdateStatsValue(){
 		Emoji currentData = PlayerData.Instance.PlayerEmoji;
-
 		float ratioHunger = currentData.hunger.StatValue / currentData.hunger.MaxStatValue;
 		float ratioHygiene = currentData.hygiene.StatValue / currentData.hygiene.MaxStatValue;
 		float ratioHappiness = currentData.happiness.StatValue / currentData.happiness.MaxStatValue;
@@ -68,13 +73,12 @@ public class ScreenStats : BaseUI {
 	}
 
 	void UpdateArrowsDisplay(){
-		//room mod?
-
-		CheckArrows(parentArrowHunger);
-		CheckArrows(parentArrowHygiene);
-		CheckArrows(parentArrowHappiness);
-		CheckArrows(parentArrowStamina);
-		CheckArrows(parentArrowHealth);
+		Emoji currentData = PlayerData.Instance.PlayerEmoji;
+		CheckArrows(arrowHunger,currentData.hunger.totalModifier);
+		CheckArrows(arrowHygiene,currentData.hygiene.totalModifier);
+		CheckArrows(arrowHappiness,currentData.happiness.totalModifier);
+		CheckArrows(arrowStamina,currentData.stamina.totalModifier);
+		CheckArrows(arrowHealth,currentData.health.totalModifier);
 	}
 
 	void CheckBarSprite(float value,Image barFill){
@@ -85,8 +89,9 @@ public class ScreenStats : BaseUI {
 		}
 	}
 
-	void CheckArrows (Transform parentObj, float totalRoomMod=1f)
+	void CheckArrows (GameObject[] arrowObj, float totalRoomMod = 1f)
 	{
+//		Debug.Log ("totalMod:" + totalRoomMod);
 		bool isPositive = false;
 		bool noMod = false;
 		int arrowCount = 0;
@@ -101,26 +106,34 @@ public class ScreenStats : BaseUI {
 
 		float absRoomMod = Mathf.Abs (totalRoomMod);
 
-		if (absRoomMod >= 1f && absRoomMod < 2.5f) {
+		if (absRoomMod >= 0.0001f && absRoomMod < 0.001f) {
 			arrowCount = 1;
-		} else if (absRoomMod >= 2.5f && absRoomMod < 5f) {
+		} else if (absRoomMod >= 0.001f && absRoomMod < 0.01f) {
 			arrowCount = 2;
 		} else {
 			arrowCount = 3;
 		}
 
-		if (!noMod) {
-			for (int i = 0; i < arrowCount; i++) {
-				GameObject obj = Instantiate (arrowObj, parentObj, false) as GameObject;
-				obj.transform.localPosition = new Vector3 (-10 + i * 20, 0, 0);
-				if (isPositive) {
-					obj.GetComponent<Image> ().sprite = arrowPos;
+
+		for (int i = 0; i < 3; i++) {
+			if (!noMod) {
+				if (i < arrowCount) {
+					GameObject obj = arrowObj [i];
+					obj.SetActive (true); 
+					if (isPositive) {
+						obj.GetComponent<Image> ().sprite = arrowPos;
+					} else {
+						obj.GetComponent<Image> ().sprite = arrowNeg;
+					}
+					StartCoroutine (ArrowsFX (obj.GetComponent<Image> ()));
 				} else {
-					obj.GetComponent<Image> ().sprite = arrowNeg;
+					arrowObj [i].SetActive (false);
 				}
-				StartCoroutine (ArrowsFX (obj.GetComponent<Image> ()));
+			} else{
+				arrowObj[i].SetActive(false);
 			}
 		}
+		
 	}
 
 	IEnumerator ArrowsFX(Image obj){

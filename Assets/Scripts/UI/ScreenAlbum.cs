@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ScreenAlbum : BaseUI {
-
+	public ScreenPopup screenPopup;
 	public GameObject emojiBoxPrefab;
 	public RectTransform emojiContentBox;
 	public Scrollbar scrollbar;
@@ -67,8 +67,6 @@ public class ScreenAlbum : BaseUI {
 		int tempIdx = 0;
 		emojiContentBox.sizeDelta = new Vector2 (0, ((float)tileHeight * boxSize) + contentBoxMarginX);
 
-		//emojiData.Add(EmojiType.Emoji);
-
 		for (int i = 0; i < tileHeight; i++) {
 			for (int j = 0; j < tileWidth; j++) {
 				GameObject obj = Instantiate (emojiBoxPrefab, emojiContentBox, false) as GameObject;
@@ -104,5 +102,13 @@ public class ScreenAlbum : BaseUI {
 		PlayerPrefs.SetInt(PlayerPrefKeys.Player.EMOJI_RECORD_COUNT,currentRecordCount);
 
 		//set emoji status
+	}
+
+	public void ShowAlbum(){
+		if(currentRecordCount > 1){
+			ShowPanelInHotkey(this.gameObject);
+		} else{
+			screenPopup.ShowPopup(PopupType.Warning,PopupEventType.AlbumLocked,false,false);
+		}
 	}
 }
