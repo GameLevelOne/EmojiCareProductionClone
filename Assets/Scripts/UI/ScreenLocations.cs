@@ -51,6 +51,7 @@ public class ScreenLocations : BaseUI {
 		//yield return new WaitForSeconds(1);
 		yield return null;
 		roomController.GoToRoom((RoomType)roomIndex);
+		hotkeyAnim.buttonHotkey.SetActive(true);
 		CloseUI(this.gameObject);
 	}
 }
