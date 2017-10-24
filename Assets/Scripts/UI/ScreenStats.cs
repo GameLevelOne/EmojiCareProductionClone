@@ -24,6 +24,12 @@ public class ScreenStats : BaseUI {
 	public Transform parentArrowStamina;
 	public Transform parentArrowHealth;
 
+	public GameObject[] arrowHunger;
+	public GameObject[] arrowHygiene;
+	public GameObject[] arrowHappiness;
+	public GameObject[] arrowStamina;
+	public GameObject[] arrowHealth;
+
 	bool moveArrows = true;
 
 	public override void InitUI(){
