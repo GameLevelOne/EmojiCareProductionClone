@@ -18,7 +18,7 @@ public class Food : TriggerableFurniture {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
-	public override void OnTriggerEnter2D(Collider2D other)
+	protected override void OnTriggerEnter2D(Collider2D other)
 	{
 		if(other.tag == Tags.EMOJI_BODY){
 			Emoji emoji = other.transform.parent.GetComponent<Emoji>();
