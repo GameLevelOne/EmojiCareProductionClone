@@ -43,15 +43,19 @@ public class EmojiStats {
 	}
 
 	public float totalModifier{
-		get{return (emojiModifier + roomModifier) * DebugMultiplier;}
+		get{return (emojiModifier + roomModifier) * DebugTickStats;}
 	}
 
 	public float RoomModifier{
 		set{roomModifier = value;}
 	}
 		
-	public float DebugMultiplier{
+	public float DebugTickStats{
 		get{return Debug ? 150f : 1f;}
+	}
+
+	public float DebugModStats{
+		get{return Debug ? 5f : 1f;}
 	}
 
 	#endregion
@@ -59,10 +63,8 @@ public class EmojiStats {
 	#region public modules
 	public void TickStats()
 	{
-		StatValue += (emojiModifier + roomModifier) * DebugMultiplier;
-
-		if(StatValue <= 0) StatValue = 0;
-		else if(StatValue >= maxStatValue) StatValue = maxStatValue;
+		StatValue += (emojiModifier + roomModifier) * DebugTickStats;
+		AdjustValue();
 	}
 
 	/// <summary>
@@ -70,11 +72,23 @@ public class EmojiStats {
 	/// </summary>
 	public void ModStats(float mod)
 	{
-		StatValue += mod;
+		StatValue += (mod * DebugModStats);
+		AdjustValue();
+	}
 
-		if(StatValue <= 0) StatValue = 0;
-		else if(StatValue >= maxStatValue) StatValue = maxStatValue;
+	/// <summary>
+	/// negative value is written with '-' operator e.g. -1f.
+	/// </summary>
+	public void SetStats(float mod)
+	{
+		StatValue = mod;
+		AdjustValue();
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------	
+	void AdjustValue()
+	{
+		if(StatValue <= 0) StatValue = 0;
+		else if(StatValue >= maxStatValue) StatValue = maxStatValue;
+	}
 }

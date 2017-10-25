@@ -5,6 +5,7 @@ public class Food : TriggerableFurniture {
 	#region attributes
 	public float[] foodFactor;
 	public bool hold = false;
+	public Collider2D thisCollider;
 	Vector3 startPos;
 
 	#endregion
@@ -19,12 +20,18 @@ public class Food : TriggerableFurniture {
 	#region mechanics
 	public override void OnTriggerEnter2D(Collider2D other)
 	{
-		print(other.name);
-		if(other.tag == Tags.EMOJI){
-			StopAllCoroutines();
-			other.transform.parent.GetComponent<Emoji>().emojiExpressions.SetExpression(EmojiExpressionState.EATING,2f);
-			other.transform.parent.GetComponent<Emoji>().ModAllStats(foodFactor);
-			Destroy(this.gameObject);
+		if(other.tag == Tags.EMOJI_BODY){
+			Emoji emoji = other.transform.parent.GetComponent<Emoji>();
+			float hungerValue = emoji.hunger.StatValue / emoji.hunger.MaxStatValue;
+
+			if(hungerValue >= 0.95f){ //reject
+				emoji.playerInput.Reject();
+			}else{ //eat
+				StopCoroutine(_Return);
+				other.transform.parent.GetComponent<Emoji>().ModAllStats(foodFactor);
+				emoji.playerInput.Eat();
+				Destroy(this.gameObject);
+			}
 		}
 	}
 
@@ -32,6 +39,7 @@ public class Food : TriggerableFurniture {
 	public void BeginDrag()
 	{
 		thisSprite[currentVariant].sortingLayerName = SortingLayers.HELD;
+		thisCollider.enabled = false;
 		hold = true;
 	}
 
@@ -45,7 +53,8 @@ public class Food : TriggerableFurniture {
 	{
 		thisSprite[currentVariant].sortingLayerName = SortingLayers.MOVABLE_FURNITURE;
 		hold = false;
-		StartCoroutine(CheckEmoji());
+		thisCollider.enabled = true;
+		StartCoroutine(_Return);
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -54,7 +63,8 @@ public class Food : TriggerableFurniture {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------	
 	#region coroutines
-	IEnumerator CheckEmoji()
+	const string _Return = "Return";
+	IEnumerator Return()
 	{
 		yield return null;
 		Vector3 temp = transform.localPosition;
@@ -62,9 +72,8 @@ public class Food : TriggerableFurniture {
 		while(t<= 1f){
 			transform.localPosition = Vector3.Lerp(temp,startPos,t);
 			t+= Time.deltaTime * 4;
-			yield return new WaitForSeconds(Time.deltaTime);
+			yield return null;
 		}
-
 	}
 	#endregion
 }

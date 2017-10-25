@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DartboardMinigame : MonoBehaviour {
+public class DartboardMinigame : BaseUI {
 	public Transform arrow;
 	public GameObject dartMark;
 	bool moveArrow = false;

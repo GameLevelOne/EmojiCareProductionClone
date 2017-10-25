@@ -20,7 +20,11 @@ public enum BodyAnimation{
 
 public class EmojiBody : MonoBehaviour {
 	public delegate void EmojiBouncingToCurrentRoom();
+	public delegate void EmojiSleepEvent(bool sleeping);
+	public delegate void EmojiEatEvent(float lockDuration);
 	public event EmojiBouncingToCurrentRoom OnEmojiBouncingToCurrentRoom;
+	public event EmojiSleepEvent OnEmojiSleepEvent;
+	public event EmojiEatEvent OnEmojiEatEvent;
 
 	#region attributes
 	public Animator thisAnim;
@@ -31,6 +35,7 @@ public class EmojiBody : MonoBehaviour {
 	public int previousRoom = -1, currentRoom = -1;
 
 	public float foamState = 1f;
+	public bool flagSleep = false;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
@@ -45,6 +50,7 @@ public class EmojiBody : MonoBehaviour {
 	public void Reset()
 	{
 		if(parentRigidbody.simulated == false) parentRigidbody.simulated = true;
+		if(thisCollider.enabled == false) thisCollider.enabled = true;
 
 		//sementara
 		emoji.emojiExpressions.ResetExpressionDuration();
@@ -53,26 +59,44 @@ public class EmojiBody : MonoBehaviour {
 		
 	public void Reposition()
 	{
-		transform.parent.localPosition = new Vector3(0,0,-2f);
+		transform.parent.localPosition = new Vector3(0,0.3f,-2f);
 	}
 
 	public void DisableParentRigidBody()
 	{
 		parentRigidbody.simulated = false;
+		thisCollider.enabled = false;
+	}
+
+	public void OnAwakeAnimationEnd()
+	{
+		emoji.playerInput.flagSleeping = false;
+		emoji.emojiExpressions.ResetExpressionDuration();
+		emoji.playerInput.interactable = true;
+		if(OnEmojiSleepEvent != null) OnEmojiSleepEvent(emoji.playerInput.flagSleeping);
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
 	//colliders
+	void OnTriggerEnter2D(Collider2D other)
+	{
+		if(other.tag == Tags.BED){
+			if(emoji.playerInput.flagFalling){
+				flagSleep = true;
+			}
+		}
+	}
+
 	void OnCollisionEnter2D(Collision2D other)
 	{
 		if(emoji.playerInput.flagFalling == true) emoji.playerInput.Landing();
-		if(other.gameObject.tag == Tags.MOVABLE_FURNITURE){
-			Physics2D.IgnoreCollision(thisCollider,other.collider,true);
-		} 
+
 		if(other.gameObject.tag == Tags.BED){
-			if(!emoji.playerInput.flagSleeping){
-				
+			if(flagSleep){
+				emoji.playerInput.Sleep();
+				if(OnEmojiSleepEvent != null) OnEmojiSleepEvent(emoji.playerInput.flagSleeping);
+				flagSleep = false;
 			}
 		}
 	}
@@ -104,6 +128,11 @@ public class EmojiBody : MonoBehaviour {
 	public void StopFoaming()
 	{
 		StopCoroutine(_Foamed);
+	}
+
+	public void OnEmojiEatOrReject(float duration)
+	{
+		if(OnEmojiEatEvent != null) OnEmojiEatEvent(duration);
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -144,6 +173,7 @@ public class EmojiBody : MonoBehaviour {
 	const string _Foamed = "Foamed";
 	IEnumerator Foamed()
 	{
+		//for 3 seconds, foam state increase from 1 to 10.
 		while(foamState < 10f){
 			foamState += (Time.deltaTime * (10f/3f));
 			print(foamState);

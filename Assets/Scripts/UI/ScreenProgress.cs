@@ -87,11 +87,11 @@ public class ScreenProgress : BaseUI {
 			canSendOff=true;
 		}
 
-//		if(canSendOff){
-//			buttonSend.SetActive(true);
-//		} else{
-//			buttonSend.SetActive(false);
-//		}
+		if(canSendOff){
+			buttonSend.GetComponent<Image>().color = Color.white;
+		} else{
+			buttonSend.GetComponent<Image>().color = Color.gray;
+		}
 	}
 
 	public void ConfirmSendOff(){

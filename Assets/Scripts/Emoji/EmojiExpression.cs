@@ -146,16 +146,19 @@ public class EmojiExpression {
 	/// <para>0 = static expressions</para>
 	/// <para>>0 = has duration, return to static expressions if duration reach 0</para>
 	/// </summary>
-	public void SetExpression(EmojiExpressionState expression, float duration)
+	public void SetExpression (EmojiExpressionState expression, float duration)
 	{
 //		Debug.Log(expression+", "+duration+", "+currentDuration);
 
 		//check for unlocked expression
-		if(IsNewExpression(expression)){
-			unlockedExpressions.Add(expression);
-			SaveEmojiExpression();
+		if (IsNewExpression (expression)) {
+			unlockedExpressions.Add (expression);
+			SaveEmojiExpression ();
 
-			if(OnNewExpression != null) OnNewExpression((int)expression);
+			if (OnNewExpression != null) {
+				if(expression != EmojiExpressionState.DEFAULT)
+					OnNewExpression ((int)expression);
+			}
 		}
 
 		if(duration == -1f){ //sleep, bath, override other expressions
@@ -173,7 +176,6 @@ public class EmojiExpression {
 			SetEmojiAnim((int)expression);
 			currentExpression = expression;
 			currentDuration = duration;
-
 		}
 	}
 

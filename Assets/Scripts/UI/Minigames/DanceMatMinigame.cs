@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DanceMatMinigame : MonoBehaviour {
+public class DanceMatMinigame : BaseUI {
 	public Image[] danceMatMinigame;
 	public Image[] danceMatFurniture;
 

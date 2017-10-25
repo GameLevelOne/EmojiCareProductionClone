@@ -18,6 +18,8 @@ public static class PlayerPrefKeys {
 		public const string PLAYER_COIN = "Player/Coin";
 		public const string PLAYER_GEM = "Player/Gem";
 
+		public const string LAST_CURRENT_ROOM = "Player/LastCurrentRoom";
+
 		//example
 		public const string PLAYER_EMOJI_TYPE = "Player/EmojiType";
 
