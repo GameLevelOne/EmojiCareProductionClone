@@ -35,6 +35,7 @@ public class EmojiBody : MonoBehaviour {
 	public int previousRoom = -1, currentRoom = -1;
 
 	public float foamState = 1f;
+	public bool flagSleep = false;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
@@ -78,13 +79,25 @@ public class EmojiBody : MonoBehaviour {
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
 	//colliders
+	void OnTriggerEnter2D(Collider2D other)
+	{
+		if(other.tag == Tags.BED){
+			if(emoji.playerInput.flagFalling){
+				flagSleep = true;
+			}
+		}
+	}
+
 	void OnCollisionEnter2D(Collision2D other)
 	{
 		if(emoji.playerInput.flagFalling == true) emoji.playerInput.Landing();
 
 		if(other.gameObject.tag == Tags.BED){
-			emoji.playerInput.Sleep();
-			if(OnEmojiSleepEvent != null) OnEmojiSleepEvent(emoji.playerInput.flagSleeping);
+			if(flagSleep){
+				emoji.playerInput.Sleep();
+				if(OnEmojiSleepEvent != null) OnEmojiSleepEvent(emoji.playerInput.flagSleeping);
+				flagSleep = false;
+			}
 		}
 	}
 

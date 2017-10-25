@@ -48,7 +48,7 @@ public class MovableFurniture : MonoBehaviour {
 	public void Drag()
 	{
 		if(!flagEditMode && !endDrag){
-			Vector3 tempMousePosition = new Vector3(Input.mousePosition.x,Input.mousePosition.y,9f);
+			Vector3 tempMousePosition = new Vector3(Input.mousePosition.x,Input.mousePosition.y,19f);
 			transform.localPosition = Camera.main.ScreenToWorldPoint(tempMousePosition);
 		}
 	}
