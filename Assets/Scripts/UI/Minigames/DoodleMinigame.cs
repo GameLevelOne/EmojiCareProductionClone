@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DoodleMinigame : MonoBehaviour {
+public class DoodleMinigame : BaseUI {
 	public GameObject doodleUI;
 	public GameObject particleParentPrefab;
 	public GameObject particlePrefab;

@@ -3,9 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ParticlePlayer : MonoBehaviour {
-	public ParticleSystem particles;
+	public ParticleSystem particlesLeft;
+	public ParticleSystem particlesRight;
 
 	public void ShowParticles(){
-		particles.Emit(10);
+		particlesLeft.Clear();
+		particlesRight.Clear();
+
+		particlesLeft.Play();
+		particlesRight.Play();
+	}
+
+	public void StopParticles(){
+		particlesLeft.Stop();
+		particlesRight.Stop();
 	}
 }

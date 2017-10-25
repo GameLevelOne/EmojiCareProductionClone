@@ -9,12 +9,14 @@ public class NotificationNewExpression : MonoBehaviour {
 	Text expressionNameText;
 	Text unlockDetailsText;
 	Button continueButton;
+	ParticlePlayer particles;
 
 	string triggerOpenNotif = "OpenNotif";
 	string triggerCloseNotif = "CloseNotif";
 
 	public void ShowUI(int expression,ExpressionIcons expressionIcons,ParticlePlayer particlePlayer){
 		EmojiType currentEmoji = PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType;
+		particles = particlePlayer;
 
 		ShowNotification();
 
@@ -32,15 +34,17 @@ public class NotificationNewExpression : MonoBehaviour {
 
 		emojiExpression.expressionProgress = ((float)emojiExpression.unlockedExpressions.Count / (float) emojiExpression.totalExpression)*100;
 
-		particlePlayer.ShowParticles();
+
 	}
 
 	public void OnClickContinue(){
+		particles.StopParticles();
 		StopCoroutine("AutoCloseNotif");
 		StartCoroutine(WaitForAnim());
 	}
 
 	void ShowNotification(){
+		particles.ShowParticles();
 		gameObject.SetActive(true);
 		GetComponent<Animator>().SetTrigger(triggerOpenNotif);
 		StartCoroutine(AutoCloseNotif());
@@ -48,12 +52,14 @@ public class NotificationNewExpression : MonoBehaviour {
 
 	IEnumerator WaitForAnim(){
 		GetComponent<Animator>().SetTrigger(triggerCloseNotif);
+		particles.StopParticles();
 		yield return new WaitForSeconds(0.16f);
 		Destroy(gameObject);
 	}
 
 	IEnumerator AutoCloseNotif(){
 		yield return new WaitForSeconds(2f);
+		particles.StopParticles();
 		GetComponent<Animator>().SetTrigger(triggerCloseNotif);
 		yield return new WaitForSeconds(0.16f);
 		Destroy(this.gameObject);
