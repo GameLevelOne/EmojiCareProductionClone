@@ -160,9 +160,9 @@ public class EmojiPlayerInput : MonoBehaviour {
 		Vector2 tempTouchWorldPos = new Vector2(getTouchToWorldPosition().x,getTouchToWorldPosition().y);
 		float factor = Mathf.Sqrt( Mathf.Pow(Mathf.Abs(tempTouchWorldPos.x - shakeVector.x),2) + Mathf.Pow(Mathf.Abs(tempTouchWorldPos.y - shakeVector.y),2) );
 
-		if(factor <= 2f){//slow move
+		if(factor <= 3f){//slow move
 
-		}else if(factor >2f && factor <= 4f){//medium move
+		}else if(factor >3f && factor <= 6f){//medium move
 
 		}else{//fast move
 			StopCoroutine(_ShakeCooldown);
@@ -176,6 +176,13 @@ public class EmojiPlayerInput : MonoBehaviour {
 				}
 					
 			}else if(shakeCounter >= 20){
+				float healthValue = emoji.health.StatValue / emoji.health.MaxStatValue;
+				if(healthValue < 0.3f){
+					emoji.ResetEmojiStatsModifier();
+				}else{
+					emoji.health.statsModifier = -3f;
+				}
+
 				if(emoji.emojiExpressions.currentExpression != EmojiExpressionState.HOLD_BARF){
 
 					emoji.emojiExpressions.ResetExpressionDuration();
@@ -223,7 +230,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 	Vector3 getTouchToWorldPosition()
 	{
 		//Emoji z position should be -2. Camera position is 0,0,-10f thus -10 + 8 = -2. 
-		Vector3 tempMousePosition = new Vector3(Input.mousePosition.x,Input.mousePosition.y,8f);
+		Vector3 tempMousePosition = new Vector3(Input.mousePosition.x,Input.mousePosition.y,18f);
 		return Camera.main.ScreenToWorldPoint(tempMousePosition);
 	}
 	#endregion
@@ -280,6 +287,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 	{
 		yield return new WaitForSeconds(0.5f);
 		shakeCounter = 0;
+		emoji.ResetEmojiStatsModifier();
 	}
 
 	const string _StartHold = "StartHold";
@@ -337,12 +345,6 @@ public class EmojiPlayerInput : MonoBehaviour {
 
 		emoji.body.thisCollider.enabled = true;
 		emoji.thisRigidbody.simulated = true;
-	}
-
-	const string _DelayResetShakeCounter = "DelayResetShakeCounter";
-	IEnumerator DelayResetShakeCounter()
-	{
-		yield return null;
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
