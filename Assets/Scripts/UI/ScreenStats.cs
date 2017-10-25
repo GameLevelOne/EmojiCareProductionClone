@@ -11,8 +11,10 @@ public class ScreenStats : BaseUI {
 	public Image barFillStamina;
 	public Image barFillHealth;
 
-	public Sprite barPos;
-	public Sprite barNeg;
+	public Sprite barGreen;
+	public Sprite barYellow;
+	public Sprite barOrange;
+	public Sprite barRed;
 	public Sprite arrowPos;
 	public Sprite arrowNeg;
 
@@ -46,18 +48,18 @@ public class ScreenStats : BaseUI {
 	}
 
 	void UpdateStatsValue(){
-		Emoji currentData = PlayerData.Instance.PlayerEmoji;
-		float ratioHunger = currentData.hunger.StatValue / currentData.hunger.MaxStatValue;
-		float ratioHygiene = currentData.hygiene.StatValue / currentData.hygiene.MaxStatValue;
-		float ratioHappiness = currentData.happiness.StatValue / currentData.happiness.MaxStatValue;
-		float ratioStamina = currentData.stamina.StatValue / currentData.stamina.MaxStatValue;
-		float ratioHealth = currentData.health.StatValue / currentData.health.MaxStatValue;
+//		Emoji currentData = PlayerData.Instance.PlayerEmoji;
+//		float ratioHunger = currentData.hunger.StatValue / currentData.hunger.MaxStatValue;
+//		float ratioHygiene = currentData.hygiene.StatValue / currentData.hygiene.MaxStatValue;
+//		float ratioHappiness = currentData.happiness.StatValue / currentData.happiness.MaxStatValue;
+//		float ratioStamina = currentData.stamina.StatValue / currentData.stamina.MaxStatValue;
+//		float ratioHealth = currentData.health.StatValue / currentData.health.MaxStatValue;
 
-//		float ratioHunger = 0.85f;
-//		float ratioHygiene = 0.65f;
-//		float ratioHappiness = 0.49f;
-//		float ratioStamina = 0.2f;
-//		float ratioHealth = 0.1f;
+		float ratioHunger = 0.9f;
+		float ratioHygiene = 0.65f;
+		float ratioHappiness = 0.23f;
+		float ratioStamina = 0.19f;
+		float ratioHealth = 0.1f;
 
 		barFillHunger.fillAmount = ratioHunger;
 		barFillHygiene.fillAmount = ratioHygiene;
@@ -82,10 +84,14 @@ public class ScreenStats : BaseUI {
 	}
 
 	void CheckBarSprite(float value,Image barFill){
-		if(value>=0.5f){
-			barFill.sprite = barPos;
+		if(value>=0.9f){
+			barFill.sprite = barGreen;
+		} else if(value>=0.4f && value<0.9f){
+			barFill.sprite = barYellow;
+		} else if(value>=0.2f && value<0.4f){
+			barFill.sprite = barOrange;
 		} else{
-			barFill.sprite = barNeg;
+			barFill.sprite = barRed;
 		}
 	}
 

@@ -12,6 +12,7 @@ public class UICelebrationManager : MonoBehaviour {
 	public Transform canvasParent;
 	public ExpressionIcons expressionIcons;
 	public EmojiIcons emojiIcons;
+	public ParticlePlayer particlePlayer;
 
 	void OnEnable(){
 		Debug.Log("celebration events");
@@ -67,7 +68,7 @@ public class UICelebrationManager : MonoBehaviour {
 	IEnumerator WaitForNewExpression(int newExpression){
 		yield return new WaitForSeconds(2);
 		NotificationNewExpression obj = Instantiate(screenNewExpressionPrefab,canvasParent,false) as NotificationNewExpression;
-		obj.ShowUI(newExpression,expressionIcons);
+		obj.ShowUI(newExpression,expressionIcons,particlePlayer);
 	}
 
 	void ResetData(){

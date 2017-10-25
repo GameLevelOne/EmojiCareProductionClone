@@ -13,7 +13,7 @@ public class NotificationNewExpression : MonoBehaviour {
 	string triggerOpenNotif = "OpenNotif";
 	string triggerCloseNotif = "CloseNotif";
 
-	public void ShowUI(int expression,ExpressionIcons expressionIcons){
+	public void ShowUI(int expression,ExpressionIcons expressionIcons,ParticlePlayer particlePlayer){
 		EmojiType currentEmoji = PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType;
 
 		ShowNotification();
@@ -31,20 +31,31 @@ public class NotificationNewExpression : MonoBehaviour {
 		EmojiExpression emojiExpression = PlayerData.Instance.PlayerEmoji.emojiExpressions;
 
 		emojiExpression.expressionProgress = ((float)emojiExpression.unlockedExpressions.Count / (float) emojiExpression.totalExpression)*100;
+
+		particlePlayer.ShowParticles();
 	}
 
 	public void OnClickContinue(){
+		StopCoroutine("AutoCloseNotif");
 		StartCoroutine(WaitForAnim());
 	}
 
 	void ShowNotification(){
 		gameObject.SetActive(true);
 		GetComponent<Animator>().SetTrigger(triggerOpenNotif);
+		StartCoroutine(AutoCloseNotif());
 	}
 
 	IEnumerator WaitForAnim(){
 		GetComponent<Animator>().SetTrigger(triggerCloseNotif);
 		yield return new WaitForSeconds(0.16f);
-		//Destroy(gameObject);
+		Destroy(gameObject);
+	}
+
+	IEnumerator AutoCloseNotif(){
+		yield return new WaitForSeconds(2f);
+		GetComponent<Animator>().SetTrigger(triggerCloseNotif);
+		yield return new WaitForSeconds(0.16f);
+		Destroy(this.gameObject);
 	}
 }
