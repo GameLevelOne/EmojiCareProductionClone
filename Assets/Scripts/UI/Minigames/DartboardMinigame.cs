@@ -19,9 +19,9 @@ public class DartboardMinigame : BaseUI {
 		moveArrow=false;
 		if(!moveArrow){
 			stopPosition = arrow.localPosition;
-			dartMark.transform.localPosition = new Vector3(stopPosition.x,-166,0);
+			dartMark.transform.localPosition = new Vector3(stopPosition.x,-972,0);
 		}
-		StartCoroutine(ClosePanel());
+		//StartCoroutine(ClosePanel());
 	}
 
 	IEnumerator MoveArrow(){

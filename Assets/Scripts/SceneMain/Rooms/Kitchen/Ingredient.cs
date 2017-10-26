@@ -11,35 +11,41 @@ public enum IngredientType{
 	Flour,
 	Meat,
 	Mushroom,
-	Tomato
+	Tomato,
+	COUNT
 }
 
-public class Ingredient : TriggerableFurniture {
+public class Ingredient : MonoBehaviour {
+	[Header("Reference")]
+	public Rigidbody2D thisRigidbody;
+	public Collider2D thisCollider;
+
+	public SpriteRenderer thisSprite;
+	public Animator thisAnim;
+
+	[Header("Edit this!")]
 	public IngredientType type;
 
 	bool hold = false;
-	Vector3 startPos;
-
-	void Start()
-	{
-		startPos = transform.localPosition;
-	}
 		
-	void OnTriggerStay2D(Collider2D other)
+	void OnTriggerEnter2D(Collider2D other)
 	{
 		if(other.tag == Tags.PAN){
 			if(!hold && (other.GetComponent<Pan>().cookedFoodObject == null || other.GetComponent<Pan>().isCooking)){ 
 				StopAllCoroutines();
 				other.GetComponent<Pan>().AddIngredient(type);
-				this.gameObject.SetActive(false);
-				transform.localPosition = startPos;
+				Destroy(this.gameObject);
 			}
 		}
 	}
 
 	public void BeginDrag()
 	{
-		thisSprite[currentVariant].sortingLayerName = SortingLayers.HELD;
+		thisRigidbody.simulated = false;
+		thisCollider.enabled = false;
+		thisAnim.SetBool(AnimatorParameters.Bools.HOLD,true);
+
+		thisSprite.sortingLayerName = SortingLayers.HELD;
 		hold = true;
 	}
 
@@ -51,22 +57,19 @@ public class Ingredient : TriggerableFurniture {
 
 	public void EndDrag()
 	{
-		thisSprite[currentVariant].sortingLayerName = SortingLayers.MOVABLE_FURNITURE;
-		hold = false;
-		StartCoroutine(CheckPan());
+		StartCoroutine(_Fall);
 	}
 
-	IEnumerator CheckPan()
+	const string _Fall = "Fall";
+	IEnumerator Fall()
 	{
+		hold = false;
+		thisSprite.sortingLayerName = SortingLayers.MOVABLE_FURNITURE;
+
+		thisRigidbody.velocity = Vector2.zero;
+		thisRigidbody.simulated = true;
+		thisCollider.enabled = true;
+
 		yield return null;
-		Vector3 temp = transform.localPosition;
-		float t = 0f;
-		while(t<= 1f){
-			transform.localPosition = Vector3.Lerp(temp,startPos,t);
-			t+= Time.deltaTime * 4;
-			yield return new WaitForSeconds(Time.deltaTime);
-		}
-
 	}
-
 }

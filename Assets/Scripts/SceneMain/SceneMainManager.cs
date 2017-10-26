@@ -16,7 +16,10 @@ public class SceneMainManager : MonoBehaviour {
 	void Start()
 	{
 		PlayerData.Instance.PlayerFirstPlay = 1;
-		PlayerPrefs.DeleteAll();
+//		PlayerPrefs.DeleteAll();
+
+
+
 		InitMain();
 	}
 
@@ -34,6 +37,10 @@ public class SceneMainManager : MonoBehaviour {
 		roomController.Init();
 		roomController.RegisterLockRoomEvent();
 		if(AdmobManager.Instance) AdmobManager.Instance.ShowBanner();
+
+		for(int i = 0;i<(int)IngredientType.COUNT;i++){
+			PlayerData.Instance.inventory.SetIngredient((IngredientType)i,99);
+		}
 	}
 
 	#endregion

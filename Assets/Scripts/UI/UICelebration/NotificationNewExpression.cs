@@ -20,10 +20,10 @@ public class NotificationNewExpression : MonoBehaviour {
 
 		ShowNotification();
 
-		expressionImage = parentFrame.GetChild(0).GetComponent<Image>();
-		expressionNameText = parentFrame.GetChild(1).GetComponent<Text>();
-		unlockDetailsText = parentFrame.GetChild(2).GetComponent<Text>();
-		continueButton = parentFrame.GetChild(3).GetComponent<Button>();
+		expressionImage = parentFrame.GetChild(1).GetComponent<Image>();
+		expressionNameText = parentFrame.GetChild(2).GetComponent<Text>();
+		unlockDetailsText = parentFrame.GetChild(3).GetComponent<Text>();
+		continueButton = parentFrame.GetChild(4).GetComponent<Button>();
 		continueButton.onClick.AddListener(OnClickContinue);
 
 		expressionImage.sprite = expressionIcons.GetExpressionIcon(currentEmoji,expression);

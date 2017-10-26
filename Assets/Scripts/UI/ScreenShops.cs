@@ -69,7 +69,8 @@ public class ScreenShops : BaseUI {
 	public void OnClickShop(int shopIndex){
 		parentShop.SetActive(false);
 		parentShopContent.SetActive(true);
-		DisplayShopContent(shopIndex);
+		parentShopContent.GetComponent<ScreenShopContent>().ShowUI(parentShopContent);
+		StartCoroutine(WaitForAnim(shopIndex));
 	}
 
 	void DisplayShopContent(int shopIndex){
@@ -124,7 +125,7 @@ public class ScreenShops : BaseUI {
 		DisplayShopDescription(true);
 	}
 
-	void UpdateButtonDisplay ()
+	public void UpdateButtonDisplay ()
 	{
 		if (selectedStore == ShopType.GemStore) {
 			buttonNext.SetActive (true);
@@ -136,5 +137,10 @@ public class ScreenShops : BaseUI {
 			buttonNext.SetActive(false);
 			buttonPrev.SetActive(true);
 		}
+	}
+
+	IEnumerator WaitForAnim(int shopIndex){
+		yield return new WaitForSeconds(0.16f);
+		DisplayShopContent(shopIndex);
 	}
 }
