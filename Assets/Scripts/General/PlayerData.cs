@@ -72,6 +72,21 @@ public class PlayerData : MonoBehaviour {
 		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.LAST_CURRENT_ROOM,(int)value);}
 	}
 
+	public float BGMVolume{
+		get{return PlayerPrefs.GetFloat(PlayerPrefKeys.Sound.BGM_VOLUME,1);}
+		set{PlayerPrefs.SetFloat(PlayerPrefKeys.Sound.BGM_VOLUME,value);}
+	}
+
+	public float SFXVolume{
+		get{return PlayerPrefs.GetFloat(PlayerPrefKeys.Sound.SFX_VOLUME,1);}
+		set{PlayerPrefs.SetFloat(PlayerPrefKeys.Sound.SFX_VOLUME,value);}
+	}
+
+	public float VoicesVolume{
+		get{return PlayerPrefs.GetFloat(PlayerPrefKeys.Sound.VOICES_VOLUME,1);}
+		set{PlayerPrefs.SetFloat(PlayerPrefKeys.Sound.VOICES_VOLUME,value);}
+	}
+
 	void Awake()
 	{
 		if(instance != null && instance != this) Destroy(this.gameObject);

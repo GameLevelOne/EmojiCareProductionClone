@@ -4,10 +4,18 @@ using UnityEngine;
 
 public class Bricks : MonoBehaviour {
 	Rigidbody2D thisRigidbody;
+	public Vector3 startPos;
 
-	void Start(){
+	void Awake(){
+		startPos = transform.localPosition;
+		Debug.Log(startPos);
+	}
+
+	void OnEnable(){
 		thisRigidbody = GetComponent<Rigidbody2D>();
 		thisRigidbody.simulated=false;
+		transform.localPosition = startPos;
+		transform.localRotation = Quaternion.identity;
 	}
 
 	public void BeginDrag(){
