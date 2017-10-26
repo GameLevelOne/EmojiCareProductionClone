@@ -4,16 +4,18 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class RefrigeratorIngredient : MonoBehaviour {
+	public IngredientType ingredientType;
 	public Text textQuantity;
 	public GameObject objPrefab;
 	public Transform objParent;
 
-	public int quantity = 99;
+	int quantity = 99;
 
 	GameObject instantiatedObj;
 	bool enteredBowl = false;
 
 	void OnEnable(){
+		//quantity = PlayerData.Instance.inventory.GetIngredient(ingredientType);
 		textQuantity.text = quantity.ToString();
 		RefrigeratorIngredientTrigger.OnEnterBowl += OnEnterBowl;
 	}
@@ -57,6 +59,7 @@ public class RefrigeratorIngredient : MonoBehaviour {
 			quantity--;
 		}
 		textQuantity.text = quantity.ToString();
+		//PlayerData.Instance.inventory.SetIngredient(ingredientType,quantity);
 	}
 
 	IEnumerator MoveObjToPlate(Vector3 currentPos){

@@ -67,6 +67,19 @@ public class ScreenAlbum : BaseUI {
 		int tempIdx = 0;
 		emojiContentBox.sizeDelta = new Vector2 (0, ((float)tileHeight * boxSize) + contentBoxMarginX);
 
+		//TODO: ADJUST TILE DISPLAY
+//		if(currentRecordCount <= 3){
+//			tileHeight=1;
+//			tileWidth=currentRecordCount;
+//		} else{
+//			if(currentRecordCount%3 !=0){
+//				tileHeight = currentRecordCount/3 + 1;
+//			} else{
+//				tileHeight = currentRecordCount/3;
+//			}
+//			tileWidth = currentRecordCount%3;
+//		}
+
 		for (int i = 0; i < tileHeight; i++) {
 			for (int j = 0; j < tileWidth; j++) {
 				GameObject obj = Instantiate (emojiBoxPrefab, emojiContentBox, false) as GameObject;

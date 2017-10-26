@@ -18,6 +18,7 @@ public static class Tags {
 	public static class UI
 	{
 		public const string BOWL = "UIBowl";
+		public const string INGREDIENTS = "UIIngredients";
 	}
 
 }

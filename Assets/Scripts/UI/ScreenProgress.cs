@@ -56,7 +56,7 @@ public class ScreenProgress : BaseUI {
 		for(int i=0;i<tileHeight;i++){
 			for(int j=0;j<tileWidth;j++){
 				GameObject obj = Instantiate(expressionBoxPrefab,contentBox,false) as GameObject;
-				obj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-200+j*105,260-i*105);
+				obj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-200+j*105,770-i*105);
 				obj.GetComponent<ProgressTile>().exprType = (EmojiExpressionState)exprTileIdx;
 				obj.name = "Expr"+exprTileIdx.ToString();
 				condition = expressionIcons.GetExpressionUnlockCondition(currentEmojiData.emojiBaseData.emojiType,exprTileIdx);
