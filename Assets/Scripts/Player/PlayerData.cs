@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SimpleJSON;
@@ -6,6 +7,8 @@ using SimpleJSON;
 public class PlayerData : MonoBehaviour {
 	static PlayerData instance;
 	public static PlayerData Instance{ get{return instance;} }
+
+	public PlayerInventory inventory;
 
 	int defaultCoin = 100;
 	int defulatGem = 0;

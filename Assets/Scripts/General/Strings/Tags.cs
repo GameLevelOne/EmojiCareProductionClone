@@ -13,4 +13,11 @@ public static class Tags {
 	public const string SPONGE = "Sponge";
 	public const string TOWEL = "Towel";
 	public const string PAN = "Pan";
+	public const string REFRIGERATOR = "Refrigerator";
+
+	public static class UI
+	{
+		public const string BOWL = "UIBowl";
+	}
+
 }

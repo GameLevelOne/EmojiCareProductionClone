@@ -2,7 +2,8 @@
 
 public static class PlayerPrefKeys {
 
-	public static class Emoji{
+	public static class Emoji
+	{
 		public const string HUNGER = "Emoji/Hunger";
 		public const string HYGENE = "Emoji/Hygiene";
 		public const string HAPPINESS = "Emoji/Happiness";
@@ -12,7 +13,8 @@ public static class PlayerPrefKeys {
 		public const string UNLOCKED_EXPRESSIONS = "Emoji/UnlockedExpressions";
 	}
 
-	public static class Player{
+	public static class Player
+	{
 		public const string PLAYER_AUTH_TOKEN = "Player/AuthToken";
 
 		public const string PLAYER_COIN = "Player/Coin";
@@ -29,5 +31,10 @@ public static class PlayerPrefKeys {
 		public const string EMOJI_RECORD_COUNT = "Player/EmojiRecordCount";
 
 		public const string FIRST_PLAY = "Player/FirstPlay";
+
+		public static class Inventory
+		{
+			public const string INGREDIENT = "Player/Inventory/Ingredient/";
+		}
 	}
 }

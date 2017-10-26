@@ -11,7 +11,8 @@ public enum IngredientType{
 	Flour,
 	Meat,
 	Mushroom,
-	Tomato
+	Tomato,
+	COUNT
 }
 
 public class Ingredient : MonoBehaviour {

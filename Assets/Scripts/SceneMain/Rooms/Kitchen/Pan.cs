@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Pan : TriggerableFurniture {
+public class Pan : BaseFurniture {
 	public List<IngredientType> ingredients = new List<IngredientType>();
 	public GameObject[] ingredientObjects;
 	public GameObject cookingSmoke;
