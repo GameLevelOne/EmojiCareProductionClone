@@ -17,7 +17,7 @@ public class Sponge : TriggerableFurniture {
 		soapLiquid.enabled = false;
 	}
 
-	public override void OnTriggerEnter2D(Collider2D other)
+	protected override void OnTriggerEnter2D(Collider2D other)
 	{
 		if(other.tag == Tags.EMOJI_BODY){
 			if(soapLiquid.enabled == true){

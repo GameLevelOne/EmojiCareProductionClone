@@ -2,7 +2,7 @@
 using UnityEngine;
 
 public class Towel : TriggerableFurniture {
-	public override void OnTriggerEnter2D(Collider2D other)
+	protected override void OnTriggerEnter2D(Collider2D other)
 	{
 		base.OnTriggerEnter2D(other);
 		if(other.tag == Tags.EMOJI){
@@ -10,7 +10,7 @@ public class Towel : TriggerableFurniture {
 		}
 	}
 
-	public void OnTriggerExit2D(Collider2D other)
+	void OnTriggerExit2D(Collider2D other)
 	{
 		if(other.tag == Tags.EMOJI){
 			other.transform.parent.GetComponent<Emoji>().emojiExpressions.ResetExpressionDuration();
