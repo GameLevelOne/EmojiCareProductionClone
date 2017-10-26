@@ -83,7 +83,6 @@ public class DoodleMinigame : BaseUI {
 		furnitureBoard.texture = tex;
 
 		Destroy(particleParent);
-		doodleUI.SetActive(false);
 	}
 	
 }

@@ -16,7 +16,7 @@ public class SceneMainManager : MonoBehaviour {
 	void Start()
 	{
 		PlayerData.Instance.PlayerFirstPlay = 1;
-		PlayerPrefs.DeleteAll();
+//		PlayerPrefs.DeleteAll();
 		InitMain();
 	}
 
