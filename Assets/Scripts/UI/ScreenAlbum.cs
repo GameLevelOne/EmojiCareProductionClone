@@ -18,8 +18,9 @@ public class ScreenAlbum : BaseUI {
 	List<EmojiType> emojiData = new List<EmojiType>();
 
 	int tileCount = 6; //initial display
-	int tileWidth = 3;
-	int tileHeight = 2;
+	int tileWidth = 1;
+	int tileHeight = 1;
+	int lastTileWidth = 1;
 	int currentRecordCount = 1;
 
 	float boxSize = 150;
@@ -68,17 +69,17 @@ public class ScreenAlbum : BaseUI {
 		emojiContentBox.sizeDelta = new Vector2 (0, ((float)tileHeight * boxSize) + contentBoxMarginX);
 
 		//TODO: ADJUST TILE DISPLAY
-//		if(currentRecordCount <= 3){
-//			tileHeight=1;
-//			tileWidth=currentRecordCount;
-//		} else{
-//			if(currentRecordCount%3 !=0){
-//				tileHeight = currentRecordCount/3 + 1;
-//			} else{
-//				tileHeight = currentRecordCount/3;
-//			}
-//			tileWidth = currentRecordCount%3;
-//		}
+		if(currentRecordCount <= 3){
+			tileHeight=1;
+			tileWidth=currentRecordCount;
+		} else{
+			if(currentRecordCount%3 !=0){
+				tileHeight = currentRecordCount/3 + 1;
+			} else{
+				tileHeight = currentRecordCount/3;
+			}
+			tileWidth = currentRecordCount%3;
+		}
 
 		for (int i = 0; i < tileHeight; i++) {
 			for (int j = 0; j < tileWidth; j++) {

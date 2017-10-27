@@ -2,16 +2,16 @@
 using UnityEngine;
 
 public enum IngredientType{
+	Meat,
+	Chicken,
+	Fish,
 	Cabbage,
+	Tomato,
 	Carrot,
 	Cheese,
-	Chicken,
-	Egg,
-	Fish,
-	Flour,
-	Meat,
 	Mushroom,
-	Tomato,
+	Flour,
+	Egg,
 	COUNT
 }
 
