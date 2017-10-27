@@ -20,6 +20,7 @@ public class EmojiTriggerFall : MonoBehaviour {
 
 	public void ClearColliderList()
 	{
+		print("CLEAR");
 		if(colliderToIgnore.Count != 0){
 			foreach(Collider2D c in colliderToIgnore)
 				Physics2D.IgnoreCollision(bodyCollider,c,false);

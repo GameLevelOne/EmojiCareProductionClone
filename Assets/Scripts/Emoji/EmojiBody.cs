@@ -36,6 +36,7 @@ public class EmojiBody : MonoBehaviour {
 
 	public float foamState = 1f;
 	public bool flagSleep = false;
+	public bool flagAfterChangingRoom = false;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
@@ -59,12 +60,13 @@ public class EmojiBody : MonoBehaviour {
 
 	public void OnChangingRoomEnd()
 	{
+		flagAfterChangingRoom = true;
 		emoji.playerInput.Fall();
 	}
 
 	public void Reposition()
 	{
-		transform.parent.localPosition = new Vector3(0,0.3f,-2f);
+		transform.parent.localPosition = new Vector3(0,0f,-2f);
 	}
 
 	public void DisableParentRigidBody()
@@ -87,7 +89,7 @@ public class EmojiBody : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D other)
 	{
 		if(other.tag == Tags.BED){
-			if(emoji.playerInput.flagFalling){
+			if(!flagAfterChangingRoom){
 				flagSleep = true;
 			}
 		}

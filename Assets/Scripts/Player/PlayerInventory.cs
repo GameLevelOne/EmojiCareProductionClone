@@ -11,7 +11,7 @@ public class PlayerInventory {
 	/// <para>positive value = add</para>
 	/// <para>negative value = subtract</para>
 	/// </summary>
-	public void SetIngredient(IngredientType type, int value)
+	public void SetIngredientValue(IngredientType type, int value)
 	{
 		if(value < 0) return;
 
@@ -21,7 +21,7 @@ public class PlayerInventory {
 	}
 
 
-	public void ModIngredient(IngredientType type, int value)
+	public void ModIngredientValue(IngredientType type, int value)
 	{
 		if(value == 0) return;
 
@@ -35,7 +35,7 @@ public class PlayerInventory {
 		PlayerPrefs.SetInt(tempPrefKey,item);
 	}
 
-	public int GetIngredient(IngredientType type)
+	public int GetIngredientValue(IngredientType type)
 	{
 		string tempPrefKey = PlayerPrefKeys.Player.Inventory.INGREDIENT + type.ToString();
 		return PlayerPrefs.GetInt(tempPrefKey,0);

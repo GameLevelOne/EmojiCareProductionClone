@@ -6,7 +6,7 @@ public class Refrigerator : ActionableFurniture {
 	[Header("Refrigerator Attributes")]
 	public GameObject doorClosed;
 	public GameObject doorOpened;
-
+	public ScreenRefrigeratorContent uiRefrigerator;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
@@ -19,7 +19,7 @@ public class Refrigerator : ActionableFurniture {
 		doorOpened.SetActive(true);
 		doorClosed.SetActive(false);
 
-		//open refrigerator UI
+		uiRefrigerator.ShowUI(uiRefrigerator.gameObject);
 	}
 
 	public void CloseRefrigerator()

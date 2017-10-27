@@ -39,7 +39,7 @@ public class SceneMainManager : MonoBehaviour {
 		if(AdmobManager.Instance) AdmobManager.Instance.ShowBanner();
 
 		for(int i = 0;i<(int)IngredientType.COUNT;i++){
-			PlayerData.Instance.inventory.SetIngredient((IngredientType)i,99);
+			PlayerData.Instance.inventory.SetIngredientValue((IngredientType)i,99);
 		}
 	}
 

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Pan : BaseFurniture {
-	public List<IngredientType> ingredients = new List<IngredientType>();
-	public GameObject[] ingredientObjects;
+	public List<GameObject> ingredients = new List<GameObject>();
+	public Transform content;
 	public GameObject cookingSmoke;
 	public Cookbook cookBook;
 	public bool hasIngredient;
@@ -12,13 +12,12 @@ public class Pan : BaseFurniture {
 	public GameObject cookedFoodObject = null;
 	public GameObject cookingBar;
 
-	public void AddIngredient(IngredientType ingredient)
+	public void AddIngredient(GameObject ingredient)
 	{
 		print("Inserting "+ingredient+" to pan");
 		if(cookedFoodObject == null || isCooking){
 			if(!hasIngredient) StartCoroutine(StoveOn());
-			
-
+			ingredient.transform.SetParent(content);
 			ingredients.Add(ingredient);
 			CheckIngredientCombination();
 		}
@@ -27,11 +26,18 @@ public class Pan : BaseFurniture {
 	void ClearIngredient()
 	{
 		if(ingredients.Count > 0){
+			for(int i = 0;i<ingredients.Count;i++){
+				ingredients[i].transform.position = new Vector3(0f,0.5f,-1f);
+				ingredients[i].SetActive(true);
+				ingredients[i].transform.SetParent(transform.parent,true);
+				ingredients[i].GetComponent<Ingredient>().thisCollider.enabled = true;
+				ingredients[i].GetComponent<Ingredient>().thisRigidbody.simulated = true;
+			}
 			ingredients.Clear();
 			StopAllCoroutines();
 			hasIngredient = false;
 		}
-		foreach(GameObject g in ingredientObjects) g.SetActive(true);
+
 	}
 
 	public void CheckIngredientCombination()
@@ -44,7 +50,7 @@ public class Pan : BaseFurniture {
 
 				for(int j = 0;j < ingredients.Count;j++){
 					foreach(IngredientType t in cookBook.recipes[i].ingredients){
-						if(ingredients[j] == t) correct++;
+						if(ingredients[j].GetComponent<Ingredient>().type == t) correct++;
 					}
 				}
 
@@ -85,6 +91,7 @@ public class Pan : BaseFurniture {
 	{
 		//bar timer selama duration
 		isCooking = true;
+		for(int i = 0;i<ingredients.Count;i++) Destroy(ingredients[i]);
 		cookingBar.GetComponent<UICookBar>().duration = food.cookDuration;
 		cookingBar.SetActive(true);
 		print("Now cooking for "+food.cookDuration+" seconds");

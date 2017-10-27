@@ -332,7 +332,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 		yield return null;
 		emoji.triggerFall.IgnoreCollision();
 		emoji.triggerFall.isFalling = false;
-
+		emoji.body.flagAfterChangingRoom = false;
 	}
 
 	const string _LockInteractions = "LockInteractions";

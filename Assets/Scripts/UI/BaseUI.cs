@@ -28,14 +28,14 @@ public class BaseUI : MonoBehaviour {
 
 	public void ShowUI (GameObject obj)
 	{
-		AdmobManager.Instance.HideBanner();
+		if(AdmobManager.Instance) AdmobManager.Instance.HideBanner();
 		obj.SetActive(true);
 		obj.GetComponent<Animator>().SetTrigger(triggerShowUI);	
 		InitUI();
 	}
 
 	public void CloseUI(GameObject obj){
-		AdmobManager.Instance.ShowBanner();
+		if(AdmobManager.Instance) AdmobManager.Instance.ShowBanner();
 		obj.GetComponent<Animator>().SetTrigger(triggerCloseUI);
 		StartCoroutine(WaitForAnim(obj));
 	}

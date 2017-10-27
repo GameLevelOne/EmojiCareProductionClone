@@ -26,17 +26,29 @@ public class Ingredient : MonoBehaviour {
 	[Header("Edit this!")]
 	public IngredientType type;
 
+	public bool instantiated = true;
 	bool hold = false;
 		
 	void OnTriggerEnter2D(Collider2D other)
 	{
 		if(other.tag == Tags.PAN){
-			if(!hold && (other.GetComponent<Pan>().cookedFoodObject == null || other.GetComponent<Pan>().isCooking)){ 
+			if(!instantiated && !hold && (other.GetComponent<Pan>().cookedFoodObject == null || other.GetComponent<Pan>().isCooking)){ 
 				StopAllCoroutines();
-				other.GetComponent<Pan>().AddIngredient(type);
-				Destroy(this.gameObject);
+				other.GetComponent<Pan>().AddIngredient(this.gameObject);
+				this.gameObject.SetActive(false); //sementara
+
 			}
 		}
+	}
+
+	void OnCollisionEnter2D(Collision2D other)
+	{
+		if(other.gameObject.tag == Tags.EMOJI_BODY || other.gameObject.tag == Tags.MOVABLE_FURNITURE){
+			Physics2D.IgnoreCollision(other.gameObject.GetComponent<Collider2D>(),thisCollider);
+		}
+
+		if(instantiated) instantiated = false;
+
 	}
 
 	public void BeginDrag()
