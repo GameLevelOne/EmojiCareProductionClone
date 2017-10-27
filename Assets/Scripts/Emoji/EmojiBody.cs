@@ -56,7 +56,12 @@ public class EmojiBody : MonoBehaviour {
 		emoji.emojiExpressions.ResetExpressionDuration();
 		emoji.transform.localScale = Vector3.one;
 	}
-		
+
+	public void OnChangingRoomEnd()
+	{
+		emoji.playerInput.Fall();
+	}
+
 	public void Reposition()
 	{
 		transform.parent.localPosition = new Vector3(0,0.3f,-2f);

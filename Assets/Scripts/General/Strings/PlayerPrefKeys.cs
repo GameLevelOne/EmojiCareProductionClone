@@ -37,4 +37,10 @@ public static class PlayerPrefKeys {
 			public const string INGREDIENT = "Player/Inventory/Ingredient/";
 		}
 	}
+
+	public static class Sound{
+		public const string BGM_VOLUME = "Sound/BGMVolume";
+		public const string SFX_VOLUME = "Sound/SFXVolume";
+		public const string VOICES_VOLUME = "Sound/VoicesVolume";
+	}
 }

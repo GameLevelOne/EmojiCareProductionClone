@@ -8,7 +8,7 @@ public class PlayerData : MonoBehaviour {
 	static PlayerData instance;
 	public static PlayerData Instance{ get{return instance;} }
 
-	public PlayerInventory inventory;
+	public PlayerInventory inventory = new PlayerInventory();
 
 	int defaultCoin = 100;
 	int defulatGem = 0;
@@ -73,6 +73,21 @@ public class PlayerData : MonoBehaviour {
 	public RoomType LastCurrentRoom{
 		get{return (RoomType)PlayerPrefs.GetInt(PlayerPrefKeys.Player.LAST_CURRENT_ROOM,2);}
 		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.LAST_CURRENT_ROOM,(int)value);}
+	}
+
+	public float BGMVolume{
+		get{return PlayerPrefs.GetFloat(PlayerPrefKeys.Sound.BGM_VOLUME,1);}
+		set{PlayerPrefs.SetFloat(PlayerPrefKeys.Sound.BGM_VOLUME,value);}
+	}
+
+	public float SFXVolume{
+		get{return PlayerPrefs.GetFloat(PlayerPrefKeys.Sound.SFX_VOLUME,1);}
+		set{PlayerPrefs.SetFloat(PlayerPrefKeys.Sound.SFX_VOLUME,value);}
+	}
+
+	public float VoicesVolume{
+		get{return PlayerPrefs.GetFloat(PlayerPrefKeys.Sound.VOICES_VOLUME,1);}
+		set{PlayerPrefs.SetFloat(PlayerPrefKeys.Sound.VOICES_VOLUME,value);}
 	}
 
 	void Awake()
