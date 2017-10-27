@@ -2,6 +2,10 @@
 using UnityEngine;
 
 public class PlayerInventory {
+	#region constructor
+
+	#endregion
+
 	#region Ingredient
 	/// <summary>
 	/// <para>positive value = add</para>
