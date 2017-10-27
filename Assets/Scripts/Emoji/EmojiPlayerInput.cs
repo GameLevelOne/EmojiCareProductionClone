@@ -44,7 +44,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 				if ((!flagHold) && (!flagStroke)) {
 					Poke();
 				} else if (flagHold) {
-					StartCoroutine(_Falling);
+					Fall();
 				} else {
 					EndStroke();
 				}
@@ -250,9 +250,15 @@ public class EmojiPlayerInput : MonoBehaviour {
 		emoji.body.OnEmojiEatOrReject(1.5f);
 	}
 
+	public void Fall()
+	{
+		StartCoroutine(_Falling);
+	}
+
 	public void Landing()
 	{
 		flagFalling = false;
+		emoji.triggerFall.ClearColliderList();
 		emoji.emojiExpressions.ResetExpressionDuration();
 	}
 
@@ -299,8 +305,6 @@ public class EmojiPlayerInput : MonoBehaviour {
 		emoji.emojiExpressions.ResetExpressionDuration();
 		emoji.emojiExpressions.SetExpression(EmojiExpressionState.HOLD,-1);
 
-		emoji.triggerFall.ClearColliderList();
-
 		Vector3 currentPos = transform.position;
 
 		float t = 0;
@@ -320,12 +324,14 @@ public class EmojiPlayerInput : MonoBehaviour {
 	IEnumerator Falling()
 	{
 		flagFalling = true;
+		emoji.triggerFall.isFalling = true;
 		emoji.body.thisCollider.enabled = true;
 		emoji.thisRigidbody.velocity = Vector2.zero;
 		emoji.thisRigidbody.simulated = true;
 		emoji.emojiExpressions.SetExpression(EmojiExpressionState.FALL,-1);
 		yield return null;
 		emoji.triggerFall.IgnoreCollision();
+		emoji.triggerFall.isFalling = false;
 
 	}
 

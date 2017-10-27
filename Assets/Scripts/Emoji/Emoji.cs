@@ -231,14 +231,6 @@ public class Emoji : MonoBehaviour {
 			TickStats();
 		}
 	}
-
-	IEnumerator IgnoreCollision()
-	{
-		triggerFall.isFalling = true;
-		yield return null;
-		triggerFall.IgnoreCollision();
-		triggerFall.isFalling = false;
-	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 

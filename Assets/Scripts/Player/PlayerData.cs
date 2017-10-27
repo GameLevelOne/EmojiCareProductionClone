@@ -8,7 +8,7 @@ public class PlayerData : MonoBehaviour {
 	static PlayerData instance;
 	public static PlayerData Instance{ get{return instance;} }
 
-	public PlayerInventory inventory;
+	public PlayerInventory inventory = new PlayerInventory();
 
 	int defaultCoin = 100;
 	int defulatGem = 0;
