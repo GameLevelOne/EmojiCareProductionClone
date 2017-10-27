@@ -37,56 +37,19 @@ public class PrologueDialogManager : MonoBehaviour {
 		Fader.OnFadeOutFinished -= OnFadeOutFinished;
 	}
 
-	public void LoadNextDialog ()
-	{
-		dialogCount++;
-		if (dialogCount < dialogList.Count) {
-			dialogTextBox.text = dialogList [dialogCount];
-		}else{
-			
-		}
-	}
-
-	public void OnClickNext ()
-	{
-		if (dialogCount == 0) {
-			ShowPopup ();
-			loadNextDialog = false;
-		} else if (dialogCount == 2) {
-			dialogTextBox.text = dialogList [dialogCount] + popupName.username +",";
-		} else if (dialogCount == 8) {
-			ChangeStorkSprite (StorkType.Happy);
-		} else if (dialogCount == 9) {
-			ChangeStorkSprite (StorkType.Normal);
-		} else if (dialogCount == 16) {
-			ChangeStorkSprite (StorkType.Carry);
-		} else if (dialogCount == 17) {
-			ChangeStorkSprite (StorkType.Normal);
-		} else if (dialogCount == 21) {
-			TogglePanelYesNo (true);
-			loadNextDialog = false;
-		} else if ((dialogCount >= 22 && dialogCount <= 24) || dialogCount >= 26 && dialogCount <= 27) {
-			ChangeStorkSprite (StorkType.Sad);
-		} else if (dialogCount == 25) {
-			ChangeStorkSprite (StorkType.Normal);
-			loadNextDialog=false;
-			TogglePanelYesNo(true);
-		} else if(dialogCount == 28){
-			ChangeStorkSprite(StorkType.Normal);
-		} else if (dialogCount == 29) {
-			loadNextDialog = false;
-			TogglePanelYesNo(true);
-		} else if (dialogCount == 30 || dialogCount == 31) {
-			ChangeStorkSprite (StorkType.Happy);
-		} else if (dialogCount == 32) {
-			ChangeStorkSprite (StorkType.Carry);
+	public void OnClickNext(){
+		if((dialogCount>=1 && dialogCount<=2) || dialogCount == 5 || dialogCount == 8 || 
+		(dialogCount>=20 && dialogCount<=23)){
+			ChangeStorkSprite(StorkType.Happy);
+		} else if(dialogCount == 3){
+			ChangeStorkSprite(StorkType.Sad);
+		} else if(dialogCount == 6 || dialogCount == 18){
+			ChangeStorkSprite(StorkType.Carry);
 		} else {
-			ChangeStorkSprite (StorkType.Normal);
+			ChangeStorkSprite(StorkType.Normal);
 		}
 
-		if (dialogCount != 2) {
-			dialogTextBox.text = dialogList [dialogCount];
-		}
+		dialogTextBox.text = dialogList [dialogCount];
 
 		if (dialogCount < (dialogList.Count-1)) {
 			if (loadNextDialog) {

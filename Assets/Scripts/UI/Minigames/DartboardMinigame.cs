@@ -3,36 +3,37 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DartboardMinigame : BaseUI {
-	public Transform arrow;
 	public GameObject dartMark;
-	bool moveArrow = false;
+	bool moveMark = false;
+	Animator dartAnim;
+	string triggerShoot = "Shoot";
+	string triggerReset = "Reset";
 
 	void OnEnable(){
-		dartMark.SetActive(false);
-		moveArrow=true;
+		dartAnim = dartMark.GetComponent<Animator>();
+		moveMark=true;
 		StartCoroutine(MoveArrow());
 	}
 
 	public void OnClickStop(){
 		dartMark.SetActive(true);
 		Vector3 stopPosition = Vector3.zero;
-		moveArrow=false;
-		if(!moveArrow){
-			stopPosition = arrow.localPosition;
-			dartMark.transform.localPosition = new Vector3(stopPosition.x,-972,0);
+		moveMark=false;
+		if(!moveMark){
+			dartAnim.SetTrigger(triggerShoot);
 		}
 		//StartCoroutine(ClosePanel());
 	}
 
-	IEnumerator MoveArrow(){
-		while (moveArrow) {
-			arrow.localPosition = new Vector3 ((Mathf.PingPong (Time.time*500, 400) - 200), -500, 0);
-			yield return null;
-		}
+	public void OnClickBack(){
+		dartAnim.SetTrigger(triggerReset);
+		base.CloseUI(this.gameObject);
 	}
 
-	IEnumerator ClosePanel(){
-		yield return new WaitForSeconds(1);
-		this.gameObject.SetActive(false);
+	IEnumerator MoveArrow(){
+		while (moveMark) {
+			dartMark.transform.localPosition = new Vector3 ((Mathf.PingPong (Time.time*500, 400) - 200), -500, 0);
+			yield return null;
+		}
 	}
 }
