@@ -17,6 +17,7 @@ public class ScreenShops : BaseUI {
 	public GameObject parentShop;
 	public GameObject parentShopContent;
 	public GameObject[] panelShopContents = new GameObject[3];
+	public GameObject[] displayCurrencies = new GameObject[3];
 	public GameObject buttonNext;
 	public GameObject buttonPrev;
 	public GameObject shopDescriptionBox;
@@ -60,7 +61,6 @@ public class ScreenShops : BaseUI {
 		itemDescriptionText.text = itemDescription;
 	}
 
-
 	public void InitShopDisplay(){
 		UpdateButtonDisplay();
 		storeDescriptionText.text = shopDescription[(int)selectedStore];
@@ -80,13 +80,15 @@ public class ScreenShops : BaseUI {
 		for(int i=0;i<panelShopContents.Length;i++){
 			if(i == shopIndex){
 				panelShopContents[i].SetActive(true);
+				displayCurrencies[i].SetActive(true);
 			}else{
 				panelShopContents[i].SetActive(false);
+				displayCurrencies[i].SetActive(false);
 			}
 		}
 	}
 
-	void DisplayShopDescription(bool display){
+	public void DisplayShopDescription(bool display){
 		buttonNext.SetActive(display);
 		buttonPrev.SetActive(display);
 		shopDescriptionBox.SetActive(display);
