@@ -38,7 +38,13 @@ public class PrologueDialogManager : MonoBehaviour {
 	}
 
 	public void OnClickNext(){
-		if((dialogCount>=1 && dialogCount<=2) || dialogCount == 5 || dialogCount == 8 || 
+		if (dialogCount < (dialogList.Count-1)) {
+			dialogCount++;
+		} else{
+			fader.FadeOut();
+		}
+
+		if(dialogCount == 1 || dialogCount == 2 || dialogCount == 5 || dialogCount == 8 || 
 		(dialogCount>=20 && dialogCount<=23)){
 			ChangeStorkSprite(StorkType.Happy);
 		} else if(dialogCount == 3){
@@ -48,17 +54,8 @@ public class PrologueDialogManager : MonoBehaviour {
 		} else {
 			ChangeStorkSprite(StorkType.Normal);
 		}
-
+			
 		dialogTextBox.text = dialogList [dialogCount];
-
-		if (dialogCount < (dialogList.Count-1)) {
-			if (loadNextDialog) {
-				dialogCount++;
-			}
-		} else{
-			fader.FadeOut();
-			dialogCount=0;
-		}
 	}
 
 	void ShowPopup(){

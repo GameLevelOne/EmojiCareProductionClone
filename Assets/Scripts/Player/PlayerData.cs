@@ -58,6 +58,11 @@ public class PlayerData : MonoBehaviour {
 		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.FIRST_PLAY,value);}
 	}
 
+	public string EmojiName{
+		get{return PlayerPrefs.GetString (PlayerPrefKeys.Emoji.EMOJI_NAME, "Emoji");}
+		set{PlayerPrefs.SetString (PlayerPrefKeys.Emoji.EMOJI_NAME, value);}
+	}
+
 	public List<EmojiType> EmojiAlbumData{
 		get{return emojiAlbumData;}
 	}
@@ -88,6 +93,91 @@ public class PlayerData : MonoBehaviour {
 	public float VoicesVolume{
 		get{return PlayerPrefs.GetFloat(PlayerPrefKeys.Sound.VOICES_VOLUME,1);}
 		set{PlayerPrefs.SetFloat(PlayerPrefKeys.Sound.VOICES_VOLUME,value);}
+	}
+		
+	public int TutorialFirstVisit{
+		get{return PlayerPrefs.GetInt (PlayerPrefKeys.Tutorial.FIRST_VISIT, 0);}
+		set{PlayerPrefs.SetInt (PlayerPrefKeys.Tutorial.FIRST_VISIT, value);}
+	}
+
+	public int TutorialIdleLivingRoom{
+		get{return PlayerPrefs.GetInt (PlayerPrefKeys.Tutorial.IDLE_LIVING_ROOM, 0);}
+		set{PlayerPrefs.SetInt (PlayerPrefKeys.Tutorial.IDLE_LIVING_ROOM, value);}
+	}
+
+	public int TutorialFirstBedroom{
+		get{return PlayerPrefs.GetInt (PlayerPrefKeys.Tutorial.FIRST_BEDROOM, 0);}
+		set{PlayerPrefs.SetInt (PlayerPrefKeys.Tutorial.FIRST_BEDROOM, value);}
+	}
+
+	public int TutorialFirstBathroom{
+		get{return PlayerPrefs.GetInt (PlayerPrefKeys.Tutorial.FIRST_BATHROOM, 0);}
+		set{PlayerPrefs.SetInt (PlayerPrefKeys.Tutorial.FIRST_BATHROOM, value);}
+	}
+
+	public int TutorialFirstKitchen{
+		get{return PlayerPrefs.GetInt (PlayerPrefKeys.Tutorial.FIRST_KITCHEN, 0);}
+		set{PlayerPrefs.SetInt (PlayerPrefKeys.Tutorial.FIRST_KITCHEN, value);}
+	}
+
+	public int TutorialFirstPlayroom{
+		get{return PlayerPrefs.GetInt (PlayerPrefKeys.Tutorial.FIRST_PLAYROOM, 0);}
+		set{PlayerPrefs.SetInt (PlayerPrefKeys.Tutorial.FIRST_PLAYROOM, value);}
+	}
+
+	public int TutorialFirstGarden{
+		get{return PlayerPrefs.GetInt (PlayerPrefKeys.Tutorial.FIRST_GARDEN, 0);}
+		set{PlayerPrefs.SetInt (PlayerPrefKeys.Tutorial.FIRST_GARDEN, value);}
+	}
+
+	public int TutorialFirstProgressUI{
+		get{return PlayerPrefs.GetInt (PlayerPrefKeys.Tutorial.FIRST_PROGRESS_UI, 0);}
+		set{PlayerPrefs.SetInt (PlayerPrefKeys.Tutorial.FIRST_PROGRESS_UI, value);}
+	}
+
+	public int TutorialFirstEditRoom{
+		get{return PlayerPrefs.GetInt (PlayerPrefKeys.Tutorial.FIRST_EDITROOM_UI, 0);}
+		set{PlayerPrefs.SetInt (PlayerPrefKeys.Tutorial.FIRST_EDITROOM_UI,value);}
+	}
+
+	public int TutorialFirstHungerRed{
+		get{return PlayerPrefs.GetInt (PlayerPrefKeys.Tutorial.FIRST_HUNGER_RED, 0);}
+		set{PlayerPrefs.SetInt (PlayerPrefKeys.Tutorial.FIRST_HYGIENE_RED, value);}
+	}
+
+	public int TutorialFirstHygieneRed{
+		get{return PlayerPrefs.GetInt (PlayerPrefKeys.Tutorial.FIRST_HYGIENE_RED, 0);}
+		set{PlayerPrefs.SetInt (PlayerPrefKeys.Tutorial.FIRST_HYGIENE_RED, value);}
+	}
+
+	public int TutorialFirstHappinessRed{
+		get{return PlayerPrefs.GetInt (PlayerPrefKeys.Tutorial.FIRST_HAPPINESS_RED, 0);}
+		set{PlayerPrefs.SetInt (PlayerPrefKeys.Tutorial.FIRST_HAPPINESS_RED, value);}
+	}
+
+	public int TutorialFirstStaminaRed{
+		get{return PlayerPrefs.GetInt (PlayerPrefKeys.Tutorial.FIRST_STAMINA_RED, 0);}
+		set{PlayerPrefs.SetInt (PlayerPrefKeys.Tutorial.FIRST_STAMINA_RED, value);}
+	}
+
+	public int TutorialFirstHealthRed{
+		get{return PlayerPrefs.GetInt (PlayerPrefKeys.Tutorial.FIRST_HEALTH_RED, 0);}
+		set{PlayerPrefs.SetInt (PlayerPrefKeys.Tutorial.FIRST_HEALTH_RED, value);}
+	}
+
+	public int TutorialFirstHealthOrange{
+		get{return PlayerPrefs.GetInt (PlayerPrefKeys.Tutorial.FIRST_HEALTH_ORANGE, 0);}
+		set{PlayerPrefs.SetInt (PlayerPrefKeys.Tutorial.FIRST_HEALTH_ORANGE, value);}
+	}
+
+	public int TutorialFirstExpressionFull{
+		get{return PlayerPrefs.GetInt (PlayerPrefKeys.Tutorial.FIRST_EXPRESSION_FULL, 0);}
+		set{PlayerPrefs.SetInt (PlayerPrefKeys.Tutorial.FIRST_EXPRESSION_FULL, value);}
+	}
+
+	public int TutorialFirstEmojiDead{
+		get{return PlayerPrefs.GetInt (PlayerPrefKeys.Tutorial.FIRST_EMOJI_DEAD, 0);}
+		set{PlayerPrefs.SetInt (PlayerPrefKeys.Tutorial.FIRST_EMOJI_DEAD, value);}
 	}
 
 	void Awake()

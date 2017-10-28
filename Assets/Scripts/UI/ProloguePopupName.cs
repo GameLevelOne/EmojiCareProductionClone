@@ -10,5 +10,6 @@ public class ProloguePopupName : BaseUI {
 	public void OnInputName (InputField inputName)
 	{
 		username = inputName.text;
+		PlayerData.Instance.EmojiName = username;
 	}
 }

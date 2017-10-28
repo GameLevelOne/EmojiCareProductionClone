@@ -4,6 +4,7 @@ using UnityEngine;
 public class SceneMainManager : MonoBehaviour {
 	#region attributes
 	public RoomController roomController;
+	public ScreenTutorial screenTutorial;
 	public EmojiStatsExpressionController statsExpressionController;
 	public Fader fader;
 
@@ -16,7 +17,7 @@ public class SceneMainManager : MonoBehaviour {
 	void Start()
 	{
 		PlayerData.Instance.PlayerFirstPlay = 1;
-//		PlayerPrefs.DeleteAll();
+		PlayerPrefs.DeleteAll();
 
 
 
@@ -40,6 +41,11 @@ public class SceneMainManager : MonoBehaviour {
 
 		for(int i = 0;i<(int)IngredientType.COUNT;i++){
 			PlayerData.Instance.inventory.SetIngredientValue((IngredientType)i,99);
+		}
+
+		if (PlayerData.Instance.TutorialFirstVisit == 0) {
+			PlayerData.Instance.TutorialFirstVisit = 1;
+			screenTutorial.ShowUI (screenTutorial.screenTutorialObj);
 		}
 	}
 

@@ -11,6 +11,8 @@ public static class PlayerPrefKeys {
 		public const string HEALTH = "Emoji/Health";
 
 		public const string UNLOCKED_EXPRESSIONS = "Emoji/UnlockedExpressions";
+
+		public const string EMOJI_NAME = "Emoji/EmojiName";
 	}
 
 	public static class Player
@@ -36,6 +38,27 @@ public static class PlayerPrefKeys {
 		{
 			public const string INGREDIENT = "Player/Inventory/Ingredient/";
 		}
+	}
+
+	public static class Tutorial{
+		public const string FIRST_VISIT = "Tutorial/FirstVisit";
+		public const string IDLE_LIVING_ROOM = "Tutorial/IdleLivingRoom";
+		public const string FIRST_BEDROOM = "Tutorial/FirstBedroom";
+		public const string FIRST_BATHROOM = "Tutorial/FirstBathroom";
+		public const string FIRST_KITCHEN = "Tutorial/FirstKitchen";
+		public const string FIRST_PLAYROOM = "Tutorial/FirstPlayroom";
+		public const string FIRST_GARDEN = "Tutorial/FirstGarden";
+		public const string FIRST_PROGRESS_UI = "Tutorial/FirstProgressUI";
+		public const string FIRST_EDITROOM_UI = "Tutorial/FirstEditRoomUI";
+
+		public const string FIRST_HUNGER_RED = "Tutorial/FirstHungerRed";
+		public const string FIRST_HYGIENE_RED = "Tutorial/FirstHygieneRed";
+		public const string FIRST_HAPPINESS_RED = "Tutorial/FirstHappinessRed";
+		public const string FIRST_STAMINA_RED = "Tutorial/FirstStaminaRed";
+		public const string FIRST_HEALTH_RED = "Tutorial/FirstHealthRed";
+		public const string FIRST_HEALTH_ORANGE = "Tutorial/FirstHealthOrange";
+		public const string FIRST_EXPRESSION_FULL = "Tutorial/FirstExpressionFull";
+		public const string FIRST_EMOJI_DEAD = "Tutorial/FirstEmojiDead";
 	}
 
 	public static class Sound{

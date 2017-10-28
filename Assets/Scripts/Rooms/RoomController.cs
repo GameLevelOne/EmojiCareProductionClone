@@ -17,6 +17,8 @@ public class RoomController : MonoBehaviour {
 	public GameObject cookBar; //SEMENTARA
 	public Pan pan;
 
+	public ScreenTutorial screenTutorial;
+
 	int roomTotal = 0;
 	float distance = 0;
 	float xOnBeginDrag;
@@ -184,11 +186,15 @@ public class RoomController : MonoBehaviour {
 	}
 
 	public void GoToRoom(RoomType destination)
-	{
+	{		
 		if(destination == currentRoom) return;
 
 		Vector3 startPos = transform.position;
 		Vector3 endpos = new Vector3((roomWidth*(int)destination*-1f),0f,0f);
+
+		if(PlayerData.Instance.TutorialIdleLivingRoom == 0)
+			screenTutorial.TriggerRoomChange ();
+
 		StartCoroutine(SmoothSnap(startPos,endpos));
 	}
 	#endregion
@@ -224,6 +230,9 @@ public class RoomController : MonoBehaviour {
 
 		PlayerData.Instance.PlayerEmoji.transform.parent = rooms[(int)currentRoom].transform;
 		PlayerData.Instance.PlayerEmoji.body.BounceToCurrentRoom((int)currentRoom);
+
+		if(currentRoom != RoomType.LivingRoom)
+			screenTutorial.CheckRoomPlayerPrefs (currentRoom);
 
 		yield return null;
 	}
