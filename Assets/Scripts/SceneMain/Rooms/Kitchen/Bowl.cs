@@ -33,7 +33,7 @@ public class Bowl : MonoBehaviour {
 		for(int i = 0;i<objects.Length;i++){
 			int index = (int)objects[i].GetComponent<IngredientObject>().type;
 			GameObject temp = (GameObject) Instantiate(prefabIngredients[index],content);
-			temp.transform.localPosition = new Vector3(0f,0.3f,-1f);
+			temp.transform.localPosition = new Vector3(Random.Range(-0.4f,0.4f),0.3f,-1f);
 			foreach(GameObject g in instantiatedIngredients){
 				Physics2D.IgnoreCollision(g.GetComponent<Ingredient>().thisCollider,temp.GetComponent<Ingredient>().thisCollider,true);
 			}
@@ -41,20 +41,26 @@ public class Bowl : MonoBehaviour {
 		}
 	}
 
-	void LateUpdate()
+	void Update ()
 	{
-		if(initialized){
-			Vector3 tempMousePosition = new Vector3(Input.mousePosition.x,Input.mousePosition.y,19f);
-			Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(tempMousePosition);
-			transform.position = new Vector3(mouseWorldPos.x,mouseWorldPos.y+0.3f,mouseWorldPos.z);
+		if (initialized) {
+			Vector3 tempMousePosition = new Vector3 (Input.mousePosition.x, Input.mousePosition.y, 19f);
+			Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint (tempMousePosition);
+			transform.position = new Vector3 (mouseWorldPos.x, mouseWorldPos.y + 0.3f, mouseWorldPos.z);
 
-			if(Input.GetMouseButtonUp(0)){
+
+		}
+
+		if (Input.GetMouseButtonUp (0)) {
+			if (initialized) {
 				initialized = false;
 				if(instantiatedIngredients.Count <= 0){
 					gameObject.SetActive(false);
 				}else{
 					StartCoroutine(_MoveToTableAndFlip);
 				}
+			}else{
+				gameObject.SetActive(false);
 			}
 		}
 	}
@@ -74,6 +80,7 @@ public class Bowl : MonoBehaviour {
 			yield return null;
 		}
 		initialized = true;
+
 	}
 
 	const string _MoveToTableAndFlip = "MoveToTableAndFlip";
@@ -84,14 +91,14 @@ public class Bowl : MonoBehaviour {
 		Vector3 angle = transform.eulerAngles;
 		while(t < 1){
 			transform.position = Vector3.Lerp(currentPos,flipPos,t);
-			t+= Time.deltaTime * 5;
+			t+= Time.deltaTime * 8;
 			yield return null;
 		}
 		transform.position = flipPos;
 		t = 0;
 		while(t< 1){
 			transform.eulerAngles = Vector3.Lerp(angle,flipRotation,t);
-			t+= Time.deltaTime * 2;
+			t+= Time.deltaTime * 5;
 			yield return null;
 		}
 		transform.eulerAngles = flipRotation;
@@ -108,7 +115,7 @@ public class Bowl : MonoBehaviour {
 			i.thisRigidbody.simulated = true;
 		}
 
-		yield return new WaitForSeconds(1f);
+		yield return new WaitForSeconds(0.6f);
 		instantiatedIngredients.Clear();
 		gameObject.SetActive(false);
 	}
