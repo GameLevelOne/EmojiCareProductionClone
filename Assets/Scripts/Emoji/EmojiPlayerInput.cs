@@ -324,13 +324,16 @@ public class EmojiPlayerInput : MonoBehaviour {
 	IEnumerator Falling()
 	{
 		flagFalling = true;
-		emoji.triggerFall.isFalling = true;
-		emoji.body.thisCollider.enabled = true;
+
 		emoji.thisRigidbody.velocity = Vector2.zero;
 		emoji.thisRigidbody.simulated = true;
+		emoji.triggerFall.isFalling = true;
+
 		emoji.emojiExpressions.SetExpression(EmojiExpressionState.FALL,-1);
 		yield return null;
 		emoji.triggerFall.IgnoreCollision();
+
+		emoji.body.thisCollider.enabled = true;
 		emoji.triggerFall.isFalling = false;
 		emoji.body.flagAfterChangingRoom = false;
 	}

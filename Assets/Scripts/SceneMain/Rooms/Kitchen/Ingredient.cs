@@ -28,7 +28,7 @@ public class Ingredient : MonoBehaviour {
 
 	public bool instantiated = true;
 	bool hold = false;
-		
+
 	void OnTriggerEnter2D(Collider2D other)
 	{
 		if(other.tag == Tags.PAN){
@@ -37,6 +37,13 @@ public class Ingredient : MonoBehaviour {
 				other.GetComponent<Pan>().AddIngredient(this.gameObject);
 				this.gameObject.SetActive(false); //sementara
 
+			}
+		}
+
+		if(other.tag == Tags.REFRIGERATOR){
+			if(!instantiated && !hold){
+				PlayerData.Instance.inventory.ModIngredientValue(type,1);
+				Destroy(this.gameObject);
 			}
 		}
 	}

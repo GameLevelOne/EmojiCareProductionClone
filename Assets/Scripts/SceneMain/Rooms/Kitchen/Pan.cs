@@ -28,16 +28,15 @@ public class Pan : BaseFurniture {
 		if(ingredients.Count > 0){
 			for(int i = 0;i<ingredients.Count;i++){
 				ingredients[i].transform.position = new Vector3(0f,0.5f,-1f);
-				ingredients[i].SetActive(true);
 				ingredients[i].transform.SetParent(transform.parent,true);
 				ingredients[i].GetComponent<Ingredient>().thisCollider.enabled = true;
 				ingredients[i].GetComponent<Ingredient>().thisRigidbody.simulated = true;
+				ingredients[i].SetActive(true);
 			}
 			ingredients.Clear();
 			StopAllCoroutines();
 			hasIngredient = false;
 		}
-
 	}
 
 	public void CheckIngredientCombination()
