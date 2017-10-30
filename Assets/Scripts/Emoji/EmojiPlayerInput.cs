@@ -16,12 +16,18 @@ public class EmojiPlayerInput : MonoBehaviour {
 	public bool flagTouching = false;
 	public bool flagFalling = false;
 	public bool flagSleeping = false;
+	[Header("Shake Mechanic")]
+	public float shakeTreshold = 6f;
+	public float shakeLengthCooldownTime = 0.1f;
+	public float shakeCounterCooldownTime = 0.3f;
+
 	int tapCounter = 0;
 
 	float emojiXPos;
 	Vector3 touchTargetPosition;
 	float touchX;
 	Vector2 shakeVector;
+	float totalShakeLength = 0f;
 	int shakeCounter = 0;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -159,40 +165,8 @@ public class EmojiPlayerInput : MonoBehaviour {
 	{
 		Vector2 tempTouchWorldPos = new Vector2(getTouchToWorldPosition().x,getTouchToWorldPosition().y);
 		float factor = Mathf.Sqrt( Mathf.Pow(Mathf.Abs(tempTouchWorldPos.x - shakeVector.x),2) + Mathf.Pow(Mathf.Abs(tempTouchWorldPos.y - shakeVector.y),2) );
-
-		if(factor <= 3f){//slow move
-
-		}else if(factor >3f && factor <= 6f){//medium move
-
-		}else{//fast move
-			StopCoroutine(_ShakeCooldown);
-			shakeCounter++;
-			print("ShakeCounter = "+shakeCounter);
-			if(shakeCounter >= 8 && shakeCounter < 20){
-				
-				if(emoji.emojiExpressions.currentExpression != EmojiExpressionState.DIZZY && emoji.emojiExpressions.currentExpression != EmojiExpressionState.HOLD_BARF){
-					emoji.emojiExpressions.ResetExpressionDuration();
-					emoji.emojiExpressions.SetExpression(EmojiExpressionState.DIZZY,-1f);
-				}
-					
-			}else if(shakeCounter >= 20){
-				float healthValue = emoji.health.StatValue / emoji.health.MaxStatValue;
-				if(healthValue < 0.3f){
-					emoji.ResetEmojiStatsModifier();
-				}else{
-					emoji.health.statsModifier = -3f;
-				}
-
-				if(emoji.emojiExpressions.currentExpression != EmojiExpressionState.HOLD_BARF){
-
-					emoji.emojiExpressions.ResetExpressionDuration();
-					emoji.emojiExpressions.SetExpression(EmojiExpressionState.HOLD_BARF,-1f);
-				}
-					
-			}
-			StartCoroutine(_ShakeCooldown);
-//			print("ShakeCounter = "+shakeCounter);
-		}
+		totalShakeLength += factor / 2f;
+//		print ("Shake Length = " + totalShakeLength);
 	}
 
 	void Stroke()
@@ -290,10 +264,58 @@ public class EmojiPlayerInput : MonoBehaviour {
 	const string _ShakeCooldown = "ShakeCooldown";
 	IEnumerator ShakeCooldown()
 	{
-		yield return new WaitForSeconds(0.5f);
+		yield return new WaitForSeconds(shakeCounterCooldownTime);
 		shakeCounter = 0;
+		print ("RESET!!!!!!");
 		emoji.ResetEmojiStatsModifier();
+//		emoji.emojiExpressions.ResetExpressionDuration ();
+//		emoji.emojiExpressions.SetExpression (EmojiExpressionState.HOLD,-1);
 	}
+
+	const string _ShakeTick = "ShakeTick";
+	IEnumerator ShakeTick ()
+	{
+		while (true) {
+			yield return new WaitForSeconds (shakeLengthCooldownTime);
+
+			if (totalShakeLength <= shakeTreshold/2f) {//slow move
+				
+			} else if (totalShakeLength > shakeTreshold/2f && totalShakeLength <= shakeTreshold) {//medium move
+				
+			} else {//fast move
+				StopCoroutine (_ShakeCooldown);
+				shakeCounter++;
+				print ("ShakeCounter = " + shakeCounter);
+				if (shakeCounter >= 8 && shakeCounter < 20) {
+					
+					if (emoji.emojiExpressions.currentExpression != EmojiExpressionState.DIZZY && emoji.emojiExpressions.currentExpression != EmojiExpressionState.HOLD_BARF) {
+						emoji.emojiExpressions.ResetExpressionDuration ();
+						emoji.emojiExpressions.SetExpression (EmojiExpressionState.DIZZY, -1f);
+					}
+						
+				} else if (shakeCounter >= 20) {
+					float healthValue = emoji.health.StatValue / emoji.health.MaxStatValue;
+					if (healthValue < 0.3f) {
+						emoji.ResetEmojiStatsModifier ();
+					} else {
+						emoji.health.statsModifier = -3f;
+					}
+
+					if (emoji.emojiExpressions.currentExpression != EmojiExpressionState.HOLD_BARF) {
+						emoji.emojiExpressions.ResetExpressionDuration ();
+						emoji.emojiExpressions.SetExpression (EmojiExpressionState.HOLD_BARF, -1f);
+					}
+				
+				}
+			StartCoroutine (_ShakeCooldown);
+			}	
+//			print ("Length  ="+totalShakeLength);
+			totalShakeLength = 0f;
+//			print ("ASDASDJKASJDKASJD");
+		}
+	}
+
+
 
 	const string _StartHold = "StartHold";
 	IEnumerator StartHold()
@@ -319,6 +341,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 		shakeVector = new Vector2(touchTargetPosition.x,touchTargetPosition.y);
 		flagHold = true;
 		Hold();
+		StartCoroutine (_ShakeTick);
 	}
 
 	const string _Falling = "Falling";

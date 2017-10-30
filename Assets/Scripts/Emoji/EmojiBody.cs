@@ -99,7 +99,7 @@ public class EmojiBody : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D other)
 	{
-		if(emoji.playerInput.flagFalling == true) emoji.playerInput.Landing();
+		emoji.playerInput.Landing();
 
 		if(other.gameObject.tag == Tags.BED){
 			if(flagSleep){
