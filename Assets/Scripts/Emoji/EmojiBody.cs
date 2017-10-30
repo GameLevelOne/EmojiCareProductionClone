@@ -55,18 +55,20 @@ public class EmojiBody : MonoBehaviour {
 
 		//sementara
 		emoji.emojiExpressions.ResetExpressionDuration();
+		emoji.emojiExpressions.SetExpression(EmojiExpressionState.DEFAULT,0);
 		emoji.transform.localScale = Vector3.one;
 	}
 
 	public void OnChangingRoomEnd()
 	{
-		flagAfterChangingRoom = true;
-		emoji.playerInput.Fall();
+//		flagAfterChangingRoom = true;
+//		emoji.playerInput.Fall();
 	}
 
 	public void Reposition()
 	{
-		transform.parent.localPosition = new Vector3(0,0f,-2f);
+		transform.parent.localPosition = new Vector3(0,-2.485f,-2f);
+		emoji.triggerFall.thisCollider.enabled = false;
 	}
 
 	public void DisableParentRigidBody()

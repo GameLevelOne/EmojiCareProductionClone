@@ -17,7 +17,7 @@ public class SceneMainManager : MonoBehaviour {
 	void Start()
 	{
 		PlayerData.Instance.PlayerFirstPlay = 1;
-		PlayerPrefs.DeleteAll();
+//		PlayerPrefs.DeleteAll();
 
 
 
@@ -31,7 +31,6 @@ public class SceneMainManager : MonoBehaviour {
 
 	void InitMain()
 	{
-		
 		PlayerData.Instance.emojiParentTransform = roomController.rooms[(int)roomController.currentRoom].transform;
 		PlayerData.Instance.InitPlayerEmoji(emojiSamples[PlayerData.Instance.PlayerEmojiType]);
 		statsExpressionController.Init();
@@ -47,6 +46,7 @@ public class SceneMainManager : MonoBehaviour {
 			PlayerData.Instance.TutorialFirstVisit = 1;
 			screenTutorial.ShowUI (screenTutorial.screenTutorialObj);
 		}
+		fader.FadeIn();
 	}
 
 	#endregion

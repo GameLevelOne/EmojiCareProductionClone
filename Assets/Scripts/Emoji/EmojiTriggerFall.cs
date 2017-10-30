@@ -3,7 +3,9 @@ using System.Collections;
 using UnityEngine;
 
 public class EmojiTriggerFall : MonoBehaviour {
+	public Collider2D thisCollider;
 	public Collider2D bodyCollider;
+
 	public List<Collider2D> colliderToIgnore = new List<Collider2D>();
 
 	public bool isFalling = false;
@@ -16,6 +18,14 @@ public class EmojiTriggerFall : MonoBehaviour {
 				colliderToIgnore.Add(other.transform.parent.GetComponent<Collider2D>());
 			}
 		} 
+	}
+
+	public void AddAndIgnoreColliders(List<Collider2D> colliders)
+	{
+		foreach(Collider2D c in colliders){
+			Physics2D.IgnoreCollision(bodyCollider,c);
+			colliderToIgnore.Add(c);
+		}
 	}
 
 	public void ClearColliderList()
