@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public enum RoomType{
 	Garden,
@@ -17,6 +18,7 @@ public class BaseRoom : MonoBehaviour {
 	public BaseFurniture[] furnitures;
 	public MovableFurniture[] movableFurnitures;
 	public bool flagEditMode = false;
+	public List<Collider2D> collidersToIgnoreWhenChangingRoom;
 
 	Vector3[] furnitureDefaultPosition;
 	#endregion
@@ -63,6 +65,7 @@ public class BaseRoom : MonoBehaviour {
 			//show furnitures
 			foreach(BaseFurniture f in furnitures) f.gameObject.SetActive(true);
 			SetEmojiRoomModifier();
+			PlayerData.Instance.PlayerEmoji.triggerFall.AddAndIgnoreColliders(collidersToIgnoreWhenChangingRoom);
 		}else{
 			//hide furnitures
 			foreach(BaseFurniture f in furnitures) f.gameObject.SetActive(false);

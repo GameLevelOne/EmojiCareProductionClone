@@ -258,7 +258,6 @@ public class EmojiPlayerInput : MonoBehaviour {
 	public void Landing()
 	{
 		flagFalling = false;
-		emoji.triggerFall.ClearColliderList();
 		emoji.emojiExpressions.ResetExpressionDuration();
 	}
 
@@ -299,6 +298,8 @@ public class EmojiPlayerInput : MonoBehaviour {
 	const string _StartHold = "StartHold";
 	IEnumerator StartHold()
 	{
+		emoji.triggerFall.thisCollider.enabled = true;
+		emoji.triggerFall.ClearColliderList();
 		emoji.body.thisCollider.enabled = false;
 		emoji.thisRigidbody.simulated = false;
 
