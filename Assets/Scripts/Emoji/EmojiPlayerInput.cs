@@ -20,9 +20,11 @@ public class EmojiPlayerInput : MonoBehaviour {
 	public float slowMediumTreshold = 3f;
 	public float mediumFastTreshold = 6f;
 	public bool isRetaining = false;
+	public float retainCooldown = 1f;
 
 	[Header("Shake Mechanic")]
-	public float shakeCounterCooldownTime = 0.5f;
+	public float shakeCounterCooldown = 0.5f;
+	public float shakeExpressionCooldown = 2f;
 
 	Vector3 touchTargetPosition;
 	Vector2 prevMoveVector;
@@ -33,6 +35,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 	float prevXPos = 0f;
 
 	int shakeCounter = 0;
+	bool shakeExpressionRetain = false;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region event trigger		
@@ -183,46 +186,53 @@ public class EmojiPlayerInput : MonoBehaviour {
 		prevXPos = touchPos.x;
 	}
 
-	void CheckMove(float factor, float x)
+	void CheckMove (float factor, float x)
 	{
-		if(factor < slowMediumTreshold){
-			if(!isRetaining){
-				if(prevHoldFactor > slowMediumTreshold){
-					StartCoroutine(_RetainMoveSpeed);
-				}else{
-					//slow move
-					print("Slow");
-					emoji.emojiExpressions.ResetExpressionDuration();
-					emoji.emojiExpressions.SetExpression(EmojiExpressionState.HOLD,-1);
+		if (factor < slowMediumTreshold) {
+			if (!isRetaining) {
+				if (prevHoldFactor > slowMediumTreshold) {
+					StartCoroutine (_RetainMoveSpeed,retainCooldown);
+				} else {
+					print ("Slow");
+					if(!shakeExpressionRetain){
+						emoji.emojiExpressions.ResetExpressionDuration ();
+						emoji.emojiExpressions.SetExpression (EmojiExpressionState.HOLD, -1);
+					}
+
+
 				}
 			}
-		}else if(factor >= slowMediumTreshold && factor < mediumFastTreshold){
+		} else if (factor >= slowMediumTreshold && factor < mediumFastTreshold) {
 			
-			if(!isRetaining){
-				if(prevHoldFactor > mediumFastTreshold){
-					StartCoroutine(_RetainMoveSpeed);
-				}else{
-					
-					//medium move
-					print("Med");
-					emoji.emojiExpressions.ResetExpressionDuration();
-					emoji.emojiExpressions.SetExpression(EmojiExpressionState.WORRIED,-1);
+			if (!isRetaining) {
+				if (prevHoldFactor > mediumFastTreshold) {
+					StartCoroutine (_RetainMoveSpeed,retainCooldown);
+				} else {
+					print ("Med");
+					if(!shakeExpressionRetain){
+						emoji.emojiExpressions.ResetExpressionDuration ();
+						emoji.emojiExpressions.SetExpression (EmojiExpressionState.WORRIED, -1);
+					}
+
 				}
-			}else{
-				if(prevHoldFactor < slowMediumTreshold){
-					ResetRetainMoveState();
+			} else {
+				if (prevHoldFactor < slowMediumTreshold) {
+					ResetRetainMoveState ();
 				}
 			}
-		}else{
-			if(isRetaining){
-				if(prevHoldFactor < mediumFastTreshold){
-					ResetRetainMoveState();
+		} else {
+			if (isRetaining) {
+				if (prevHoldFactor < mediumFastTreshold) {
+					ResetRetainMoveState ();
 				}
-			}else{
+			} else {
 				//fast move
-				print("Fast");
-				emoji.emojiExpressions.ResetExpressionDuration();
-				emoji.emojiExpressions.SetExpression(EmojiExpressionState.AFRAID,-1);
+				print ("Fast");
+				if(!shakeExpressionRetain){
+					emoji.emojiExpressions.ResetExpressionDuration ();
+					emoji.emojiExpressions.SetExpression (EmojiExpressionState.AFRAID, -1);
+				}
+
 
 				CheckShake(x);
 			}
@@ -234,31 +244,32 @@ public class EmojiPlayerInput : MonoBehaviour {
 	void ResetRetainMoveState()
 	{
 		StopCoroutine(_RetainMoveSpeed);
-		emoji.emojiExpressions.ResetExpressionDuration();
-		emoji.emojiExpressions.SetExpression(EmojiExpressionState.HOLD,-1);
 		isRetaining = false;
 	}
 
-	void CheckShake(float x)
+	void CheckShake (float x)
 	{
-		if((prevXPos >= 0 && x < 0) || 
-			prevXPos < 0 && x >= 0){
+		if ((prevXPos >= 0 && x < 0) ||
+		    prevXPos < 0 && x >= 0) {
 			shakeCounter++;
-			StopCoroutine(_RetainShakeCounter);
-			StartCoroutine(_RetainShakeCounter);
+			StopCoroutine (_RetainShakeCounter);
+			StartCoroutine (_RetainShakeCounter);
 		
-			if(shakeCounter >= 8 && shakeCounter < 20){
-
-				print("DIZZY!");
-				emoji.emojiExpressions.ResetExpressionDuration();
-					emoji.emojiExpressions.SetExpression(EmojiExpressionState.DIZZY,-1);
-
-			}else if(shakeCounter >= 20){
-
-				print("MUNTAH!");
-				emoji.emojiExpressions.ResetExpressionDuration();
-				emoji.emojiExpressions.SetExpression(EmojiExpressionState.HOLD_BARF,-1);
-
+			if (shakeCounter >= 8 && shakeCounter < 20) {
+				if (!shakeExpressionRetain) {
+					print ("DIZZY!");
+					emoji.emojiExpressions.ResetExpressionDuration ();
+					emoji.emojiExpressions.SetExpression (EmojiExpressionState.DIZZY, -1);
+					StartCoroutine (_RetainShakeExpression,shakeExpressionCooldown);
+				}
+			} else if (shakeCounter >= 20) {
+				if (shakeExpressionRetain && emoji.emojiExpressions.currentExpression == EmojiExpressionState.DIZZY ||
+					!shakeExpressionRetain && emoji.emojiExpressions.currentExpression != EmojiExpressionState.HOLD_BARF) {
+					print ("MUNTAH!");
+					emoji.emojiExpressions.ResetExpressionDuration ();
+					emoji.emojiExpressions.SetExpression (EmojiExpressionState.HOLD_BARF, -1);
+					StartCoroutine (_RetainShakeExpression,shakeExpressionCooldown);
+				}
 				float emojiHealth = emoji.health.StatValue/emoji.health.MaxStatValue;
 				if(emojiHealth >= 0.3f){
 					emoji.health.statsModifier = -3f;
@@ -359,20 +370,30 @@ public class EmojiPlayerInput : MonoBehaviour {
 	}
 
 	const string _RetainMoveSpeed = "RetainMoveSpeed";
-	IEnumerator RetainMoveSpeed()
+	IEnumerator RetainMoveSpeed(float cooldown)
 	{
 		isRetaining = true;
-		yield return new WaitForSeconds(1f);
+		yield return new WaitForSeconds(cooldown);
+		print ("RESET RETAIN HOLD MOVE");
 		isRetaining = false;
 	}
 
 	const string _RetainShakeCounter = "RetainShakeCounter";
 	IEnumerator RetainShakeCounter()
 	{
-		yield return new WaitForSeconds(shakeCounterCooldownTime);
+		yield return new WaitForSeconds(shakeCounterCooldown);
 		shakeCounter = 0;
 
 		emoji.ResetEmojiStatsModifier();
+	}
+
+	const string _RetainShakeExpression = "RetainShakeExpression";
+	IEnumerator RetainShakeExpression(float cooldown)
+	{
+		shakeExpressionRetain = true;
+		yield return new WaitForSeconds (cooldown);
+		print ("RESET RETAIN SHAKE RESPONSE");
+		shakeExpressionRetain = false;
 	}
 
 	const string _StartHold = "StartHold";
