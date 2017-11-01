@@ -49,9 +49,9 @@ public class Emoji : MonoBehaviour {
 	}
 
 	//stats
-	const float statsTresholdHigh = 0.9f;
-	const float statsTresholdMed = 0.4f;
-	const float statsTresholdLow = 0.2f;
+	public const float statsTresholdHigh = 0.9f;
+	public const float statsTresholdMed = 0.4f;
+	public const float statsTresholdLow = 0.2f;
 	float[] healthTick = new float[]{0.0001f,0.0003f,0.0006f,0.0012f};
 
 	bool isTickingStat = false;

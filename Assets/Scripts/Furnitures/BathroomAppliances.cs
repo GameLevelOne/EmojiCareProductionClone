@@ -9,7 +9,7 @@ public class BathroomAppliances : MovableFurniture {
 	[Header("BathroomAppliances Attributes")]
 	public float speed;
 
-	Vector3 fixedPosition;
+	protected Vector3 fixedPosition;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initializations
@@ -18,7 +18,7 @@ public class BathroomAppliances : MovableFurniture {
 		Init();
 	}
 		
-	void Init()
+	protected void Init()
 	{
 		fixedPosition = transform.localPosition;
 	}
