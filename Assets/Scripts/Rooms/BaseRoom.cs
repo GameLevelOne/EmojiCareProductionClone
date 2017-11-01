@@ -59,7 +59,7 @@ public class BaseRoom : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
-	public void OnRoomChanged(RoomType currentRoom)
+	public virtual void OnRoomChanged(RoomType currentRoom)
 	{
 		if(thisRoom == currentRoom){
 			//show furnitures

@@ -16,6 +16,8 @@ public class EmojiPlayerInput : MonoBehaviour {
 	public bool flagTouching = false;
 	public bool flagFalling = false;
 	public bool flagSleeping = false;
+	public float eatDuration = 3f;
+	public float rejectDuration = 1.5f;
 	[Header("HoldMove Mechanic")]
 	public float slowMediumTreshold = 3f;
 	public float mediumFastTreshold = 6f;
@@ -319,16 +321,16 @@ public class EmojiPlayerInput : MonoBehaviour {
 	#region public modules
 	public void Eat()
 	{
-		emoji.emojiExpressions.SetExpression(EmojiExpressionState.EATING,3f);
-		StartCoroutine(_LockInteractions,3f);
-		emoji.body.OnEmojiEatOrReject(3f);
+		emoji.emojiExpressions.SetExpression(EmojiExpressionState.EATING,eatDuration);
+		StartCoroutine(_LockInteractions,eatDuration);
+		emoji.body.OnEmojiEatOrReject(eatDuration);
 	}
 
 	public void Reject()
 	{
-		emoji.emojiExpressions.SetExpression(EmojiExpressionState.REJECT,1.5f);
-		StartCoroutine(_LockInteractions,1.5f);
-		emoji.body.OnEmojiEatOrReject(1.5f);
+		emoji.emojiExpressions.SetExpression(EmojiExpressionState.REJECT,rejectDuration);
+		StartCoroutine(_LockInteractions,rejectDuration);
+		emoji.body.OnEmojiEatOrReject(rejectDuration);
 	}
 
 	public void Fall()

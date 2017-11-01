@@ -13,6 +13,8 @@ public static class Tags {
 	public const string TOWEL = "Towel";
 	public const string PAN = "Pan";
 	public const string REFRIGERATOR = "Refrigerator";
+	public const string BOX = "Box";
+	public const string TOY = "Toy";
 
 	public static class UI
 	{

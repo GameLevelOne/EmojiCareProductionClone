@@ -77,11 +77,14 @@ public class EmojiStats {
 	}
 
 	/// <summary>
-	/// negative value is written with '-' operator e.g. -1f.
+	/// Range: 0 to maxStatValue
 	/// </summary>
-	public void SetStats(float mod)
+	public void SetStats(float value)
 	{
-		StatValue = mod;
+		if(value < 0) value = 0;
+		else if(value > maxStatValue) value = maxStatValue;
+
+		StatValue = value;
 		AdjustValue();
 	}
 	#endregion
