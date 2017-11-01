@@ -48,18 +48,18 @@ public class ScreenStats : BaseUI {
 	}
 
 	void UpdateStatsValue(){
-//		Emoji currentData = PlayerData.Instance.PlayerEmoji;
-//		float ratioHunger = currentData.hunger.StatValue / currentData.hunger.MaxStatValue;
-//		float ratioHygiene = currentData.hygiene.StatValue / currentData.hygiene.MaxStatValue;
-//		float ratioHappiness = currentData.happiness.StatValue / currentData.happiness.MaxStatValue;
-//		float ratioStamina = currentData.stamina.StatValue / currentData.stamina.MaxStatValue;
-//		float ratioHealth = currentData.health.StatValue / currentData.health.MaxStatValue;
+		Emoji currentData = PlayerData.Instance.PlayerEmoji;
+		float ratioHunger = currentData.hunger.StatValue / currentData.hunger.MaxStatValue;
+		float ratioHygiene = currentData.hygiene.StatValue / currentData.hygiene.MaxStatValue;
+		float ratioHappiness = currentData.happiness.StatValue / currentData.happiness.MaxStatValue;
+		float ratioStamina = currentData.stamina.StatValue / currentData.stamina.MaxStatValue;
+		float ratioHealth = currentData.health.StatValue / currentData.health.MaxStatValue;
 
-		float ratioHunger = 0.9f;
-		float ratioHygiene = 0.65f;
-		float ratioHappiness = 0.23f;
-		float ratioStamina = 0.19f;
-		float ratioHealth = 0.1f;
+//		float ratioHunger = 0.9f;
+//		float ratioHygiene = 0.65f;
+//		float ratioHappiness = 0.23f;
+//		float ratioStamina = 0.19f;
+//		float ratioHealth = 0.1f;
 
 		barFillHunger.fillAmount = ratioHunger;
 		barFillHygiene.fillAmount = ratioHygiene;

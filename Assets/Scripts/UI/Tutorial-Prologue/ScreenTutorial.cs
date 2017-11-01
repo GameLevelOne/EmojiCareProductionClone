@@ -101,23 +101,23 @@ public class ScreenTutorial : BaseUI {
 		} else if(type == TutorialType.FirstPlayroom){
 			dialogText.text = firstPlayroom [0];
 		} else if(type == TutorialType.FirstProgressUI){
-			dialogText.text = firstProgressUI [0];
+			dialogText.text = "Here you can see the growth of "+emojiName;
 		} else if(type == TutorialType.TriggerFirstDead){
 			dialogText.text = triggerFirstDead [0];
 		} else if(type == TutorialType.TriggerFirstExpressionFull){
 			dialogText.text = triggerFirstExpressionFull [0];
 		} else if(type == TutorialType.TriggerHappinessRed){
-			dialogText.text = triggerHappinessRed [0];
+			dialogText.text = "Looks like "+emojiName+" is having a bad mood!";
 		} else if(type == TutorialType.TriggerHealthOrange){
-			dialogText.text = triggerHealthOrange [0];
+			dialogText.text = emojiName+" is sick!";
 		} else if(type == TutorialType.TriggerHealthRed){
-			dialogText.text = triggerHealthRed [0];
+			dialogText.text = emojiName+" is near death, what did you do??!";
 		} else if(type == TutorialType.TriggerHungerRed){
-			dialogText.text = triggerHungerRed [0];
+			dialogText.text = emojiName +" is starving!";
 		} else if(type == TutorialType.TriggerHygieneRed){
-			dialogText.text = triggerHygieneRed [0];
+			dialogText.text = emojiName +" is very dirty!";
 		} else if(type == TutorialType.TriggerStaminaRed){
-			dialogText.text = triggerStaminaRed [0];
+			dialogText.text = emojiName+" is exhausted!";
 		} else if(type == TutorialType.TriggerStaminaRed){
 			dialogText.text = triggerStaminaRed [0];
 		}
@@ -202,22 +202,10 @@ public class ScreenTutorial : BaseUI {
 				dialogText.text = firstVisit [dialogCount];
 			}
 		} else if(currentTutorial == TutorialType.IdleLivingRoom){
-			if(dialogCount < (idleLivingRoom.Length-1)){
-				dialogCount++;
-			} else{
-				base.CloseUI (screenTutorialObj);
-				PlayerData.Instance.TutorialIdleLivingRoom = 1;
-			}
-			dialogText.text = idleLivingRoom [dialogCount];
+			LoadDialogs (idleLivingRoom, PlayerData.Instance.TutorialIdleLivingRoom);
 
 		} else if(currentTutorial == TutorialType.FirstBedroom){
-			if(dialogCount < (firstBedroom.Length-1)){
-				dialogCount++;
-			} else{
-				base.CloseUI (screenTutorialObj);
-				PlayerData.Instance.TutorialFirstBedroom = 1;
-			}
-			dialogText.text = firstBedroom [dialogCount];
+			LoadDialogs (firstBedroom, PlayerData.Instance.TutorialFirstBedroom);
 
 		} else if(currentTutorial == TutorialType.FirstBathroom){
 			if(dialogCount < (firstBathroom.Length-1)){
@@ -251,23 +239,63 @@ public class ScreenTutorial : BaseUI {
 				dialogText.text = firstKitchen [dialogCount];
 
 		} else if(currentTutorial == TutorialType.FirstPlayroom){
-			if(dialogCount < (firstPlayroom.Length-1)){
-				dialogCount++;
-			} else{
-				base.CloseUI (screenTutorialObj);
-				PlayerData.Instance.TutorialFirstPlayroom = 1;
-			}
-			dialogText.text = firstPlayroom [dialogCount];
+			LoadDialogs (firstPlayroom, PlayerData.Instance.TutorialFirstPlayroom);
 
 		} else if(currentTutorial == TutorialType.FirstGarden){
-			if(dialogCount < (firstGarden.Length-1)){
+			LoadDialogs (firstGarden, PlayerData.Instance.TutorialFirstGarden);
+		} else if(currentTutorial == TutorialType.FirstProgressUI){ //TODO: check this later
+			if(dialogCount < (firstProgressUI.Length-1)){
 				dialogCount++;
 			} else{
 				base.CloseUI (screenTutorialObj);
-				PlayerData.Instance.TutorialFirstGarden = 1;
+				PlayerData.Instance.TutorialFirstProgressUI = 1;
 			}
-			dialogText.text = firstGarden [dialogCount];
+			dialogText.text = firstProgressUI [dialogCount];
+		} else if(currentTutorial == TutorialType.FirstEditRoomUI){
+			LoadDialogs (firstEditRoomsUI, PlayerData.Instance.TutorialFirstEditRoom);
+		} else if(currentTutorial == TutorialType.TriggerHungerRed){
+			LoadDialogs (triggerHungerRed, PlayerData.Instance.TutorialFirstHungerRed);
+		} else if(currentTutorial == TutorialType.TriggerHygieneRed){
+			LoadDialogs (triggerHygieneRed, PlayerData.Instance.TutorialFirstHygieneRed);
+		} else if(currentTutorial == TutorialType.TriggerHappinessRed){
+			LoadDialogs (triggerHappinessRed, PlayerData.Instance.TutorialFirstHappinessRed);
+		} else if(currentTutorial == TutorialType.TriggerStaminaRed){
+			LoadDialogs (triggerStaminaRed, PlayerData.Instance.TutorialFirstStaminaRed);
+		} else if(currentTutorial == TutorialType.TriggerHealthOrange){
+			LoadDialogs (triggerHealthOrange, PlayerData.Instance.TutorialFirstHealthOrange);
+		} else if(currentTutorial == TutorialType.TriggerHealthRed){
+			LoadDialogs (triggerHealthRed, PlayerData.Instance.TutorialFirstHealthRed);
+		} else if(currentTutorial == TutorialType.TriggerFirstDead){
+			LoadDialogs (triggerFirstDead, PlayerData.Instance.TutorialFirstEmojiDead);
+		} else if(currentTutorial == TutorialType.TriggerFirstExpressionFull){
+			if(dialogCount < (triggerFirstExpressionFull.Length-1)){
+				dialogCount++;
+			} else{
+				base.CloseUI (screenTutorialObj);
+				PlayerData.Instance.TutorialFirstExpressionFull = 1;
+			}
+
+			if(dialogCount == 1){
+				dialogText.text = "I can see that " + emojiName + " is mature enough.";
+				loadCustomDialog = true;
+			} else if(dialogCount == 8){
+				dialogText.text = "If you want to send "+emojiName+" off, and raise another emoji,";
+				loadCustomDialog = true;
+			}
+
+			if(!loadCustomDialog)
+				dialogText.text = triggerFirstExpressionFull [dialogCount];
 		}
+	}
+
+	public void LoadDialogs(string[] currentDialog,int currentPref){
+		if(dialogCount < (currentDialog.Length-1)){
+			dialogCount++;
+		} else{
+			base.CloseUI (screenTutorialObj);
+			currentPref = 1;
+		}
+		dialogText.text = currentDialog [dialogCount];
 	}
 
 	public void TriggerRoomChange(){
