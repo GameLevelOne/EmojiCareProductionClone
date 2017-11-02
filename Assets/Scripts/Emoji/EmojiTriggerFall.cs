@@ -23,8 +23,15 @@ public class EmojiTriggerFall : MonoBehaviour {
 	public void AddAndIgnoreColliders(List<Collider2D> colliders)
 	{
 		foreach(Collider2D c in colliders){
-			Physics2D.IgnoreCollision(bodyCollider,c);
+			Physics2D.IgnoreCollision(bodyCollider,c,true);
 			colliderToIgnore.Add(c);
+		}
+	}
+
+	public void ResetIgnoringColliders(List<Collider2D> colliders)
+	{
+		foreach(Collider2D c in colliders){
+			Physics2D.IgnoreCollision(bodyCollider,c,false);
 		}
 	}
 

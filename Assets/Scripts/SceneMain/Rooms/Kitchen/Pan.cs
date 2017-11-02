@@ -39,6 +39,14 @@ public class Pan : BaseFurniture {
 		}
 	}
 
+	void DestroyIngredients()
+	{
+		foreach(GameObject g in ingredients) Destroy(g);
+		ingredients.Clear();
+		StopAllCoroutines();
+		hasIngredient = false;
+	}
+
 	public void CheckIngredientCombination()
 	{
 		int foodIndex = -1;
@@ -108,6 +116,6 @@ public class Pan : BaseFurniture {
 		cookingBar.SetActive(false);
 		isCooking = false;
 		StopAllCoroutines();
-		ClearIngredient();
+		DestroyIngredients();
 	}
 }

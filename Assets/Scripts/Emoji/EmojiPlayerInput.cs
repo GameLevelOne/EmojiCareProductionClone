@@ -28,6 +28,9 @@ public class EmojiPlayerInput : MonoBehaviour {
 	public float shakeCounterCooldown = 0.5f;
 	public float shakeExpressionCooldown = 2f;
 
+	[Header("Toy mechanic")]
+	public int toyBumpCounter = 0;
+
 	Vector3 touchTargetPosition;
 	Vector2 prevMoveVector;
 

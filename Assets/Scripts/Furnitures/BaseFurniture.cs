@@ -14,7 +14,11 @@ public class BaseFurniture : MonoBehaviour {
 	#region initialization
 	public virtual void InitVariant()
 	{
-		for(int i = 0;i<thisSprite.Length;i++) thisSprite[i].sprite = variant[currentVariant].sprite[i];
+//		print(gameObject.name);
+		for(int i = 0;i<thisSprite.Length;i++) {
+			
+			thisSprite[i].sprite = variant[currentVariant].sprite[i];
+		}
 	}
 	#endregion
 //------------------------------------------------------------------------------------------------------------------------------------------------
