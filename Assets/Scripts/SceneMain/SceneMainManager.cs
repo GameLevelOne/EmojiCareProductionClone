@@ -35,7 +35,21 @@ public class SceneMainManager : MonoBehaviour {
 		PlayerData.Instance.InitPlayerEmoji(emojiSamples[PlayerData.Instance.PlayerEmojiType]);
 		statsExpressionController.Init();
 		roomController.Init();
-		roomController.RegisterLockRoomEvent();
+
+		if(PlayerData.Instance.PlayerEmoji.EmojiSleeping){
+			
+			roomController.currentRoom = RoomType.Bedroom;
+			roomController.transform.position = new Vector3(-32f,0f,0f);
+			foreach(BaseRoom r in roomController.rooms) if(r != null) r.OnRoomChanged(roomController.currentRoom);
+
+			PlayerData.Instance.PlayerEmoji.transform.parent = roomController.rooms[(int)roomController.currentRoom].transform;
+			PlayerData.Instance.PlayerEmoji.transform.position = new Vector3(0,0.0025f,-2f);
+			PlayerData.Instance.PlayerEmoji.emojiExpressions.SetExpression(EmojiExpressionState.SLEEP,-1);
+			PlayerData.Instance.PlayerEmoji.body.DoSleep();
+		}
+
+		PlayerData.Instance.PlayerEmoji.InitEmojiStats();
+
 		if(AdmobManager.Instance) AdmobManager.Instance.ShowBanner();
 
 		for(int i = 0;i<(int)IngredientType.COUNT;i++){

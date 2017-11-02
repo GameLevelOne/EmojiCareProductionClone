@@ -150,6 +150,7 @@ public class EmojiExpression {
 	{
 //		Debug.Log(expression+", "+duration+", "+currentDuration);
 		//check for unlocked expression
+//		Debug.Log("Expression =  "+expression+", duration = "+duration+", current = "+currentDuration);
 		if (IsNewExpression (expression)) {
 			unlockedExpressions.Add (expression);
 			SaveEmojiExpression ();

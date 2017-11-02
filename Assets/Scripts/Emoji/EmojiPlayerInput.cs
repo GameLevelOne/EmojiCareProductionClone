@@ -296,6 +296,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 
 	void Wake()
 	{
+		print("wake");
 		float staminaValue = emoji.stamina.StatValue / emoji.stamina.MaxStatValue;
 		if(staminaValue < 0.4f){//awake lazily
 			emoji.emojiExpressions.SetExpression(EmojiExpressionState.AWAKE_LAZILY,-1);
@@ -304,8 +305,10 @@ public class EmojiPlayerInput : MonoBehaviour {
 		}else{//awake energetically
 			emoji.emojiExpressions.SetExpression(EmojiExpressionState.AWAKE_ENERGETICALLY,-1);
 		}
+		emoji.EmojiSleeping = false;
 		emoji.ResetEmojiStatsModifier();
 		interactable = false;
+
 	}
 	//----------------------------------------------------------------=====NON-VOID MODULES=====----------------------------------------------------------------
 	Vector3 getEmojiPositionOnHold(Vector3 touchWorldPosition)
@@ -344,14 +347,14 @@ public class EmojiPlayerInput : MonoBehaviour {
 	public void Landing()
 	{
 		flagFalling = false;
-		emoji.emojiExpressions.ResetExpressionDuration();
+		if(!emoji.EmojiSleeping) emoji.emojiExpressions.ResetExpressionDuration();
 	}
 
 	public void Sleep()
 	{
 		if(!flagSleeping){
 			flagSleeping = true;
-			emoji.stamina.statsModifier = 0.004f;
+			if(emoji.stamina != null) emoji.stamina.statsModifier = 0.004f;
 			emoji.emojiExpressions.SetExpression(EmojiExpressionState.SLEEP,-1);
 		}
 	}

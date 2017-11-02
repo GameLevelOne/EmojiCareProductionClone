@@ -13,6 +13,8 @@ public static class PlayerPrefKeys {
 		public const string UNLOCKED_EXPRESSIONS = "Emoji/UnlockedExpressions";
 
 		public const string EMOJI_NAME = "Emoji/EmojiName";
+
+		public const string EMOJI_SLEEPING = "Emoji/Sleeping";
 	}
 
 	public static class Player
@@ -38,6 +40,12 @@ public static class PlayerPrefKeys {
 		{
 			public const string INGREDIENT = "Player/Inventory/Ingredient/";
 		}
+	}
+
+	public static class Game
+	{
+		public const string SEEDS = "Game/Garden/Seed";
+		public const string GOODS = "Game/Garden/Goods";
 	}
 
 	public static class Tutorial{

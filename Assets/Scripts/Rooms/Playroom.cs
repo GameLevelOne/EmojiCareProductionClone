@@ -4,6 +4,12 @@ using UnityEngine;
 public class Playroom : BaseRoom {
 	[Header("Playroom attributes")]
 	public Collider2D[] walls;
+
+	public void Init()
+	{
+		
+	}
+
 	public override void OnRoomChanged (RoomType currentRoom)
 	{
 		base.OnRoomChanged (currentRoom);

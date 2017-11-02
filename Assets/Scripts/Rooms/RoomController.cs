@@ -40,9 +40,10 @@ public class RoomController : MonoBehaviour {
 				r.OnRoomChanged(currentRoom);
 			}
 		AdjustTouchAreaSize();
+		RegisterLockRoomEvent();
 	}
 
-	public void RegisterLockRoomEvent()
+	void RegisterLockRoomEvent()
 	{
 		PlayerData.Instance.PlayerEmoji.body.OnEmojiBouncingToCurrentRoom += OnEmojiBouncingToCurrentRoom;
 		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent += OnEmojiSleepEvent;
@@ -89,7 +90,7 @@ public class RoomController : MonoBehaviour {
 	void AdjustTouchAreaSize()
 	{
 		roomTotal = Enum.GetNames(typeof(RoomType)).Length;
-		print("Total Room = "+roomTotal);
+//		print("Total Room = "+roomTotal);
 		thisCollider.size = new Vector2((roomWidth*roomTotal),roomHeight);
 		thisCollider.offset = new Vector2((thisCollider.size.x/2f)-(roomWidth/2f),0f);
 	}
@@ -145,8 +146,8 @@ public class RoomController : MonoBehaviour {
 
 	float getXEndPosition(float xPosOnEndDrag)
 	{
-		print(xPosOnEndDrag);
-		print(-1 * ((roomTotal-1) * roomWidth));
+//		print(xPosOnEndDrag);
+//		print(-1 * ((roomTotal-1) * roomWidth));
 		if(xPosOnEndDrag >= 3.6f){ //most left of rooms = nothing
 			
 			return 0;
@@ -209,6 +210,16 @@ public class RoomController : MonoBehaviour {
 		float t = 0;
 
 		currentRoom = GetCurrentRoom(endPos.x);
+
+		switch(currentRoom)
+		{
+		case RoomType.Garden: 		rooms[(int)currentRoom].GetComponent<Garden>().Init(); break;
+		case RoomType.Playroom: 	rooms[(int)currentRoom].GetComponent<Playroom>().Init(); break;
+		case RoomType.LivingRoom: 	rooms[(int)currentRoom].GetComponent<LivingRoom>().Init(); break;
+		case RoomType.Kitchen: 		rooms[(int)currentRoom].GetComponent<Kitchen>().Init(); break;
+		case RoomType.Bedroom: 		rooms[(int)currentRoom].GetComponent<Bedroom>().Init(); break;
+		case RoomType.Bathroom: 	rooms[(int)currentRoom].GetComponent<Bathroom>().Init(); break;
+		}
 
 		foreach(BaseRoom r in rooms) if(r != null) r.OnRoomChanged(currentRoom);
 
