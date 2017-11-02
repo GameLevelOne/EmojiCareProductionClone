@@ -40,9 +40,10 @@ public class RoomController : MonoBehaviour {
 				r.OnRoomChanged(currentRoom);
 			}
 		AdjustTouchAreaSize();
+		RegisterLockRoomEvent();
 	}
 
-	public void RegisterLockRoomEvent()
+	void RegisterLockRoomEvent()
 	{
 		PlayerData.Instance.PlayerEmoji.body.OnEmojiBouncingToCurrentRoom += OnEmojiBouncingToCurrentRoom;
 		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent += OnEmojiSleepEvent;
@@ -89,7 +90,7 @@ public class RoomController : MonoBehaviour {
 	void AdjustTouchAreaSize()
 	{
 		roomTotal = Enum.GetNames(typeof(RoomType)).Length;
-		print("Total Room = "+roomTotal);
+//		print("Total Room = "+roomTotal);
 		thisCollider.size = new Vector2((roomWidth*roomTotal),roomHeight);
 		thisCollider.offset = new Vector2((thisCollider.size.x/2f)-(roomWidth/2f),0f);
 	}
@@ -145,8 +146,8 @@ public class RoomController : MonoBehaviour {
 
 	float getXEndPosition(float xPosOnEndDrag)
 	{
-		print(xPosOnEndDrag);
-		print(-1 * ((roomTotal-1) * roomWidth));
+//		print(xPosOnEndDrag);
+//		print(-1 * ((roomTotal-1) * roomWidth));
 		if(xPosOnEndDrag >= 3.6f){ //most left of rooms = nothing
 			
 			return 0;

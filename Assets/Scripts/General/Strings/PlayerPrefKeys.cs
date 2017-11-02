@@ -13,6 +13,8 @@ public static class PlayerPrefKeys {
 		public const string UNLOCKED_EXPRESSIONS = "Emoji/UnlockedExpressions";
 
 		public const string EMOJI_NAME = "Emoji/EmojiName";
+
+		public const string EMOJI_SLEEPING = "Emoji/Sleeping";
 	}
 
 	public static class Player

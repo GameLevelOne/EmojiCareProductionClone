@@ -48,6 +48,11 @@ public class Emoji : MonoBehaviour {
 		set{PlayerPrefs.SetString(PlayerPrefKeys.Player.TIME_ON_PAUSE,value.ToString());}
 	}
 
+	public bool EmojiSleeping{
+		get{return PlayerPrefs.GetInt(PlayerPrefKeys.Emoji.EMOJI_SLEEPING,0) == 1 ? true : false;}
+		set{PlayerPrefs.SetInt(PlayerPrefKeys.Emoji.EMOJI_SLEEPING,value == true ? 1 : 0);}
+	}
+
 	//stats
 	public const float statsTresholdHigh = 0.9f;
 	public const float statsTresholdMed = 0.4f;
@@ -75,16 +80,15 @@ public class Emoji : MonoBehaviour {
 		if(!hasInit){
 			hasInit = true;
 			InitEmojiExpression();
-			InitEmojiStats();
 		}
 	}
 
-	void InitEmojiStats()
+	public void InitEmojiStats()
 	{
 		hunger = 	new EmojiStats( PlayerPrefKeys.Emoji.HUNGER, 	emojiBaseData.hungerModifier, 	 emojiBaseData.maxStatValue, emojiBaseData.hungerStart );
 		hygiene = 	new EmojiStats( PlayerPrefKeys.Emoji.HYGENE, 	emojiBaseData.hygeneModifier, 	 emojiBaseData.maxStatValue, emojiBaseData.hygeneStart );
 		happiness = new EmojiStats( PlayerPrefKeys.Emoji.HAPPINESS, emojiBaseData.happinessModifier, emojiBaseData.maxStatValue, emojiBaseData.happinessStart );
-		stamina = 	new EmojiStats( PlayerPrefKeys.Emoji.STAMINA, 	emojiBaseData.staminaModifier, 	 emojiBaseData.maxStatValue, emojiBaseData.staminaStart );
+		stamina = 	new EmojiStats( PlayerPrefKeys.Emoji.STAMINA, 	EmojiSleeping == true ? 0.004f : emojiBaseData.staminaModifier, emojiBaseData.maxStatValue, emojiBaseData.staminaStart );
 		health = 	new EmojiStats( PlayerPrefKeys.Emoji.HEALTH, 	emojiBaseData.healthModifier, 	 emojiBaseData.maxStatValue, emojiBaseData.healthStart );
 
 		int totalTicks = 0;
@@ -192,6 +196,7 @@ public class Emoji : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public module
+
 	public void ResetEmojiStatsModifier()
 	{
 		hunger.statsModifier = emojiBaseData.hungerModifier;
