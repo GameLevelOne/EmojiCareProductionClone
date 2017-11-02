@@ -15,7 +15,9 @@ public enum PopupEventType{
 	NotAbleToSendOff,
 	BuyItem,
 	NotAbleToBuyEmoji,
-	AlbumLocked
+	AlbumLocked,
+	AbleToBuyFurniture,
+	NotAbleToBuyFurniture
 }
 
 public class ScreenPopup : BaseUI {
@@ -41,6 +43,9 @@ public class ScreenPopup : BaseUI {
 
 	public delegate void TransferEmoji();
 	public static event TransferEmoji OnTransferEmoji;
+
+	public delegate void BuyFurniture();
+	public static event BuyFurniture OnBuyFurniture;
 	#endregion
 
 	PopupEventType currentEventType;
@@ -93,9 +98,13 @@ public class ScreenPopup : BaseUI {
 		} else if (eventType == PopupEventType.NotAbleToSendOff) {
 			return "Cannot send off yet";
 		} else if(eventType == PopupEventType.NotAbleToBuyEmoji){
-			return "Not enough gem";
+			return "Not enough gems";
 		} else if(eventType == PopupEventType.AlbumLocked){
 			return "Finish your first emoji to unlock this menu";
+		} else if(eventType == PopupEventType.AbleToBuyFurniture){
+			return "Do you want to buy this furniture?";
+		} else if(eventType == PopupEventType.NotAbleToBuyFurniture){
+			return "Not enough coins";
 		}
 		else{
 			return "";
@@ -118,6 +127,9 @@ public class ScreenPopup : BaseUI {
 			} else if(currentEventType == PopupEventType.NotAbleToSendOff && emojiTransfer){
 				Debug.Log("transfer");
 				OnTransferEmoji();
+			} else if(currentEventType == PopupEventType.AbleToBuyFurniture){
+				Debug.Log ("buy furniture");
+				OnBuyFurniture ();
 			}
 		} else{
 			Debug.Log("3");

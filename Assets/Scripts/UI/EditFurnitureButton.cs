@@ -8,6 +8,7 @@ public class EditFurnitureButton : MonoBehaviour {
 	public static event ClickToEdit OnClickToEdit;
 
 	void OnMouseDown(){
+		Debug.Log ("edit item");
 		OnClickToEdit (gameObject.GetComponentInParent<BaseFurniture>());
 	}
 }
