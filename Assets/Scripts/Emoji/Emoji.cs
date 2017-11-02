@@ -40,7 +40,7 @@ public class Emoji : MonoBehaviour {
 	public EmojiActivity activity;
 	public bool interactable = true;
 
-	DateTime lastTimePlayed{
+	public DateTime lastTimePlayed{
 		get{return DateTime.Parse(PlayerPrefs.GetString(PlayerPrefKeys.Player.LAST_TIME_PLAYED));}
 		set{PlayerPrefs.SetString(PlayerPrefKeys.Player.LAST_TIME_PLAYED,value.ToString());}
 	}
@@ -159,6 +159,8 @@ public class Emoji : MonoBehaviour {
 				stamina.StatValue	/ stamina.MaxStatValue,
 				health.StatValue	/ health.MaxStatValue
 			);
+
+
 	}
 
 	void TickHealth()
@@ -191,6 +193,11 @@ public class Emoji : MonoBehaviour {
 		}
 
 		health.TickStats();
+
+		if(health.StatValue <= 0){
+			emojiDead = true;
+			if(OnEmojiDead != null) OnEmojiDead();
+		}
 	}
 
 	int GetTotalTicks(TimeSpan duration)

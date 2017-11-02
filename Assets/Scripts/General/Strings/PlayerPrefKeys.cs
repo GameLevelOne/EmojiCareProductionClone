@@ -42,6 +42,12 @@ public static class PlayerPrefKeys {
 		}
 	}
 
+	public static class Game
+	{
+		public const string SEEDS = "Game/Garden/Seed";
+		public const string GOODS = "Game/Garden/Goods";
+	}
+
 	public static class Tutorial{
 		public const string FIRST_VISIT = "Tutorial/FirstVisit";
 		public const string IDLE_LIVING_ROOM = "Tutorial/IdleLivingRoom";

@@ -211,6 +211,16 @@ public class RoomController : MonoBehaviour {
 
 		currentRoom = GetCurrentRoom(endPos.x);
 
+		switch(currentRoom)
+		{
+		case RoomType.Garden: 		rooms[(int)currentRoom].GetComponent<Garden>().Init(); break;
+		case RoomType.Playroom: 	rooms[(int)currentRoom].GetComponent<Playroom>().Init(); break;
+		case RoomType.LivingRoom: 	rooms[(int)currentRoom].GetComponent<LivingRoom>().Init(); break;
+		case RoomType.Kitchen: 		rooms[(int)currentRoom].GetComponent<Kitchen>().Init(); break;
+		case RoomType.Bedroom: 		rooms[(int)currentRoom].GetComponent<Bedroom>().Init(); break;
+		case RoomType.Bathroom: 	rooms[(int)currentRoom].GetComponent<Bathroom>().Init(); break;
+		}
+
 		foreach(BaseRoom r in rooms) if(r != null) r.OnRoomChanged(currentRoom);
 
 		//SEMENTARA
