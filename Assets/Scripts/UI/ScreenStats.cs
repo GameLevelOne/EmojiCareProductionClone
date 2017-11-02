@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ScreenStats : BaseUI {
-
 	public Image barFillHunger;
 	public Image barFillHygiene;
 	public Image barFillHappiness;
@@ -47,7 +46,8 @@ public class ScreenStats : BaseUI {
 		UpdateArrowsDisplay();
 	}
 
-	void UpdateStatsValue(){
+	void UpdateStatsValue ()
+	{
 		Emoji currentData = PlayerData.Instance.PlayerEmoji;
 		float ratioHunger = currentData.hunger.StatValue / currentData.hunger.MaxStatValue;
 		float ratioHygiene = currentData.hygiene.StatValue / currentData.hygiene.MaxStatValue;
@@ -55,10 +55,10 @@ public class ScreenStats : BaseUI {
 		float ratioStamina = currentData.stamina.StatValue / currentData.stamina.MaxStatValue;
 		float ratioHealth = currentData.health.StatValue / currentData.health.MaxStatValue;
 
-//		float ratioHunger = 0.9f;
-//		float ratioHygiene = 0.65f;
-//		float ratioHappiness = 0.23f;
-//		float ratioStamina = 0.19f;
+//		float ratioHunger = 0.1f;
+//		float ratioHygiene = 0.3f;
+//		float ratioHappiness = 0.3f;
+//		float ratioStamina = 0.1f;
 //		float ratioHealth = 0.1f;
 
 		barFillHunger.fillAmount = ratioHunger;

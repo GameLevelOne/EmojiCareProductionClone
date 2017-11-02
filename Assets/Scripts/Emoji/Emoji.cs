@@ -17,10 +17,12 @@ public class Emoji : MonoBehaviour {
 	public delegate void EmojiTickStats();
 	public delegate void EmojiDead();
 	public delegate void UpdateStatsToExpression(float hunger, float hygiene, float happiness, float stamina, float health);
+	public delegate void CheckStatsTutorial(float hunger, float hygiene, float happiness, float stamina, float health);
 
 	public event EmojiTickStats OnEmojiTickStats;
 	public static event EmojiDead OnEmojiDead;
 	public event UpdateStatsToExpression OnUpdateStatsToExpression;
+	public static event CheckStatsTutorial OnCheckStatsTutorial;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region attribute
@@ -142,6 +144,15 @@ public class Emoji : MonoBehaviour {
 
 		if(OnUpdateStatsToExpression != null) 
 			OnUpdateStatsToExpression(
+				hunger.StatValue	/ hunger.MaxStatValue,
+				hygiene.StatValue	/ hygiene.MaxStatValue,
+				happiness.StatValue	/ happiness.MaxStatValue,
+				stamina.StatValue	/ stamina.MaxStatValue,
+				health.StatValue	/ health.MaxStatValue
+			);
+
+		if(OnCheckStatsTutorial != null) 
+			OnCheckStatsTutorial(
 				hunger.StatValue	/ hunger.MaxStatValue,
 				hygiene.StatValue	/ hygiene.MaxStatValue,
 				happiness.StatValue	/ happiness.MaxStatValue,
