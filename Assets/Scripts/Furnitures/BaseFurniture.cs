@@ -8,7 +8,7 @@ public class BaseFurniture : MonoBehaviour {
 	public SpriteRenderer[] thisSprite;
 	public bool flagEditMode = false;
 
-	protected int currentVariant = 0;
+	public int currentVariant = 0;
 	#endregion
 //------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
@@ -26,6 +26,9 @@ public class BaseFurniture : MonoBehaviour {
 	public virtual void ExitEditmode(){
 		flagEditMode = false;
 
+	}
+	public void OnClickFurniture(){
+		Debug.Log ("clicked");
 	}
 	#endregion
 //------------------------------------------------------------------------------------------------------------------------------------------------
