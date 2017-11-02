@@ -8,13 +8,17 @@ public class BaseFurniture : MonoBehaviour {
 	public SpriteRenderer[] thisSprite;
 	public bool flagEditMode = false;
 
-	protected int currentVariant = 0;
+	public int currentVariant = 0;
 	#endregion
 //------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
 	public virtual void InitVariant()
 	{
-		for(int i = 0;i<thisSprite.Length;i++) thisSprite[i].sprite = variant[currentVariant].sprite[i];
+//		print(gameObject.name);
+		for(int i = 0;i<thisSprite.Length;i++) {
+			
+			thisSprite[i].sprite = variant[currentVariant].sprite[i];
+		}
 	}
 	#endregion
 //------------------------------------------------------------------------------------------------------------------------------------------------
@@ -26,6 +30,9 @@ public class BaseFurniture : MonoBehaviour {
 	public virtual void ExitEditmode(){
 		flagEditMode = false;
 
+	}
+	public void OnClickFurniture(){
+		Debug.Log ("clicked");
 	}
 	#endregion
 //------------------------------------------------------------------------------------------------------------------------------------------------

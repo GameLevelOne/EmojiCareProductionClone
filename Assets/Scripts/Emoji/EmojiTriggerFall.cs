@@ -23,8 +23,15 @@ public class EmojiTriggerFall : MonoBehaviour {
 	public void AddAndIgnoreColliders(List<Collider2D> colliders)
 	{
 		foreach(Collider2D c in colliders){
-			Physics2D.IgnoreCollision(bodyCollider,c);
+			if(Physics2D.GetIgnoreCollision(bodyCollider,c) == false) Physics2D.IgnoreCollision(bodyCollider,c,true);
 			colliderToIgnore.Add(c);
+		}
+	}
+
+	public void ResetIgnoringColliders(List<Collider2D> colliders)
+	{
+		foreach(Collider2D c in colliders){
+			if(Physics2D.GetIgnoreCollision(bodyCollider,c) == true) Physics2D.IgnoreCollision(bodyCollider,c,false);
 		}
 	}
 
@@ -33,7 +40,7 @@ public class EmojiTriggerFall : MonoBehaviour {
 		print("CLEAR");
 		if(colliderToIgnore.Count != 0){
 			foreach(Collider2D c in colliderToIgnore)
-				Physics2D.IgnoreCollision(bodyCollider,c,false);
+				if(Physics2D.GetIgnoreCollision(bodyCollider,c) == true) Physics2D.IgnoreCollision(bodyCollider,c,false);
 		}
 
 		colliderToIgnore.Clear();
@@ -44,7 +51,7 @@ public class EmojiTriggerFall : MonoBehaviour {
 		if(colliderToIgnore.Count != 0){
 			foreach(Collider2D c in colliderToIgnore){
 				print("Ignoring "+c.name);
-				Physics2D.IgnoreCollision(bodyCollider,c);
+				if(Physics2D.GetIgnoreCollision(bodyCollider,c) == false) Physics2D.IgnoreCollision(bodyCollider,c, true);
 			}
 		}
 		bodyCollider.enabled = true;

@@ -11,22 +11,27 @@ public class MovableFurniture : MonoBehaviour {
 	public SpriteRenderer thisSprite;
 	public bool flagEditMode = false;
 
-	[Header("leave empty for BathroomAppliances Object")] [SerializeField] private Rigidbody2D thisRigidbody;
 	protected List<Collider2D> collidersToIgnore = new List<Collider2D>();
 	protected bool endDrag = false;
+
+	[Header("leave empty for BathroomAppliances Object")]
+	public Rigidbody2D thisRigidbody;
+
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
 	//collider modules
-	protected void OnTriggerEnter2D(Collider2D other)
+	protected virtual void OnTriggerEnter2D(Collider2D other)
 	{
-		if(other.tag == Tags.FLOOR || other.tag == Tags.IMMOVABLE_FURNITURE) collidersToIgnore.Add(other.transform.parent.GetComponent<Collider2D>());
+		if(other.tag == Tags.FLOOR || other.tag == Tags.IMMOVABLE_FURNITURE) 
+			collidersToIgnore.Add(other.transform.parent.GetComponent<Collider2D>());
 	}
 
 	//collider modules
-	protected void OnCollisionEnter2D(Collision2D other)
+	protected virtual void OnCollisionEnter2D(Collision2D other)
 	{
-		if(other.gameObject.tag == Tags.MOVABLE_FURNITURE) Physics2D.IgnoreCollision(other.gameObject.GetComponent<Collider2D>(),thisCollider);
+		if(other.gameObject.tag == Tags.MOVABLE_FURNITURE) 
+			Physics2D.IgnoreCollision(other.gameObject.GetComponent<Collider2D>(),thisCollider);
 	}
 
 	//event trigger modules
@@ -38,14 +43,15 @@ public class MovableFurniture : MonoBehaviour {
 			thisSprite.sortingLayerName = SortingLayers.HELD;
 
 			if(collidersToIgnore.Count != 0){
-				foreach(Collider2D c in collidersToIgnore) Physics2D.IgnoreCollision(c,thisCollider,false);
+				foreach(Collider2D c in collidersToIgnore) 
+					Physics2D.IgnoreCollision(c,thisCollider,false);
 			}
 			collidersToIgnore.Clear();
 		}
 	}
 
 	//event trigger modules
-	public void Drag()
+	public virtual void Drag()
 	{
 		if(!flagEditMode && !endDrag){
 			Vector3 tempMousePosition = new Vector3(Input.mousePosition.x,Input.mousePosition.y,19f);
@@ -60,7 +66,7 @@ public class MovableFurniture : MonoBehaviour {
 			endDrag = true;
 
 			thisAnim.SetBool(AnimatorParameters.Bools.HOLD,false);
-			thisRigidbody.velocity = Vector2.zero;
+//			thisRigidbody.velocity = Vector2.zero;
 			thisRigidbody.simulated = true;
 			AdjustSortingOrder();
 

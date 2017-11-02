@@ -2,16 +2,16 @@
 using UnityEngine;
 
 public enum IngredientType{
-	Meat,
-	Chicken,
-	Fish,
+	Meat, //G
+	Chicken, //G
+	Fish, //G
 	Cabbage,
 	Tomato,
 	Carrot,
-	Cheese,
+	Cheese, //G
 	Mushroom,
-	Flour,
-	Egg,
+	Flour, //G
+	Egg, //G
 	COUNT
 }
 
@@ -32,10 +32,13 @@ public class Ingredient : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D other)
 	{
 		if(other.tag == Tags.PAN){
-			if(!instantiated && !hold && (other.GetComponent<Pan>().cookedFoodObject == null || other.GetComponent<Pan>().isCooking)){ 
-				StopAllCoroutines();
-				other.GetComponent<Pan>().AddIngredient(this.gameObject);
-				this.gameObject.SetActive(false); //sementara
+			if(!instantiated && !hold){
+				if(other.GetComponent<Pan>().isCooking == false && other.GetComponent<Pan>().cookedFoodObject == null){
+					StopAllCoroutines();
+					other.GetComponent<Pan>().AddIngredient(this.gameObject);
+					this.gameObject.SetActive(false); //sementara
+				}
+
 
 			}
 		}

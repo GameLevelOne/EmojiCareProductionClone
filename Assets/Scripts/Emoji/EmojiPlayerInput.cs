@@ -16,6 +16,8 @@ public class EmojiPlayerInput : MonoBehaviour {
 	public bool flagTouching = false;
 	public bool flagFalling = false;
 	public bool flagSleeping = false;
+	public float eatDuration = 3f;
+	public float rejectDuration = 1.5f;
 	[Header("HoldMove Mechanic")]
 	public float slowMediumTreshold = 3f;
 	public float mediumFastTreshold = 6f;
@@ -25,6 +27,9 @@ public class EmojiPlayerInput : MonoBehaviour {
 	[Header("Shake Mechanic")]
 	public float shakeCounterCooldown = 0.5f;
 	public float shakeExpressionCooldown = 2f;
+
+	[Header("Toy mechanic")]
+	public int toyBumpCounter = 0;
 
 	Vector3 touchTargetPosition;
 	Vector2 prevMoveVector;
@@ -291,6 +296,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 
 	void Wake()
 	{
+		print("wake");
 		float staminaValue = emoji.stamina.StatValue / emoji.stamina.MaxStatValue;
 		if(staminaValue < 0.4f){//awake lazily
 			emoji.emojiExpressions.SetExpression(EmojiExpressionState.AWAKE_LAZILY,-1);
@@ -299,8 +305,10 @@ public class EmojiPlayerInput : MonoBehaviour {
 		}else{//awake energetically
 			emoji.emojiExpressions.SetExpression(EmojiExpressionState.AWAKE_ENERGETICALLY,-1);
 		}
+		emoji.EmojiSleeping = false;
 		emoji.ResetEmojiStatsModifier();
 		interactable = false;
+
 	}
 	//----------------------------------------------------------------=====NON-VOID MODULES=====----------------------------------------------------------------
 	Vector3 getEmojiPositionOnHold(Vector3 touchWorldPosition)
@@ -319,16 +327,16 @@ public class EmojiPlayerInput : MonoBehaviour {
 	#region public modules
 	public void Eat()
 	{
-		emoji.emojiExpressions.SetExpression(EmojiExpressionState.EATING,3f);
-		StartCoroutine(_LockInteractions,3f);
-		emoji.body.OnEmojiEatOrReject(3f);
+		emoji.emojiExpressions.SetExpression(EmojiExpressionState.EATING,eatDuration);
+		StartCoroutine(_LockInteractions,eatDuration);
+		emoji.body.OnEmojiEatOrReject(eatDuration);
 	}
 
 	public void Reject()
 	{
-		emoji.emojiExpressions.SetExpression(EmojiExpressionState.REJECT,1.5f);
-		StartCoroutine(_LockInteractions,1.5f);
-		emoji.body.OnEmojiEatOrReject(1.5f);
+		emoji.emojiExpressions.SetExpression(EmojiExpressionState.REJECT,rejectDuration);
+		StartCoroutine(_LockInteractions,rejectDuration);
+		emoji.body.OnEmojiEatOrReject(rejectDuration);
 	}
 
 	public void Fall()
@@ -339,14 +347,14 @@ public class EmojiPlayerInput : MonoBehaviour {
 	public void Landing()
 	{
 		flagFalling = false;
-		emoji.emojiExpressions.ResetExpressionDuration();
+		if(!emoji.EmojiSleeping) emoji.emojiExpressions.ResetExpressionDuration();
 	}
 
 	public void Sleep()
 	{
 		if(!flagSleeping){
 			flagSleeping = true;
-			emoji.stamina.statsModifier = 0.004f;
+			if(emoji.stamina != null) emoji.stamina.statsModifier = 0.004f;
 			emoji.emojiExpressions.SetExpression(EmojiExpressionState.SLEEP,-1);
 		}
 	}

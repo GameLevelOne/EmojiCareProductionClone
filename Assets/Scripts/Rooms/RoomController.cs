@@ -40,9 +40,10 @@ public class RoomController : MonoBehaviour {
 				r.OnRoomChanged(currentRoom);
 			}
 		AdjustTouchAreaSize();
+		RegisterLockRoomEvent();
 	}
 
-	public void RegisterLockRoomEvent()
+	void RegisterLockRoomEvent()
 	{
 		PlayerData.Instance.PlayerEmoji.body.OnEmojiBouncingToCurrentRoom += OnEmojiBouncingToCurrentRoom;
 		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent += OnEmojiSleepEvent;
@@ -89,7 +90,7 @@ public class RoomController : MonoBehaviour {
 	void AdjustTouchAreaSize()
 	{
 		roomTotal = Enum.GetNames(typeof(RoomType)).Length;
-		print("Total Room = "+roomTotal);
+//		print("Total Room = "+roomTotal);
 		thisCollider.size = new Vector2((roomWidth*roomTotal),roomHeight);
 		thisCollider.offset = new Vector2((thisCollider.size.x/2f)-(roomWidth/2f),0f);
 	}
@@ -145,14 +146,17 @@ public class RoomController : MonoBehaviour {
 
 	float getXEndPosition(float xPosOnEndDrag)
 	{
+//		print(xPosOnEndDrag);
+//		print(-1 * ((roomTotal-1) * roomWidth));
 		if(xPosOnEndDrag >= 3.6f){ //most left of rooms = nothing
+			
 			return 0;
 		}else if(xPosOnEndDrag <= -1 * ((roomTotal-1) * roomWidth)){ //most right of rooms = nothing
+			
 			return (-1 * ((roomTotal-1) * roomWidth));
 		}else{
 			float ratio = Mathf.Abs(xPosOnEndDrag) / roomWidth;
 			float tenths = ratio - Mathf.Floor(ratio);
-
 			int index = Mathf.FloorToInt(ratio);
 
 			if(xOnBeginDrag < xPosOnEndDrag){
@@ -207,11 +211,21 @@ public class RoomController : MonoBehaviour {
 
 		currentRoom = GetCurrentRoom(endPos.x);
 
+		switch(currentRoom)
+		{
+		case RoomType.Garden: 		rooms[(int)currentRoom].GetComponent<Garden>().Init(); break;
+		case RoomType.Playroom: 	rooms[(int)currentRoom].GetComponent<Playroom>().Init(); break;
+		case RoomType.LivingRoom: 	rooms[(int)currentRoom].GetComponent<LivingRoom>().Init(); break;
+		case RoomType.Kitchen: 		rooms[(int)currentRoom].GetComponent<Kitchen>().Init(); break;
+		case RoomType.Bedroom: 		rooms[(int)currentRoom].GetComponent<Bedroom>().Init(); break;
+		case RoomType.Bathroom: 	rooms[(int)currentRoom].GetComponent<Bathroom>().Init(); break;
+		}
+
 		foreach(BaseRoom r in rooms) if(r != null) r.OnRoomChanged(currentRoom);
 
 		//SEMENTARA
-		if(currentRoom != RoomType.Playroom) danceMat.SetActive(false);
-		else danceMat.SetActive(true);
+//		if(currentRoom != RoomType.Playroom) danceMat.SetActive(false);
+//		else danceMat.SetActive(true);
 
 		//SEMENTARA
 		if(currentRoom != RoomType.Kitchen) cookBar.SetActive(false);

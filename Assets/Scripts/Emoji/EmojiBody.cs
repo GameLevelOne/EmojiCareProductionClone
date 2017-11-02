@@ -103,9 +103,7 @@ public class EmojiBody : MonoBehaviour {
 
 		if(other.gameObject.tag == Tags.BED){
 			if(flagSleep){
-				emoji.playerInput.Sleep();
-				if(OnEmojiSleepEvent != null) OnEmojiSleepEvent(emoji.playerInput.flagSleeping);
-				flagSleep = false;
+				DoSleep();
 			}
 		}
 	}
@@ -119,6 +117,14 @@ public class EmojiBody : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
+	public void DoSleep()
+	{
+		emoji.playerInput.Sleep();
+		emoji.EmojiSleeping = true;
+		if(OnEmojiSleepEvent != null) OnEmojiSleepEvent(emoji.playerInput.flagSleeping);
+		flagSleep = false;
+	}
+
 	public void BounceToCurrentRoom(int currRoom)
 	{
 		StartCoroutine(_Bounce,currRoom);
