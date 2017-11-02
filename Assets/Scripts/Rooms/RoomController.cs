@@ -145,14 +145,17 @@ public class RoomController : MonoBehaviour {
 
 	float getXEndPosition(float xPosOnEndDrag)
 	{
+		print(xPosOnEndDrag);
+		print(-1 * ((roomTotal-1) * roomWidth));
 		if(xPosOnEndDrag >= 3.6f){ //most left of rooms = nothing
+			
 			return 0;
 		}else if(xPosOnEndDrag <= -1 * ((roomTotal-1) * roomWidth)){ //most right of rooms = nothing
+			
 			return (-1 * ((roomTotal-1) * roomWidth));
 		}else{
 			float ratio = Mathf.Abs(xPosOnEndDrag) / roomWidth;
 			float tenths = ratio - Mathf.Floor(ratio);
-
 			int index = Mathf.FloorToInt(ratio);
 
 			if(xOnBeginDrag < xPosOnEndDrag){
@@ -210,8 +213,8 @@ public class RoomController : MonoBehaviour {
 		foreach(BaseRoom r in rooms) if(r != null) r.OnRoomChanged(currentRoom);
 
 		//SEMENTARA
-		if(currentRoom != RoomType.Playroom) danceMat.SetActive(false);
-		else danceMat.SetActive(true);
+//		if(currentRoom != RoomType.Playroom) danceMat.SetActive(false);
+//		else danceMat.SetActive(true);
 
 		//SEMENTARA
 		if(currentRoom != RoomType.Kitchen) cookBar.SetActive(false);

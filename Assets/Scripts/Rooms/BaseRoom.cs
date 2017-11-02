@@ -39,13 +39,18 @@ public class BaseRoom : MonoBehaviour {
 
 	protected void MovableFurnituresIgnoreEachOther()
 	{
-		for(int i = 0;i<movableFurnitures.Length;i++){
-			for(int j = i;j<movableFurnitures.Length;j++){
-				Physics2D.IgnoreCollision(movableFurnitures[i].thisCollider, movableFurnitures[j].thisCollider);
-			}
-			print("ignoring emoji and "+ movableFurnitures[i].name);
-			Physics2D.IgnoreCollision(movableFurnitures[i].thisCollider, PlayerData.Instance.PlayerEmoji.body.thisCollider);
-		}
+//		for(int i = 0;i<movableFurnitures.Length;i++){
+//			for(int j = i;j<movableFurnitures.Length;j++){
+//				if(movableFurnitures[i].gameObject.activeSelf){
+//					Physics2D.IgnoreCollision(movableFurnitures[i].thisCollider, movableFurnitures[j].thisCollider);
+//				}
+//			}
+//
+//			if(movableFurnitures[i].gameObject.activeSelf && movableFurnitures[i].GetComponent<Toy>() == null) {
+//				print("ignoring emoji and "+ movableFurnitures[i].name);
+//				Physics2D.IgnoreCollision(movableFurnitures[i].thisCollider, PlayerData.Instance.PlayerEmoji.body.thisCollider);
+//			}
+//		}
 	}
 
 	void SetEmojiRoomModifier()
@@ -63,13 +68,15 @@ public class BaseRoom : MonoBehaviour {
 	{
 		if(thisRoom == currentRoom){
 			//show furnitures
-			foreach(BaseFurniture f in furnitures) f.gameObject.SetActive(true);
+			foreach(MovableFurniture f in movableFurnitures) f.gameObject.SetActive(true);
 			SetEmojiRoomModifier();
 			PlayerData.Instance.PlayerEmoji.triggerFall.AddAndIgnoreColliders(collidersToIgnoreWhenChangingRoom);
 		}else{
 			//hide furnitures
-			foreach(BaseFurniture f in furnitures) f.gameObject.SetActive(false);
+			foreach(MovableFurniture f in movableFurnitures) f.gameObject.SetActive(false);
+			PlayerData.Instance.PlayerEmoji.triggerFall.ResetIgnoringColliders(collidersToIgnoreWhenChangingRoom);
 		}
+		MovableFurnituresIgnoreEachOther();
 	}
 
 	public void OnEditMode(bool editMode)
