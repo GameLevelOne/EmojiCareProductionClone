@@ -15,6 +15,7 @@ public class Toy : MovableFurniture {
 		base.OnCollisionEnter2D(other);
 		if(other.gameObject.tag == Tags.EMOJI){
 			other.gameObject.GetComponent<EmojiPlayerInput>().OnToyBumped();
+			SoundManager.Instance.PlaySFXOneShot(SFXList.Bounce);
 		}
 	}
 	#endregion

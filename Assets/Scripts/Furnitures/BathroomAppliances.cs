@@ -7,6 +7,8 @@ public class BathroomAppliances : MovableFurniture {
 
 	#region attributes
 	[Header("BathroomAppliances Attributes")]
+	public TriggerableFurniture thisTriggerable;
+
 	public float speed;
 
 	protected Vector3 fixedPosition;
@@ -34,6 +36,7 @@ public class BathroomAppliances : MovableFurniture {
 	public override void BeginDrag()
 	{
 		if(!flagEditMode && !endDrag){
+			thisTriggerable.holding = true;
 			thisAnim.SetBool(AnimatorParameters.Bools.HOLD,true);
 			thisSprite.sortingLayerName = SortingLayers.HELD;
 
@@ -48,6 +51,7 @@ public class BathroomAppliances : MovableFurniture {
 	public override void EndDrag()
 	{
 		if(!flagEditMode && !endDrag){
+			thisTriggerable.holding = false;
 			endDrag = true;
 
 			thisAnim.SetBool(AnimatorParameters.Bools.HOLD,false);

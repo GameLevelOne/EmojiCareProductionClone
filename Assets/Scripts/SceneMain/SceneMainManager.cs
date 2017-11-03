@@ -66,6 +66,8 @@ public class SceneMainManager : MonoBehaviour {
 			screenTutorial.ShowUI (screenTutorial.screenTutorialObj);
 		}
 		fader.FadeIn();
+
+		SoundManager.Instance.PlayBGM(BGMList.BGMMain);
 	}
 
 	#endregion

@@ -5,7 +5,6 @@ public class Sponge : TriggerableFurniture {
 	[Header("Sponge Attributes")]
 	public SpriteRenderer soapLiquid;
 	public GameObject bubble;
-
 	public void ApplySoapLiquid(Sprite liquidSprite)
 	{
 		if(soapLiquid.enabled == false){ 
@@ -20,14 +19,22 @@ public class Sponge : TriggerableFurniture {
 		soapLiquid.enabled = false;
 	}
 
-	protected override void OnTriggerEnter2D(Collider2D other)
+	protected void OnTriggerStay2D(Collider2D other)
 	{
 		if(other.tag == Tags.EMOJI_BODY){
-			if(soapLiquid.enabled == true){
-				other.GetComponent<EmojiBody>().StartFoaming();
-				other.transform.parent.GetComponent<Emoji>().emojiExpressions.SetExpression(EmojiExpressionState.BATHING,-1);
-				StartCoroutine(_Bubbles);
+			if(holding){
+				if(soapLiquid.enabled == true){
+					if(other.transform.parent.GetComponent<Emoji>().emojiExpressions.currentExpression != EmojiExpressionState.BATHING){
+						other.GetComponent<EmojiBody>().StartFoaming();
+						other.transform.parent.GetComponent<Emoji>().emojiExpressions.SetExpression(EmojiExpressionState.BATHING,-1);
+						StartCoroutine(_Bubbles);
+					}
+					if(SoundManager.Instance.SFXSource.clip != SoundManager.Instance.SFXClips[(int)SFXList.Sponge]){
+						SoundManager.Instance.PlaySFX(SFXList.Sponge);
+					}
+				}
 			}
+
 		}
 	}
 
@@ -37,6 +44,7 @@ public class Sponge : TriggerableFurniture {
 			StopCoroutine(_Bubbles);
 			other.GetComponent<EmojiBody>().StopFoaming();
 			other.transform.parent.GetComponent<Emoji>().emojiExpressions.ResetExpressionDuration();
+			SoundManager.Instance.StopSFX();
 		}
 	}
 
