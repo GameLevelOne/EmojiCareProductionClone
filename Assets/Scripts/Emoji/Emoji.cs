@@ -22,7 +22,7 @@ public class Emoji : MonoBehaviour {
 	public event EmojiTickStats OnEmojiTickStats;
 	public static event EmojiDead OnEmojiDead;
 	public event UpdateStatsToExpression OnUpdateStatsToExpression;
-	public static event CheckStatsTutorial OnCheckStatsTutorial;
+	public event CheckStatsTutorial OnCheckStatsTutorial;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region attribute
@@ -87,6 +87,7 @@ public class Emoji : MonoBehaviour {
 
 	public void InitEmojiStats()
 	{
+		print("INININININININIT");
 		hunger = 	new EmojiStats( PlayerPrefKeys.Emoji.HUNGER, 	emojiBaseData.hungerModifier, 	 emojiBaseData.maxStatValue, emojiBaseData.hungerStart );
 		hygiene = 	new EmojiStats( PlayerPrefKeys.Emoji.HYGENE, 	emojiBaseData.hygeneModifier, 	 emojiBaseData.maxStatValue, emojiBaseData.hygeneStart );
 		happiness = new EmojiStats( PlayerPrefKeys.Emoji.HAPPINESS, emojiBaseData.happinessModifier, emojiBaseData.maxStatValue, emojiBaseData.happinessStart );
@@ -151,16 +152,14 @@ public class Emoji : MonoBehaviour {
 				health.StatValue	/ health.MaxStatValue
 			);
 
-		if(OnCheckStatsTutorial != null) 
-			OnCheckStatsTutorial(
-				hunger.StatValue	/ hunger.MaxStatValue,
-				hygiene.StatValue	/ hygiene.MaxStatValue,
-				happiness.StatValue	/ happiness.MaxStatValue,
-				stamina.StatValue	/ stamina.MaxStatValue,
-				health.StatValue	/ health.MaxStatValue
-			);
-
-
+//		if(OnCheckStatsTutorial != null) 
+//			OnCheckStatsTutorial(
+//				hunger.StatValue	/ hunger.MaxStatValue,
+//				hygiene.StatValue	/ hygiene.MaxStatValue,
+//				happiness.StatValue	/ happiness.MaxStatValue,
+//				stamina.StatValue	/ stamina.MaxStatValue,
+//				health.StatValue	/ health.MaxStatValue
+//			);
 	}
 
 	void TickHealth()

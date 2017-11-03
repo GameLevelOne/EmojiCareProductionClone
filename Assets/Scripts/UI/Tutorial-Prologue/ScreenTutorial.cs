@@ -61,12 +61,15 @@ public class ScreenTutorial : BaseUI {
 		dialogText.text = firstVisit [0];
 	}
 
-	void OnEnable(){
-		Emoji.OnCheckStatsTutorial += CheckStatsTutorial;
+	public void Init()
+	{
+		Emoji emoji = PlayerData.Instance.PlayerEmoji;
+		emoji.OnCheckStatsTutorial += CheckStatsTutorial;
 	}
 
 	void OnDisable(){
-		Emoji.OnCheckStatsTutorial -= CheckStatsTutorial;
+		Emoji emoji = PlayerData.Instance.PlayerEmoji;
+		emoji.OnCheckStatsTutorial -= CheckStatsTutorial;
 	}
 
 	public void CheckStatsTutorial (float hunger, float hygiene, float happiness, float stamina, float health)

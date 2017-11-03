@@ -26,7 +26,7 @@ public class RefrigeratorIngredient : MonoBehaviour {
 				objectQuantity.SetActive(false);
 			}else{
 				objectQuantity.SetActive(true);
-				textQuantity.text = qty > 99 ? qty.ToString()+"+" : qty.ToString();
+				textQuantity.text = qty > 99 ? "99+" : qty.ToString();
 			}
 		} 
 	}

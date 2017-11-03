@@ -29,7 +29,25 @@ public class EmojiPlayerInput : MonoBehaviour {
 	public float shakeExpressionCooldown = 2f;
 
 	[Header("Toy mechanic")]
+	public float toyBumpResponseCooldown = 2f;
+	public float toyBumpRetainCooldown = 7f;
 	public int toyBumpCounter = 0;
+	public bool toyBumped = false;
+
+	[Header("Minigame Mechanic")]
+	public float happinessModOnBlocks = 2.5f;
+	public float happinessModOnDanceMat = 1.5f;
+	public float happinessModOnDoodle = 2.5f;
+
+	public float dartboardCooldown = 2f;
+	public float blocksCooldown = 5f;
+	public float danceMatCooldown = 10f;
+	public float doodleCooldown = 10f;
+
+	public bool dartboardRetaining = false;
+	public bool blocksRetaining = false;
+	public bool danceMatRetaining = false;
+	public bool doodleRetaining = false;
 
 	Vector3 touchTargetPosition;
 	Vector2 prevMoveVector;
@@ -350,6 +368,64 @@ public class EmojiPlayerInput : MonoBehaviour {
 		if(!emoji.EmojiSleeping) emoji.emojiExpressions.ResetExpressionDuration();
 	}
 
+	public void OnToyBumped()
+	{
+		if(!toyBumped){
+			toyBumpCounter++;
+			if(toyBumpCounter < 6){
+				emoji.emojiExpressions.SetExpression(EmojiExpressionState.HAPPY,toyBumpResponseCooldown);
+				emoji.happiness.ModStats(7f);
+			}else if(toyBumpCounter >= 6 && toyBumpCounter < 9){
+				emoji.emojiExpressions.SetExpression(EmojiExpressionState.BORED,toyBumpResponseCooldown);
+			}else if(toyBumpCounter >= 9 && toyBumpCounter < 14){
+				emoji.emojiExpressions.SetExpression(EmojiExpressionState.ANNOYED,toyBumpResponseCooldown);
+				emoji.happiness.ModStats(-3f);
+			}else{
+				emoji.emojiExpressions.SetExpression(EmojiExpressionState.ANGERED,toyBumpRetainCooldown);
+				emoji.happiness.ModStats(-7f);
+			}
+			StartCoroutine(_RetainToyBumpingResponse);
+
+			StopCoroutine(_RetainToyBumpCounter);
+			StartCoroutine(_RetainToyBumpCounter);
+		}
+	}
+
+	/// <summary>
+	/// Factor = +1 / +2 / +3 / +4 depends on target
+	/// </summary>
+	public void OnDartboardMingameDone(float factor)
+	{
+		if(!dartboardRetaining){
+			emoji.happiness.ModStats(factor);
+			StartCoroutine(_RetainDartboardMinigameCooldown);
+		}
+	}
+
+	public void OnBlocksMinigameDone()
+	{
+		if(!blocksRetaining){
+			emoji.happiness.ModStats(happinessModOnBlocks);
+			StartCoroutine(_RetainBlocksMinigameCooldown);
+		}
+	}
+
+	public void OnDoodleMinigameDone()
+	{
+		if(!doodleRetaining){
+			emoji.happiness.ModStats(happinessModOnDoodle);
+			StartCoroutine(_RetainDoodleMinigameCooldown);
+		}
+	}
+
+	public void OnDanceMatMinigameDone()
+	{
+		if(!danceMatRetaining){
+			emoji.happiness.ModStats(happinessModOnDanceMat);
+			StartCoroutine(_RetainDanceMatMinigameCooldown);
+		}	
+	}
+
 	public void Sleep()
 	{
 		if(!flagSleeping){
@@ -446,6 +522,53 @@ public class EmojiPlayerInput : MonoBehaviour {
 		emoji.body.thisCollider.enabled = true;
 		emoji.triggerFall.isFalling = false;
 		emoji.body.flagAfterChangingRoom = false;
+	}
+
+	const string _RetainToyBumpingResponse = "RetainToyBumpingResponse";
+	IEnumerator RetainToyBumpingResponse()
+	{
+		toyBumped = true;
+		yield return new WaitForSeconds(toyBumpResponseCooldown);
+		toyBumped = false;
+	}
+
+	const string _RetainToyBumpCounter = "RetainToyBumpCounter";
+	IEnumerator RetainToyBumpCounter()
+	{
+		yield return new WaitForSeconds(toyBumpRetainCooldown);
+		toyBumpCounter = 0;
+	}
+
+	const string _RetainDartboardMinigameCooldown = "RetainDartboardMinigameCooldown";
+	IEnumerator RetainDartboardMinigameCooldown()
+	{
+		dartboardRetaining = true;
+		yield return new WaitForSeconds(dartboardCooldown);
+		dartboardRetaining = false;
+
+	}
+	const string _RetainBlocksMinigameCooldown = "RetainBlocksMinigameCooldown";
+	IEnumerator RetainBlocksMinigameCooldown()
+	{
+		blocksRetaining = true;
+		yield return new WaitForSeconds(blocksCooldown);
+		blocksRetaining = false;
+
+	}
+	const string _RetainDoodleMinigameCooldown = "RetainDoodleMinigameCooldown";
+	IEnumerator RetainDoodleMinigameCooldown()
+	{
+		doodleRetaining = true;
+		yield return new WaitForSeconds(doodleCooldown);
+		doodleRetaining = false;
+
+	}
+	const string _RetainDanceMatMinigameCooldown = "RetainDanceMatMinigameCooldown";
+	IEnumerator RetainDanceMatMinigameCooldown()
+	{
+		danceMatRetaining = true;
+		yield return new WaitForSeconds(danceMatCooldown);
+		danceMatRetaining = false;
 	}
 
 	const string _LockInteractions = "LockInteractions";

@@ -5,6 +5,7 @@ public static class Tags {
 	public const string IMMOVABLE_FURNITURE = "ImmovableFurniture";
 	public const string MOVABLE_FURNITURE = "MovableFurniture";
 
+	public const string EMOJI = "Emoji";
 	public const string EMOJI_BODY = "EmojiBody";
 
 	public const string BED = "Bed";
@@ -15,6 +16,9 @@ public static class Tags {
 	public const string REFRIGERATOR = "Refrigerator";
 	public const string BOX = "Box";
 	public const string TOY = "Toy";
+	public const string BASKET = "Basket";
+
+	public const string PLANT = "Plant";
 
 	public static class UI
 	{

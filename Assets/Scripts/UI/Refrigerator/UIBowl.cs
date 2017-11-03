@@ -19,17 +19,15 @@ public class UIBowl : MonoBehaviour {
 		ingredientObjects.Remove(ingrediendObject);
 	}
 
-	public void ClearObject()
-	{
-		ingredientObjects = new List<GameObject>();
-	}
-
 	public void BeginDrag()
 	{
+		if(ingredientObjects.Count > 0){
+			PlayerData.Instance.PlayerEmoji.emojiExpressions.SetExpression(EmojiExpressionState.CURIOUS,2f);
+		}
+
 		bowl.Init(ingredientObjects.ToArray());
 		foreach(GameObject g in ingredientObjects) Destroy(g);
 		refrigerator.CloseRefrigerator();
-		ClearObject();
-		//Destroy(this.gameObject);
+		ingredientObjects = new List<GameObject>();
 	}
 }

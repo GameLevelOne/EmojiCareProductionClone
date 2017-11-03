@@ -44,6 +44,7 @@ public static class PlayerPrefKeys {
 
 	public static class Game
 	{
+		public const string HAS_INIT_INGREDIENT = "Game/HasInitIngredient";
 		public const string SEEDS = "Game/Garden/Seed";
 		public const string GOODS = "Game/Garden/Goods";
 	}

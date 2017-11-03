@@ -97,6 +97,7 @@ public class Pan : BaseFurniture {
 	IEnumerator Cook(Foods food)
 	{
 		//bar timer selama duration
+		PlayerData.Instance.PlayerEmoji.emojiExpressions.SetExpression(EmojiExpressionState.WHISTLE,3f);
 		isCooking = true;
 		for(int i = 0;i<ingredients.Count;i++) Destroy(ingredients[i]);
 		cookingBar.GetComponent<UICookBar>().duration = food.cookDuration;
