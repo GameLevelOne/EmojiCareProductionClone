@@ -36,4 +36,9 @@ public class DanceMatMinigame : BaseUI {
 			return Color.yellow;
 		}
 	}
+
+	public void OnClickBack(){
+		PlayerData.Instance.PlayerEmoji.playerInput.OnDanceMatMinigameDone ();
+		base.CloseUI (this.gameObject);
+	}
 }

@@ -69,6 +69,7 @@ public class UICelebrationManager : MonoBehaviour {
 		Debug.Log("wait");
 		yield return new WaitForSeconds(2);
 		NotificationNewExpression obj = Instantiate(screenNewExpressionPrefab,canvasParent,false) as NotificationNewExpression;
+		obj.AddNotifToList (obj.gameObject);
 		obj.ShowUI(newExpression,expressionIcons,particlePlayer);
 	}
 

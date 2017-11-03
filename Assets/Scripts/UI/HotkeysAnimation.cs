@@ -7,6 +7,8 @@ public class HotkeysAnimation : MonoBehaviour {
 	public GameObject hotkeyPanel;
 	public GameObject buttonHotkey;
 	public Image buttonAlbum;
+	public Image buttonEditRoom;
+	public RoomController roomController;
 
 	Animator hotkeyAnim;
 	string triggerOpenHotkey = "ShowHotkeys";
@@ -26,6 +28,14 @@ public class HotkeysAnimation : MonoBehaviour {
 		} else{
 			buttonAlbum.color = Color.gray;
 		}
+
+//		if(roomController.currentRoom == RoomType.Garden){
+//			buttonEditRoom.color = Color.gray;
+//			buttonEditRoom.GetComponent<Button> ().interactable = false;
+//		} else{
+//			buttonEditRoom.color = Color.white;
+//			buttonEditRoom.GetComponent<Button> ().interactable = true;
+//		}
 
 		hotkeyPanel.SetActive(true);
 		hotkeyAnim.SetTrigger(triggerOpenHotkey);

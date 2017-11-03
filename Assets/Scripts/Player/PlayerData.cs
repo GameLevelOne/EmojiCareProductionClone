@@ -142,7 +142,7 @@ public class PlayerData : MonoBehaviour {
 
 	public int TutorialFirstHungerRed{
 		get{return PlayerPrefs.GetInt (PlayerPrefKeys.Tutorial.FIRST_HUNGER_RED, 0);}
-		set{PlayerPrefs.SetInt (PlayerPrefKeys.Tutorial.FIRST_HYGIENE_RED, value);}
+		set{PlayerPrefs.SetInt (PlayerPrefKeys.Tutorial.FIRST_HUNGER_RED, value);}
 	}
 
 	public int TutorialFirstHygieneRed{
