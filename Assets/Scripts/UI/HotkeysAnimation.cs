@@ -29,13 +29,13 @@ public class HotkeysAnimation : MonoBehaviour {
 			buttonAlbum.color = Color.gray;
 		}
 
-//		if(roomController.currentRoom == RoomType.Garden){
-//			buttonEditRoom.color = Color.gray;
-//			buttonEditRoom.GetComponent<Button> ().interactable = false;
-//		} else{
-//			buttonEditRoom.color = Color.white;
-//			buttonEditRoom.GetComponent<Button> ().interactable = true;
-//		}
+		if(roomController.currentRoom == RoomType.Garden){
+			buttonEditRoom.color = Color.gray;
+			buttonEditRoom.GetComponent<Button> ().interactable = false;
+		} else{
+			buttonEditRoom.color = Color.white;
+			buttonEditRoom.GetComponent<Button> ().interactable = true;
+		}
 
 		hotkeyPanel.SetActive(true);
 		hotkeyAnim.SetTrigger(triggerOpenHotkey);

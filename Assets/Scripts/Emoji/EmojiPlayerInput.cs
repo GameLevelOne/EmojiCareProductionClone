@@ -423,6 +423,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 	public void OnDartboardMingameDone(float factor)
 	{
 		if(!dartboardRetaining){
+			emoji.emojiExpressions.SetExpression (EmojiExpressionState.HAPPY, 2f);
 			emoji.happiness.ModStats(factor);
 			StartCoroutine(_RetainDartboardMinigameCooldown);
 		}
@@ -431,6 +432,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 	public void OnBlocksMinigameDone()
 	{
 		if(!blocksRetaining){
+			emoji.emojiExpressions.SetExpression (EmojiExpressionState.HAPPY, 2f);
 			emoji.happiness.ModStats(happinessModOnBlocks);
 			StartCoroutine(_RetainBlocksMinigameCooldown);
 		}
@@ -439,6 +441,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 	public void OnDoodleMinigameDone()
 	{
 		if(!doodleRetaining){
+			emoji.emojiExpressions.SetExpression (EmojiExpressionState.HAPPY, 2f);
 			emoji.happiness.ModStats(happinessModOnDoodle);
 			StartCoroutine(_RetainDoodleMinigameCooldown);
 		}
@@ -447,6 +450,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 	public void OnDanceMatMinigameDone()
 	{
 		if(!danceMatRetaining){
+			emoji.emojiExpressions.SetExpression (EmojiExpressionState.HAPPY, 2f);
 			emoji.happiness.ModStats(happinessModOnDanceMat);
 			StartCoroutine(_RetainDanceMatMinigameCooldown);
 		}	

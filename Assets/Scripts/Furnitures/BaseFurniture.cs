@@ -7,7 +7,7 @@ public class BaseFurniture : MonoBehaviour {
 	public FurnitureVariant[] variant;
 	public SpriteRenderer[] thisSprite;
 	public bool flagEditMode = false;
-
+	public GameObject editButton;
 	public int currentVariant = 0;
 	#endregion
 //------------------------------------------------------------------------------------------------------------------------------------------------
@@ -38,11 +38,8 @@ public class BaseFurniture : MonoBehaviour {
 
 	//TEMP
 	public void SetEditButton(bool show){
-		GameObject obj = transform.GetChild (0).gameObject;
-		if(show){
-			obj.SetActive (true);
-		} else{
-			obj.SetActive (false);
+		if(editButton!=null){
+			editButton.SetActive (show);
 		}
 	}
 	#endregion

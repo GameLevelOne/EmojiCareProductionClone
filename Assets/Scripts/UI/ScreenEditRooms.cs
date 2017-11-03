@@ -91,7 +91,7 @@ public class ScreenEditRooms : BaseUI {
 		FurnitureVariant item = currentItem.variant [currentVariant];
 		bool isBought = item.bought;
 		if(isBought){
-			currentItem.transform.GetChild (0).GetComponent<SpriteRenderer> ().sprite = item.sprite[0];
+			currentItem.transform.GetChild (1).GetComponent<SpriteRenderer> ().sprite = item.sprite[0];
 		} else{
 			ConfirmBuyObject (item.price);
 		}

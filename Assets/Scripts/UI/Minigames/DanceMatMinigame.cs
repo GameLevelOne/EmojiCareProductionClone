@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class DanceMatMinigame : BaseUI {
 	public Image[] danceMatMinigame;
-	public Image[] danceMatFurniture;
+	public SpriteRenderer[] danceMatFurniture;
 
 	int clickCount = 0;
 	int maxClick = 4;

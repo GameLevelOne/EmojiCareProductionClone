@@ -80,7 +80,7 @@ public class ScreenTutorial : BaseUI {
 	bool roomChange = false;
 
 	void Awake(){
-		PlayerPrefs.DeleteAll ();
+//		PlayerPrefs.DeleteAll ();
 	}
 
 	void Start(){
