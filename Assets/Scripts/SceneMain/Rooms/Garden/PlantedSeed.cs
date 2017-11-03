@@ -1,30 +1,34 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class Plant : MonoBehaviour {
+public class PlantedSeed : MonoBehaviour {
 	#region attributes
-	public GameObject cropObject;
-	
+	public GameObject plantObject;
+	public IngredientType type;
+	public Transform parent;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
-	public void Init(Transform parent)
+	public void Init(GameObject plantObject, IngredientType type, Transform parent)
 	{
-		transform.parent = parent;
+		this.plantObject = plantObject;
+		this.type = type;
+		this.parent = parent;
 	}
-
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
-	public void BeginDrag()
-	{
-		GameObject tempCrop = Instantiate(cropObject,transform.position,Quaternion.identity);
-		tempCrop.GetComponent<Crop>().Init(this.gameObject);
-	}
+	
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
-	
+	public void Grow()
+	{
+		Vector3 pos = new Vector3(transform.position.x,transform.position.y,-1f);
+		GameObject tempPlantObj = (GameObject) Instantiate(plantObject,pos,Quaternion.identity);
+		tempPlantObj.GetComponent<Plant>().Init(parent);
+		Destroy(this.gameObject);
+	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------	
 }

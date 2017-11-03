@@ -137,6 +137,7 @@ public class Emoji : MonoBehaviour {
 
 	void TickStats()
 	{
+//		print("TICK!");
 		hunger.TickStats();
 		hygiene.TickStats();
 		happiness.TickStats();
