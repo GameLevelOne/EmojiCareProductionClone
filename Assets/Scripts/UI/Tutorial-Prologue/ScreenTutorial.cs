@@ -363,7 +363,16 @@ public class ScreenTutorial : BaseUI {
 		} else if(currentTutorial == TutorialType.FirstGarden){
 			LoadDialogs (firstGarden, PlayerData.Instance.TutorialFirstGarden,false);
 		} else if(currentTutorial == TutorialType.FirstProgressUI){ //TODO: check this later
-			if(dialogCount < (firstProgressUI.Length-1)){
+			int maxCount = 0;
+			EmojiExpression expr = PlayerData.Instance.PlayerEmoji.emojiExpressions;
+
+			if(expr.unlockedExpressions.Count >= expr.totalExpression){
+				maxCount = firstProgressUI.Length;
+			} else{
+				maxCount = 4;
+			}
+
+			if(dialogCount < (maxCount-1)){
 				dialogCount++;
 			} else{
 				base.CloseUI (screenTutorialObj);

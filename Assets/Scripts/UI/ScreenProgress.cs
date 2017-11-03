@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class ScreenProgress : BaseUI {
 	public ScreenPopup screenPopup;
+	public ScreenTutorial screenTutorial;
 	public ExpressionIcons expressionIcons;
 	public EmojiIcons emojiIcons;
 
@@ -30,6 +31,10 @@ public class ScreenProgress : BaseUI {
 
 	public override void InitUI ()
 	{
+		if(PlayerData.Instance.TutorialFirstProgressUI == 0){
+			screenTutorial.ShowFirstDialog (TutorialType.FirstProgressUI);
+		}
+
 		Debug.Log("progress");
 
 		int exprTileIdx = 0;
@@ -95,8 +100,8 @@ public class ScreenProgress : BaseUI {
 	}
 
 	public void ConfirmSendOff(){
-		//EmojiType type = currentEmojiData.emojiBaseData.emojiType;
-		EmojiType type = EmojiType.Emoji;
+		EmojiType type = currentEmojiData.emojiBaseData.emojiType;
+//		EmojiType type = EmojiType.Emoji;
 		Sprite sprite = emojiIcons.GetEmojiIcon(type);
 		string emojiName = type.ToString();
 		if(canSendOff){

@@ -28,6 +28,7 @@ public class BaseUI : MonoBehaviour {
 
 	public void ShowUI (GameObject obj)
 	{
+		//SoundManager.Instance.PlaySFXOneShot (SFXList.OpenThings);
 		if(AdmobManager.Instance) AdmobManager.Instance.HideBanner();
 		obj.SetActive(true);
 		obj.GetComponent<Animator>().SetTrigger(triggerShowUI);	

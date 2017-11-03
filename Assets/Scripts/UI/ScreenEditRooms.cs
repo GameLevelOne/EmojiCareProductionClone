@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class ScreenEditRooms : BaseUI {
 	public ScreenPopup screenPopup;
+	public ScreenTutorial screenTutorial;
+	public RoomController roomController;
 	public GameObject boxVariants;
 	public GameObject boxPrice;
 	public Image iconVariant;
@@ -17,7 +19,15 @@ public class ScreenEditRooms : BaseUI {
 	public override void InitUI ()
 	{
 		Debug.Log("edit room");	
-		//textPlayerCoin.text = PlayerData.Instance.PlayerCoin.ToString();
+		int currentRoom = (int)roomController.currentRoom;
+		textPlayerCoin.text = PlayerData.Instance.PlayerCoin.ToString();
+		for(int i=0;i<roomController.rooms[currentRoom].furnitures.Length;i++){
+			roomController.rooms [currentRoom].furnitures [i].EnterEditmode ();
+		}
+
+		if(PlayerData.Instance.TutorialFirstEditRoom == 0){
+			screenTutorial.ShowFirstDialog (TutorialType.FirstEditRoomUI);
+		}
 	}
 
 	//register event on click furniture
@@ -42,7 +52,7 @@ public class ScreenEditRooms : BaseUI {
 	void OnBuyFurniture ()
 	{
 		currentItem.variant [currentVariant].bought = true;
-		//PlayerData.Instance.PlayerCoin -= currentItem.variant [currentVariant].price;
+		PlayerData.Instance.PlayerCoin -= currentItem.variant [currentVariant].price;
 		ApplyVariant ();
 	}
 
@@ -87,17 +97,16 @@ public class ScreenEditRooms : BaseUI {
 		}
 	}
 
-	public void OpenChoice(){
-
-	}
-
-	public void CloseChoice(){
-		
+	public void DisableEditMode(){
+		int currentRoom = (int)roomController.currentRoom;
+		for(int i=0;i<roomController.rooms[currentRoom].furnitures.Length;i++){
+			roomController.rooms [currentRoom].furnitures [i].ExitEditmode ();
+		}
 	}
 
 	void ConfirmBuyObject(int price){
-		//int currentCoin = PlayerData.Instance.PlayerCoin;
-		int currentCoin = 500;
+		int currentCoin = PlayerData.Instance.PlayerCoin;
+//		int currentCoin = 500;
 		 if(currentCoin>=price){
 			screenPopup.ShowPopup (PopupType.Confirmation, PopupEventType.AbleToBuyFurniture, false, false);
 		 } else {
@@ -105,11 +114,4 @@ public class ScreenEditRooms : BaseUI {
 		 }
 	}
 
-	public void CancelBuyObject(){
-		
-	}
-
-	public void BuyObject(){
-		
-	}
 }
