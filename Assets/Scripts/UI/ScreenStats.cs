@@ -33,6 +33,9 @@ public class ScreenStats : BaseUI {
 
 	bool moveArrows = true;
 
+	//FOR TESTING
+	public ScreenTutorial tut;
+
 	public override void InitUI(){
 		Debug.Log("stats");
 	}
@@ -43,23 +46,25 @@ public class ScreenStats : BaseUI {
 
 	void UpdateUI(){
 		UpdateStatsValue();
-		UpdateArrowsDisplay();
+		//UpdateArrowsDisplay();
 	}
 
 	void UpdateStatsValue ()
 	{
-		Emoji currentData = PlayerData.Instance.PlayerEmoji;
-		float ratioHunger = currentData.hunger.StatValue / currentData.hunger.MaxStatValue;
-		float ratioHygiene = currentData.hygiene.StatValue / currentData.hygiene.MaxStatValue;
-		float ratioHappiness = currentData.happiness.StatValue / currentData.happiness.MaxStatValue;
-		float ratioStamina = currentData.stamina.StatValue / currentData.stamina.MaxStatValue;
-		float ratioHealth = currentData.health.StatValue / currentData.health.MaxStatValue;
+//		Emoji currentData = PlayerData.Instance.PlayerEmoji;
+//		float ratioHunger = currentData.hunger.StatValue / currentData.hunger.MaxStatValue;
+//		float ratioHygiene = currentData.hygiene.StatValue / currentData.hygiene.MaxStatValue;
+//		float ratioHappiness = currentData.happiness.StatValue / currentData.happiness.MaxStatValue;
+//		float ratioStamina = currentData.stamina.StatValue / currentData.stamina.MaxStatValue;
+//		float ratioHealth = currentData.health.StatValue / currentData.health.MaxStatValue;
 
-//		float ratioHunger = 0.1f;
-//		float ratioHygiene = 0.3f;
-//		float ratioHappiness = 0.3f;
-//		float ratioStamina = 0.1f;
-//		float ratioHealth = 0.1f;
+		float ratioHunger = 0.1f;
+		float ratioHygiene = 0.1f;
+		float ratioHappiness = 0.1f;
+		float ratioStamina = 0.1f;
+		float ratioHealth = 0.1f;
+
+		tut.CheckStatsTutorial (ratioHunger, ratioHygiene, ratioHappiness, ratioStamina, ratioHealth);
 
 		barFillHunger.fillAmount = ratioHunger;
 		barFillHygiene.fillAmount = ratioHygiene;

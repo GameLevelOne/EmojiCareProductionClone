@@ -13,7 +13,6 @@ public enum TutorialType{
 	FirstGarden,
 	FirstProgressUI,
 	FirstEditRoomUI,
-
 	TriggerHungerRed,
 	TriggerHygieneRed,
 	TriggerHappinessRed,
@@ -22,6 +21,26 @@ public enum TutorialType{
 	TriggerHealthRed,
 	TriggerFirstExpressionFull,
 	TriggerFirstDead
+}
+
+public enum TutorialPanelType{
+	ArrowEmoji,
+	ArrowLRRooms,
+	ArrowBed,
+	ArrowSpongeSoap,
+	ArrowSpongeEmoji,
+	ArrowCookbook,
+	ArrowRefrigerator,
+	ArrowTablePan,
+	ArrowPlate,
+	ArrowPlayroom,
+	ArrowSeeds,
+	ArrowField,
+	ArrowWateringCan,
+	ArrowExpressionList,
+	ArrowProgressBar,
+	ArrowSendButton,
+	ArrowMenuButton
 }
 
 public class ScreenTutorial : BaseUI {
@@ -44,18 +63,25 @@ public class ScreenTutorial : BaseUI {
 	public string[] triggerFirstExpressionFull;
 	public string[] triggerFirstDead;
 
+	public GameObject[] tutorialPanels;
+
 	public ProloguePopupName popupName;
 	public GameObject screenTutorialObj;
 	public Text dialogText;
 
 	public List<GameObject> firstTutorialPanels = new List<GameObject>();
 	List<TutorialType> statsTutorialPanels = new List<TutorialType> ();
+
 	TutorialType currentTutorial = TutorialType.FirstVisit;
 	int panelCount = 0;
 	int dialogCount = 0;
 	bool showStatsTutorial = false;
 
 	bool roomChange = false;
+
+	void Awake(){
+		PlayerPrefs.DeleteAll ();
+	}
 
 	void Start(){
 		dialogText.text = firstVisit [0];
@@ -79,26 +105,33 @@ public class ScreenTutorial : BaseUI {
 
 		if (!showStatsTutorial) {
 			showStatsTutorial = true;
-			if (hunger < redThreshold) {
+			if (hunger < redThreshold && PlayerData.Instance.TutorialFirstHungerRed == 0) {
 				statsTutorialPanels.Add (TutorialType.TriggerHungerRed);
+				CheckStatsPlayerPrefs (TutorialType.TriggerHungerRed);
 			} 
-			if (hygiene < redThreshold) {
+			if (hygiene < redThreshold && PlayerData.Instance.TutorialFirstHygieneRed == 0) {
 				statsTutorialPanels.Add (TutorialType.TriggerHygieneRed);
+				CheckStatsPlayerPrefs (TutorialType.TriggerHygieneRed);
 			}
-			if (happiness < redThreshold) {
+			if (happiness < redThreshold && PlayerData.Instance.TutorialFirstHappinessRed == 0) {
 				statsTutorialPanels.Add (TutorialType.TriggerHappinessRed);
+				CheckStatsPlayerPrefs (TutorialType.TriggerHappinessRed);
 			}
-			if (stamina < redThreshold) {
+			if (stamina < redThreshold && PlayerData.Instance.TutorialFirstStaminaRed == 0) {
 				statsTutorialPanels.Add (TutorialType.TriggerStaminaRed);
+				CheckStatsPlayerPrefs (TutorialType.TriggerStaminaRed);
 			}
-			if (health < orangeThreshold && health >= redThreshold) {
+			if (health < orangeThreshold && health >= redThreshold && PlayerData.Instance.TutorialFirstHealthOrange == 0) {
 				statsTutorialPanels.Add (TutorialType.TriggerHealthOrange);
+				CheckStatsPlayerPrefs (TutorialType.TriggerHealthOrange);
 			}
-			if (health < redThreshold) {
+			if (health < redThreshold && PlayerData.Instance.TutorialFirstHealthRed == 0) {
 				statsTutorialPanels.Add (TutorialType.TriggerHealthRed);
+				CheckStatsPlayerPrefs (TutorialType.TriggerHealthRed);
 			}
 			ShowFirstDialog (statsTutorialPanels [0]);
-			CheckStatsPlayerPrefs (statsTutorialPanels [0]);
+
+			Debug.Log ("stacks:" + statsTutorialPanels.Count);
 		}
 	}
 
@@ -171,47 +204,41 @@ public class ScreenTutorial : BaseUI {
 		bool showTutorial = true;
 
 		if(type == TutorialType.TriggerHungerRed){
+			Debug.Log ("hunger red pref");
 			currentTutorial = TutorialType.TriggerHungerRed;
 			if(PlayerData.Instance.TutorialFirstHungerRed == 0){
 				PlayerData.Instance.TutorialFirstHungerRed = 1;
-			} else{
-				showTutorial = false;
-			}
+			} 
 		} else if(type == TutorialType.TriggerHygieneRed){
+			Debug.Log ("hygiene red pref");
 			currentTutorial = TutorialType.TriggerHygieneRed;
 			if(PlayerData.Instance.TutorialFirstHygieneRed == 0){
 				PlayerData.Instance.TutorialFirstHygieneRed = 1;
-			} else{
-				showTutorial = false;
-			}
+			} 
 		} else if(type == TutorialType.TriggerHappinessRed){
+			Debug.Log ("happiness red pref");
 			currentTutorial = TutorialType.TriggerHappinessRed;
 			if(PlayerData.Instance.TutorialFirstHappinessRed == 0){
 				PlayerData.Instance.TutorialFirstHappinessRed = 1;
-			} else{
-				showTutorial = false;
-			}
+			} 
 		} else if(type == TutorialType.TriggerStaminaRed){
+			Debug.Log ("stamina red pref");
 			currentTutorial = TutorialType.TriggerStaminaRed;
 			if(PlayerData.Instance.TutorialFirstStaminaRed == 0){
 				PlayerData.Instance.TutorialFirstStaminaRed = 1;
-			} else{
-				showTutorial = false;
-			}
+			} 
 		} else if(type == TutorialType.TriggerHealthOrange){
+			Debug.Log ("health orange pref");
 			currentTutorial = TutorialType.TriggerHealthOrange;
 			if(PlayerData.Instance.TutorialFirstHealthOrange == 0){
 				PlayerData.Instance.TutorialFirstHealthOrange = 1;
-			} else{
-				showTutorial = false;
-			}
+			} 
 		} else if(type == TutorialType.TriggerHealthRed){
+			Debug.Log ("health red pref");
 			currentTutorial = TutorialType.TriggerHealthRed;
 			if(PlayerData.Instance.TutorialFirstHealthRed == 0){
 				PlayerData.Instance.TutorialFirstHealthRed = 1;
-			} else{
-				showTutorial = false;
-			}
+			} 
 		}
 	}
 
@@ -387,8 +414,9 @@ public class ScreenTutorial : BaseUI {
 		if (dialogCount < (currentDialog.Length - 1)) {
 			dialogCount++;
 		} else {
+			//currentPref = 1;
 			base.CloseUI (screenTutorialObj);
-			currentPref = 1;
+			Debug.Log (statsTutorialPanels.Count);
 			if (isStatsTutorial) {
 				if (statsTutorialPanels.Count > 1) {
 					statsTutorialPanels.RemoveAt (0);
@@ -419,7 +447,6 @@ public class ScreenTutorial : BaseUI {
 	IEnumerator LoadNextInStack(){
 		yield return new WaitForSeconds (0.16f);
 		ShowFirstDialog (statsTutorialPanels [0]);
-		CheckStatsPlayerPrefs (statsTutorialPanels [0]);
 		showStatsTutorial = false;
 	}
 }

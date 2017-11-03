@@ -24,6 +24,7 @@ public class DoodleMinigame : BaseUI {
 	}
 
 	public void OnClickBack(){
+		PlayerData.Instance.PlayerEmoji.playerInput.OnDoodleMinigameDone ();
 		StartCoroutine(TakeScreenshot());
 	}
 
@@ -34,19 +35,26 @@ public class DoodleMinigame : BaseUI {
 		counter++;
 	}
 
-	public void OnDrag(){ //TODO: check counter
-		Vector3 tempMousePosition = new Vector3(Input.mousePosition.x,Input.mousePosition.y,0);
-		GameObject obj = Instantiate(particlePrefab,particleParent.transform,false) as GameObject;
-		obj.transform.position = tempMousePosition;
-		if(counter == 2){
-			dragPos1 = tempMousePosition;
-			FillSprite(dragPos2,dragPos1);
-			counter = 1;
-		} else if(counter == 1){
-			dragPos2 = tempMousePosition;
-			FillSprite(dragPos1,dragPos2);
-			counter = 2;
-		}
+	public void OnDrag ()
+	{ //TODO: check counter
+		Vector3 tempMousePosition = new Vector3 (Input.mousePosition.x, Input.mousePosition.y, 0);
+		//if (rectBoard.GetComponent<Blackboard> ().insideBoard) {
+			GameObject obj = Instantiate (particlePrefab, particleParent.transform, false) as GameObject;
+			obj.transform.position = tempMousePosition;
+			if (counter == 2) {
+				dragPos1 = tempMousePosition;
+				FillSprite (dragPos2, dragPos1);
+				counter = 1;
+			} else if (counter == 1) {
+				dragPos2 = tempMousePosition;
+				FillSprite (dragPos1, dragPos2);
+				counter = 2;
+			}
+		//}
+	}
+
+	public void EndDrag(){
+		//rectBoard.GetComponent<Blackboard> ().insideBoard = false;
 	}
 
 	public void FillSprite(Vector3 pos1,Vector3 pos2){
@@ -59,7 +67,6 @@ public class DoodleMinigame : BaseUI {
 			GameObject obj = Instantiate(particlePrefab,particleParent.transform,false) as GameObject;
 			obj.transform.position = tempPos;
 			counter++;
-			Debug.Log("pos:"+tempPos);
 		}
 	}
 
@@ -67,14 +74,18 @@ public class DoodleMinigame : BaseUI {
 		yield return new WaitForEndOfFrame();
 
 		Vector3 boardPos = rectBoard.transform.position;
-		float startX = boardPos.x - width/2 - 100;
-		float startY = boardPos.y - height/2 - 100;
+//		float startX = boardPos.x - width/2 - 100;
+//		float startY = boardPos.y - height/2 - 100;
+		float startX = boardPos.x - width/2;
+		float startY = boardPos.y - height/2;
 		Debug.Log("boardPos:"+boardPos);
 		Debug.Log("startX:"+startX);
 		Debug.Log("startY:"+startY);
 
-		int newWidth = width+200;
-		int newHeight = height+200;
+//		int newWidth = width+200;
+//		int newHeight = height+200;
+		int newWidth = width;
+		int newHeight = height;
 
 		Texture2D tex = new Texture2D(newWidth,newHeight,TextureFormat.RGB24,false);
 		tex.ReadPixels(new Rect(startX,startY,newWidth,newHeight),0,0);

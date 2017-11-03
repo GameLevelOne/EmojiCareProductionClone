@@ -18,7 +18,7 @@ public class BricksMinigame : BaseUI {
 //		for(int i=0;i<objects.Length;i++){
 //			objects[i].localPosition = objStartPos[i];
 //		}
-		//StartCoroutine(WaitForAnim());
+//		StartCoroutine(WaitForAnim());
 	}
 
 	IEnumerator WaitForAnim(){
@@ -34,5 +34,10 @@ public class BricksMinigame : BaseUI {
 			else
 				objects[i].GetComponent<Rigidbody2D>().simulated=false;
 		}
+	}
+
+	public void OnClickBack(){
+		PlayerData.Instance.PlayerEmoji.playerInput.OnBlocksMinigameDone ();
+		base.CloseUI (this.gameObject);
 	}
 }
