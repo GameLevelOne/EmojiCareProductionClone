@@ -96,14 +96,14 @@ public class Pan : BaseFurniture {
 
 	IEnumerator Cook(Foods food)
 	{
-		//bar timer selama duration
+		
 		PlayerData.Instance.PlayerEmoji.emojiExpressions.SetExpression(EmojiExpressionState.WHISTLE,3f);
 		isCooking = true;
 		for(int i = 0;i<ingredients.Count;i++) Destroy(ingredients[i]);
 		cookingBar.GetComponent<UICookBar>().duration = food.cookDuration;
 		cookingBar.SetActive(true);
 		print("Now cooking for "+food.cookDuration+" seconds");
-
+		SoundManager.Instance.PlaySFX(SFXList.Cook);
 		float current = 0;
 		while(current < food.cookDuration){
 			cookingBar.GetComponent<UICookBar>().UpdateBar(current);
@@ -118,5 +118,6 @@ public class Pan : BaseFurniture {
 		isCooking = false;
 		StopAllCoroutines();
 		DestroyIngredients();
+		SoundManager.Instance.StopSFX();
 	}
 }

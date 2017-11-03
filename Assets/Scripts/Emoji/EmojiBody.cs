@@ -65,6 +65,21 @@ public class EmojiBody : MonoBehaviour {
 //		emoji.playerInput.Fall();
 	}
 
+	public void BounceSound()
+	{
+		SoundManager.Instance.PlaySFXOneShot(SFXList.Bounce);
+	}
+
+	public void YoSound()
+	{
+		SoundManager.Instance.PlayVoice(VoiceList.Yo);
+	}
+
+	public void UrrhSound()
+	{
+		SoundManager.Instance.PlayVoice(VoiceList.Urrh);
+	}
+
 	public void Reposition()
 	{
 		transform.parent.localPosition = new Vector3(0,-2.485f,-2f);
@@ -82,6 +97,16 @@ public class EmojiBody : MonoBehaviour {
 		emoji.playerInput.flagSleeping = false;
 		emoji.emojiExpressions.ResetExpressionDuration();
 		emoji.playerInput.interactable = true;
+
+		float stamina = emoji.stamina.StatValue/emoji.stamina.MaxStatValue;
+		if(stamina < 0.4f){
+			SoundManager.Instance.PlayVoice(VoiceList.Sigh);
+		}else if(stamina >= 0.4f && stamina < 0.8f){
+			SoundManager.Instance.PlayVoice(VoiceList.Mmm);
+		}else{
+			SoundManager.Instance.PlayVoice(VoiceList.Yo);
+		}
+
 		if(OnEmojiSleepEvent != null) OnEmojiSleepEvent(emoji.playerInput.flagSleeping);
 	}
 	#endregion

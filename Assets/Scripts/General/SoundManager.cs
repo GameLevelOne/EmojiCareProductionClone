@@ -3,29 +3,45 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum BGMList{
-	BGM1
+	BGMMain,
+	BGMRadio1,
+	BGMRadio2
 }
 
 public enum SFXList{
-	SFX1
+	Blop,
+	Bounce,
+	Cook,
+	OpenThings,
+	Shower,
+	Sponge
 }
 
 public enum VoiceList{
-	Voice1
+	Gulp,
+	Huh,
+	Laugh,
+	Mmm,
+	Sigh,
+	UghYuck,
+	Urrh,
+	Yo,
+	Yuck
 }
 
 public class SoundManager : MonoBehaviour {
-
 	private static SoundManager instance=null;
 	public static SoundManager Instance{get {return instance;}}
 
-	public AudioClip[] BGM;
-	public AudioClip[] SFX;
-	public AudioClip[] Voices;
+	public AudioClip[] BGMClips;
+	public AudioClip[] SFXClips;
+	public AudioClip[] VoiceClips;
 
-	public AudioSource[] audioSource; //bgm,sfx,voice
+	public AudioSource BGMSource; //bgm
+	public AudioSource SFXSource; //sfx,voice
 
-	void Awake(){
+	void Awake()
+	{
 		if(instance != null && instance != this){
 			Destroy(this.gameObject);
 		} else{
@@ -34,24 +50,43 @@ public class SoundManager : MonoBehaviour {
 		DontDestroyOnLoad(this.gameObject);
 	}
 
-	public void PlayBGM(BGMList bgm){
-		if(audioSource[0].clip == BGM[(int)bgm]){
-			return;
-		} else{
-			audioSource[0].clip = BGM[(int)bgm];
-			audioSource[0].Play();
-		}
+	public void PlayBGM(BGMList bgm)
+	{
+		BGMSource.Stop();
+		BGMSource.clip = BGMClips[(int)bgm];
+		BGMSource.Play();
+
 	}
 
-	public void PlaySFX(SFXList sfx){
-		audioSource[1].PlayOneShot(SFX[(int)sfx]);
+	public void StopBGM()
+	{
+		BGMSource.Stop();
 	}
 
-	public void PlayVoice(VoiceList voice){
-		audioSource[2].PlayOneShot(Voices[(int)voice]);
+	public void PlaySFXOneShot(SFXList sfx)
+	{
+		SFXSource.PlayOneShot(SFXClips[(int)sfx]);
 	}
 
-	public void SetAudioVolume(int type,float value){
-		audioSource[type].volume = value;
+	public void PlaySFX(SFXList sfx)
+	{
+		SFXSource.Stop();
+		SFXSource.clip = SFXClips[(int)sfx];
+		SFXSource.Play();
+	}
+
+	public void StopSFX()
+	{
+		SFXSource.Stop();
+	}
+
+	public void PlayVoice(VoiceList voice)
+	{
+		SFXSource.PlayOneShot(VoiceClips[(int)voice]);
+	}
+
+	public void SetAudioVolume(int type,float value)
+	{
+		SFXSource.volume = value;
 	}
 }
