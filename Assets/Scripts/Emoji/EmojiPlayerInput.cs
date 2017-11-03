@@ -155,26 +155,31 @@ public class EmojiPlayerInput : MonoBehaviour {
 			case 1: print("Poked 1"); 
 				emoji.emojiExpressions.ResetExpressionDuration();
 				emoji.emojiExpressions.SetExpression(EmojiExpressionState.POKED,1f);
+				SoundManager.Instance.PlayVoice(VoiceList.Huh);
 				animDelay = 4; 
 				break;
 			case 2: print("Poked 2"); 
 				emoji.emojiExpressions.ResetExpressionDuration();
 				emoji.emojiExpressions.SetExpression(EmojiExpressionState.POKED,1f);
+				SoundManager.Instance.PlayVoice(VoiceList.Huh);
 				animDelay = 4; 
 				break;
 			case 3: print("Annoyed 1"); 
 				emoji.emojiExpressions.ResetExpressionDuration();
 				emoji.emojiExpressions.SetExpression(EmojiExpressionState.ANNOYED,1f);
+				SoundManager.Instance.PlayVoice(VoiceList.Urrh);
 				animDelay = 5; 
 				break;
 			case 4: print("Annoyed 2"); 
 				emoji.emojiExpressions.ResetExpressionDuration();
 				emoji.emojiExpressions.SetExpression(EmojiExpressionState.ANNOYED,1f);
+				SoundManager.Instance.PlayVoice(VoiceList.Urrh);
 				animDelay = 5; 
 				break;
 			case 5: print("Pouting"); 
 				emoji.emojiExpressions.ResetExpressionDuration();
 				emoji.emojiExpressions.SetExpression(EmojiExpressionState.POUTING,-1f);
+				SoundManager.Instance.PlayVoice(VoiceList.UghYuck);
 				if(OnEmojiPouting != null) OnEmojiPouting();
 				animDelay = 10; 
 				//emoji.happiness.ModStats(-3);
@@ -392,13 +397,17 @@ public class EmojiPlayerInput : MonoBehaviour {
 			if(toyBumpCounter < 6){
 				emoji.emojiExpressions.SetExpression(EmojiExpressionState.HAPPY,toyBumpResponseCooldown);
 				emoji.happiness.ModStats(7f);
+				SoundManager.Instance.PlayVoice(VoiceList.Laugh);
 			}else if(toyBumpCounter >= 6 && toyBumpCounter < 9){
 				emoji.emojiExpressions.SetExpression(EmojiExpressionState.BORED,toyBumpResponseCooldown);
+				SoundManager.Instance.PlayVoice(VoiceList.Sigh);
 			}else if(toyBumpCounter >= 9 && toyBumpCounter < 14){
 				emoji.emojiExpressions.SetExpression(EmojiExpressionState.ANNOYED,toyBumpResponseCooldown);
+				SoundManager.Instance.PlayVoice(VoiceList.Urrh);
 				emoji.happiness.ModStats(-3f);
 			}else{
-				emoji.emojiExpressions.SetExpression(EmojiExpressionState.ANGERED,toyBumpRetainCooldown);
+				emoji.emojiExpressions.SetExpression(EmojiExpressionState.ANGERED,toyBumpResponseCooldown);
+				SoundManager.Instance.PlayVoice(VoiceList.UghYuck);
 				emoji.happiness.ModStats(-7f);
 			}
 			StartCoroutine(_RetainToyBumpingResponse);
