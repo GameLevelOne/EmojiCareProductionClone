@@ -208,8 +208,12 @@ public class RoomController : MonoBehaviour {
 	{
 		snapping = true;
 		float t = 0;
+		RoomType temp = GetCurrentRoom(endPos.x);
 
-		currentRoom = GetCurrentRoom(endPos.x);
+		if(currentRoom != temp){
+			currentRoom = GetCurrentRoom(endPos.x);
+			foreach(BaseRoom r in rooms) if(r != null) r.OnRoomChanged(currentRoom);
+		}
 
 		switch(currentRoom)
 		{
@@ -220,8 +224,6 @@ public class RoomController : MonoBehaviour {
 		case RoomType.Bedroom: 		rooms[(int)currentRoom].GetComponent<Bedroom>().Init(); break;
 		case RoomType.Bathroom: 	rooms[(int)currentRoom].GetComponent<Bathroom>().Init(); break;
 		}
-
-		foreach(BaseRoom r in rooms) if(r != null) r.OnRoomChanged(currentRoom);
 
 		//SEMENTARA
 //		if(currentRoom != RoomType.Playroom) danceMat.SetActive(false);

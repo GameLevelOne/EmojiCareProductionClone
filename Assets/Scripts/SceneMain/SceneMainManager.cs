@@ -33,11 +33,10 @@ public class SceneMainManager : MonoBehaviour {
 	{
 		PlayerData.Instance.emojiParentTransform = roomController.rooms[(int)roomController.currentRoom].transform;
 		PlayerData.Instance.InitPlayerEmoji(emojiSamples[PlayerData.Instance.PlayerEmojiType]);
-		statsExpressionController.Init();
+
 		roomController.Init();
 
 		if(PlayerData.Instance.PlayerEmoji.EmojiSleeping){
-			
 			roomController.currentRoom = RoomType.Bedroom;
 			roomController.transform.position = new Vector3(-32f,0f,0f);
 			foreach(BaseRoom r in roomController.rooms) if(r != null) r.OnRoomChanged(roomController.currentRoom);
@@ -47,17 +46,23 @@ public class SceneMainManager : MonoBehaviour {
 			PlayerData.Instance.PlayerEmoji.emojiExpressions.SetExpression(EmojiExpressionState.SLEEP,-1);
 			PlayerData.Instance.PlayerEmoji.body.DoSleep();
 		}
-
 		PlayerData.Instance.PlayerEmoji.InitEmojiStats();
+		statsExpressionController.Init();
 
 		if(AdmobManager.Instance) AdmobManager.Instance.ShowBanner();
 
-		for(int i = 0;i<(int)IngredientType.COUNT;i++){
-			PlayerData.Instance.inventory.SetIngredientValue((IngredientType)i,99);
+		if(PlayerPrefs.GetInt(PlayerPrefKeys.Game.HAS_INIT_INGREDIENT,0) == 0){
+			PlayerPrefs.SetInt(PlayerPrefKeys.Game.HAS_INIT_INGREDIENT,1);
+			for(int i = 0;i<(int)IngredientType.COUNT;i++){
+				PlayerData.Instance.inventory.SetIngredientValue((IngredientType)i,99);
+			}
 		}
+
+		screenTutorial.Init();
 
 		if (PlayerData.Instance.TutorialFirstVisit == 0) {
 			PlayerData.Instance.TutorialFirstVisit = 1;
+
 			screenTutorial.ShowUI (screenTutorial.screenTutorialObj);
 		}
 		fader.FadeIn();

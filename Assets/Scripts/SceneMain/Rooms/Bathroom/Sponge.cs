@@ -8,7 +8,10 @@ public class Sponge : TriggerableFurniture {
 
 	public void ApplySoapLiquid(Sprite liquidSprite)
 	{
-		if(soapLiquid.enabled == false) soapLiquid.enabled = true;
+		if(soapLiquid.enabled == false){ 
+			PlayerData.Instance.PlayerEmoji.emojiExpressions.SetExpression(EmojiExpressionState.LIKE,2f);
+			soapLiquid.enabled = true;
+		}
 		soapLiquid.sprite = liquidSprite;
 	}
 
