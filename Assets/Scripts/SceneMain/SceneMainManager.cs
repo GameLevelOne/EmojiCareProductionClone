@@ -16,10 +16,8 @@ public class SceneMainManager : MonoBehaviour {
 	#region initialization
 	void Start()
 	{
-		PlayerData.Instance.PlayerFirstPlay = 1;
 //		PlayerPrefs.DeleteAll();
-
-
+		PlayerData.Instance.PlayerFirstPlay = 1;
 
 		InitMain();
 	}
@@ -54,7 +52,7 @@ public class SceneMainManager : MonoBehaviour {
 		if(PlayerPrefs.GetInt(PlayerPrefKeys.Game.HAS_INIT_INGREDIENT,0) == 0){
 			PlayerPrefs.SetInt(PlayerPrefKeys.Game.HAS_INIT_INGREDIENT,1);
 			for(int i = 0;i<(int)IngredientType.COUNT;i++){
-				PlayerData.Instance.inventory.SetIngredientValue((IngredientType)i,99);
+				PlayerData.Instance.inventory.SetIngredientValue((IngredientType)i,2);
 			}
 		}
 
@@ -66,6 +64,8 @@ public class SceneMainManager : MonoBehaviour {
 			screenTutorial.ShowUI (screenTutorial.screenTutorialObj);
 		}
 		fader.FadeIn();
+
+		SoundManager.Instance.PlayBGM(BGMList.BGMMain);
 	}
 
 	#endregion

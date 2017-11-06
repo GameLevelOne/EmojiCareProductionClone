@@ -29,6 +29,7 @@ public class FirstAidBox : BaseFurniture {
 		foreach(GameObject g in contents){
 			g.SetActive(true);
 		}
+		SoundManager.Instance.PlaySFXOneShot(SFXList.OpenThings);
 	}
 
 	public void Close()
@@ -38,6 +39,7 @@ public class FirstAidBox : BaseFurniture {
 		foreach(GameObject g in contents){
 			g.SetActive(false);
 		}
+		SoundManager.Instance.PlaySFXOneShot(SFXList.OpenThings);
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------	

@@ -4,11 +4,15 @@ using UnityEngine;
 public class Plant : MonoBehaviour {
 	#region attributes
 	public GameObject cropObject;
-
+	
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
-	
+	public void Init(Transform parent)
+	{
+		transform.parent = parent;
+	}
+
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics

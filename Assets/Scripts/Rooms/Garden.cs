@@ -11,10 +11,13 @@ public class Garden : BaseRoom {
 	[Header("Generated Objects")]
 	public List<GameObject> AvailableGoods = new List<GameObject>();
 	public List<GameObject> AvailableSeeds = new List<GameObject>();
-
+	public bool hasInit = false;
 	public void Init()
 	{
-		InitIngredientStall();
+		if(!hasInit){
+			hasInit = true;
+			InitIngredientStall();
+		}
 	}
 
 	void InitIngredientStall()
@@ -43,6 +46,8 @@ public class Garden : BaseRoom {
 
 	void OnSeedPlanted(int index)
 	{
+		AvailableSeeds[index].GetComponent<Seed>().OnSeedPlanted -= OnSeedPlanted;
+
 		string tempKey = PlayerPrefKeys.Game.SEEDS + index.ToString();
 		PlayerPrefs.SetInt(tempKey,-1);
 	}
@@ -53,20 +58,26 @@ public class Garden : BaseRoom {
 			string tempKey = PlayerPrefKeys.Game.GOODS + i.ToString();
 			int index = PlayerPrefs.GetInt(tempKey,-1);
 			if(index != -1){
-				AvailableGoods.Add( (GameObject) Instantiate(Goods[index],stallContent.parent) );
-				AvailableGoods[i].transform.localPosition = stallContent.FindChild("Goods").GetChild(i).localPosition;
-				AvailableGoods[i].GetComponent<Good>().Init(i);
-				AvailableGoods[i].GetComponent<Good>().OnGoodHarvested += OnGoodHarvested;
+				GameObject tempGood = (GameObject)Instantiate (Goods [index], stallContent.parent);
+				tempGood.transform.localPosition = stallContent.FindChild("Goods").GetChild(i).localPosition;
+				tempGood.GetComponent<Good>().Init(i);
+				tempGood.GetComponent<Good>().OnGoodHarvested += OnGoodHarvested;
+				AvailableGoods.Add( tempGood );
+
 			}
 
-//			if(i < 2){ //seeds
-//				tempKey = PlayerPrefKeys.Game.SEEDS + i.ToString();
-//				index = PlayerPrefs.GetInt(tempKey,-1);
-//				if(index != -1){
-//					AvailableSeeds.Add ( (GameObject) Instantiate(Seeds[index],stallContent.parent));
-//					AvailableSeeds[i].transform.localPosition = stallContent.FindChild("Seeds").GetChild(i).localPosition;
-//				}
-//			}
+			tempKey = PlayerPrefKeys.Game.SEEDS + i.ToString();
+			index = PlayerPrefs.GetInt(tempKey,-1);
+			if(index != -1){
+				GameObject tempSeed = (GameObject)Instantiate (Seeds [index], stallContent.parent);
+				tempSeed.transform.localPosition = stallContent.FindChild("Seeds").GetChild(i).localPosition;
+				tempSeed.GetComponent<Seed>().Init(i);
+				tempSeed.GetComponent<Seed>().OnSeedPlanted += OnSeedPlanted;
+				tempSeed.GetComponent<Seed>().parent = transform;
+				AvailableSeeds.Add ( tempSeed );
+
+			}
+
 		}
 	}
 
@@ -85,20 +96,25 @@ public class Garden : BaseRoom {
 
 			PlayerPrefs.SetInt(tempKey,rnd);
 
-			AvailableGoods.Add((GameObject) Instantiate(Goods[rnd],stallContent.parent));
-			AvailableGoods[i].transform.localPosition = stallContent.FindChild("Goods").GetChild(i).localPosition;
-			AvailableGoods[i].GetComponent<Good>().Init(i);
-			AvailableGoods[i].GetComponent<Good>().OnGoodHarvested += OnGoodHarvested;
+			GameObject tempGood = (GameObject)Instantiate (Goods [rnd], stallContent.parent);
+			tempGood.transform.localPosition = stallContent.FindChild("Goods").GetChild(i).localPosition;
+			tempGood.GetComponent<Good>().Init(i);
+			tempGood.GetComponent<Good>().OnGoodHarvested += OnGoodHarvested;
+			AvailableGoods.Add(tempGood);
 
-//			if(i < 2){ //seeds
-//				
-//				tempKey = PlayerPrefKeys.Game.SEEDS + i.ToString();
-//				rnd = UnityEngine.Random.Range(0,4);
-//				PlayerPrefs.SetInt(tempKey,rnd);
-//
-//				AvailableSeeds.Add ((GameObject) Instantiate(Seeds[rnd],stallContent.parent));
-//				AvailableSeeds[i].transform.localPosition = stallContent.FindChild("Seeds").GetChild(i).localPosition;
-//			}
+
+
+			tempKey = PlayerPrefKeys.Game.SEEDS + i.ToString();
+			rnd = UnityEngine.Random.Range(0,4);
+
+			PlayerPrefs.SetInt(tempKey,rnd);
+
+			GameObject tempSeed = (GameObject)Instantiate (Seeds [rnd], stallContent.parent);
+			tempSeed.transform.localPosition = stallContent.FindChild("Seeds").GetChild(i).localPosition;
+			tempSeed.GetComponent<Seed>().Init(i);
+			tempSeed.GetComponent<Seed>().OnSeedPlanted += OnSeedPlanted;
+			AvailableSeeds.Add (tempSeed);
+
 		}
 	}
 

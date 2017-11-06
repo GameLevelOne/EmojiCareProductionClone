@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class UICelebrationManager : MonoBehaviour {
+	public ScreenTutorial screenTutorial;
 	public ScreenNewEmoji screenNewEmoji;
 	public NotificationNewExpression screenNewExpressionPrefab;
 	public ScreenSendOff screenSendOff;
@@ -40,6 +41,12 @@ public class UICelebrationManager : MonoBehaviour {
 	void OnNewExpression (int newExpression)
 	{
 		Debug.Log("new expression");
+		EmojiExpression expr = PlayerData.Instance.PlayerEmoji.emojiExpressions;
+		if(expr.unlockedExpressions.Count >= expr.totalExpression){
+			if(PlayerData.Instance.TutorialFirstExpressionFull == 0)
+				screenTutorial.ShowFirstDialog (TutorialType.TriggerFirstExpressionFull);
+		}
+
 		StartCoroutine(WaitForNewExpression(newExpression));
 	}
 
@@ -54,6 +61,11 @@ public class UICelebrationManager : MonoBehaviour {
 	{
 		ResetData ();
 		Debug.Log("emoji dead");
+
+		if(PlayerData.Instance.TutorialFirstEmojiDead == 0){
+			screenTutorial.ShowFirstDialog (TutorialType.TriggerFirstDead);
+		}
+
 		Sprite sprite = emojiIcons.GetEmojiIcon(PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType);
 		screenEmojiDead.ShowUI(sprite,screenEmojiDead.gameObject);
 	}
@@ -69,6 +81,7 @@ public class UICelebrationManager : MonoBehaviour {
 		Debug.Log("wait");
 		yield return new WaitForSeconds(2);
 		NotificationNewExpression obj = Instantiate(screenNewExpressionPrefab,canvasParent,false) as NotificationNewExpression;
+		obj.AddNotifToList (obj.gameObject);
 		obj.ShowUI(newExpression,expressionIcons,particlePlayer);
 	}
 

@@ -7,7 +7,7 @@ public class BaseFurniture : MonoBehaviour {
 	public FurnitureVariant[] variant;
 	public SpriteRenderer[] thisSprite;
 	public bool flagEditMode = false;
-
+	public GameObject editButton;
 	public int currentVariant = 0;
 	#endregion
 //------------------------------------------------------------------------------------------------------------------------------------------------
@@ -19,20 +19,28 @@ public class BaseFurniture : MonoBehaviour {
 			
 			thisSprite[i].sprite = variant[currentVariant].sprite[i];
 		}
+		SetEditButton (false);
 	}
 	#endregion
 //------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
 	public virtual void EnterEditmode(){
 		flagEditMode = true;
-
+		SetEditButton (true);
 	}
 	public virtual void ExitEditmode(){
 		flagEditMode = false;
-
+		SetEditButton (false);
 	}
 	public void OnClickFurniture(){
 		Debug.Log ("clicked");
+	}
+
+	//TEMP
+	public void SetEditButton(bool show){
+		if(editButton!=null){
+			editButton.SetActive (show);
+		}
 	}
 	#endregion
 //------------------------------------------------------------------------------------------------------------------------------------------------

@@ -49,6 +49,10 @@ public class EmojiPlayerInput : MonoBehaviour {
 	public bool danceMatRetaining = false;
 	public bool doodleRetaining = false;
 
+	[Header("Sound")]
+	public bool dizzySound = false;
+	public bool barfSound = false;
+
 	Vector3 touchTargetPosition;
 	Vector2 prevMoveVector;
 
@@ -91,6 +95,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 				Wake();
 			}
 		}
+		dizzySound = barfSound = false;
 		isRetaining = false;
 	}
 
@@ -101,6 +106,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 				flagStroke = false;
 				touchInputObject.transform.localScale = Vector3.one;
 				StartCoroutine(_StartHold);
+				SoundManager.Instance.PlayVoice(VoiceList.Huh);
 			}
 		}
 	}
@@ -126,6 +132,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 					if(Mathf.Abs(deltaX) > 0.03f){
 						flagTouching = false;
 						flagStroke = true;
+						SoundManager.Instance.PlayVoice(VoiceList.Laugh);
 					}
 				}else if (flagHold) {
 					HoldMove();
@@ -148,26 +155,31 @@ public class EmojiPlayerInput : MonoBehaviour {
 			case 1: print("Poked 1"); 
 				emoji.emojiExpressions.ResetExpressionDuration();
 				emoji.emojiExpressions.SetExpression(EmojiExpressionState.POKED,1f);
+				SoundManager.Instance.PlayVoice(VoiceList.Huh);
 				animDelay = 4; 
 				break;
 			case 2: print("Poked 2"); 
 				emoji.emojiExpressions.ResetExpressionDuration();
 				emoji.emojiExpressions.SetExpression(EmojiExpressionState.POKED,1f);
+				SoundManager.Instance.PlayVoice(VoiceList.Huh);
 				animDelay = 4; 
 				break;
 			case 3: print("Annoyed 1"); 
 				emoji.emojiExpressions.ResetExpressionDuration();
 				emoji.emojiExpressions.SetExpression(EmojiExpressionState.ANNOYED,1f);
+				SoundManager.Instance.PlayVoice(VoiceList.Urrh);
 				animDelay = 5; 
 				break;
 			case 4: print("Annoyed 2"); 
 				emoji.emojiExpressions.ResetExpressionDuration();
 				emoji.emojiExpressions.SetExpression(EmojiExpressionState.ANNOYED,1f);
+				SoundManager.Instance.PlayVoice(VoiceList.Urrh);
 				animDelay = 5; 
 				break;
 			case 5: print("Pouting"); 
 				emoji.emojiExpressions.ResetExpressionDuration();
 				emoji.emojiExpressions.SetExpression(EmojiExpressionState.POUTING,-1f);
+				SoundManager.Instance.PlayVoice(VoiceList.UghYuck);
 				if(OnEmojiPouting != null) OnEmojiPouting();
 				animDelay = 10; 
 				//emoji.happiness.ModStats(-3);
@@ -216,7 +228,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 				if (prevHoldFactor > slowMediumTreshold) {
 					StartCoroutine (_RetainMoveSpeed,retainCooldown);
 				} else {
-					print ("Slow");
+//					print ("Slow");
 					if(!shakeExpressionRetain){
 						emoji.emojiExpressions.ResetExpressionDuration ();
 						emoji.emojiExpressions.SetExpression (EmojiExpressionState.HOLD, -1);
@@ -231,7 +243,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 				if (prevHoldFactor > mediumFastTreshold) {
 					StartCoroutine (_RetainMoveSpeed,retainCooldown);
 				} else {
-					print ("Med");
+//					print ("Med");
 					if(!shakeExpressionRetain){
 						emoji.emojiExpressions.ResetExpressionDuration ();
 						emoji.emojiExpressions.SetExpression (EmojiExpressionState.WORRIED, -1);
@@ -250,7 +262,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 				}
 			} else {
 				//fast move
-				print ("Fast");
+//				print ("Fast");
 				if(!shakeExpressionRetain){
 					emoji.emojiExpressions.ResetExpressionDuration ();
 					emoji.emojiExpressions.SetExpression (EmojiExpressionState.AFRAID, -1);
@@ -270,6 +282,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 		isRetaining = false;
 	}
 
+
 	void CheckShake (float x)
 	{
 		if ((prevXPos >= 0 && x < 0) ||
@@ -281,6 +294,10 @@ public class EmojiPlayerInput : MonoBehaviour {
 			if (shakeCounter >= 8 && shakeCounter < 20) {
 				if (!shakeExpressionRetain) {
 					print ("DIZZY!");
+					if(!dizzySound){
+						dizzySound = true;
+						SoundManager.Instance.PlayVoice(VoiceList.UghYuck);
+					}
 					emoji.emojiExpressions.ResetExpressionDuration ();
 					emoji.emojiExpressions.SetExpression (EmojiExpressionState.DIZZY, -1);
 					StartCoroutine (_RetainShakeExpression,shakeExpressionCooldown);
@@ -289,6 +306,10 @@ public class EmojiPlayerInput : MonoBehaviour {
 				if (shakeExpressionRetain && emoji.emojiExpressions.currentExpression == EmojiExpressionState.DIZZY ||
 					!shakeExpressionRetain && emoji.emojiExpressions.currentExpression != EmojiExpressionState.HOLD_BARF) {
 					print ("MUNTAH!");
+					if(!barfSound){
+						barfSound = true;
+						SoundManager.Instance.PlayVoice(VoiceList.Yuck);
+					}
 					emoji.emojiExpressions.ResetExpressionDuration ();
 					emoji.emojiExpressions.SetExpression (EmojiExpressionState.HOLD_BARF, -1);
 					StartCoroutine (_RetainShakeExpression,shakeExpressionCooldown);
@@ -318,6 +339,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 		float staminaValue = emoji.stamina.StatValue / emoji.stamina.MaxStatValue;
 		if(staminaValue < 0.4f){//awake lazily
 			emoji.emojiExpressions.SetExpression(EmojiExpressionState.AWAKE_LAZILY,-1);
+
 		}else if(staminaValue >= 0.4f && staminaValue < 0.8f){ //awake normally
 			emoji.emojiExpressions.SetExpression(EmojiExpressionState.AWAKE_NORMALLY,-1);
 		}else{//awake energetically
@@ -375,13 +397,17 @@ public class EmojiPlayerInput : MonoBehaviour {
 			if(toyBumpCounter < 6){
 				emoji.emojiExpressions.SetExpression(EmojiExpressionState.HAPPY,toyBumpResponseCooldown);
 				emoji.happiness.ModStats(7f);
+				SoundManager.Instance.PlayVoice(VoiceList.Laugh);
 			}else if(toyBumpCounter >= 6 && toyBumpCounter < 9){
 				emoji.emojiExpressions.SetExpression(EmojiExpressionState.BORED,toyBumpResponseCooldown);
+				SoundManager.Instance.PlayVoice(VoiceList.Sigh);
 			}else if(toyBumpCounter >= 9 && toyBumpCounter < 14){
 				emoji.emojiExpressions.SetExpression(EmojiExpressionState.ANNOYED,toyBumpResponseCooldown);
+				SoundManager.Instance.PlayVoice(VoiceList.Urrh);
 				emoji.happiness.ModStats(-3f);
 			}else{
-				emoji.emojiExpressions.SetExpression(EmojiExpressionState.ANGERED,toyBumpRetainCooldown);
+				emoji.emojiExpressions.SetExpression(EmojiExpressionState.ANGERED,toyBumpResponseCooldown);
+				SoundManager.Instance.PlayVoice(VoiceList.UghYuck);
 				emoji.happiness.ModStats(-7f);
 			}
 			StartCoroutine(_RetainToyBumpingResponse);
@@ -397,6 +423,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 	public void OnDartboardMingameDone(float factor)
 	{
 		if(!dartboardRetaining){
+			emoji.emojiExpressions.SetExpression (EmojiExpressionState.HAPPY, 2f);
 			emoji.happiness.ModStats(factor);
 			StartCoroutine(_RetainDartboardMinigameCooldown);
 		}
@@ -405,6 +432,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 	public void OnBlocksMinigameDone()
 	{
 		if(!blocksRetaining){
+			emoji.emojiExpressions.SetExpression (EmojiExpressionState.HAPPY, 2f);
 			emoji.happiness.ModStats(happinessModOnBlocks);
 			StartCoroutine(_RetainBlocksMinigameCooldown);
 		}
@@ -413,6 +441,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 	public void OnDoodleMinigameDone()
 	{
 		if(!doodleRetaining){
+			emoji.emojiExpressions.SetExpression (EmojiExpressionState.HAPPY, 2f);
 			emoji.happiness.ModStats(happinessModOnDoodle);
 			StartCoroutine(_RetainDoodleMinigameCooldown);
 		}
@@ -421,6 +450,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 	public void OnDanceMatMinigameDone()
 	{
 		if(!danceMatRetaining){
+			emoji.emojiExpressions.SetExpression (EmojiExpressionState.HAPPY, 2f);
 			emoji.happiness.ModStats(happinessModOnDanceMat);
 			StartCoroutine(_RetainDanceMatMinigameCooldown);
 		}	

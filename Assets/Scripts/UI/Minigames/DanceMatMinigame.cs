@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class DanceMatMinigame : BaseUI {
 	public Image[] danceMatMinigame;
-	public Image[] danceMatFurniture;
+	public SpriteRenderer[] danceMatFurniture;
 
 	int clickCount = 0;
 	int maxClick = 4;
@@ -35,5 +35,10 @@ public class DanceMatMinigame : BaseUI {
 		} else{
 			return Color.yellow;
 		}
+	}
+
+	public void OnClickBack(){
+		PlayerData.Instance.PlayerEmoji.playerInput.OnDanceMatMinigameDone ();
+		base.CloseUI (this.gameObject);
 	}
 }

@@ -10,8 +10,16 @@ public class Radio : ActionableFurniture {
 
 	public override void PointerClick()
 	{
-		if(!radioOn) radioOn = true;
-		else radioOn = false;
-		toneAnimation.SetBool(AnimatorParameters.Bools.RADIO_ON,radioOn);
+		if(!radioOn){ 
+			radioOn = true;
+			SoundManager.Instance.PlayBGM(BGMList.BGMRadio1);
+			toneAnimation.SetBool(AnimatorParameters.Bools.RADIO_ON,radioOn);
+		}else if(radioOn && SoundManager.Instance.BGMSource.clip == SoundManager.Instance.BGMClips[(int)BGMList.BGMRadio1]){
+			SoundManager.Instance.PlayBGM(BGMList.BGMRadio2);
+		}else if(radioOn && SoundManager.Instance.BGMSource.clip == SoundManager.Instance.BGMClips[(int)BGMList.BGMRadio2]){
+			radioOn = false;
+			SoundManager.Instance.PlayBGM(BGMList.BGMMain);
+			toneAnimation.SetBool(AnimatorParameters.Bools.RADIO_ON,radioOn);
+		}
 	}
 }

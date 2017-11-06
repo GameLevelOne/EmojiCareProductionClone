@@ -33,6 +33,9 @@ public class ScreenStats : BaseUI {
 
 	bool moveArrows = true;
 
+	//FOR TESTING
+//	public ScreenTutorial tut;
+
 	public override void InitUI(){
 		Debug.Log("stats");
 	}
@@ -56,8 +59,8 @@ public class ScreenStats : BaseUI {
 		float ratioHealth = currentData.health.StatValue / currentData.health.MaxStatValue;
 
 //		float ratioHunger = 0.1f;
-//		float ratioHygiene = 0.3f;
-//		float ratioHappiness = 0.3f;
+//		float ratioHygiene = 0.1f;
+//		float ratioHappiness = 0.1f;
 //		float ratioStamina = 0.1f;
 //		float ratioHealth = 0.1f;
 

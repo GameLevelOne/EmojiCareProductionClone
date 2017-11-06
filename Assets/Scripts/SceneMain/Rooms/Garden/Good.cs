@@ -13,7 +13,7 @@ public class Good : MonoBehaviour {
 
 	public IngredientType type;
 	[Header("Do Not Modify This!")]
-	public int GoodsIndex;
+	public int goodIndex;
 
 	Vector3 startPos;
 	#endregion
@@ -21,8 +21,8 @@ public class Good : MonoBehaviour {
 	#region initialization
 	public void Init(int index)
 	{
-		startPos = transform.position;
-		GoodsIndex = index;
+		startPos = transform.localPosition;
+		goodIndex = index;
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -33,7 +33,7 @@ public class Good : MonoBehaviour {
 			StopAllCoroutines();
 			PlayerData.Instance.inventory.ModIngredientValue(type,1);
 
-			if(OnGoodHarvested != null) OnGoodHarvested(GoodsIndex);
+			if(OnGoodHarvested != null) OnGoodHarvested(goodIndex);
 
 			Destroy(this.gameObject);
 		}
@@ -68,12 +68,12 @@ public class Good : MonoBehaviour {
 		yield return null;
 
 		float t = 0;
-		Vector3 currentPos = transform.position;
+		Vector3 currentPos = transform.localPosition;
 		while (t < 1){
-			transform.position = Vector3.Lerp(currentPos,startPos,t);
-			t+= Time.deltaTime;
+			transform.localPosition = Vector3.Lerp(currentPos,startPos,t);
+			t+= Time.deltaTime*5;
 			yield return null;
 		}
-		transform.position = startPos;
+		transform.localPosition = startPos;
 	}
 }

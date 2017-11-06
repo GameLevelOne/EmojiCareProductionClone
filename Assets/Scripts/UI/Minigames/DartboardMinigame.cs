@@ -18,11 +18,24 @@ public class DartboardMinigame : BaseUI {
 	public void OnClickStop(){
 		dartMark.SetActive(true);
 		Vector3 stopPosition = Vector3.zero;
+		stopPosition = dartMark.transform.localPosition;
 		moveMark=false;
 		if(!moveMark){
 			dartAnim.SetTrigger(triggerShoot);
 		}
-		//StartCoroutine(ClosePanel());
+		PlayerData.Instance.PlayerEmoji.playerInput.OnDartboardMingameDone (CalculateStatGain (stopPosition.x));
+	}
+
+	int CalculateStatGain(float xPos){
+		float absPos = Mathf.Abs (xPos);
+		if (absPos >= 0 && absPos < 50) {
+			return 4;
+		} else if (absPos >= 50 && absPos < 100) {
+			return 3;
+		} else if (absPos >= 100 && absPos < 150) {
+			return 2;
+		} else
+			return 1;
 	}
 
 	public void OnClickBack(){
