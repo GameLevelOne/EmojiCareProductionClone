@@ -32,6 +32,7 @@ public class EmojiTriggerFall : MonoBehaviour {
 	{
 		foreach(Collider2D c in colliders){
 			if(Physics2D.GetIgnoreCollision(bodyCollider,c) == true) Physics2D.IgnoreCollision(bodyCollider,c,false);
+			colliderToIgnore.Remove(c);
 		}
 	}
 
