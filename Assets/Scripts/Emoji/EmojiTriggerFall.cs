@@ -14,7 +14,7 @@ public class EmojiTriggerFall : MonoBehaviour {
 	{
 		if(other.tag == Tags.FLOOR || other.tag == Tags.IMMOVABLE_FURNITURE){
 			if(other.isTrigger && isFalling){ 
-				print("adding "+other.transform.parent.name);
+//				print("adding "+other.transform.parent.name);
 				colliderToIgnore.Add(other.transform.parent.GetComponent<Collider2D>());
 			}
 		} 
@@ -32,12 +32,13 @@ public class EmojiTriggerFall : MonoBehaviour {
 	{
 		foreach(Collider2D c in colliders){
 			if(Physics2D.GetIgnoreCollision(bodyCollider,c) == true) Physics2D.IgnoreCollision(bodyCollider,c,false);
+			colliderToIgnore.Remove(c);
 		}
 	}
 
 	public void ClearColliderList()
 	{
-		print("CLEAR");
+//		print("CLEAR");
 		if(colliderToIgnore.Count != 0){
 			foreach(Collider2D c in colliderToIgnore)
 				if(Physics2D.GetIgnoreCollision(bodyCollider,c) == true) Physics2D.IgnoreCollision(bodyCollider,c,false);
@@ -50,7 +51,7 @@ public class EmojiTriggerFall : MonoBehaviour {
 	{
 		if(colliderToIgnore.Count != 0){
 			foreach(Collider2D c in colliderToIgnore){
-				print("Ignoring "+c.name);
+//				print("Ignoring "+c.name);
 				if(Physics2D.GetIgnoreCollision(bodyCollider,c) == false) Physics2D.IgnoreCollision(bodyCollider,c, true);
 			}
 		}

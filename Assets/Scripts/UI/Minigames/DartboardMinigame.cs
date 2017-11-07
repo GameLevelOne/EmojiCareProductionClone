@@ -6,8 +6,8 @@ public class DartboardMinigame : BaseUI {
 	public GameObject dartMark;
 	bool moveMark = false;
 	Animator dartAnim;
-	string triggerShoot = "Shoot";
-	string triggerReset = "Reset";
+	string boolShoot = "Shoot";
+	string boolReset = "Reset";
 
 	void OnEnable(){
 		dartAnim = dartMark.GetComponent<Animator>();
@@ -16,12 +16,14 @@ public class DartboardMinigame : BaseUI {
 	}
 
 	public void OnClickStop(){
-		dartMark.SetActive(true);
+		//dartMark.SetActive(true);
+		StopCoroutine ("MoveArrow");
 		Vector3 stopPosition = Vector3.zero;
 		stopPosition = dartMark.transform.localPosition;
 		moveMark=false;
 		if(!moveMark){
-			dartAnim.SetTrigger(triggerShoot);
+			dartAnim.SetBool (boolShoot, true);
+			dartAnim.SetBool (boolReset, false);
 		}
 		PlayerData.Instance.PlayerEmoji.playerInput.OnDartboardMingameDone (CalculateStatGain (stopPosition.x));
 	}
@@ -39,7 +41,9 @@ public class DartboardMinigame : BaseUI {
 	}
 
 	public void OnClickBack(){
-		dartAnim.SetTrigger(triggerReset);
+		dartAnim.SetBool (boolShoot, false);
+		dartAnim.SetBool (boolReset, true);
+		moveMark = false;
 		base.CloseUI(this.gameObject);
 	}
 

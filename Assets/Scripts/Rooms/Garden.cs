@@ -73,7 +73,6 @@ public class Garden : BaseRoom {
 				tempSeed.transform.localPosition = stallContent.FindChild("Seeds").GetChild(i).localPosition;
 				tempSeed.GetComponent<Seed>().Init(i);
 				tempSeed.GetComponent<Seed>().OnSeedPlanted += OnSeedPlanted;
-				tempSeed.GetComponent<Seed>().parent = transform;
 				AvailableSeeds.Add ( tempSeed );
 
 			}

@@ -179,6 +179,17 @@ public class RoomController : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
+	public void OnRoomEditMode(bool flagEditRoom)
+	{
+		if(flagEditRoom){
+			interactable = false;
+			PlayerData.Instance.PlayerEmoji.gameObject.SetActive(false);
+		}else{
+			interactable = true;
+			PlayerData.Instance.PlayerEmoji.gameObject.SetActive(true);
+		}
+	}
+
 	public void LockInteraction(float duration)
 	{
 		StartCoroutine(_lockRoomChanging,duration);

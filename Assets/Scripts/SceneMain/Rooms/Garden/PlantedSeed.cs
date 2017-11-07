@@ -6,14 +6,17 @@ public class PlantedSeed : MonoBehaviour {
 	public GameObject plantObject;
 	public IngredientType type;
 	public Transform parent;
+	public int soilIndex;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
-	public void Init(GameObject plantObject, IngredientType type, Transform parent)
+	public void Init(GameObject plantObject, IngredientType type, Transform parent, int soilIndex)
 	{
 		this.plantObject = plantObject;
 		this.type = type;
 		this.parent = parent;
+		transform.parent = parent;
+		this.soilIndex = soilIndex;
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -26,7 +29,8 @@ public class PlantedSeed : MonoBehaviour {
 	{
 		Vector3 pos = new Vector3(transform.position.x,transform.position.y,-1f);
 		GameObject tempPlantObj = (GameObject) Instantiate(plantObject,pos,Quaternion.identity);
-		tempPlantObj.GetComponent<Plant>().Init(parent);
+		tempPlantObj.GetComponent<Plant>().Init(parent,soilIndex);
+		parent.parent.GetComponent<Soil>().RegisterPlantEvent(tempPlantObj.GetComponent<Plant>());
 		Destroy(this.gameObject);
 	}
 	#endregion
