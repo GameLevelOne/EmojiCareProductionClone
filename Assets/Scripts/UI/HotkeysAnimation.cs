@@ -11,8 +11,8 @@ public class HotkeysAnimation : MonoBehaviour {
 	public RoomController roomController;
 
 	Animator hotkeyAnim;
-	string triggerOpenHotkey = "ShowHotkeys";
-	string triggerCloseHotkey = "CloseHotkeys";
+	string boolOpenHotkeys = "ShowHotkeys";
+	//string triggerCloseHotkey = "CloseHotkeys";
 
 	void Start(){
 		hotkeyAnim = hotkeyPanel.GetComponent<Animator>();
@@ -38,11 +38,12 @@ public class HotkeysAnimation : MonoBehaviour {
 		}
 
 		hotkeyPanel.SetActive(true);
-		hotkeyAnim.SetTrigger(triggerOpenHotkey);
+		hotkeyAnim.SetBool(boolOpenHotkeys,true);
 	}
 
 	public void CloseHotkeys(){
-		hotkeyAnim.SetTrigger(triggerCloseHotkey);
+		if(AdmobManager.Instance) AdmobManager.Instance.HideBanner();
+		hotkeyAnim.SetBool(boolOpenHotkeys,false);
 		StartCoroutine(WaitForAnim(hotkeyPanel));
 	}
 
