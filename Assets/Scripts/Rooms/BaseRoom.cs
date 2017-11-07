@@ -84,14 +84,19 @@ public class BaseRoom : MonoBehaviour {
 		flagEditMode = editMode;
 		if(editMode){
 			//enter edit mode
+
+
 			for(int i = 0;i<furnitures.Length;i++){ 
 				furnitures[i].transform.localPosition = furnitureDefaultPosition[i];
 				furnitures[i].EnterEditmode();
 			}
 
+			foreach(MovableFurniture f in movableFurnitures) f.flagEditMode = true;
+
 		}else{
 			//exit edit mode
 			foreach(BaseFurniture f in furnitures) f.ExitEditmode();
+			foreach(MovableFurniture f in movableFurnitures) f.flagEditMode = false;
 		}
 	}
 	#endregion
