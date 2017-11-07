@@ -42,7 +42,6 @@ public class HotkeysAnimation : MonoBehaviour {
 	}
 
 	public void CloseHotkeys(){
-		if(AdmobManager.Instance) AdmobManager.Instance.HideBanner();
 		hotkeyAnim.SetBool(boolOpenHotkeys,false);
 		StartCoroutine(WaitForAnim(hotkeyPanel));
 	}
@@ -50,11 +49,11 @@ public class HotkeysAnimation : MonoBehaviour {
 	public void BackToGame(){
 		buttonHotkey.SetActive(true);
 		CloseHotkeys();
+		if(AdmobManager.Instance) AdmobManager.Instance.ShowBanner();
 	}
 
 	IEnumerator WaitForAnim(GameObject obj){
 		yield return new WaitForSeconds(0.31f);
-		if(AdmobManager.Instance) AdmobManager.Instance.ShowBanner();
 		obj.SetActive(false);
 	}
 }

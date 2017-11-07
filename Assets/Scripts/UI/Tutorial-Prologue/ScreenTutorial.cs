@@ -312,7 +312,7 @@ public class ScreenTutorial : BaseUI {
 				dialogText.text = "You can caress and hold "+emojiName+" with your finger.";
 				loadCustomDialog = true;
 			} else if(dialogCount == 5){
-				dialogText.text = "If you raise with "+emojiName+" care, it will have many various expressions! ";
+				dialogText.text = "If you raise "+emojiName+" with care, it will have many various expressions! ";
 				loadCustomDialog = true;
 			}
 			if (!loadCustomDialog) {
