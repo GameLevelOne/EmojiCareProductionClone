@@ -28,7 +28,7 @@ public class BaseUI : MonoBehaviour {
 
 	public void ShowUI (GameObject obj)
 	{
-		//SoundManager.Instance.PlaySFXOneShot (SFXList.OpenThings);
+		SoundManager.Instance.PlaySFXOneShot (SFXList.OpenThings);
 		if(AdmobManager.Instance) AdmobManager.Instance.HideBanner();
 		obj.SetActive(true);
 		obj.GetComponent<Animator>().SetBool(boolShowUI,true);	
@@ -47,13 +47,14 @@ public class BaseUI : MonoBehaviour {
 	}
 
 	public void ShowPanelInHotkey(GameObject obj){
+		if(AdmobManager.Instance) AdmobManager.Instance.HideBanner();
 		hotkeyAnim.CloseHotkeys();
 		ShowUI(obj);
 	}
 
 	public void ClosePanelInHotkey(GameObject obj){
-		hotkeyAnim.ShowHotkeys();
 		CloseUI(obj);
+		hotkeyAnim.ShowHotkeys();
 	}
 
 	IEnumerator WaitForAnim(GameObject obj){

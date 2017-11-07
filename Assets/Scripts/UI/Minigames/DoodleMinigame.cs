@@ -36,7 +36,7 @@ public class DoodleMinigame : BaseUI {
 	}
 
 	public void OnDrag ()
-	{ //TODO: check counter
+	{ 
 		Vector3 tempMousePosition = new Vector3 (Input.mousePosition.x, Input.mousePosition.y, 0);
 		//if (rectBoard.GetComponent<Blackboard> ().insideBoard) {
 			GameObject obj = Instantiate (particlePrefab, particleParent.transform, false) as GameObject;
@@ -60,14 +60,18 @@ public class DoodleMinigame : BaseUI {
 	public void FillSprite(Vector3 pos1,Vector3 pos2){
 		Vector3 tempPos = Vector3.zero;
 		float lerpFactor = 0;
-		int counter = 0;
 		while(lerpFactor<1){
-			tempPos = Vector3.Lerp(pos1,pos2,lerpFactor);
+			tempPos = GetPoint (pos1, pos2, lerpFactor);
 			lerpFactor+=0.1f;
 			GameObject obj = Instantiate(particlePrefab,particleParent.transform,false) as GameObject;
 			obj.transform.position = tempPos;
-			counter++;
 		}
+	}
+
+	Vector3 GetPoint(Vector3 p0,Vector3 p2,float t){
+		float oneMinusT = 1f - t;
+		Vector3 p1 = Vector3.Lerp (p0, p2, 0.5f);
+		return ((oneMinusT * oneMinusT * p0) + (2 * oneMinusT * t * p1) + (t * t * p2));
 	}
 
 	IEnumerator TakeScreenshot(){

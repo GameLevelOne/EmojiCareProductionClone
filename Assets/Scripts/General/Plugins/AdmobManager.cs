@@ -41,10 +41,16 @@ public class AdmobManager : MonoBehaviour {
 	}
 
 	public void ShowBanner(){
+		#if UNITY_EDITOR
+		Debug.Log("show banner");
+		#endif
 		ad.showBannerRelative(AdSize.SmartBanner,AdPosition.BOTTOM_CENTER,0);
 	}
 
 	public void HideBanner(){
+		#if UNITY_EDITOR
+		Debug.Log("hide banner");
+		#endif
 		ad.removeBanner();
 	}
 }
