@@ -2,17 +2,25 @@
 using UnityEngine;
 
 public class Plant : MonoBehaviour {
+	public delegate void PlantDestroyed(int index);
+	public event PlantDestroyed OnPlantDestroyed;
+
 	#region attributes
 	public GameObject cropObject;
-	
+	public int soilIndex;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
-	public void Init(Transform parent)
+	public void Init(Transform parent, int soilIndex)
 	{
-		transform.parent = parent;
+		transform.SetParent(parent,true);
+		this.soilIndex = soilIndex;
 	}
 
+	void OnDestroy()
+	{
+		if(OnPlantDestroyed != null) OnPlantDestroyed(soilIndex);
+	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics

@@ -2,8 +2,6 @@
 using UnityEngine;
 
 public class Crop : MonoBehaviour {
-	public delegate void CropHarvested(int index);
-	public event CropHarvested OnGoodsHarvested;
 	#region attributes
 	public bool flagHolding = true;
 	public GameObject plantObject;
@@ -32,7 +30,6 @@ public class Crop : MonoBehaviour {
 		if(other.tag == Tags.BASKET){
 			StopAllCoroutines();
 			PlayerData.Instance.inventory.ModIngredientValue(type,1);
-
 			Destroy(plantObject);
 			Destroy(this.gameObject);
 		}

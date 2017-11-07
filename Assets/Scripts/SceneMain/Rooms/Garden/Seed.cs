@@ -11,7 +11,6 @@ public class Seed : MonoBehaviour {
 	public Collider2D thisCollider;
 	public GameObject plantedSeedObject;
 	public GameObject PlantObject;
-	public Transform parent;
 	public int seedIndex;
 	Vector3 startPos;
 	#endregion
@@ -28,12 +27,16 @@ public class Seed : MonoBehaviour {
 	public void OnTriggerEnter2D(Collider2D other)
 	{
 		if(other.tag == Tags.SOIL){
-			GameObject tempPlantedSeedObj = (GameObject) Instantiate(plantedSeedObject);
-			tempPlantedSeedObj.transform.position = other.transform.GetChild(0).position;
-			tempPlantedSeedObj.GetComponent<PlantedSeed>().Init(PlantObject,type,parent);
-			if(OnSeedPlanted != null) OnSeedPlanted(seedIndex);
+			int soilIndex = int.Parse(other.name);
+			if(!other.transform.parent.GetComponent<Soil>().flagHasPlant[soilIndex]){
+				GameObject tempPlantedSeedObj = (GameObject) Instantiate(plantedSeedObject);
+				tempPlantedSeedObj.transform.position = other.transform.GetChild(0).position;
+				tempPlantedSeedObj.GetComponent<PlantedSeed>().Init(PlantObject,type,other.transform,soilIndex);
+				if(OnSeedPlanted != null) OnSeedPlanted(seedIndex);
 
-			Destroy(this.gameObject);
+				other.transform.parent.GetComponent<Soil>().flagHasPlant[soilIndex] = true;
+				Destroy(this.gameObject);
+			}
 		}
 	}
 
