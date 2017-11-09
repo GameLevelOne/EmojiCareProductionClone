@@ -47,6 +47,23 @@ public static class PlayerPrefKeys {
 		public const string HAS_INIT_INGREDIENT = "Game/HasInitIngredient";
 		public const string SEEDS = "Game/Garden/Seed";
 		public const string GOODS = "Game/Garden/Goods";
+
+		public const string HAS_SEED0 = "Game/Garden/HasSeed/0";
+		public const string HAS_SEED1 = "Game/Garden/HasSeed/1";
+		public const string HAS_SEED2 = "Game/Garden/HasSeed/2";
+
+		public const string SEED_TYPE0 = "Game/Garden/SeedType/0";
+		public const string SEED_TYPE1 = "Game/Garden/SeedType/1";
+		public const string SEED_TYPE2 = "Game/Garden/SeedType/2";
+
+		public const string SEED_GROW_DURATION0 = "Game/Garden/SeedGrowDuration/0";
+		public const string SEED_GROW_DURATION1 = "Game/Garden/SeedGrowDuration/1";
+		public const string SEED_GROW_DURATION2 = "Game/Garden/SeedGrowDuration/2";
+
+		public const string SEED_HARVEST_TIME0 = "Game/Garden/SeedHarvestTime/0";
+		public const string SEED_HARVEST_TIME1 = "Game/Garden/SeedHarvestTime/1";
+		public const string SEED_HARVEST_TIME2 = "Game/Garden/SeedHarvestTime/2";
+
 	}
 
 	public static class Tutorial{

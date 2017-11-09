@@ -4,19 +4,25 @@ using UnityEngine.UI;
 using System;
 
 public class UIPlantProgress : MonoBehaviour {
+	public delegate void FinishGrowingEvent();
+	public event FinishGrowingEvent OnFinishGrowing;
 	#region attributes
 	public Image imagePlantIcon;
 	public Image imageProgressBar;
 	public Text textTimeLeft;
-	int totalTime;
+	int totalDuration;
 	DateTime finishTime;
+	bool ticking = false;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
-	public void Init(Image icon, DateTime finishTime)
+	public void Init(Sprite icon, DateTime finishTime)
 	{
-		this.imagePlantIcon = icon;
+		imagePlantIcon.sprite = icon;
 		this.finishTime = finishTime;
+		totalDuration = (int) finishTime.Subtract(DateTime.Now).TotalSeconds;
+		ticking = true;
+		Show();
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -40,13 +46,31 @@ public class UIPlantProgress : MonoBehaviour {
 				duration.Minutes.ToString()+"m "+
 				duration.Seconds.ToString()+"s";
 	}
+
+	float GetDuration()
+	{
+		TimeSpan deltaTime = finishTime.Subtract(DateTime.Now);
+		return (float)deltaTime.TotalSeconds / (float)totalDuration;
+	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
-	public void UpdateData()
+	public void UpdateDuration()
 	{
-		if(!gameObject.activeSelf) gameObject.SetActive(true);
-		textTimeLeft.text = ConvertTimeToString();
+		if(DateTime.Now.CompareTo(finishTime) >= 0){
+			ticking = false;
+			if(OnFinishGrowing != null) OnFinishGrowing();
+			Hide();
+		}else{
+			textTimeLeft.text = ConvertTimeToString();
+			imageProgressBar.fillAmount = GetDuration();
+		}
+
+	}
+
+	public void Show()
+	{
+		gameObject.SetActive(true);
 	}
 
 	public void Hide()
@@ -55,16 +79,8 @@ public class UIPlantProgress : MonoBehaviour {
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------	
-	#region coroutine
-	const string _TickTime = "TickTime";
-	IEnumerator TickTime()
+	void Update()
 	{
-		while(DateTime.Now.CompareTo(finishTime) < 0){
-			textTimeLeft.text = ConvertTimeToString();
-			yield return new WaitForSeconds(1f);
-		}
-
-		Hide();
+		if(ticking) UpdateDuration();
 	}
-	#endregion
 }
