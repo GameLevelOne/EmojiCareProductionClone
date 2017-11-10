@@ -17,6 +17,8 @@ public class RoomController : MonoBehaviour {
 	public GameObject cookBar; //SEMENTARA
 	public Pan pan;
 
+	public UIPlantProgress[] plantProgress;
+
 	public ScreenTutorial screenTutorial;
 
 	int roomTotal = 0;
@@ -111,6 +113,7 @@ public class RoomController : MonoBehaviour {
 				float x = getWorldPositionFromTouchInput().x;
 				distance = transform.localPosition.x - x;
 
+				foreach(UIPlantProgress pp in plantProgress) pp.Hide();
 				//			Emoji.Instance.emojiObject.GetComponent<EmojiObject>().OnRoomChangingStart();
 			}
 		}
@@ -228,13 +231,16 @@ public class RoomController : MonoBehaviour {
 
 		switch(currentRoom)
 		{
-		case RoomType.Garden: 		rooms[(int)currentRoom].GetComponent<Garden>().Init(); break;
+		case RoomType.Garden: 		
+			rooms[(int)currentRoom].GetComponent<Garden>().Init(); 
+			break;
 		case RoomType.Playroom: 	rooms[(int)currentRoom].GetComponent<Playroom>().Init(); break;
 		case RoomType.LivingRoom: 	rooms[(int)currentRoom].GetComponent<LivingRoom>().Init(); break;
 		case RoomType.Kitchen: 		rooms[(int)currentRoom].GetComponent<Kitchen>().Init(); break;
 		case RoomType.Bedroom: 		rooms[(int)currentRoom].GetComponent<Bedroom>().Init(); break;
 		case RoomType.Bathroom: 	rooms[(int)currentRoom].GetComponent<Bathroom>().Init(); break;
 		}
+
 
 		//SEMENTARA
 //		if(currentRoom != RoomType.Playroom) danceMat.SetActive(false);
