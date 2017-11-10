@@ -30,7 +30,8 @@ public class Seed : MonoBehaviour {
 			int soilIndex = int.Parse(other.name);
 			string tempPrefKey = other.transform.parent.GetComponent<Soil>().prefKeyHasSeed[soilIndex];
 			if(PlayerPrefs.GetInt(tempPrefKey) == 0){
-				other.transform.parent.GetComponent<Soil>().AddSeed(soilIndex,type,growthDuration);
+				other.transform.parent.GetComponent<Soil>().AddSeed(soilIndex,type,growthDuration,false);
+				if(OnSeedPlanted != null) OnSeedPlanted(seedIndex);
 				Destroy(this.gameObject);
 			}
 		}

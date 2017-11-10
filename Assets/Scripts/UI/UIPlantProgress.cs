@@ -64,7 +64,8 @@ public class UIPlantProgress : MonoBehaviour {
 			Hide();
 		}else{
 			textTimeLeft.text = ConvertTimeToString();
-			imageProgressBar.fillAmount = GetDuration();
+			imageProgressBar.fillAmount = 1f - (GetDuration());
+			if(!gameObject.activeSelf) Show();
 		}
 
 	}

@@ -14,13 +14,14 @@ public class Garden : BaseRoom {
 	public List<GameObject> AvailableGoods = new List<GameObject>();
 	public List<GameObject> AvailableSeeds = new List<GameObject>();
 	public bool hasInit = false;
+
 	public void Init()
 	{
 		if(!hasInit){
 			hasInit = true;
 			InitIngredientStall();
-			soil.Init();
 		}
+		soil.Init();
 	}
 
 	void InitIngredientStall()
