@@ -197,6 +197,7 @@ public class ScreenTutorial : BaseUI {
 		} else if(type == TutorialType.TriggerStaminaRed){
 			dialogText.text = triggerStaminaRed [0];
 		}
+		currentTutorial = type;
 		base.ShowUI (screenTutorialObj);
 	}
 

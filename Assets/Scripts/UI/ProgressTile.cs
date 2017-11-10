@@ -15,7 +15,7 @@ public class ProgressTile : MonoBehaviour {
 
 	bool lockedExpression = true;
 
-	public void InitTile(Sprite sprite,string name,string unlockCondition,bool locked,float progress=0.2f){
+	public void InitTile(Sprite sprite,string name,string unlockCondition,bool locked,float progress=0f){
 		expressionIcon.sprite = sprite;
 		expressionName=name;
 		this.unlockCondition = unlockCondition;

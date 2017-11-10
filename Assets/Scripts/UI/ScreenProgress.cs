@@ -24,7 +24,7 @@ public class ScreenProgress : BaseUI {
 	int expressionTotalCount;
 	int tileWidth = 4;
 	int tileHeight = 15;
-	float expressionBoxWidth = 110f;
+	float expressionBoxWidth = 120f;
 	float contentBoxMarginX = 50f;
 	bool canSendOff = false;
 	Emoji currentEmojiData;
