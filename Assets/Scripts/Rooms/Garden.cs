@@ -7,7 +7,9 @@ public class Garden : BaseRoom {
 	[Header("Garden Attributes")]
 	public GameObject[] Goods;
 	public GameObject[] Seeds;
+	public Soil soil;
 	public Transform stallContent;
+
 	[Header("Generated Objects")]
 	public List<GameObject> AvailableGoods = new List<GameObject>();
 	public List<GameObject> AvailableSeeds = new List<GameObject>();
@@ -17,6 +19,7 @@ public class Garden : BaseRoom {
 		if(!hasInit){
 			hasInit = true;
 			InitIngredientStall();
+			soil.Init();
 		}
 	}
 

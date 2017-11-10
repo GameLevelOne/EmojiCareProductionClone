@@ -41,17 +41,18 @@ public class Soil : MonoBehaviour {
 	{
 		for(int i = 0;i<SoilObjects.Length;i++){
 			if(PlayerPrefs.GetInt(prefKeyHasSeed[i]) == 1){
-				DateTime finishtime = DateTime.Parse(PlayerPrefs.GetString(prefKeyHarvestTime[i]));
-				if(DateTime.Now.CompareTo(finishtime) >= 0){
+				DateTime harvestTime = DateTime.Parse(PlayerPrefs.GetString(prefKeyHarvestTime[i]));
+				if(DateTime.Now.CompareTo(harvestTime) >= 0){
 					int typeIndex = PlayerPrefs.GetInt(prefKeySeedType[i]);
 					GameObject tempPlant = Instantiate(plantObjects[typeIndex],SoilObjects[i].GetChild(0).position,Quaternion.identity);
 					tempPlant.transform.SetParent(SoilObjects[i],true);
+				}else{
+					AddSeed(
+						i,
+						(IngredientType) PlayerPrefs.GetInt(prefKeySeedType[i]),
+						PlayerPrefs.GetInt(prefKeySeedGrowDuration[i])
+					);
 				}
-				AddSeed(
-					i,
-					(IngredientType) PlayerPrefs.GetInt(prefKeySeedType[i]),
-					PlayerPrefs.GetInt(prefKeySeedGrowDuration[i])
-				);
 			}
 		}
 	}

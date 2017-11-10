@@ -24,6 +24,8 @@ public class PlantedSeed : MonoBehaviour {
 		this.growDuration = growthDuration;
 		this.UIProgress = UIProgress;
 		this.spriteIcon = spriteIcon;
+
+		UIProgress.OnFinishGrowing += FinishedGrowing;
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -42,11 +44,16 @@ public class PlantedSeed : MonoBehaviour {
 
 		UIProgress.Init(spriteIcon,harvestTime);
 
-//		Vector3 pos = new Vector3(transform.position.x,transform.position.y,-1f);
-//		GameObject tempPlantObj = (GameObject) Instantiate(plantObject,pos,Quaternion.identity);
-//		tempPlantObj.GetComponent<Plant>().Init(parent,soilIndex);
-//		parent.parent.GetComponent<Soil>().RegisterPlantEvent(tempPlantObj.GetComponent<Plant>());
-//		Destroy(this.gameObject);
+
+	}
+
+	void FinishedGrowing()
+	{
+		Vector3 pos = new Vector3(transform.position.x,transform.position.y,-1f);
+		GameObject tempPlantObj = (GameObject) Instantiate(plantObject,pos,Quaternion.identity);
+		tempPlantObj.GetComponent<Plant>().Init(parent,soilIndex);
+		parent.parent.GetComponent<Soil>().RegisterPlantEvent(tempPlantObj.GetComponent<Plant>());
+		Destroy(this.gameObject);
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------	

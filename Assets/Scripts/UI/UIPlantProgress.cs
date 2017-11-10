@@ -6,6 +6,7 @@ using System;
 public class UIPlantProgress : MonoBehaviour {
 	public delegate void FinishGrowingEvent();
 	public event FinishGrowingEvent OnFinishGrowing;
+
 	#region attributes
 	public Image imagePlantIcon;
 	public Image imageProgressBar;
