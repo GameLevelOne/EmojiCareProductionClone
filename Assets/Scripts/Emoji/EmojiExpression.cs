@@ -156,28 +156,30 @@ public class EmojiExpression {
 //		Debug.Log(expression+", "+duration+", "+currentDuration);
 		//check for unlocked expression
 //		Debug.Log("Expression =  "+expression+", duration = "+duration+", current = "+currentDuration);
-		if (IsNewExpression (expression)) {
-			EmojiExpressionData currentData = expressionDataInstances [(int)expression];
-			currentData.AddToCurrentProgress (1);
+		if(currentExpression != expression){
+			if (IsNewExpression (expression)) {
+				EmojiExpressionData currentData = expressionDataInstances [(int)expression];
+				currentData.AddToCurrentProgress (1);
 
-			if(currentData.GetCurrentProgress() == currentData.GetTotalProgress()){
-				//new expression
-				unlockedExpressions.Add (expression);
-				SaveEmojiExpression ();
+				if(currentData.GetCurrentProgress() == currentData.GetTotalProgress()){
+					//new expression
+					unlockedExpressions.Add (expression);
+					SaveEmojiExpression ();
 
-				if (OnNewExpression != null) {
-					if(expression != EmojiExpressionState.DEFAULT)
-						OnNewExpression ((int)expression,true);
-				}	
-			}
-			else{
-				//notif expression progress
-				if (OnNewExpression != null) {
-					if(expression != EmojiExpressionState.DEFAULT)
-						OnNewExpression ((int)expression,false);
+					if (OnNewExpression != null) {
+						if(expression != EmojiExpressionState.DEFAULT)
+							OnNewExpression ((int)expression,true);
+					}	
 				}
-			}
+				else{
+					//notif expression progress
+					if (OnNewExpression != null) {
+						if(expression != EmojiExpressionState.DEFAULT)
+							OnNewExpression ((int)expression,false);
+					}
+				}
 
+			}
 		}
 
 		if(duration == -1f){ //sleep, bath, override other expressions
