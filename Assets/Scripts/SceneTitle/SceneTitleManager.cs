@@ -10,7 +10,7 @@ public class SceneTitleManager : MonoBehaviour {
 	string nextScene;
 
 	void Start(){
-//		PlayerPrefs.DeleteAll();
+		PlayerPrefs.DeleteAll();
 		Fader.OnFadeOutFinished += HandleFadeOutFinished;
 		GameSparkManager.Instance.OnLoginSuccessful += GoToSceneMain;
 
