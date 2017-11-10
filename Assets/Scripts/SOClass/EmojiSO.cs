@@ -34,6 +34,7 @@ public class EmojiSO : ScriptableObject {
 	[Header("Expressions")]
 	public int[] expressionMaxProgress;
 	public Sprite[] expressionIcons;
+	public int[] expressionNewProgress;
 	[Header("TEMPDATA")]
 	public bool isUnlocked = false;
 	public int price;

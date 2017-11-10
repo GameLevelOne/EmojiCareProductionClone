@@ -9,16 +9,18 @@ public class ProgressTile : MonoBehaviour {
 
 	public EmojiExpressionState exprType;
 	public Image expressionIcon;
+	public Image progressBarFill;
 	string unlockCondition;
 	string expressionName;
 
 	bool lockedExpression = true;
 
-	public void InitTile(Sprite sprite,string name,string unlockCondition,bool locked){
+	public void InitTile(Sprite sprite,string name,string unlockCondition,bool locked,float progress=0.2f){
 		expressionIcon.sprite = sprite;
 		expressionName=name;
 		this.unlockCondition = unlockCondition;
 		lockedExpression = locked;
+		progressBarFill.fillAmount = progress;
 	}
 
 	public void OnClickTile(){
