@@ -20,7 +20,7 @@ public class ProgressTile : MonoBehaviour {
 		expressionName=name;
 		this.unlockCondition = unlockCondition;
 		lockedExpression = locked;
-		progressBarFill.fillAmount = progress;
+		progressBarFill.fillAmount = PlayerData.Instance.PlayerEmoji.emojiExpressions.expressionDataInstances [(int)exprType].GetProgressRatio ();
 	}
 
 	public void OnClickTile(){

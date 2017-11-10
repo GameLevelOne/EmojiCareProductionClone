@@ -157,7 +157,7 @@ public class EmojiExpression {
 		//check for unlocked expression
 //		Debug.Log("Expression =  "+expression+", duration = "+duration+", current = "+currentDuration);
 		if(currentExpression != expression){
-			if (IsNewExpression (expression)) {
+			if (IsNewExpression (expression) && expression != EmojiExpressionState.DEFAULT) {
 				EmojiExpressionData currentData = expressionDataInstances [(int)expression];
 				currentData.AddToCurrentProgress (1);
 
@@ -167,15 +167,13 @@ public class EmojiExpression {
 					SaveEmojiExpression ();
 
 					if (OnNewExpression != null) {
-						if(expression != EmojiExpressionState.DEFAULT)
-							OnNewExpression ((int)expression,true);
+						OnNewExpression ((int)expression,true);
 					}	
 				}
 				else{
 					//notif expression progress
 					if (OnNewExpression != null) {
-						if(expression != EmojiExpressionState.DEFAULT)
-							OnNewExpression ((int)expression,false);
+						OnNewExpression ((int)expression,false);
 					}
 				}
 

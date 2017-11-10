@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class EmojiExpressionData {
 
-	int expressionState;
+	EmojiExpressionState expressionState;
 	int expressionCurrentProgress=0;
 	int expressionTotalProgress=0; //temp
 
 	public EmojiExpressionData(int expressionState,int totalProgress){
-		this.expressionState = expressionState;
+		this.expressionState = (EmojiExpressionState)expressionState;
 		this.expressionTotalProgress = totalProgress;
+
+		expressionCurrentProgress = PlayerPrefs.GetInt (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_PROGRESS + expressionState.ToString (), 0);
 	}
 
 	public void AddToCurrentProgress(int mod){
@@ -18,6 +20,10 @@ public class EmojiExpressionData {
 			expressionCurrentProgress += mod;
 		else
 			expressionCurrentProgress = expressionTotalProgress;
+
+		PlayerPrefs.SetInt (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_PROGRESS + expressionState.ToString (), expressionCurrentProgress);
+		PlayerPrefs.Save ();
+
 	}
 
 	public int GetCurrentProgress(){

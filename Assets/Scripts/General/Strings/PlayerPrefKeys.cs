@@ -15,6 +15,8 @@ public static class PlayerPrefKeys {
 		public const string EMOJI_NAME = "Emoji/EmojiName";
 
 		public const string EMOJI_SLEEPING = "Emoji/Sleeping";
+
+		public const string EMOJI_EXPRESSION_PROGRESS = "Emoji/ExpressionProgress/";
 	}
 
 	public static class Player

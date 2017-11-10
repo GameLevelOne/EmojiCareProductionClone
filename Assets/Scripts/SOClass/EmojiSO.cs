@@ -32,7 +32,6 @@ public class EmojiSO : ScriptableObject {
 	public float staminaModifier 	= -0.01f;
 	public float healthModifier 	= -0.01f;
 	[Header("Expressions")]
-	public int[] expressionMaxProgress;
 	public Sprite[] expressionIcons;
 	public int[] expressionNewProgress;
 	[Header("TEMPDATA")]
