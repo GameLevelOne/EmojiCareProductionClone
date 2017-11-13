@@ -38,6 +38,7 @@ public class Emoji : MonoBehaviour {
 	public EmojiStats hunger, hygiene,happiness,stamina, health;
 	public EmojiExpression emojiExpressions;
 	public EmojiActivity activity;
+	public EmojiGrowth emojiGrowth;
 	public bool interactable = true;
 
 	public DateTime lastTimePlayed{
@@ -55,11 +56,12 @@ public class Emoji : MonoBehaviour {
 		set{PlayerPrefs.SetInt(PlayerPrefKeys.Emoji.EMOJI_SLEEPING,value == true ? 1 : 0);}
 	}
 
+	[Header("Stats")]
 	//stats
 	public const float statsTresholdHigh = 0.9f;
 	public const float statsTresholdMed = 0.4f;
 	public const float statsTresholdLow = 0.2f;
-	float[] healthTick = new float[]{0.0001f,0.0003f,0.0006f,0.0012f};
+	public float[] healthTick = new float[]{0.0001f,0.0003f,0.0006f,0.0012f};
 
 	bool isTickingStat = false;
 	bool hasInit = false;
@@ -82,6 +84,7 @@ public class Emoji : MonoBehaviour {
 		if(!hasInit){
 			hasInit = true;
 			InitEmojiExpression();
+
 		}
 	}
 
@@ -114,7 +117,9 @@ public class Emoji : MonoBehaviour {
 	void InitEmojiExpression()
 	{
 		emojiExpressions.Init();
+		emojiGrowth.UpdateGrowth(emojiExpressions.GetTotalProgress());
 		emojiExpressions.SetExpression(EmojiExpressionState.DEFAULT,0);
+
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------

@@ -2,6 +2,9 @@
 using UnityEngine;
 
 public class EmojiGrowth : MonoBehaviour {
+	public delegate void EmojiGrowEvent();
+	public event EmojiGrowEvent OnEmojiGrow;
+
 	#region attributes
 	public Emoji emoji;
 	public float scaleSmall = 0.2f;
@@ -13,13 +16,24 @@ public class EmojiGrowth : MonoBehaviour {
 	const float tresholdLow = 0.3f;
 	const float tresholdMed = 0.7f;
 	const float tresholdHigh = 1f;
+
+	float currentScale{
+		get{return PlayerPrefs.GetFloat(PlayerPrefKeys.Emoji.CURRENT_SCALE,scaleSmall);}
+		set{PlayerPrefs.SetFloat(PlayerPrefKeys.Emoji.CURRENT_SCALE,value);}
+	}
+
+
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
-	public void Init(float progress)
+	public void UpdateGrowth(float progress)
 	{
-		float scale = GetScaleValue(progress);
-		transform.localScale = new Vector3(scale,scale,1f);
+		float newScaleValue = GetScaleValue(progress);
+		if(newScaleValue > currentScale){
+			currentScale = newScaleValue;
+			transform.localScale = new Vector3(currentScale,currentScale,1f);
+		}
+
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
