@@ -10,6 +10,7 @@ public class SceneTitleManager : MonoBehaviour {
 	string nextScene;
 
 	void Start(){
+		Input.multiTouchEnabled = false;
 //		PlayerPrefs.DeleteAll();
 		Fader.OnFadeOutFinished += HandleFadeOutFinished;
 		GameSparkManager.Instance.OnLoginSuccessful += GoToSceneMain;
