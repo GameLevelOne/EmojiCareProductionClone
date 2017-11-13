@@ -63,7 +63,7 @@ public class Emoji : MonoBehaviour {
 
 	bool isTickingStat = false;
 	bool hasInit = false;
-	bool emojiDead = false;
+	public bool emojiDead = false;
 
 	//interactions
 	bool flagHold = false;

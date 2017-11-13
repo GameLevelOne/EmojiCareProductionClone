@@ -15,8 +15,13 @@ public class SceneSelectionManager : MonoBehaviour {
 
 	Vector3[] selectionPos = new Vector3[]{new Vector3(-200,200,0),new Vector3(200,200,0),new Vector3(0,-100,0)};
 
-	void Start(){
-		GenerateSelectionPool();
+	void Start ()
+	{
+		if (PlayerData.Instance.PlayerEmoji.emojiDead) {
+			GenerateSelectionForDeadEmoji ();
+		} else {
+			GenerateSelectionPool ();
+		}
 	}
 
 	void OnEnable(){
@@ -62,6 +67,13 @@ public class SceneSelectionManager : MonoBehaviour {
 			obj.transform.localPosition = selectionPos[i];
 			obj.GetComponent<EmojiSelectionData>().InitEmoji(emojiSO[currIdx],emojiIcons.GetEmojiIcon((EmojiType)currIdx));
 		}
+	}
+
+	public void GenerateSelectionForDeadEmoji(){
+		int currentEmojiType = PlayerData.Instance.PlayerEmojiType;
+		GameObject obj = Instantiate(emojiObj.gameObject,parentObj,false);
+		obj.transform.localPosition = selectionPos[2];
+		obj.GetComponent<EmojiSelectionData> ().InitEmoji (emojiSO [currentEmojiType], emojiIcons.GetEmojiIcon ((EmojiType)currentEmojiType));
 	}
 
 	void ConfirmEmoji(bool needToBuy,Sprite sprite,EmojiSO emojiData){

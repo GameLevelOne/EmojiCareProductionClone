@@ -6,12 +6,14 @@ using UnityEngine.UI;
 public class NotificationNewExpression : MonoBehaviour {
 	public Transform parentFrame;
 	Image expressionImage;
+	Image progressBar;
 	Image progressBarFill;
 	Text expressionNameText;
 	Text unlockDetailsText;
 	Text progressText;
 	Button continueButton;
 	ParticlePlayer particles;
+	bool isNewExpression = false;
 
 	List<GameObject> notificationObj = new List<GameObject>();
 
@@ -20,17 +22,16 @@ public class NotificationNewExpression : MonoBehaviour {
 
 	public void ShowUI (int expression, ExpressionIcons expressionIcons, ParticlePlayer particlePlayer, bool isNewExpression)
 	{
+		unlockDetailsText.gameObject.SetActive (false);
 		EmojiType currentEmoji = PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType;
 		EmojiExpression emojiExpression = PlayerData.Instance.PlayerEmoji.emojiExpressions;
 		EmojiExpressionData currentData = emojiExpression.expressionDataInstances [expression];
 		int expressionCurrentProgress = currentData.GetCurrentProgress ();
 		int expressionTotalProgress = currentData.GetTotalProgress ();
 		particles = particlePlayer;
+		this.isNewExpression = isNewExpression;
 
-		if (isNewExpression)
-			SetNotificationNewExpressionReferences ();
-		else
-			SetNotificationProgressReferences ();
+		SetNotificationProgressReferences ();
 
 		expressionImage.sprite = expressionIcons.GetExpressionIcon (currentEmoji, expression);
 		expressionNameText.text = expressionIcons.GetExpressionName (currentEmoji, expression);
@@ -45,7 +46,7 @@ public class NotificationNewExpression : MonoBehaviour {
 			emojiExpression.expressionProgress = ((float)emojiExpression.unlockedExpressions.Count / (float)emojiExpression.totalExpression) * 100;
 		} 
 
-		ShowNotification (isNewExpression, expressionCurrentProgress,expressionTotalProgress);
+		ShowNotification (expressionCurrentProgress,expressionTotalProgress);
 	}
 
 	public void OnClickContinue(){
@@ -71,25 +72,28 @@ public class NotificationNewExpression : MonoBehaviour {
 		expressionImage = parentFrame.GetChild(1).GetComponent<Image>();
 		expressionNameText = parentFrame.GetChild(2).GetComponent<Text>();
 		continueButton = parentFrame.GetChild(3).GetComponent<Button>();
+		progressBar = parentFrame.GetChild (4).GetComponent<Image> ();
 		progressBarFill = parentFrame.GetChild (5).GetComponent<Image> ();
 		progressText = parentFrame.GetChild (6).GetComponent<Text> ();
+		unlockDetailsText = parentFrame.GetChild (7).GetComponent<Text> ();
 		continueButton.onClick.AddListener(OnClickContinue);
 	}
 
-	void ShowNotification(bool isNewExpression,float currentProgress,float totalProgress){
-		gameObject.SetActive(true);
-		GetComponent<Animator>().SetTrigger(triggerOpenNotif);
-		float time = 2 + (notificationObj.Count-1);
+	void ShowNotification (float currentProgress, float totalProgress)
+	{
+		gameObject.SetActive (true);
+		GetComponent<Animator> ().SetTrigger (triggerOpenNotif);
+		float time = 2 + (notificationObj.Count - 1);
 
-		if(!isNewExpression){
-			progressBarFill = parentFrame.GetChild (5).GetComponent<Image> ();
-		progressBarFill.fillAmount = (currentProgress-1)/totalProgress;
-			StartCoroutine (AnimateProgressBar (currentProgress,totalProgress));
-		} else{
-			particles.ShowParticles();
+		progressBarFill = parentFrame.GetChild (5).GetComponent<Image> ();
+		progressBarFill.fillAmount = (currentProgress - 1) / totalProgress;
+		StartCoroutine (AnimateProgressBar (currentProgress, totalProgress));
+
+		if (isNewExpression) {
+			particles.ShowParticles ();
+		} else {
+			StartCoroutine (AutoCloseNotif (time));
 		}
-
-		StartCoroutine(AutoCloseNotif(time));
 	}
 
 	IEnumerator WaitForAnim(){
@@ -99,7 +103,7 @@ public class NotificationNewExpression : MonoBehaviour {
 		Destroy(gameObject);
 	}
 
-	IEnumerator AutoCloseNotif(float time){
+	IEnumerator AutoCloseNotif(float time=2){
 		yield return new WaitForSeconds(time);
 		particles.StopParticles();
 		GetComponent<Animator>().SetTrigger(triggerCloseNotif);
@@ -114,8 +118,24 @@ public class NotificationNewExpression : MonoBehaviour {
 		float endValue = currentProgress / totalProgress;
 		while(progressBarFill.fillAmount < endValue){
 			progressBarFill.fillAmount = Mathf.Lerp (startValue, endValue, time);
-			time += Time.deltaTime*2;
+			time += Time.deltaTime * 2;
 			yield return null;
 		}
+		time = 0;
+		if(isNewExpression){
+			StartCoroutine (NewExpressionSequence ());
+		}
+	}
+
+	IEnumerator NewExpressionSequence(){
+		float time = 0;
+		while(time<1){
+			progressBar.color = Color.Lerp (Color.white, Color.clear, time);
+			progressBarFill.color = Color.Lerp (Color.white, Color.clear, time);
+			time += Time.deltaTime * 2;
+			yield return null;
+		}
+		unlockDetailsText.gameObject.SetActive (true);
+		StartCoroutine (AutoCloseNotif ());
 	}
 }

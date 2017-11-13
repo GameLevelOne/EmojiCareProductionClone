@@ -82,11 +82,11 @@ public class UICelebrationManager : MonoBehaviour {
 		Debug.Log("wait");
 		yield return new WaitForSeconds(2);
 		NotificationNewExpression obj = null;
-		if(isNewExpression){
-			obj = Instantiate(notificationNewExpression,canvasParent,false) as NotificationNewExpression;
-		} else{
-			obj = Instantiate(notificationExpressionProgress,canvasParent,false) as NotificationNewExpression;
-		}
+//		if(isNewExpression){
+//			obj = Instantiate(notificationNewExpression,canvasParent,false) as NotificationNewExpression;
+//		} else{
+//			obj = Instantiate(notificationExpressionProgress,canvasParent,false) as NotificationNewExpression;
+//		}
 		obj.AddNotifToList (obj.gameObject);
 		obj.ShowUI (newExpression, expressionIcons, particlePlayer, isNewExpression);
 	}
