@@ -39,7 +39,7 @@ public class UICelebrationManager : MonoBehaviour {
 		screenNewEmoji.ShowUI(sprite,emojiName,screenNewEmoji.gameObject);
 	}
 
-	void OnNewExpression (int newExpression,bool isNewExpression)
+	void OnNewExpression (int expressionStateIndex,bool isNewExpression)
 	{
 		Debug.Log("new expression");
 		EmojiExpression expr = PlayerData.Instance.PlayerEmoji.emojiExpressions;
@@ -48,7 +48,7 @@ public class UICelebrationManager : MonoBehaviour {
 				screenTutorial.ShowFirstDialog (TutorialType.TriggerFirstExpressionFull);
 		}
 
-		StartCoroutine(WaitForNewExpression(newExpression,isNewExpression));
+		StartCoroutine(WaitForNewExpression(expressionStateIndex,isNewExpression));
 	}
 
 	void OnSendOffEmoji (Sprite sprite, string emojiName)
@@ -78,7 +78,7 @@ public class UICelebrationManager : MonoBehaviour {
 		screenEmojiTransfer.ShowUI(sprite,screenEmojiTransfer.gameObject);
 	}
 
-	IEnumerator WaitForNewExpression(int newExpression,bool isNewExpression){
+	IEnumerator WaitForNewExpression(int expressionStateIndex,bool isNewExpression){
 		Debug.Log("wait");
 		yield return new WaitForSeconds(2);
 		NotificationNewExpression obj = null;
@@ -88,7 +88,7 @@ public class UICelebrationManager : MonoBehaviour {
 //			obj = Instantiate(notificationExpressionProgress,canvasParent,false) as NotificationNewExpression;
 //		}
 		obj.AddNotifToList (obj.gameObject);
-		obj.ShowUI (newExpression, expressionIcons, particlePlayer, isNewExpression);
+		obj.ShowUI (expressionStateIndex, expressionIcons, particlePlayer, isNewExpression);
 	}
 
 	void ResetData(){

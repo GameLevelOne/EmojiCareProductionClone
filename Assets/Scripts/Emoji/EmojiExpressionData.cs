@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class EmojiExpressionData {
-
+	[Header("EmojiExpressionData Attributes. VIEW ONLY")]
 	EmojiExpressionState expressionState;
-	int expressionCurrentProgress=0;
-	int expressionTotalProgress=0; //temp
+	public int expressionCurrentProgress=0;
+	public int expressionTotalProgress=0; //temp
 
 	public EmojiExpressionData(int expressionState,int totalProgress){
 		this.expressionState = (EmojiExpressionState)expressionState;

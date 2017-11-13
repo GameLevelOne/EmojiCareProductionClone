@@ -69,7 +69,7 @@ public enum EmojiExpressionState {
 [System.Serializable]
 public class EmojiExpression {
 	#region event delegates
-	public delegate void NewExpression(int newExpression,bool isNewExpression);
+	public delegate void NewExpression(int expressionStateIndex,bool isNewExpression);
 	public static event NewExpression OnNewExpression;
 
 	public delegate void ChangeExpression();
@@ -112,6 +112,18 @@ public class EmojiExpression {
 			return true;
 		}
 	}
+
+	public float GetTotalProgress()
+	{
+		int counter = 0;
+		foreach(EmojiExpressionData data in expressionDataInstances){
+			if(data.GetProgressRatio() == 1){
+				counter++;
+			}
+		}
+		return (float) counter / totalExpression;
+	}
+
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
@@ -168,6 +180,8 @@ public class EmojiExpression {
 
 					if (OnNewExpression != null) {
 						OnNewExpression ((int)expression,true);
+
+						PlayerData.Instance.PlayerEmoji.emojiGrowth.UpdateGrowth(GetTotalProgress());
 					}	
 				}
 				else{
