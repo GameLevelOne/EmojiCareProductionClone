@@ -18,16 +18,59 @@ public class GachaReward : MonoBehaviour {
 	float rateIngredients = 0f;
 	float rateCostume = 0f;
 
+	int gachaCount = 10;
 	int minGem = 0;
 	int maxGem = 0;
 	int minCoin = 0;
 	int maxCoin = 0;
 
 	void Start(){
-		//TEMP
-		SetGachaRates (0.7f, 0.05f, 0.2f, 0.05f);
+		Init ();
+	}
+
+	//INIT TEMP DATA
+	void Init(){
+		SetGachaRates (0.7f, 0.05f, 0.22f, 0.03f);
 		SetMinMaxCoinGem (10, 100, 1, 3);
 		unlockedHats.Add (HatType.One);
+		//SimulateGacha ();
+	}
+
+	public void OpenGacha(){
+		//TODO: add animations later
+		Debug.Log ("GachaCount: " + gachaCount);
+		if(gachaCount>0){
+			gachaCount--;
+			StartGacha ();
+
+		}
+	}
+
+	void SimulateGacha()
+	{
+		int coin = 0;
+		int gem = 0;
+		int ingr = 0;
+		int hat = 0;
+		for(int i=0;i<100;i++){
+			if (Random.value >= 0f && Random.value < rateGem) {
+				gem++;
+			} else if (Random.value >= rateGem && Random.value < (rateGem + rateCostume)) {
+				hat++;
+			} else if (Random.value >= (rateGem + rateCostume) && Random.value < (rateGem + rateCostume + rateIngredients)) {
+				ingr++;
+			} else {
+				coin++;
+			}
+		}
+		Debug.Log ("total coin: " + coin.ToString ());
+		Debug.Log ("total gem: " + gem.ToString ());
+		Debug.Log ("total ingredients: " + ingr.ToString ());
+		Debug.Log ("total hat: " + hat.ToString ());
+		Debug.Log ("rate coin: " + ((float)coin / 100).ToString());
+		Debug.Log ("rate gem: " + ((float)gem / 100).ToString ());
+		Debug.Log ("rate ingredients: " + ((float)ingr / 100).ToString ());
+		Debug.Log ("rate hat: " + ((float)hat / 100).ToString ());
 	}
 
 	public void SetGachaRates(float rateCoin,float rateGem,float rateIngredients,float rateCostume){
@@ -58,15 +101,26 @@ public class GachaReward : MonoBehaviour {
 		ProcessReward (type);
 	}
 
+	public void GetGachaReward(){
+		gachaCount++; 
+	}
+
 	void ProcessReward(RewardType type){
+		string rewardDebug = "";
 		if(type == RewardType.Gem){
-			PlayerData.Instance.PlayerGem = Random.Range (minGem, (maxGem + 1));
+			int gem = Random.Range (minGem, (maxGem + 1));
+			PlayerData.Instance.PlayerGem += gem;
+			rewardDebug = "Gem " + gem.ToString ();
 		} else if(type == RewardType.Costume){
 			CheckDuplicateCostume (Random.Range (0, (int)HatType.COUNT));
 		} else if(type == RewardType.Ingredients){
-			PlayerData.Instance.inventory.ModIngredientValue ((IngredientType)(Random.Range (0, (int)IngredientType.COUNT)),1);
+			IngredientType ingredient =	(IngredientType) Random.Range (0, (int)IngredientType.COUNT);
+			Debug.Log ("Ingredients: "+ingredient);
+			PlayerData.Instance.inventory.ModIngredientValue (ingredient,1);
 		} else if(type == RewardType.Coin){
-			PlayerData.Instance.PlayerCoin = Random.Range (minCoin, (maxCoin + 1));
+			int coin = Random.Range (minCoin, (maxCoin + 1));
+			Debug.Log("coin "+coin.ToString());
+			PlayerData.Instance.PlayerCoin += coin;
 		}	
 	}
 
@@ -75,10 +129,15 @@ public class GachaReward : MonoBehaviour {
 		foreach(HatType item in unlockedHats){
 			if(item == (HatType)result){
 				dupeHat = true;
+				Debug.Log ("Dupe hat");
 			}
 		}
 		if(dupeHat){
+			Debug.Log ("reroll");
 			StartGacha ();
+		}else{
+			unlockedHats.Add ((HatType)result);
+			Debug.Log ("Hat " + (HatType)result);
 		}
 	}
 

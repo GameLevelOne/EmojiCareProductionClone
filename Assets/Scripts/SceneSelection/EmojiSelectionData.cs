@@ -18,7 +18,7 @@ public class EmojiSelectionData : MonoBehaviour {
 	public void InitEmoji(EmojiSO emojiData,Sprite emojiIcon){
 		currentEmojiData = emojiData;
 		tempEmojiIcon=emojiIcon;
-		if(emojiData.isUnlocked){
+		if(emojiData.price == 0){
 			priceBox.SetActive(false);	
 			needToBuy=false;
 		} else{
@@ -26,7 +26,7 @@ public class EmojiSelectionData : MonoBehaviour {
 			textPrice.text = emojiData.price.ToString();
 			needToBuy=true;
 		}
-		gameObject.name = emojiData.emojiType.ToString();
+		//gameObject.name = emojiData.emojiType.ToString();
 		gameObject.GetComponent<Image>().sprite = emojiIcon;
 	}
 

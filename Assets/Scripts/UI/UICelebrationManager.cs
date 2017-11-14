@@ -5,6 +5,7 @@ using UnityEngine;
 public class UICelebrationManager : MonoBehaviour {
 	public ScreenTutorial screenTutorial;
 	public ScreenNewEmoji screenNewEmoji;
+	public GachaReward gachaReward;
 	public NotificationNewExpression notificationNewExpression;
 	public NotificationNewExpression notificationExpressionProgress;
 	public ScreenSendOff screenSendOff;
@@ -87,6 +88,7 @@ public class UICelebrationManager : MonoBehaviour {
 //		} else{
 //			obj = Instantiate(notificationExpressionProgress,canvasParent,false) as NotificationNewExpression;
 //		}
+		gachaReward.GetGachaReward ();
 		obj.AddNotifToList (obj.gameObject);
 		obj.ShowUI (expressionStateIndex, expressionIcons, particlePlayer, isNewExpression);
 	}

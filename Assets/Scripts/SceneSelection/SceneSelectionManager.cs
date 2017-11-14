@@ -8,20 +8,17 @@ public class SceneSelectionManager : MonoBehaviour {
 	public EmojiIcons emojiIcons;
 	public EmojiSO[] emojiSO;
 	public Transform parentObj;
-	public EmojiSelectionData emojiObj;
+	public EmojiSelectionData[] emojiObj;
+	public Sprite[] tempSprites;
 
-	List<int> unlockedEmoji = new List<int>();
-	List<int> lockedEmoji = new List<int>();
+	List<int> freeEmoji = new List<int>();
+	List<int> paidEmoji = new List<int>();
 
 	Vector3[] selectionPos = new Vector3[]{new Vector3(-200,200,0),new Vector3(200,200,0),new Vector3(0,-100,0)};
 
 	void Start ()
 	{
-		if (PlayerData.Instance.PlayerEmoji.emojiDead) {
-			GenerateSelectionForDeadEmoji ();
-		} else {
-			GenerateSelectionPool ();
-		}
+		Init ();
 	}
 
 	void OnEnable(){
@@ -37,43 +34,46 @@ public class SceneSelectionManager : MonoBehaviour {
 		ConfirmEmoji(needToBuy,sprite,emojiData);
 	}
 
-	public void GenerateSelectionPool(){
+	void Init(){
 		for(int i=0;i<emojiSO.Length;i++){
-			if(emojiSO[i].isUnlocked){
-				unlockedEmoji.Add(i);
-				Debug.Log("unlocked "+i);
+			if(emojiSO[i].price == 0){
+				freeEmoji.Add(i);
 			} else{
-				lockedEmoji.Add(i);
-				Debug.Log("locked "+i);
+				paidEmoji.Add(i);
+			}
+		}
+		GenerateFreeEmojiSelectionPool ();
+		GeneratePaidEmojiSelection ();
+	}
+
+	public void GenerateFreeEmojiSelectionPool ()
+	{
+		List<int> emojiIdx = new List<int> ();
+		int randomIdx = 0;
+		int selectedIdx = 0;
+
+		if (emojiIdx.Count == 0) {
+			for (int i = 0; i < freeEmoji.Count; i++) {
+				emojiIdx.Add (i);
 			}
 		}
 
-		int rand = 0;
-		int currIdx = 0;
-
-		for(int i=0;i<3;i++){
-			
-			if(i == 2){
-				rand = Random.Range(0,lockedEmoji.Count);
-				currIdx = lockedEmoji[rand];
-				lockedEmoji.RemoveAt(rand);
+		for (int i = 0; i < 3; i++) {
+			if (emojiIdx.Count > 0) {
+				randomIdx = Random.Range (0, emojiIdx.Count);
+				selectedIdx = freeEmoji [emojiIdx[randomIdx]];
+				emojiIdx.RemoveAt (randomIdx);
+				emojiObj [i].gameObject.SetActive (true);
+				emojiObj [i].InitEmoji (emojiSO [selectedIdx], tempSprites [selectedIdx]);
 			} else{
-				rand = Random.Range(0,unlockedEmoji.Count);
-				currIdx = unlockedEmoji[rand];
-				unlockedEmoji.RemoveAt(rand);
+				emojiObj [i].gameObject.SetActive (false);
 			}
-
-			GameObject obj = Instantiate(emojiObj.gameObject,parentObj,false);
-			obj.transform.localPosition = selectionPos[i];
-			obj.GetComponent<EmojiSelectionData>().InitEmoji(emojiSO[currIdx],emojiIcons.GetEmojiIcon((EmojiType)currIdx));
 		}
 	}
 
-	public void GenerateSelectionForDeadEmoji(){
-		int currentEmojiType = PlayerData.Instance.PlayerEmojiType;
-		GameObject obj = Instantiate(emojiObj.gameObject,parentObj,false);
-		obj.transform.localPosition = selectionPos[2];
-		obj.GetComponent<EmojiSelectionData> ().InitEmoji (emojiSO [currentEmojiType], emojiIcons.GetEmojiIcon ((EmojiType)currentEmojiType));
+	void GeneratePaidEmojiSelection(){
+		int randomIdx = Random.Range (0, paidEmoji.Count);
+		emojiObj [3].InitEmoji (emojiSO [paidEmoji[randomIdx]], tempSprites [paidEmoji[randomIdx]]);
 	}
 
 	void ConfirmEmoji(bool needToBuy,Sprite sprite,EmojiSO emojiData){
