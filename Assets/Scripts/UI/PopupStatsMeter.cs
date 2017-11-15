@@ -19,7 +19,6 @@ public class PopupStatsMeter : MonoBehaviour {
 	string triggerCloseNotif = "CloseNotif";
 
 	public void ShowUI(EmojiStatsState type,float currentValue,float targetValue,float maxValue){
-		gameObject.SetActive (true);
 		GetComponent<Animator> ().SetTrigger (triggerOpenNotif);
 		StartCoroutine (AnimateMeter (currentValue,targetValue,maxValue));
 	}
@@ -28,7 +27,7 @@ public class PopupStatsMeter : MonoBehaviour {
 		yield return new WaitForSeconds (1f);
 		float time = 0;
 		float startValue = currentValue / maxValue;
-		float endValue = currentValue / maxValue;
+		float endValue = targetValue / maxValue;
 		while(barFill.fillAmount < endValue){
 			barFill.fillAmount = Mathf.Lerp (startValue, endValue, time);
 			time += Time.deltaTime*2;
@@ -41,6 +40,6 @@ public class PopupStatsMeter : MonoBehaviour {
 		yield return new WaitForSeconds (0.16f);
 		GetComponent<Animator> ().SetTrigger (triggerCloseNotif);
 		yield return new WaitForSeconds (0.16f);
-		Destroy (this.gameObject);
+		gameObject.SetActive (false);
 	}
 }

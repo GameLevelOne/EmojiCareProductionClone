@@ -18,11 +18,13 @@ public class Emoji : MonoBehaviour {
 	public delegate void EmojiDead();
 	public delegate void UpdateStatsToExpression(float hunger, float hygiene, float happiness, float stamina, float health);
 	public delegate void CheckStatsTutorial(float hunger, float hygiene, float happiness, float stamina, float health);
+	public delegate void ShowFloatingStatsBar(float[] mod);
 
 	public event EmojiTickStats OnEmojiTickStats;
 	public static event EmojiDead OnEmojiDead;
 	public event UpdateStatsToExpression OnUpdateStatsToExpression;
 	public event CheckStatsTutorial OnCheckStatsTutorial;
+	public event ShowFloatingStatsBar OnShowFloatingStatsBar;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region attribute
@@ -235,6 +237,10 @@ public class Emoji : MonoBehaviour {
 		happiness.ModStats(mod[2]);
 		stamina.ModStats(mod[3]);
 		health.ModStats(mod[4]);
+
+		if(OnShowFloatingStatsBar!=null){
+			OnShowFloatingStatsBar (mod);
+		}
 	}
 
 	public void SwitchDebugMode(bool debug)

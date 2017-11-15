@@ -13,6 +13,9 @@ public class EmojiStats {
 
 	}
 
+	public delegate void ShowSingleStatBar (int type, float mod);
+	public static event ShowSingleStatBar OnShowSingleStatBar;
+
 	string prefKey;
 	float maxStatValue;
 	float emojiModifier;
