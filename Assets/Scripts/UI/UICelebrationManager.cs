@@ -5,7 +5,9 @@ using UnityEngine;
 public class UICelebrationManager : MonoBehaviour {
 	public ScreenTutorial screenTutorial;
 	public ScreenNewEmoji screenNewEmoji;
-	public NotificationNewExpression screenNewExpressionPrefab;
+	public GachaReward gachaReward;
+	public NotificationNewExpression notificationNewExpression;
+	public NotificationNewExpression notificationExpressionProgress;
 	public ScreenSendOff screenSendOff;
 	public ScreenEmojiDead screenEmojiDead;
 	public ScreenEmojiTransfer screenEmojiTransfer;
@@ -38,7 +40,7 @@ public class UICelebrationManager : MonoBehaviour {
 		screenNewEmoji.ShowUI(sprite,emojiName,screenNewEmoji.gameObject);
 	}
 
-	void OnNewExpression (int newExpression)
+	void OnNewExpression (int expressionStateIndex,bool isNewExpression)
 	{
 		Debug.Log("new expression");
 		EmojiExpression expr = PlayerData.Instance.PlayerEmoji.emojiExpressions;
@@ -47,7 +49,7 @@ public class UICelebrationManager : MonoBehaviour {
 				screenTutorial.ShowFirstDialog (TutorialType.TriggerFirstExpressionFull);
 		}
 
-		StartCoroutine(WaitForNewExpression(newExpression));
+		StartCoroutine(WaitForNewExpression(expressionStateIndex,isNewExpression));
 	}
 
 	void OnSendOffEmoji (Sprite sprite, string emojiName)
@@ -77,12 +79,18 @@ public class UICelebrationManager : MonoBehaviour {
 		screenEmojiTransfer.ShowUI(sprite,screenEmojiTransfer.gameObject);
 	}
 
-	IEnumerator WaitForNewExpression(int newExpression){
+	IEnumerator WaitForNewExpression(int expressionStateIndex,bool isNewExpression){
 		Debug.Log("wait");
 		yield return new WaitForSeconds(2);
-		NotificationNewExpression obj = Instantiate(screenNewExpressionPrefab,canvasParent,false) as NotificationNewExpression;
+		NotificationNewExpression obj = null;
+//		if(isNewExpression){
+//			obj = Instantiate(notificationNewExpression,canvasParent,false) as NotificationNewExpression;
+//		} else{
+//			obj = Instantiate(notificationExpressionProgress,canvasParent,false) as NotificationNewExpression;
+//		}
+		gachaReward.GetGachaReward ();
 		obj.AddNotifToList (obj.gameObject);
-		obj.ShowUI(newExpression,expressionIcons,particlePlayer);
+		obj.ShowUI (expressionStateIndex, expressionIcons, particlePlayer, isNewExpression);
 	}
 
 	void ResetData(){

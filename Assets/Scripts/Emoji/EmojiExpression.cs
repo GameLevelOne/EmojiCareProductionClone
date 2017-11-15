@@ -69,7 +69,7 @@ public enum EmojiExpressionState {
 [System.Serializable]
 public class EmojiExpression {
 	#region event delegates
-	public delegate void NewExpression(int newExpression);
+	public delegate void NewExpression(int expressionStateIndex,bool isNewExpression);
 	public static event NewExpression OnNewExpression;
 
 	public delegate void ChangeExpression();
@@ -84,6 +84,7 @@ public class EmojiExpression {
 	public float expressionProgress = 0f;
 	public int totalExpression = 60;
 	public bool isExpressing = false;
+	public EmojiExpressionData[] expressionDataInstances;
 	[Header("DON'T MODIFY THIS")]
 	public float currentDuration = 0f;
 	public EmojiExpressionState currentExpression = EmojiExpressionState.DEFAULT;
@@ -111,6 +112,18 @@ public class EmojiExpression {
 			return true;
 		}
 	}
+
+	public float GetTotalProgress()
+	{
+		int counter = 0;
+		foreach(EmojiExpressionData data in expressionDataInstances){
+			if(data.GetProgressRatio() == 1){
+				counter++;
+			}
+		}
+		return (float) counter / totalExpression;
+	}
+
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
@@ -137,7 +150,11 @@ public class EmojiExpression {
 				unlockedExpressions.Add((EmojiExpressionState)node[RESOURCE_DATA][i].AsInt);
 			}
 		}
-
+		expressionDataInstances = new EmojiExpressionData[60];
+		for(int i=0;i<expressionDataInstances.Length;i++){
+			expressionDataInstances [i] = new EmojiExpressionData (i,
+			PlayerData.Instance.PlayerEmoji.emojiBaseData.expressionNewProgress[i]);
+		}
 	}
 
 	/// <summary>
@@ -151,13 +168,29 @@ public class EmojiExpression {
 //		Debug.Log(expression+", "+duration+", "+currentDuration);
 		//check for unlocked expression
 //		Debug.Log("Expression =  "+expression+", duration = "+duration+", current = "+currentDuration);
-		if (IsNewExpression (expression)) {
-			unlockedExpressions.Add (expression);
-			SaveEmojiExpression ();
+		if(currentExpression != expression){
+			if (IsNewExpression (expression) && expression != EmojiExpressionState.DEFAULT) {
+				EmojiExpressionData currentData = expressionDataInstances [(int)expression];
+				currentData.AddToCurrentProgress (1);
 
-			if (OnNewExpression != null) {
-				if(expression != EmojiExpressionState.DEFAULT)
-					OnNewExpression ((int)expression);
+				if(currentData.GetCurrentProgress() == currentData.GetTotalProgress()){
+					//new expression
+					unlockedExpressions.Add (expression);
+					SaveEmojiExpression ();
+
+					if (OnNewExpression != null) {
+						OnNewExpression ((int)expression,true);
+
+						PlayerData.Instance.PlayerEmoji.emojiGrowth.UpdateGrowth(GetTotalProgress());
+					}	
+				}
+				else{
+					//notif expression progress
+					if (OnNewExpression != null) {
+						OnNewExpression ((int)expression,false);
+					}
+				}
+
 			}
 		}
 

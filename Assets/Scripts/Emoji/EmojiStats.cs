@@ -2,14 +2,6 @@
 using UnityEngine;
 using System;
 
-public enum EmojiStatsState{
-	Hunger,
-	Hygiene,
-	Happiness,
-	Stamina,
-	Health
-}
-
 public class EmojiStats {
 	#region attributes
 	//constructor

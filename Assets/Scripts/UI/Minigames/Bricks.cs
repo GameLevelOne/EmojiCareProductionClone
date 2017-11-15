@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Bricks : MonoBehaviour {
 	Rigidbody2D thisRigidbody;
@@ -16,6 +17,12 @@ public class Bricks : MonoBehaviour {
 		thisRigidbody.simulated=false;
 		transform.localPosition = startPos;
 		transform.localRotation = Quaternion.identity;
+		RandomColor ();
+	}
+
+	void RandomColor(){
+		Color[] colors = new Color[]{Color.white,Color.cyan,Color.magenta,Color.yellow,Color.blue };
+		GetComponent<Image> ().color = colors [Random.Range (0,colors.Length)];
 	}
 
 	public void BeginDrag(){

@@ -9,8 +9,8 @@ public class Seed : MonoBehaviour {
 	public IngredientType type;
 	public Rigidbody2D thisRigidbody;
 	public Collider2D thisCollider;
-	public GameObject plantedSeedObject;
 	public GameObject PlantObject;
+	public int growthDuration;
 	public int seedIndex;
 	Vector3 startPos;
 	#endregion
@@ -28,13 +28,10 @@ public class Seed : MonoBehaviour {
 	{
 		if(other.tag == Tags.SOIL){
 			int soilIndex = int.Parse(other.name);
-			if(!other.transform.parent.GetComponent<Soil>().flagHasPlant[soilIndex]){
-				GameObject tempPlantedSeedObj = (GameObject) Instantiate(plantedSeedObject);
-				tempPlantedSeedObj.transform.position = other.transform.GetChild(0).position;
-				tempPlantedSeedObj.GetComponent<PlantedSeed>().Init(PlantObject,type,other.transform,soilIndex);
+			string tempPrefKey = other.transform.parent.GetComponent<Soil>().prefKeyHasSeed[soilIndex];
+			if(PlayerPrefs.GetInt(tempPrefKey) == 0){
+				other.transform.parent.GetComponent<Soil>().AddSeed(soilIndex,type,growthDuration,false);
 				if(OnSeedPlanted != null) OnSeedPlanted(seedIndex);
-
-				other.transform.parent.GetComponent<Soil>().flagHasPlant[soilIndex] = true;
 				Destroy(this.gameObject);
 			}
 		}

@@ -18,23 +18,27 @@ public class HotkeysAnimation : MonoBehaviour {
 		hotkeyAnim = hotkeyPanel.GetComponent<Animator>();
 	}
 
-	public void ShowHotkeys(){
-		buttonHotkey.SetActive(false);
-		if(AdmobManager.Instance) AdmobManager.Instance.HideBanner();
+	public void ShowHotkeys ()
+	{
+		buttonHotkey.SetActive (false);
+		if (AdmobManager.Instance)
+			AdmobManager.Instance.HideBanner ();
 
 		int temp = PlayerData.Instance.EmojiAlbumData.Count;
-		if(temp > 1){
+		if (temp > 1) {
 			buttonAlbum.color = Color.white;
-		} else{
+		} else {
 			buttonAlbum.color = Color.gray;
 		}
 
-		if(roomController.currentRoom == RoomType.Garden){
-			buttonEditRoom.color = Color.gray;
-			buttonEditRoom.GetComponent<Button> ().interactable = false;
-		} else{
-			buttonEditRoom.color = Color.white;
-			buttonEditRoom.GetComponent<Button> ().interactable = true;
+		if (roomController != null) {
+			if (roomController.currentRoom == RoomType.Garden) {
+				buttonEditRoom.color = Color.gray;
+				buttonEditRoom.GetComponent<Button> ().interactable = false;
+			} else {
+				buttonEditRoom.color = Color.white;
+				buttonEditRoom.GetComponent<Button> ().interactable = true;
+			}
 		}
 
 		hotkeyPanel.SetActive(true);
@@ -42,7 +46,6 @@ public class HotkeysAnimation : MonoBehaviour {
 	}
 
 	public void CloseHotkeys(){
-		if(AdmobManager.Instance) AdmobManager.Instance.HideBanner();
 		hotkeyAnim.SetBool(boolOpenHotkeys,false);
 		StartCoroutine(WaitForAnim(hotkeyPanel));
 	}
@@ -50,11 +53,11 @@ public class HotkeysAnimation : MonoBehaviour {
 	public void BackToGame(){
 		buttonHotkey.SetActive(true);
 		CloseHotkeys();
+		if(AdmobManager.Instance) AdmobManager.Instance.ShowBanner();
 	}
 
 	IEnumerator WaitForAnim(GameObject obj){
 		yield return new WaitForSeconds(0.31f);
-		if(AdmobManager.Instance) AdmobManager.Instance.ShowBanner();
 		obj.SetActive(false);
 	}
 }

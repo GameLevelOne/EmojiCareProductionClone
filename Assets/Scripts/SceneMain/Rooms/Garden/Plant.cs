@@ -8,17 +8,23 @@ public class Plant : MonoBehaviour {
 	#region attributes
 	public GameObject cropObject;
 	public int soilIndex;
+	public string[] prefKeyToDelete;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
-	public void Init(Transform parent, int soilIndex)
+	public void Init(Transform parent, int soilIndex, string[] prefKeyToDelete)
 	{
 		transform.SetParent(parent,true);
 		this.soilIndex = soilIndex;
+		this.prefKeyToDelete = prefKeyToDelete;
 	}
 
 	void OnDestroy()
 	{
+		print("ON DESTROY CALLED > PLANT.CS");
+		foreach (string s in prefKeyToDelete){
+			PlayerPrefs.DeleteKey(s);
+		}
 		if(OnPlantDestroyed != null) OnPlantDestroyed(soilIndex);
 	}
 	#endregion
