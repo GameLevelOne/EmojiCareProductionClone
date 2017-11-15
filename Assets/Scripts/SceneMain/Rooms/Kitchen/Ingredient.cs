@@ -38,8 +38,6 @@ public class Ingredient : MonoBehaviour {
 					other.GetComponent<Pan>().AddIngredient(this.gameObject);
 					this.gameObject.SetActive(false); //sementara
 				}
-
-
 			}
 		}
 

@@ -7,9 +7,9 @@ public class EmojiGrowth : MonoBehaviour {
 
 	#region attributes
 	public Emoji emoji;
-	public float scaleSmall = 0.2f;
-	public float scaleMedium = 0.3f;
-	public float scaleLarge = 0.4f;
+	public float scaleSmall = 0.8f;
+	public float scaleMedium = 0.6f;
+	public float scaleLarge = 1f;
 
 
 
@@ -26,10 +26,15 @@ public class EmojiGrowth : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
+	public void Init()
+	{
+		
+	}
+
 	public void UpdateGrowth(float progress)
 	{
 		float newScaleValue = GetScaleValue(progress);
-		if(newScaleValue > currentScale){
+		if(newScaleValue >= currentScale){
 			currentScale = newScaleValue;
 			transform.localScale = new Vector3(currentScale,currentScale,1f);
 		}
