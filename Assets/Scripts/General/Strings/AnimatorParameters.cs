@@ -5,6 +5,7 @@ public static class AnimatorParameters {
 	{
 		public const string HOLD = "hold";
 		public const string RADIO_ON = "RadioOn";
+
 	}
 
 	public static class Ints
@@ -20,6 +21,7 @@ public static class AnimatorParameters {
 	public static class Triggers
 	{
 		public const string SPIN = "Spin";
+		public const string ANIMATE = "Animate";
 	}
 
 }

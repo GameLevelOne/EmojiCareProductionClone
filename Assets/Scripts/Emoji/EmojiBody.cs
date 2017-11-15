@@ -56,7 +56,7 @@ public class EmojiBody : MonoBehaviour {
 		//sementara
 		emoji.emojiExpressions.ResetExpressionDuration();
 		emoji.emojiExpressions.SetExpression(EmojiExpressionState.DEFAULT,0);
-		emoji.transform.localScale = Vector3.one;
+		
 	}
 
 	public void OnChangingRoomEnd()

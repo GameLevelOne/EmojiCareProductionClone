@@ -78,7 +78,11 @@ public class Pan : BaseFurniture {
 
 	public void PointerClick()
 	{
-		if(!isCooking) ClearIngredient();
+		if(!isCooking){
+			//call ui ingredientInPan.show();
+
+			//ClearIngredient become a module from button cancel in panel ingredient script
+		}
 	}
 
 	IEnumerator StoveOn()
