@@ -82,13 +82,13 @@ public class UICelebrationManager : MonoBehaviour {
 	IEnumerator WaitForNewExpression(int expressionStateIndex,bool isNewExpression){
 		Debug.Log("wait");
 		yield return new WaitForSeconds(2);
-		NotificationNewExpression obj = null;
+		NotificationNewExpression obj = Instantiate(notificationExpressionProgress,canvasParent,false) as NotificationNewExpression;
 //		if(isNewExpression){
 //			obj = Instantiate(notificationNewExpression,canvasParent,false) as NotificationNewExpression;
 //		} else{
 //			obj = Instantiate(notificationExpressionProgress,canvasParent,false) as NotificationNewExpression;
 //		}
-		gachaReward.GetGachaReward ();
+		//gachaReward.GetGachaReward ();
 		obj.AddNotifToList (obj.gameObject);
 		obj.ShowUI (expressionStateIndex, expressionIcons, particlePlayer, isNewExpression);
 	}

@@ -24,7 +24,8 @@ public class Emoji : MonoBehaviour {
 	public static event EmojiDead OnEmojiDead;
 	public event UpdateStatsToExpression OnUpdateStatsToExpression;
 	public event CheckStatsTutorial OnCheckStatsTutorial;
-	public event ShowFloatingStatsBar OnShowFloatingStatsBar;
+	public static event ShowFloatingStatsBar OnShowFloatingStatsBar;
+
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region attribute

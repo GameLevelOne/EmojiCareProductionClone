@@ -22,7 +22,7 @@ public class NotificationNewExpression : MonoBehaviour {
 
 	public void ShowUI (int expression, ExpressionIcons expressionIcons, ParticlePlayer particlePlayer, bool isNewExpression)
 	{
-		unlockDetailsText.gameObject.SetActive (false);
+		
 		EmojiType currentEmoji = PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType;
 		EmojiExpression emojiExpression = PlayerData.Instance.PlayerEmoji.emojiExpressions;
 		EmojiExpressionData currentData = emojiExpression.expressionDataInstances [expression];
@@ -32,6 +32,7 @@ public class NotificationNewExpression : MonoBehaviour {
 		this.isNewExpression = isNewExpression;
 
 		SetNotificationProgressReferences ();
+		unlockDetailsText.gameObject.SetActive (false);
 
 		expressionImage.sprite = expressionIcons.GetExpressionIcon (currentEmoji, expression);
 		expressionNameText.text = expressionIcons.GetExpressionName (currentEmoji, expression);

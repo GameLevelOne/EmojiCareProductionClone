@@ -6,12 +6,12 @@ public class FloatingStatsManager : MonoBehaviour {
 	public GameObject[] statsMeterObj;
 
 	void OnEnable(){
-		PlayerData.Instance.PlayerEmoji.OnShowFloatingStatsBar += ShowMultipleMeters;
+		Emoji.OnShowFloatingStatsBar += ShowMultipleMeters;
 		EmojiStats.OnShowSingleStatBar += ShowSingleMeter;
 	}
 
 	void OnDisable(){
-		PlayerData.Instance.PlayerEmoji.OnShowFloatingStatsBar -= ShowMultipleMeters;
+		Emoji.OnShowFloatingStatsBar -= ShowMultipleMeters;
 		EmojiStats.OnShowSingleStatBar -= ShowSingleMeter;
 	}
 
