@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UICookbook : MonoBehaviour {
+public class UICookbook : BaseUI {
 	public GameObject flipPageButton;
 	public GameObject flippedPage;
 
