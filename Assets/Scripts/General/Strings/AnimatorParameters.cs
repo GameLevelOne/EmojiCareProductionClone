@@ -11,6 +11,7 @@ public static class AnimatorParameters {
 	public static class Ints
 	{
 		public const string EMOJI_ANIM_STATE = "ExpState";
+		public const string STATE = "State";
 	}
 
 	public static class Floats

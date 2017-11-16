@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Pan : BaseFurniture {
+	[Header("Pan Attributes")]
 	public List<GameObject> ingredients = new List<GameObject>();
 	public Transform content;
 	public GameObject cookingSmoke;
 	public Cookbook cookBook;
-	public bool hasIngredient;
-	public bool isCooking;
 	public GameObject cookedFoodObject = null;
 	public GameObject cookingBar;
+	public Animator thisAnim;
+	public UIIngredientsInPan ingredientContentUI;
+
+	public bool hasIngredient;
+	public bool isCooking;
 
 	public void AddIngredient(GameObject ingredient)
 	{
@@ -78,11 +82,24 @@ public class Pan : BaseFurniture {
 
 	public void PointerClick()
 	{
-		if(!isCooking){
-			//call ui ingredientInPan.show();
-
-			//ClearIngredient become a module from button cancel in panel ingredient script
+		if(ingredients.Count <= 0){
+			Animate();
+		}else{
+			if(!isCooking){
+				//show content
+			}
 		}
+	}
+
+	void Animate()
+	{
+		thisAnim.SetInteger(AnimatorParameters.Ints.STATE,1);
+	}
+
+	void ShowContent()
+	{
+		//blablabla
+		ingredientContentUI.OnClickPan();
 	}
 
 	IEnumerator StoveOn()
