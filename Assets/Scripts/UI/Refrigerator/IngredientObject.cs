@@ -56,7 +56,7 @@ public class IngredientObject : MonoBehaviour {
 			}else{
 				GetComponent<RectTransform>().SetParent(bowl.GetComponent<RectTransform>(),true);
 				bowl.AddObject(this.gameObject);
-				Vector2 targetPos = new Vector2(Random.Range(-100f,100f),20f);
+				Vector2 targetPos = new Vector2(Random.Range(-100f,100f),120f);
 				StartCoroutine(_LerpToTarget,targetPos);
 			}
 		}else{

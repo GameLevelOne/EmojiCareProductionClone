@@ -10,13 +10,13 @@ public class Foods{
 }
 
 public class Cookbook : ActionableFurniture {
-	public GameObject cookBook;
+	public UICookbook cookBook;
 
 	public Foods[] recipes;
 
 	public override void PointerClick()
 	{
 		//showCookBookUI
-		cookBook.SetActive(true);
+		cookBook.ShowUI (cookBook.gameObject);
 	}
 }
