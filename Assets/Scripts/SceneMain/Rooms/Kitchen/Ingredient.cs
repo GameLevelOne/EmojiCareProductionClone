@@ -12,6 +12,7 @@ public enum IngredientType{
 	Mushroom,
 	Flour, //G
 	Egg, //G
+	Potato,
 	COUNT
 }
 
