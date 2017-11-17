@@ -9,6 +9,7 @@ public class UIIngredientsInPan : BaseUI {
 	public Transform buttonClose;
 	public GameObject ingredientIconObj;
 	public Sprite[] ingredients;
+	public List<GameObject> ingredientListObject;
 
 	public void OnClickPan(){
 		base.ShowUI (this.gameObject);
@@ -41,8 +42,16 @@ public class UIIngredientsInPan : BaseUI {
 
 		for(int i=0;i<pan.ingredients.Count;i++){
 			GameObject obj = Instantiate (ingredientIconObj, ingredientBox, false) as GameObject;
-			int idx = (int)pan.ingredients [i].GetComponent<IngredientObject> ().type;
+			int idx = (int)pan.ingredients [i].GetComponent<Ingredient> ().type;
 			obj.transform.GetChild (0).GetComponent<Image> ().sprite = ingredients [idx];
+			ingredientListObject.Add(obj);
 		}
+	}
+
+	public void ClearIngredient()
+	{
+		foreach(GameObject g in ingredientListObject) Destroy(g);
+		ingredientListObject.Clear();
+		pan.ClearIngredient();
 	}
 }

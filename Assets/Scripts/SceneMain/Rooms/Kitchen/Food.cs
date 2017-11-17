@@ -5,7 +5,9 @@ public class Food : TriggerableFurniture {
 	#region attributes
 	public float[] foodFactor;
 	public bool hold = false;
+	public bool onPlate = false;
 	public Collider2D thisCollider;
+	public Rigidbody2D thisRigidbody;
 	Vector3 startPos;
 
 	#endregion
@@ -21,21 +23,28 @@ public class Food : TriggerableFurniture {
 	protected override void OnTriggerEnter2D(Collider2D other)
 	{
 		if(other.tag == Tags.EMOJI_BODY){
-			Emoji emoji = other.transform.parent.GetComponent<Emoji>();
-			float hungerValue = emoji.hunger.StatValue / emoji.hunger.MaxStatValue;
+			if(!onPlate){
+				Emoji emoji = other.transform.parent.GetComponent<Emoji>();
+				float hungerValue = emoji.hunger.StatValue / emoji.hunger.MaxStatValue;
 
-			if(hungerValue >= 0.95f){ //reject
-				emoji.playerInput.Reject();
-			}else{ //eat
-				StopCoroutine(_Return);
-				other.transform.parent.GetComponent<Emoji>().ModAllStats(foodFactor);
-				emoji.playerInput.Eat();
-				Destroy(this.gameObject);
+				if(hungerValue >= 0.95f){ //reject
+					emoji.playerInput.Reject();
+				}else{ //eat
+					other.transform.parent.GetComponent<Emoji>().ModAllStats(foodFactor);
+					emoji.playerInput.Eat();
+					Destroy(this.gameObject);
+				}
 			}
 		}
 	}
 
-
+	public void OnCollisionEnter2D(Collision2D other)
+	{
+		if(other.gameObject.tag == Tags.MOVABLE_FURNITURE){
+			Physics2D.IgnoreCollision(thisCollider,other.collider);
+		}
+	}
+		
 	public void BeginDrag()
 	{
 		thisSprite[currentVariant].sortingLayerName = SortingLayers.HELD;
@@ -54,7 +63,7 @@ public class Food : TriggerableFurniture {
 		thisSprite[currentVariant].sortingLayerName = SortingLayers.MOVABLE_FURNITURE;
 		hold = false;
 		thisCollider.enabled = true;
-		StartCoroutine(_Return);
+//		StartCoroutine(_Return);
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------

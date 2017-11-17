@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class Bowl : MonoBehaviour {
 	[Header("Reference")]
+	public Pan pan;
 	public GameObject[] prefabIngredients;
 	public Transform content;
 	public Transform roomTransform;
 	[Header("Dynamic variables")]
-	public List<GameObject> instantiatedIngredients = new List<GameObject>();
+	public List<GameObject> ingredientObjects = new List<GameObject>();
 	public bool initialized = false;
 
 	Vector3 startPos = new Vector3(0f,-5.5f, -1f);
@@ -34,10 +35,10 @@ public class Bowl : MonoBehaviour {
 			int index = (int)objects[i].GetComponent<IngredientObject>().type;
 			GameObject temp = (GameObject) Instantiate(prefabIngredients[index],content);
 			temp.transform.localPosition = new Vector3(Random.Range(-0.4f,0.4f),0.3f,-1f);
-			foreach(GameObject g in instantiatedIngredients){
+			foreach(GameObject g in ingredientObjects){
 				Physics2D.IgnoreCollision(g.GetComponent<Ingredient>().thisCollider,temp.GetComponent<Ingredient>().thisCollider,true);
 			}
-			instantiatedIngredients.Add(temp);
+			ingredientObjects.Add(temp);
 		}
 	}
 
@@ -47,14 +48,12 @@ public class Bowl : MonoBehaviour {
 			Vector3 tempMousePosition = new Vector3 (Input.mousePosition.x, Input.mousePosition.y, 19f);
 			Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint (tempMousePosition);
 			transform.position = new Vector3 (mouseWorldPos.x, mouseWorldPos.y + 0.3f, mouseWorldPos.z);
-
-
 		}
 
 		if (Input.GetMouseButtonUp (0)) {
 			if (initialized) {
 				initialized = false;
-				if(instantiatedIngredients.Count <= 0){
+				if(ingredientObjects.Count <= 0){
 					gameObject.SetActive(false);
 				}else{
 					StartCoroutine(_MoveToTableAndFlip);
@@ -80,7 +79,6 @@ public class Bowl : MonoBehaviour {
 			yield return null;
 		}
 		initialized = true;
-
 	}
 
 	const string _MoveToTableAndFlip = "MoveToTableAndFlip";
@@ -103,7 +101,7 @@ public class Bowl : MonoBehaviour {
 		}
 		transform.eulerAngles = flipRotation;
 
-		foreach(GameObject g in instantiatedIngredients){
+		foreach(GameObject g in ingredientObjects){
 			g.transform.SetParent(roomTransform,true);
 
 			g.transform.position = new Vector3(g.transform.position.x,g.transform.position.y,-1f);
@@ -116,7 +114,7 @@ public class Bowl : MonoBehaviour {
 		}
 
 		yield return new WaitForSeconds(0.6f);
-		instantiatedIngredients.Clear();
+		ingredientObjects.Clear();
 		gameObject.SetActive(false);
 	}
 }

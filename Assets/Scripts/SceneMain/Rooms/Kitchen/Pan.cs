@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Pan : BaseFurniture {
+	#region attributes
 	[Header("Pan Attributes")]
 	public List<GameObject> ingredients = new List<GameObject>();
 	public Transform content;
@@ -12,22 +13,45 @@ public class Pan : BaseFurniture {
 	public GameObject cookingBar;
 	public Animator thisAnim;
 	public UIIngredientsInPan ingredientContentUI;
+	public Plate plate;
 
 	public bool hasIngredient;
 	public bool isCooking;
+	#endregion
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+	#region mechanics
+	void Animate()
+	{
+		thisAnim.SetInteger(AnimatorParameters.Ints.STATE,1);
+	}
 
+	void ShowContent()
+	{
+		ingredientContentUI.OnClickPan();
+	}
+
+	void DestroyIngredients()
+	{
+		foreach(GameObject g in ingredients) Destroy(g);
+		ingredients.Clear();
+		StopAllCoroutines();
+		hasIngredient = false;
+	}
+	#endregion
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+	#region public modules
 	public void AddIngredient(GameObject ingredient)
 	{
 		print("Inserting "+ingredient+" to pan");
 		if(cookedFoodObject == null || isCooking){
-			if(!hasIngredient) StartCoroutine(StoveOn());
+//			if(!hasIngredient) StartCoroutine(StoveOn());
 			ingredient.transform.SetParent(content);
 			ingredients.Add(ingredient);
 			CheckIngredientCombination();
 		}
 	}
 
-	void ClearIngredient()
+	public void ClearIngredient()
 	{
 		if(ingredients.Count > 0){
 			for(int i = 0;i<ingredients.Count;i++){
@@ -41,14 +65,6 @@ public class Pan : BaseFurniture {
 			StopAllCoroutines();
 			hasIngredient = false;
 		}
-	}
-
-	void DestroyIngredients()
-	{
-		foreach(GameObject g in ingredients) Destroy(g);
-		ingredients.Clear();
-		StopAllCoroutines();
-		hasIngredient = false;
 	}
 
 	public void CheckIngredientCombination()
@@ -80,6 +96,7 @@ public class Pan : BaseFurniture {
 		StartCoroutine(Cook(cookBook.recipes[foodIndex]));
 	}
 
+	//event triggers
 	public void PointerClick()
 	{
 		if(ingredients.Count <= 0){
@@ -87,21 +104,14 @@ public class Pan : BaseFurniture {
 		}else{
 			if(!isCooking){
 				//show content
+				ShowContent();
+				Animate();
 			}
 		}
 	}
-
-	void Animate()
-	{
-		thisAnim.SetInteger(AnimatorParameters.Ints.STATE,1);
-	}
-
-	void ShowContent()
-	{
-		//blablabla
-		ingredientContentUI.OnClickPan();
-	}
-
+	#endregion
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+	#region coroutines
 	IEnumerator StoveOn()
 	{
 		hasIngredient = true;
@@ -141,4 +151,5 @@ public class Pan : BaseFurniture {
 		DestroyIngredients();
 		SoundManager.Instance.StopSFX();
 	}
+	#endregion
 }

@@ -84,6 +84,7 @@ public class Ingredient : MonoBehaviour {
 	IEnumerator Fall()
 	{
 		hold = false;
+		thisAnim.SetBool(AnimatorParameters.Bools.HOLD,false);
 		thisSprite.sortingLayerName = SortingLayers.MOVABLE_FURNITURE;
 
 		thisRigidbody.velocity = Vector2.zero;

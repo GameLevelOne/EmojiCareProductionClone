@@ -66,7 +66,7 @@ public class MovableFurniture : MonoBehaviour {
 			endDrag = true;
 
 			thisAnim.SetBool(AnimatorParameters.Bools.HOLD,false);
-//			thisRigidbody.velocity = Vector2.zero;
+			thisRigidbody.velocity = Vector2.zero;
 			thisRigidbody.simulated = true;
 			AdjustSortingOrder();
 
