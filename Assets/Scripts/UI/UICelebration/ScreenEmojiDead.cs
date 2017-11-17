@@ -33,7 +33,8 @@ public class ScreenEmojiDead : BaseUI {
 	}
 
 	public void OnClickContinue(){
-		fader.FadeOut();
+		TestEmojiDead ();
+		base.CloseUI (this.gameObject);
 	}
 
 	public void TestEmojiDead(){

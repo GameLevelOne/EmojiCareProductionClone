@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class ScreenRefrigeratorContent : BaseUI {
 	public RefrigeratorIngredient[] ingredients;
+	public Refrigerator refrigerator;
+	public Image arrow;
 
 	void OnEnable(){
 		foreach(RefrigeratorIngredient ingredient in ingredients)
@@ -12,4 +14,11 @@ public class ScreenRefrigeratorContent : BaseUI {
 			ingredient.UpdateQuantity();
 		}
 	}
+
+	public void CloseRefrigerator(){
+		refrigerator.CloseRefrigerator ();
+		base.CloseUI (this.gameObject);
+	}
+
+
 }
