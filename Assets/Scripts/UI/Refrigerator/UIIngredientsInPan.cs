@@ -11,27 +11,8 @@ public class UIIngredientsInPan : BaseUI {
 	public Sprite[] ingredients;
 	public List<GameObject> ingredientListObject;
 
-	public void OnClickPan(){
+	public void ShowIngredient(){
 		base.ShowUI (this.gameObject);
-
-//		List<IngredientType> temp = new List<IngredientType> ();
-//
-//		temp.Add (IngredientType.Cabbage);
-//		temp.Add (IngredientType.Carrot);
-//		temp.Add (IngredientType.Cheese);
-//
-//		if(temp.Count > 0){
-//			buttonClose.gameObject.SetActive (true);
-//			buttonClose.localPosition = new Vector3 (80 + 35* (temp.Count-1), -320);
-//		} else{
-//			buttonClose.gameObject.SetActive (false);
-//		}
-//
-//		for(int i=0;i<temp.Count;i++){
-//			GameObject obj = Instantiate (ingredientIconObj, ingredientBox, false) as GameObject;
-//			int idx = (int)temp [i];
-//			obj.transform.GetChild (0).GetComponent<Image> ().sprite = ingredients [idx];
-//		}
 
 		if(pan.ingredients.Count > 0){
 			buttonClose.gameObject.SetActive (true);
@@ -46,6 +27,11 @@ public class UIIngredientsInPan : BaseUI {
 			obj.transform.GetChild (0).GetComponent<Image> ().sprite = ingredients [idx];
 			ingredientListObject.Add(obj);
 		}
+	}
+
+	public void ClearObjectsOnClose()
+	{
+		foreach(GameObject g in ingredientListObject) Destroy(g);
 	}
 
 	public void ClearIngredient()

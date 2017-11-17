@@ -16,6 +16,9 @@ public enum IngredientType{
 }
 
 public class Ingredient : MonoBehaviour {
+	public delegate void IngredientPickEvent(PanState state);
+	public event IngredientPickEvent OnIngredientPicked;
+
 	[Header("Reference")]
 	public Rigidbody2D thisRigidbody;
 	public Collider2D thisCollider;
@@ -33,7 +36,7 @@ public class Ingredient : MonoBehaviour {
 	{
 		if(other.tag == Tags.PAN){
 			if(!instantiated && !hold){
-				if(other.GetComponent<Pan>().isCooking == false && other.GetComponent<Pan>().cookedFoodObject == null){
+				if(!other.GetComponent<Pan>().isCooking){
 					StopAllCoroutines();
 					other.GetComponent<Pan>().AddIngredient(this.gameObject);
 					this.gameObject.SetActive(false); //sementara
@@ -67,6 +70,8 @@ public class Ingredient : MonoBehaviour {
 
 		thisSprite.sortingLayerName = SortingLayers.HELD;
 		hold = true;
+
+		if(OnIngredientPicked != null) OnIngredientPicked(PanState.Open);
 	}
 
 	public void Drag()
@@ -90,7 +95,7 @@ public class Ingredient : MonoBehaviour {
 		thisRigidbody.velocity = Vector2.zero;
 		thisRigidbody.simulated = true;
 		thisCollider.enabled = true;
-
+		if(OnIngredientPicked != null) OnIngredientPicked(PanState.Close);
 		yield return null;
 	}
 }

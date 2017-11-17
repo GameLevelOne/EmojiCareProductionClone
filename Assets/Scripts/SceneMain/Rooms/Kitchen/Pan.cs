@@ -2,6 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum PanState{
+	Idle = 0,
+	Open,
+	Close,
+	OpenClose,
+	Cooking,
+	Animate
+}
+
 public class Pan : BaseFurniture {
 	#region attributes
 	[Header("Pan Attributes")]
@@ -9,7 +18,7 @@ public class Pan : BaseFurniture {
 	public Transform content;
 	public GameObject cookingSmoke;
 	public Cookbook cookBook;
-	public GameObject cookedFoodObject = null;
+
 	public GameObject cookingBar;
 	public Animator thisAnim;
 	public UIIngredientsInPan ingredientContentUI;
@@ -19,31 +28,43 @@ public class Pan : BaseFurniture {
 	public bool isCooking;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
-	#region mechanics
-	void Animate()
+	#region initializations
+	public void RegisterIngredientPickEvents(Ingredient ingredient)
 	{
-		thisAnim.SetInteger(AnimatorParameters.Ints.STATE,1);
+		ingredient.OnIngredientPicked += Animate;
+	}
+	#endregion
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+	#region mechanics
+	void Animate(PanState state)
+	{
+		thisAnim.SetInteger(AnimatorParameters.Ints.STATE,(int)state);
 	}
 
 	void ShowContent()
 	{
-		ingredientContentUI.OnClickPan();
+		ingredientContentUI.ShowIngredient();
 	}
 
 	void DestroyIngredients()
 	{
-		foreach(GameObject g in ingredients) Destroy(g);
+		//unregister and destroy
+		foreach(GameObject g in ingredients){ 
+			g.GetComponent<Ingredient>().OnIngredientPicked -= Animate;
+			Destroy(g);
+		}
+
 		ingredients.Clear();
-		StopAllCoroutines();
 		hasIngredient = false;
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
+
 	#region public modules
 	public void AddIngredient(GameObject ingredient)
 	{
 		print("Inserting "+ingredient+" to pan");
-		if(cookedFoodObject == null || isCooking){
+		if(!isCooking){
 //			if(!hasIngredient) StartCoroutine(StoveOn());
 			ingredient.transform.SetParent(content);
 			ingredients.Add(ingredient);
@@ -64,6 +85,7 @@ public class Pan : BaseFurniture {
 			ingredients.Clear();
 			StopAllCoroutines();
 			hasIngredient = false;
+			Animate(PanState.OpenClose);
 		}
 	}
 
@@ -92,49 +114,51 @@ public class Pan : BaseFurniture {
 			print("Wrong recipe");
 			return;
 		}
-		print("COOKING "+cookBook.recipes[foodIndex].foodObject.name);
+		print("Cooking "+cookBook.recipes[foodIndex].foodObject.name+" for "+cookBook.recipes[foodIndex].cookDuration+" seconds.");
 		StartCoroutine(Cook(cookBook.recipes[foodIndex]));
 	}
 
 	//event triggers
 	public void PointerClick()
 	{
+		print("PAN PAN");
 		if(ingredients.Count <= 0){
-			Animate();
+			Animate(PanState.Animate);
 		}else{
 			if(!isCooking){
 				//show content
 				ShowContent();
-				Animate();
+				Animate(PanState.Animate);
 			}
 		}
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region coroutines
-	IEnumerator StoveOn()
-	{
-		hasIngredient = true;
-		while(true){
-			float rndX = Random.Range(-0.3f,0.3f);
-			float rndScale = Random.Range(0.3f,0.5f);
-			GameObject s = Instantiate(cookingSmoke,transform);
-			s.transform.localPosition = new Vector3(rndX,0.4f,0);
-			s.transform.localScale = new Vector3(rndScale,rndScale,1f);
-			yield return new WaitForSeconds(0.05f);
-		}
-	}
+//	IEnumerator StoveOn()
+//	{
+//		hasIngredient = true;
+//		while(true){
+//			float rndX = Random.Range(-0.3f,0.3f);
+//			float rndScale = Random.Range(0.3f,0.5f);
+//			GameObject s = Instantiate(cookingSmoke,transform);
+//			s.transform.localPosition = new Vector3(rndX,0.4f,0);
+//			s.transform.localScale = new Vector3(rndScale,rndScale,1f);
+//			yield return new WaitForSeconds(0.05f);
+//		}
+//	}
 
 	IEnumerator Cook(Foods food)
 	{
-		
+		DestroyIngredients();
 		PlayerData.Instance.PlayerEmoji.emojiExpressions.SetExpression(EmojiExpressionState.WHISTLE,3f);
 		isCooking = true;
-		for(int i = 0;i<ingredients.Count;i++) Destroy(ingredients[i]);
+		
 		cookingBar.GetComponent<UICookBar>().duration = food.cookDuration;
 		cookingBar.SetActive(true);
-		print("Now cooking for "+food.cookDuration+" seconds");
+
 		SoundManager.Instance.PlaySFX(SFXList.Cook);
+
 		float current = 0;
 		while(current < food.cookDuration){
 			cookingBar.GetComponent<UICookBar>().UpdateBar(current);
@@ -143,7 +167,7 @@ public class Pan : BaseFurniture {
 		}
 
 		//instantiate food
-		cookedFoodObject = Instantiate(food.foodObject,transform.parent);
+		GameObject cookedFoodObject = Instantiate(food.foodObject,transform.parent);
 		cookedFoodObject.transform.localPosition = new Vector3(2.8f,2f,-1f);
 		cookingBar.SetActive(false);
 		isCooking = false;

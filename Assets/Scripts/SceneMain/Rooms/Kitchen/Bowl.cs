@@ -32,12 +32,22 @@ public class Bowl : MonoBehaviour {
 	void InstantiateObjects(GameObject[] objects)
 	{
 		for(int i = 0;i<objects.Length;i++){
-			int index = (int)objects[i].GetComponent<IngredientObject>().type;
-			GameObject temp = (GameObject) Instantiate(prefabIngredients[index],content);
+			//get ingredient type
+			int ingredientTypeIndex = (int)objects[i].GetComponent<IngredientObject>().type;
+
+			//instantiate ingredient 2D Object
+			GameObject temp = (GameObject) Instantiate(prefabIngredients[ingredientTypeIndex],content);
 			temp.transform.localPosition = new Vector3(Random.Range(-0.4f,0.4f),0.3f,-1f);
+
+			//register pick event
+			Ingredient ingredient = temp.GetComponent<Ingredient>();
+			pan.RegisterIngredientPickEvents(ingredient);
+
+			//ignore collision each other
 			foreach(GameObject g in ingredientObjects){
 				Physics2D.IgnoreCollision(g.GetComponent<Ingredient>().thisCollider,temp.GetComponent<Ingredient>().thisCollider,true);
 			}
+
 			ingredientObjects.Add(temp);
 		}
 	}
