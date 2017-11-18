@@ -2,7 +2,10 @@
 using UnityEngine;
 
 public class Food : TriggerableFurniture {
+	public delegate void FoodPicked(GameObject obj);
+	public event FoodPicked OnFoodPicked;
 	#region attributes
+	[Header("Food Attribute")]
 	public float[] foodFactor;
 	public bool hold = false;
 	public bool onPlate = false;
@@ -22,19 +25,14 @@ public class Food : TriggerableFurniture {
 	#region mechanics
 	protected override void OnTriggerEnter2D(Collider2D other)
 	{
+		print("TRIGGER ENTER: "+other.tag);
 		if(other.tag == Tags.EMOJI_BODY){
 			if(!onPlate){
 				Emoji emoji = other.transform.parent.GetComponent<Emoji>();
-				float hungerValue = emoji.hunger.StatValue / emoji.hunger.MaxStatValue;
-
-				if(hungerValue >= 0.95f){ //reject
-					emoji.playerInput.Reject();
-				}else{ //eat
-					other.transform.parent.GetComponent<Emoji>().ModAllStats(foodFactor);
-					emoji.playerInput.Eat();
-					Destroy(this.gameObject);
-				}
+				ValidateEmojiHunger(emoji);
 			}
+		}else if(other.tag == Tags.PLATE){
+			other.transform.parent.GetComponent<Plate>().AddFood(gameObject);
 		}
 	}
 
@@ -49,7 +47,9 @@ public class Food : TriggerableFurniture {
 	{
 		thisSprite[currentVariant].sortingLayerName = SortingLayers.HELD;
 		thisCollider.enabled = false;
+		thisRigidbody.simulated = false;
 		hold = true;
+		if(OnFoodPicked != null) OnFoodPicked(gameObject);
 	}
 
 	public void Drag()
@@ -60,29 +60,39 @@ public class Food : TriggerableFurniture {
 
 	public void EndDrag()
 	{
-		thisSprite[currentVariant].sortingLayerName = SortingLayers.MOVABLE_FURNITURE;
-		hold = false;
-		thisCollider.enabled = true;
-//		StartCoroutine(_Return);
+		StartCoroutine(_Release);
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
-	
+	public void ValidateEmojiHunger(Emoji emoji)
+	{
+		float hungerValue = emoji.hunger.StatValue / emoji.hunger.MaxStatValue;
+
+		if(hungerValue >= 0.95f){ //reject
+			emoji.playerInput.Reject();
+		}else{ //eat
+			emoji.ModAllStats(foodFactor);
+			emoji.playerInput.Eat();
+			if(OnFoodPicked != null) OnFoodPicked(gameObject);
+			Destroy(this.gameObject);
+		}
+	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------	
 	#region coroutines
-	const string _Return = "Return";
-	IEnumerator Return()
+	const string _Release = "Release";
+	IEnumerator Release()
 	{
+		thisSprite[currentVariant].sortingLayerName = SortingLayers.MOVABLE_FURNITURE;
+		hold = false;
+		thisCollider.isTrigger = true;
+		thisCollider.enabled = true;
+		thisRigidbody.velocity = Vector2.zero;
+		thisRigidbody.simulated = true;
 		yield return null;
-		Vector3 temp = transform.localPosition;
-		float t = 0f;
-		while(t<= 1f){
-			transform.localPosition = Vector3.Lerp(temp,startPos,t);
-			t+= Time.deltaTime * 4;
-			yield return null;
-		}
+		yield return null;
+		thisCollider.isTrigger = false;
 	}
 	#endregion
 }

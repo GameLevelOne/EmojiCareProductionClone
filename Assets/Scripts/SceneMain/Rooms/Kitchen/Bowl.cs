@@ -14,7 +14,7 @@ public class Bowl : MonoBehaviour {
 
 	Vector3 startPos = new Vector3(0f,-5.5f, -1f);
 	Vector3 startScale = new Vector3(2f,2f,2f);
-	Vector3 flipPos = new Vector3(0f,1.5f,-1f);
+	Vector3 flipPos = new Vector3(-0.25f,1.5f,-1f);
 	Vector3 flipRotation = new Vector3(0f,0f,-100f);
 
 	public void  Init(GameObject[] ingredients)

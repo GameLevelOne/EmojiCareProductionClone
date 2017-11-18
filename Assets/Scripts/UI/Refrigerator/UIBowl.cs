@@ -19,6 +19,16 @@ public class UIBowl : MonoBehaviour {
 		ingredientObjects.Remove(ingrediendObject);
 	}
 
+	public void ReturnObject()
+	{
+		if(ingredientObjects.Count > 0){
+			foreach(GameObject g in ingredientObjects){
+				g.GetComponent<IngredientObject>().ReturnIngredient();
+			}
+		}
+		ingredientObjects.Clear();
+	}
+
 	public void BeginDrag()
 	{
 		if(ingredientObjects.Count > 0){

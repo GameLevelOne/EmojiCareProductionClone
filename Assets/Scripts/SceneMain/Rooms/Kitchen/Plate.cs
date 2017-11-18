@@ -4,7 +4,16 @@ using UnityEngine;
 
 public class Plate : BaseFurniture {
 	#region attributes
+	[Header("Plate Attributes")]
 	public Transform furnitureTransform;
+	public Transform plateContentTransform;
+	public Collider2D thisCollider;
+	public Rigidbody2D thisRigidbody;
+
+	public float startY = 0.2f;
+	public float nextY = 0.3f;
+
+	[Header("")]
 	public List<GameObject> FoodsOnPlate = new List<GameObject>();
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -13,18 +22,88 @@ public class Plate : BaseFurniture {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
+	void OnCollisionEnter2D(Collision2D other)
+	{
+		if(other.gameObject.tag == Tags.EMOJI_BODY)
+		{
+			Physics2D.IgnoreCollision(thisCollider,other.collider);
+		}
+	}
 
+	void OnTriggerEnter2D(Collider2D other)
+	{
+		if(other.tag == Tags.EMOJI_BODY){
+			
+		}
+	}
+
+	void ReleaseFood(GameObject foodObject)
+	{
+		foodObject.transform.SetParent(furnitureTransform);
+
+		Food food = foodObject.GetComponent<Food>();
+		food.onPlate = false;
+		food.thisRigidbody.gravityScale = 0.8f;
+		food.OnFoodPicked -= ReleaseFood;
+
+		FoodsOnPlate.Remove(foodObject);
+		AdjustFoodStacks();
+	}
+
+	void AdjustFoodStacks()
+	{
+		for(int i = 0;i<FoodsOnPlate.Count;i++){
+			FoodsOnPlate[i].transform.localPosition = new Vector3(0,(FoodsOnPlate.Count * nextY)+startY);
+			Food currentFood = FoodsOnPlate[i].GetComponent<Food>();
+			currentFood.thisSprite[currentFood.currentVariant].sortingOrder = i+1;
+		}
+	}
+
+	//event trigger
+	public void BeginDrag()
+	{
+		thisCollider.enabled = false;
+		thisRigidbody.simulated = false;
+		thisSprite[currentVariant].sortingLayerName = SortingLayers.HELD;
+
+		foreach(GameObject g in FoodsOnPlate){
+			g.GetComponent<Food>().thisSprite[g.GetComponent<Food>().currentVariant].sortingLayerName = SortingLayers.HELD;
+		}
+	}
+
+	public void Drag()
+	{
+		Vector3 tempMousePosition = new Vector3(Input.mousePosition.x,Input.mousePosition.y,19.5f);
+		transform.localPosition = Camera.main.ScreenToWorldPoint(tempMousePosition);
+	}
+
+	public void EndDrag()
+	{
+		thisCollider.enabled = true;
+		thisRigidbody.velocity = Vector2.zero;
+		thisRigidbody.simulated = true;
+		thisSprite[currentVariant].sortingLayerName = SortingLayers.MOVABLE_FURNITURE;
+
+		foreach(GameObject g in FoodsOnPlate){
+			g.GetComponent<Food>().thisSprite[g.GetComponent<Food>().currentVariant].sortingLayerName = SortingLayers.MOVABLE_FURNITURE;
+		}
+	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
 	public void AddFood(GameObject foodObject)
 	{
-		foodObject.transform.SetParent(transform);
-		Food food = foodObject.GetComponent<Food>();
+		foodObject.transform.SetParent(plateContentTransform);
+		foodObject.transform.localPosition = new Vector3(0,(FoodsOnPlate.Count * nextY)+startY);
 
+		Food food = foodObject.GetComponent<Food>();
 		food.onPlate = true;
+		food.thisRigidbody.gravityScale = 0f;
+		food.OnFoodPicked += ReleaseFood;
 		
 		FoodsOnPlate.Add(foodObject);
+
+		food.thisSprite[food.currentVariant].sortingOrder = FoodsOnPlate.Count;
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------	

@@ -17,6 +17,7 @@ public static class Tags {
 	public const string BOX = "Box";
 	public const string TOY = "Toy";
 	public const string BASKET = "Basket";
+	public const string PLATE = "Plate";
 
 	public const string PLANT = "Plant";
 	public const string SOIL = "Soil";

@@ -69,6 +69,12 @@ public class IngredientObject : MonoBehaviour {
 		Vector3 touchPos = new Vector3(Input.mousePosition.x,Input.mousePosition.y,0f);
 		return Camera.main.transform.InverseTransformPoint(touchPos);
 	}
+
+	public void ReturnIngredient()
+	{
+		PlayerData.Instance.inventory.ModIngredientValue(type,1);
+		Destroy(gameObject);
+	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	void LateUpdate()

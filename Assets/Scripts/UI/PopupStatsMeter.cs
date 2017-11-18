@@ -40,6 +40,7 @@ public class PopupStatsMeter : MonoBehaviour {
 		yield return new WaitForSeconds (0.16f);
 		GetComponent<Animator> ().SetTrigger (triggerCloseNotif);
 		yield return new WaitForSeconds (0.16f);
+		print("ASKJDKASDJKLASJDKLASJKD");
 		gameObject.SetActive (false);
 	}
 }

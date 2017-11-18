@@ -16,7 +16,7 @@ public class Pan : BaseFurniture {
 	[Header("Pan Attributes")]
 	public List<GameObject> ingredients = new List<GameObject>();
 	public Transform content;
-	public GameObject cookingSmoke;
+	public ParticleSystem smoke;
 	public Cookbook cookBook;
 
 	public GameObject cookingBar;
@@ -24,7 +24,7 @@ public class Pan : BaseFurniture {
 	public UIIngredientsInPan ingredientContentUI;
 	public Plate plate;
 
-	public bool hasIngredient;
+	public bool hasIngredient = false;
 	public bool isCooking;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -65,7 +65,10 @@ public class Pan : BaseFurniture {
 	{
 		print("Inserting "+ingredient+" to pan");
 		if(!isCooking){
-//			if(!hasIngredient) StartCoroutine(StoveOn());
+			if(!hasIngredient){
+				hasIngredient = true;
+				if(smoke.isStopped) smoke.Play();
+			}
 			ingredient.transform.SetParent(content);
 			ingredients.Add(ingredient);
 			CheckIngredientCombination();
@@ -87,6 +90,7 @@ public class Pan : BaseFurniture {
 			hasIngredient = false;
 			Animate(PanState.OpenClose);
 		}
+		if(smoke.isPlaying) smoke.Stop();
 	}
 
 	public void CheckIngredientCombination()
@@ -94,11 +98,16 @@ public class Pan : BaseFurniture {
 		int foodIndex = -1;
 		int correct = 0;
 
+		//for every recipes
 		for(int i = 0;i<cookBook.recipes.Length;i++){
+
+			//if total ingredients amount match the recipe's ingredient amount
 			if(ingredients.Count == cookBook.recipes[i].ingredients.Count){
+
 
 				for(int j = 0;j < ingredients.Count;j++){
 					foreach(IngredientType t in cookBook.recipes[i].ingredients){
+						print("Ingredient "+ingredients[j].GetComponent<Ingredient>().type+" compare to "+t);
 						if(ingredients[j].GetComponent<Ingredient>().type == t) correct++;
 					}
 				}
@@ -110,6 +119,8 @@ public class Pan : BaseFurniture {
 				else correct = 0;
 			}
 		}
+
+
 		if(foodIndex == -1) {
 			print("Wrong recipe");
 			return;
@@ -121,14 +132,15 @@ public class Pan : BaseFurniture {
 	//event triggers
 	public void PointerClick()
 	{
-		print("PAN PAN");
-		if(ingredients.Count <= 0){
-			Animate(PanState.Animate);
-		}else{
-			if(!isCooking){
-				//show content
-				ShowContent();
+		if(!isCooking){
+			if(ingredients.Count <= 0){
 				Animate(PanState.Animate);
+			}else{
+				if(!isCooking){
+					//show content
+					ShowContent();
+					Animate(PanState.Animate);
+				}
 			}
 		}
 	}
@@ -153,7 +165,9 @@ public class Pan : BaseFurniture {
 		DestroyIngredients();
 		PlayerData.Instance.PlayerEmoji.emojiExpressions.SetExpression(EmojiExpressionState.WHISTLE,3f);
 		isCooking = true;
-		
+
+		Animate(PanState.Cooking);
+
 		cookingBar.GetComponent<UICookBar>().duration = food.cookDuration;
 		cookingBar.SetActive(true);
 
@@ -168,12 +182,18 @@ public class Pan : BaseFurniture {
 
 		//instantiate food
 		GameObject cookedFoodObject = Instantiate(food.foodObject,transform.parent);
-		cookedFoodObject.transform.localPosition = new Vector3(2.8f,2f,-1f);
+		cookedFoodObject.transform.localPosition = new Vector3(0.2f,0.6f,-1f);
 		cookingBar.SetActive(false);
 		isCooking = false;
+
 		StopAllCoroutines();
-		DestroyIngredients();
+
 		SoundManager.Instance.StopSFX();
+		Animate(PanState.OpenClose);
+
+		if(smoke.isPlaying) smoke.Stop();
+
+
 	}
 	#endregion
 }

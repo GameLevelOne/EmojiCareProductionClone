@@ -6,13 +6,13 @@ public class FloatingStatsManager : MonoBehaviour {
 	public GameObject[] statsMeterObj;
 
 	void OnEnable(){
-		Emoji.OnShowFloatingStatsBar += ShowMultipleMeters;
-		EmojiStats.OnShowSingleStatBar += ShowSingleMeter;
+//		Emoji.OnShowFloatingStatsBar += ShowMultipleMeters;
+//		EmojiStats.OnShowSingleStatBar += ShowSingleMeter;
 	}
 
 	void OnDisable(){
-		Emoji.OnShowFloatingStatsBar -= ShowMultipleMeters;
-		EmojiStats.OnShowSingleStatBar -= ShowSingleMeter;
+//		Emoji.OnShowFloatingStatsBar -= ShowMultipleMeters;
+//		EmojiStats.OnShowSingleStatBar -= ShowSingleMeter;
 	}
 
 	public void ShowSingleMeter(int type,float mod){
