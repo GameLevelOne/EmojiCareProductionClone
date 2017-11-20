@@ -5,14 +5,14 @@ using UnityEngine;
 public class FloatingStatsManager : MonoBehaviour {
 	public GameObject[] statsMeterObj;
 
-	void OnEnable(){
-//		Emoji.OnShowFloatingStatsBar += ShowMultipleMeters;
-//		EmojiStats.OnShowSingleStatBar += ShowSingleMeter;
-	}
-
 	void OnDisable(){
 //		Emoji.OnShowFloatingStatsBar -= ShowMultipleMeters;
 //		EmojiStats.OnShowSingleStatBar -= ShowSingleMeter;
+	}
+
+	public void RegisterEvents(){
+		Emoji.OnShowFloatingStatsBar += ShowMultipleMeters;
+		EmojiStats.OnShowSingleStatBar += ShowSingleMeter;
 	}
 
 	public void ShowSingleMeter(int type,float mod){

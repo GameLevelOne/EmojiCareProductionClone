@@ -5,6 +5,7 @@ public class SceneMainManager : MonoBehaviour {
 	#region attributes
 	public RoomController roomController;
 	public ScreenTutorial screenTutorial;
+	public FloatingStatsManager floatingStats;
 	public EmojiStatsExpressionController statsExpressionController;
 	public Fader fader;
 
@@ -57,6 +58,7 @@ public class SceneMainManager : MonoBehaviour {
 		}
 
 		screenTutorial.Init();
+//		floatingStats.RegisterEvents ();
 
 		if (PlayerData.Instance.TutorialFirstVisit == 0) {
 			PlayerData.Instance.TutorialFirstVisit = 1;
