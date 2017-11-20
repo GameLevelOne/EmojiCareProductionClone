@@ -101,7 +101,7 @@ public class Plate : BaseFurniture {
 		food.OnFoodPicked += ReleaseFood;
 
 		foodObject.transform.SetParent(plateContentTransform);
-		foodObject.transform.localPosition = new Vector3(0,(FoodsOnPlate.Count-1 * nextY)+startY);
+		foodObject.transform.localPosition = new Vector3(0,(FoodsOnPlate.Count * nextY)+startY);
 
 		FoodsOnPlate.Add(foodObject);
 
