@@ -33,21 +33,8 @@ public class Plate : BaseFurniture {
 	void OnTriggerEnter2D(Collider2D other)
 	{
 		if(other.tag == Tags.EMOJI_BODY){
-			
+			FoodsOnPlate[FoodsOnPlate.Count-1].GetComponent<Food>().ValidateEmojiHunger(other.transform.parent.GetComponent<Emoji>());
 		}
-	}
-
-	void ReleaseFood(GameObject foodObject)
-	{
-		foodObject.transform.SetParent(furnitureTransform);
-
-		Food food = foodObject.GetComponent<Food>();
-		food.onPlate = false;
-		food.thisRigidbody.gravityScale = 0.8f;
-		food.OnFoodPicked -= ReleaseFood;
-
-		FoodsOnPlate.Remove(foodObject);
-		AdjustFoodStacks();
 	}
 
 	void AdjustFoodStacks()
@@ -88,23 +75,48 @@ public class Plate : BaseFurniture {
 			g.GetComponent<Food>().thisSprite[g.GetComponent<Food>().currentVariant].sortingLayerName = SortingLayers.MOVABLE_FURNITURE;
 		}
 	}
+
+	void ReleaseFood(GameObject foodObject)
+	{
+		Food food = foodObject.GetComponent<Food>();
+		food.OnFoodPicked -= ReleaseFood;
+		food.onPlate = false;
+		food.thisRigidbody.gravityScale = 0.8f;
+		food.thisCollider.isTrigger = false;
+
+		foodObject.transform.SetParent(furnitureTransform);
+
+		FoodsOnPlate.Remove(foodObject);
+		AdjustFoodStacks();
+	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
 	public void AddFood(GameObject foodObject)
 	{
-		foodObject.transform.SetParent(plateContentTransform);
-		foodObject.transform.localPosition = new Vector3(0,(FoodsOnPlate.Count * nextY)+startY);
-
 		Food food = foodObject.GetComponent<Food>();
 		food.onPlate = true;
 		food.thisRigidbody.gravityScale = 0f;
+		food.thisCollider.isTrigger = true;
 		food.OnFoodPicked += ReleaseFood;
-		
+
+		foodObject.transform.SetParent(plateContentTransform);
+		foodObject.transform.localPosition = new Vector3(0,(FoodsOnPlate.Count-1 * nextY)+startY);
+
 		FoodsOnPlate.Add(foodObject);
 
 		food.thisSprite[food.currentVariant].sortingOrder = FoodsOnPlate.Count;
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------	
+	void LateUpdate()
+	{
+		if(FoodsOnPlate.Count > 0){
+			for(int i = 0;i<FoodsOnPlate.Count;i++){
+				if(FoodsOnPlate[i].GetComponent<Food>().onPlate){
+					FoodsOnPlate[i].transform.localPosition = new Vector3(0,(i * nextY)+startY);
+				}
+			}
+		}
+	}
 }

@@ -12,9 +12,8 @@ public enum EmojiStatsState{
 }
 
 public class PopupStatsMeter : MonoBehaviour {
-	public Transform parentObj;
 
-	Image barFill;
+	public Image barFill;
 	string triggerOpenNotif = "OpenNotif";
 	string triggerCloseNotif = "CloseNotif";
 
@@ -28,6 +27,8 @@ public class PopupStatsMeter : MonoBehaviour {
 		float time = 0;
 		float startValue = currentValue / maxValue;
 		float endValue = targetValue / maxValue;
+		Debug.Log ("start:" + startValue);
+		Debug.Log ("end:" + endValue);
 		while(barFill.fillAmount < endValue){
 			barFill.fillAmount = Mathf.Lerp (startValue, endValue, time);
 			time += Time.deltaTime*2;
