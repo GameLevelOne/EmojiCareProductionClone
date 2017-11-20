@@ -11,45 +11,46 @@ public class Food : TriggerableFurniture {
 	public bool onPlate = false;
 	public Collider2D thisCollider;
 	public Rigidbody2D thisRigidbody;
-	Vector3 startPos;
+
 
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
-	void Start()
-	{
-		startPos = transform.localPosition;
-	}
+
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
 	protected override void OnTriggerEnter2D(Collider2D other)
 	{
-		print("TRIGGER ENTER: "+other.tag);
-		if(other.tag == Tags.EMOJI_BODY){
-			if(!onPlate){
+		if(!onPlate){
+			if(other.tag == Tags.EMOJI_BODY){
 				Emoji emoji = other.transform.parent.GetComponent<Emoji>();
 				ValidateEmojiHunger(emoji);
+			}else if(other.tag == Tags.PLATE){
+				other.transform.parent.GetComponent<Plate>().AddFood(gameObject);
 			}
-		}else if(other.tag == Tags.PLATE){
-			other.transform.parent.GetComponent<Plate>().AddFood(gameObject);
 		}
 	}
 
 	public void OnCollisionEnter2D(Collision2D other)
 	{
-		if(other.gameObject.tag == Tags.MOVABLE_FURNITURE){
-			Physics2D.IgnoreCollision(thisCollider,other.collider);
+		if(!onPlate){
+			if(other.gameObject.tag == Tags.MOVABLE_FURNITURE){
+				Physics2D.IgnoreCollision(thisCollider,other.collider);
+			}
 		}
 	}
 		
 	public void BeginDrag()
 	{
+		if(OnFoodPicked != null) OnFoodPicked(gameObject);
+
 		thisSprite[currentVariant].sortingLayerName = SortingLayers.HELD;
+
 		thisCollider.enabled = false;
 		thisRigidbody.simulated = false;
 		hold = true;
-		if(OnFoodPicked != null) OnFoodPicked(gameObject);
+
 	}
 
 	public void Drag()
