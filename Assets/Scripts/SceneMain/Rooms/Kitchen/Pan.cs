@@ -181,8 +181,9 @@ public class Pan : BaseFurniture {
 		}
 
 		//instantiate food
-		GameObject cookedFoodObject = Instantiate(food.foodObject,transform.parent);
-		cookedFoodObject.transform.localPosition = new Vector3(0.2f,0.6f,-1f);
+		GameObject foodObject = Instantiate(food.foodObject,transform.parent);
+//		cookedFoodObject.transform.localPosition = new Vector3(0.2f,0.6f,-1f);
+		plate.AddFood(foodObject);
 		cookingBar.SetActive(false);
 		isCooking = false;
 
