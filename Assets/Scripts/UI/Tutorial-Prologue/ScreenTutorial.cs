@@ -23,24 +23,23 @@ public enum TutorialType{
 	TriggerFirstDead
 }
 
-public enum TutorialPanelType{
+public enum TutorialArrowType{
 	ArrowEmoji,
-	ArrowLRRooms,
-	ArrowBed,
-	ArrowSpongeSoap,
-	ArrowSpongeEmoji,
-	ArrowCookbook,
-	ArrowRefrigerator,
-	ArrowTablePan,
-	ArrowPlate,
-	ArrowPlayroom,
-	ArrowSeeds,
-	ArrowField,
-	ArrowWateringCan,
-	ArrowExpressionList,
-	ArrowProgressBar,
-	ArrowSendButton,
-	ArrowMenuButton
+	ArrowLivingRoom2,
+	ArrowBedroom1,
+	ArrowBedroom2,
+	ArrowBathroom1,
+	ArrowKitchen1,
+	ArrowKitchen2,
+	ArrowKitchen3,
+	ArrowKitchen4,
+	ArrowPlayroom1,
+	ArrowGarden1,
+	ArrowGarden2,
+	ArrowGarden3,
+	ArrowExpression1,
+	ArrowExpression2,
+	ArrowExpression3
 }
 
 public class ScreenTutorial : BaseUI {
@@ -63,18 +62,19 @@ public class ScreenTutorial : BaseUI {
 	public string[] triggerFirstExpressionFull;
 	public string[] triggerFirstDead;
 
-	public GameObject[] tutorialPanels;
+	public GameObject[] tutorialArrowPanels;
 
 	public ProloguePopupName popupName;
 	public GameObject screenTutorialObj;
 	public Text dialogText;
 
-	public List<GameObject> firstTutorialPanels = new List<GameObject>();
 	List<TutorialType> statsTutorialPanels = new List<TutorialType> ();
 
 	TutorialType currentTutorial = TutorialType.FirstVisit;
 	int panelCount = 0;
 	int dialogCount = 0;
+	int lastActiveArrow = -1;
+	int currentActiveArrow = -1;
 	bool showStatsTutorial = false;
 
 	bool roomChange = false;
@@ -140,17 +140,6 @@ public class ScreenTutorial : BaseUI {
 		dialogCount = 0;
 	}
 
-	public void ShowTutorialPanels ()
-	{
-		if (panelCount < firstTutorialPanels.Count) {
-			firstTutorialPanels [panelCount].SetActive (true);
-			panelCount++;
-		}
-		if(panelCount == firstTutorialPanels.Count){
-			PlayerData.Instance.PlayerFirstPlay = 1;
-		}
-	}
-
 	void ShowPopup(){
 		popupName.ShowUI(popupName.gameObject);
 	}
@@ -162,6 +151,11 @@ public class ScreenTutorial : BaseUI {
 
 	public void ShowFirstDialog(TutorialType type){
 		string emojiName = PlayerData.Instance.EmojiName;
+
+		if(lastActiveArrow == 1){
+			tutorialArrowPanels [lastActiveArrow].SetActive (false);
+		}
+
 		if(type == TutorialType.IdleLivingRoom){
 			dialogText.text = idleLivingRoom [0];
 		} else if(type == TutorialType.FirstBathroom){
@@ -417,6 +411,7 @@ public class ScreenTutorial : BaseUI {
 			if(!loadCustomDialog)
 				dialogText.text = triggerFirstExpressionFull [dialogCount];
 		}
+		ShowArrows ();
 	}
 
 	public void LoadDialogs (string[] currentDialog, int currentPref, bool isStatsTutorial)
@@ -441,6 +436,56 @@ public class ScreenTutorial : BaseUI {
 
 	public void TriggerRoomChange(){
 		roomChange = true;
+	}
+
+	void ShowArrows ()
+	{
+		if (lastActiveArrow > -1)
+			tutorialArrowPanels [lastActiveArrow].SetActive (false);
+
+		if (currentTutorial == TutorialType.FirstVisit && dialogCount == 4) {
+			currentActiveArrow = 0;
+		} else if (currentTutorial == TutorialType.IdleLivingRoom && dialogCount == 1) {
+			currentActiveArrow = 1;
+		} else if (currentTutorial == TutorialType.FirstBedroom && dialogCount == 1) {
+			currentActiveArrow = 2;
+		} else if (currentTutorial == TutorialType.FirstBedroom && dialogCount == 2) {
+			currentActiveArrow = 0;
+		} else if (currentTutorial == TutorialType.FirstBathroom && dialogCount == 1) {
+			currentActiveArrow = 3;
+		} else if (currentTutorial == TutorialType.FirstBathroom && dialogCount == 2) {
+			currentActiveArrow = 0;
+		} else if (currentTutorial == TutorialType.FirstBathroom && dialogCount == 3) {
+			currentActiveArrow = 4;
+		} else if (currentTutorial == TutorialType.FirstKitchen && dialogCount == 2) {
+			currentActiveArrow = 5;
+		} else if (currentTutorial == TutorialType.FirstKitchen && dialogCount == 3) {
+			currentActiveArrow = 6;
+		} else if (currentTutorial == TutorialType.FirstKitchen && dialogCount == 4) {
+			currentActiveArrow = 7;
+		} else if (currentTutorial == TutorialType.FirstKitchen && dialogCount == 5) {
+			currentActiveArrow = 8;
+		} else if (currentTutorial == TutorialType.FirstPlayroom && dialogCount == 1) {
+			currentActiveArrow = 9;
+		} else if (currentTutorial == TutorialType.FirstGarden && dialogCount == 2) {
+			currentActiveArrow = 10;
+		} else if (currentTutorial == TutorialType.FirstGarden && dialogCount == 3) {
+			currentActiveArrow = 11;
+		} else if (currentTutorial == TutorialType.FirstGarden && dialogCount == 4) {
+			currentActiveArrow = 12;
+		} else if (currentTutorial == TutorialType.FirstProgressUI && dialogCount == 1) {
+			currentActiveArrow = 13;
+		} else if (currentTutorial == TutorialType.FirstProgressUI && dialogCount == 2) {
+			currentActiveArrow = 14;
+		} else if (currentTutorial == TutorialType.FirstProgressUI && dialogCount == 3) {
+			currentActiveArrow = 15;
+		} else {
+			currentActiveArrow = -1;
+		}
+		if (currentActiveArrow > -1) {
+			tutorialArrowPanels [currentActiveArrow].SetActive (true);
+			lastActiveArrow = currentActiveArrow;
+		}
 	}
 
 	IEnumerator WaitForRoomChange(){

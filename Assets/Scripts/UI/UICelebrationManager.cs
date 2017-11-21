@@ -86,7 +86,7 @@ public class UICelebrationManager : MonoBehaviour {
 		NotificationNewExpression obj = Instantiate(notificationExpressionProgress,canvasParent,false) as NotificationNewExpression;
 		if(isNewExpression){
 			buttonGacha.SetActive (true);
-			gachaReward.GetGachaReward ();
+//			gachaReward.GetGachaReward ();
 		} 
 
 		obj.AddNotifToList (obj.gameObject);
