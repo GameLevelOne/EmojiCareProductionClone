@@ -27,7 +27,7 @@ public class PopupRefillStall : MonoBehaviour {
 	}
 
 	public void OnClickButtonAds(){
-		UnityAdsManager.Instance.ShowAds (AdsEventType.RefillStall);
+		//UnityAdsManager.Instance.ShowAds (AdsEventType.RefillStall);
 	}
 	
 
