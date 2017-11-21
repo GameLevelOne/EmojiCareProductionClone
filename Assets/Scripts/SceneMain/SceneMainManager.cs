@@ -7,6 +7,7 @@ public class SceneMainManager : MonoBehaviour {
 	public ScreenTutorial screenTutorial;
 	public FloatingStatsManager floatingStats;
 	public EmojiStatsExpressionController statsExpressionController;
+	public GachaReward gachaReward;
 	public Fader fader;
 
 	//sementara
@@ -58,6 +59,7 @@ public class SceneMainManager : MonoBehaviour {
 		}
 
 		screenTutorial.Init();
+		gachaReward.Init ();
 //		floatingStats.RegisterEvents ();
 
 		if (PlayerData.Instance.TutorialFirstVisit == 0) {

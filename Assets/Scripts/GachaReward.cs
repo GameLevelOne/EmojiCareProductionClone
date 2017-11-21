@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum RewardType{
 	Coin,Gem,Ingredients,Costume
@@ -10,7 +11,9 @@ public enum HatType{
 	One,Two,Three,COUNT
 }
 
-public class GachaReward : MonoBehaviour {
+public class GachaReward : BaseUI {
+	public Text gachaCountText;
+	public Image rewardIcon;
 	List<HatType> unlockedHats = new List<HatType> ();
 
 	float rateCoin = 0f;
@@ -24,12 +27,8 @@ public class GachaReward : MonoBehaviour {
 	int minCoin = 0;
 	int maxCoin = 0;
 
-	void Start(){
-		Init ();
-	}
-
 	//INIT TEMP DATA
-	void Init(){
+	public void Init(){
 		SetGachaRates (0.7f, 0.05f, 0.22f, 0.03f);
 		SetMinMaxCoinGem (10, 100, 1, 3);
 		unlockedHats.Add (HatType.One);
@@ -42,8 +41,11 @@ public class GachaReward : MonoBehaviour {
 		if(gachaCount>0){
 			gachaCount--;
 			StartGacha ();
-
 		}
+	}
+
+	IEnumerator WaitForAnim(float time,string animBool){
+		yield return null;
 	}
 
 	void SimulateGacha()
@@ -103,6 +105,7 @@ public class GachaReward : MonoBehaviour {
 
 	public void GetGachaReward(){
 		gachaCount++; 
+		gachaCountText.text = gachaCount.ToString ();
 	}
 
 	void ProcessReward(RewardType type){

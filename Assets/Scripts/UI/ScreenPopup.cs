@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public enum PopupType{
 	Warning,
-	Confirmation
+	Confirmation,
+	AdsOrGems
 }
 
 public enum PopupEventType{
@@ -17,13 +18,15 @@ public enum PopupEventType{
 	NotAbleToBuyEmoji,
 	AlbumLocked,
 	AbleToBuyFurniture,
-	NotAbleToBuyFurniture
+	NotAbleToBuyFurniture,
+	RefillStall
 }
 
 public class ScreenPopup : BaseUI {
 	public GameObject popupObject;
 	public GameObject buttonGroupWarning;
 	public GameObject buttonGroupConfirmation;
+	public GameObject buttonGroupAdsAndGems;
 	public GameObject buttonOk;
 	public GameObject buttonShop;
 	public GameObject buttonTransfer;
@@ -46,12 +49,18 @@ public class ScreenPopup : BaseUI {
 
 	public delegate void BuyFurniture();
 	public static event BuyFurniture OnBuyFurniture;
+
+	public delegate void RefillStallWithAds();
+	public static event RefillStallWithAds OnRefillStallWithAds;
+
+	public delegate void RefillStallWithGems();
+	public static event RefillStallWithGems OnRefillStallWithGems;
 	#endregion
 
 	PopupEventType currentEventType;
 	PopupType currentPopupType;
 
-	public void ShowPopup(PopupType type,PopupEventType eventType,bool toShop,bool toTransfer,Sprite sprite = null,string emojiName = null){
+	public void ShowPopup(PopupType type,PopupEventType eventType,bool toShop=false,bool toTransfer=false,Sprite sprite = null,string emojiName = null){
 		currentEventType = eventType;
 		currentPopupType = type;
 		emojiTransfer = toTransfer;
@@ -59,9 +68,11 @@ public class ScreenPopup : BaseUI {
 		if(type == PopupType.Warning){
 			buttonGroupWarning.SetActive(true);
 			buttonGroupConfirmation.SetActive(false);
-		} else{
+			buttonGroupAdsAndGems.SetActive (false);
+		} else if(type == PopupType.Confirmation){
 			buttonGroupConfirmation.SetActive(true);
 			buttonGroupWarning.SetActive(false);
+			buttonGroupAdsAndGems.SetActive (false);
 			if(toShop){
 				buttonShop.SetActive(true);
 				buttonTransfer.SetActive(false);
@@ -75,6 +86,10 @@ public class ScreenPopup : BaseUI {
 				buttonTransfer.SetActive(false);
 				buttonOk.SetActive(true);
 			}
+		} else{
+			buttonGroupConfirmation.SetActive(false);
+			buttonGroupWarning.SetActive(false);
+			buttonGroupAdsAndGems.SetActive (true);
 		}
 
 		if(sprite!=null){
@@ -105,6 +120,8 @@ public class ScreenPopup : BaseUI {
 			return "Do you want to buy this furniture?";
 		} else if(eventType == PopupEventType.NotAbleToBuyFurniture){
 			return "Not enough coins";
+		} else if(eventType == PopupEventType.RefillStall){
+			return "Do you want to refill this stall?";
 		}
 		else{
 			return "";
@@ -130,7 +147,7 @@ public class ScreenPopup : BaseUI {
 			} else if(currentEventType == PopupEventType.AbleToBuyFurniture){
 				Debug.Log ("buy furniture");
 				OnBuyFurniture ();
-			}
+			} 
 		} else{
 			Debug.Log("3");
 			CloseUI(this.gameObject);
@@ -140,6 +157,14 @@ public class ScreenPopup : BaseUI {
 
 	public void OnClickButtonCancel(){
 		CloseUI(this.gameObject);
+	}
+
+	public void RefillButtonWithAds(){
+		OnRefillStallWithAds ();
+	}
+
+	public void RefillButtonWithGems(){
+		OnRefillStallWithGems ();
 	}
 
 

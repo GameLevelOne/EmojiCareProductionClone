@@ -16,6 +16,7 @@ public class UICelebrationManager : MonoBehaviour {
 	public ExpressionIcons expressionIcons;
 	public EmojiIcons emojiIcons;
 	public ParticlePlayer particlePlayer;
+	public GameObject buttonGacha;
 
 	void OnEnable(){
 		Debug.Log("celebration events");
@@ -83,12 +84,11 @@ public class UICelebrationManager : MonoBehaviour {
 		Debug.Log("wait");
 		yield return new WaitForSeconds(2);
 		NotificationNewExpression obj = Instantiate(notificationExpressionProgress,canvasParent,false) as NotificationNewExpression;
-//		if(isNewExpression){
-//			obj = Instantiate(notificationNewExpression,canvasParent,false) as NotificationNewExpression;
-//		} else{
-//			obj = Instantiate(notificationExpressionProgress,canvasParent,false) as NotificationNewExpression;
-//		}
-		//gachaReward.GetGachaReward ();
+		if(isNewExpression){
+			buttonGacha.SetActive (true);
+			gachaReward.GetGachaReward ();
+		} 
+
 		obj.AddNotifToList (obj.gameObject);
 		obj.ShowUI (expressionStateIndex, expressionIcons, particlePlayer, isNewExpression);
 	}
