@@ -26,6 +26,8 @@ public class Pan : BaseFurniture {
 
 	public bool hasIngredient = false;
 	public bool isCooking;
+
+	const int MAX_INGREDIENT = 5;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initializations
@@ -63,16 +65,22 @@ public class Pan : BaseFurniture {
 	#region public modules
 	public void AddIngredient(GameObject ingredient)
 	{
-		print("Inserting "+ingredient+" to pan");
-		if(!isCooking){
-			if(!hasIngredient){
-				hasIngredient = true;
-				if(smoke.isStopped) smoke.Play();
+		if(ingredients.Count < MAX_INGREDIENT){
+			
+			if(!isCooking){
+				if(!hasIngredient){
+					hasIngredient = true;
+					if(smoke.isStopped) smoke.Play();
+				}
+				ingredient.transform.SetParent(content);
+				ingredients.Add(ingredient);
+				CheckIngredientCombination();
+				print("Inserting "+ingredient+" to pan, current ingredient = "+ingredients.Count);
 			}
-			ingredient.transform.SetParent(content);
-			ingredients.Add(ingredient);
-			CheckIngredientCombination();
+		}else{
+			print("Max Ingredient amount reached (5)");
 		}
+
 	}
 
 	public void ClearIngredient()
@@ -104,13 +112,14 @@ public class Pan : BaseFurniture {
 			//if total ingredients amount match the recipe's ingredient amount
 			if(ingredients.Count == cookBook.recipes[i].ingredients.Count){
 
-
+				//match every ingredient in pan with recipe, correct value will add if match
 				for(int j = 0;j < ingredients.Count;j++){
 					foreach(IngredientType t in cookBook.recipes[i].ingredients){
 						print("Ingredient "+ingredients[j].GetComponent<Ingredient>().type+" compare to "+t);
 						if(ingredients[j].GetComponent<Ingredient>().type == t) correct++;
 					}
 				}
+
 
 				if(correct == cookBook.recipes[i].ingredients.Count) {
 					foodIndex = i;

@@ -42,7 +42,7 @@ public class Garden : BaseRoom {
 
 	void OnGoodHarvested(int index)
 	{
-		AvailableGoods[index].GetComponent<Good>().OnGoodHarvested -= OnGoodHarvested;
+		AvailableGoods[index].GetComponent<StallItem>().OnGoodHarvested -= OnGoodHarvested;
 
 		string tempKey = PlayerPrefKeys.Game.GOODS + index.ToString();
 		PlayerPrefs.SetInt(tempKey,-1);
@@ -64,8 +64,8 @@ public class Garden : BaseRoom {
 			if(index != -1){
 				GameObject tempGood = (GameObject)Instantiate (Goods [index], stallContent.parent);
 				tempGood.transform.localPosition = stallContent.FindChild("Goods").GetChild(i).localPosition;
-				tempGood.GetComponent<Good>().Init(i);
-				tempGood.GetComponent<Good>().OnGoodHarvested += OnGoodHarvested;
+				tempGood.GetComponent<StallItem>().Init(i);
+				tempGood.GetComponent<StallItem>().OnGoodHarvested += OnGoodHarvested;
 				AvailableGoods.Add( tempGood );
 
 			}
@@ -101,8 +101,8 @@ public class Garden : BaseRoom {
 
 			GameObject tempGood = (GameObject)Instantiate (Goods [rnd], stallContent.parent);
 			tempGood.transform.localPosition = stallContent.FindChild("Goods").GetChild(i).localPosition;
-			tempGood.GetComponent<Good>().Init(i);
-			tempGood.GetComponent<Good>().OnGoodHarvested += OnGoodHarvested;
+			tempGood.GetComponent<StallItem>().Init(i);
+			tempGood.GetComponent<StallItem>().OnGoodHarvested += OnGoodHarvested;
 			AvailableGoods.Add(tempGood);
 
 

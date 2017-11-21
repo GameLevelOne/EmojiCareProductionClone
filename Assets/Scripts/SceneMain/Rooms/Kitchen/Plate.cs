@@ -13,6 +13,8 @@ public class Plate : BaseFurniture {
 	public float startY = 0.2f;
 	public float nextY = 0.3f;
 
+	public bool flagHold = false;
+
 	[Header("")]
 	public List<GameObject> FoodsOnPlate = new List<GameObject>();
 	#endregion
@@ -32,9 +34,12 @@ public class Plate : BaseFurniture {
 
 	void OnTriggerEnter2D(Collider2D other)
 	{
-		if(other.tag == Tags.EMOJI_BODY){
-			FoodsOnPlate[FoodsOnPlate.Count-1].GetComponent<Food>().ValidateEmojiHunger(other.transform.parent.GetComponent<Emoji>());
+		if(flagHold){
+			if(other.tag == Tags.EMOJI_BODY){
+				FoodsOnPlate[FoodsOnPlate.Count-1].GetComponent<Food>().ValidateEmojiHunger(other.transform.parent.GetComponent<Emoji>());
+			}
 		}
+
 	}
 
 	void AdjustFoodStacks()
@@ -49,9 +54,11 @@ public class Plate : BaseFurniture {
 	//event trigger
 	public void BeginDrag()
 	{
+		
 		thisCollider.enabled = false;
 		thisRigidbody.simulated = false;
 		thisSprite[currentVariant].sortingLayerName = SortingLayers.HELD;
+		flagHold = true;
 
 		foreach(GameObject g in FoodsOnPlate){
 			g.GetComponent<Food>().thisSprite[g.GetComponent<Food>().currentVariant].sortingLayerName = SortingLayers.HELD;
@@ -66,14 +73,7 @@ public class Plate : BaseFurniture {
 
 	public void EndDrag()
 	{
-		thisCollider.enabled = true;
-		thisRigidbody.velocity = Vector2.zero;
-		thisRigidbody.simulated = true;
-		thisSprite[currentVariant].sortingLayerName = SortingLayers.MOVABLE_FURNITURE;
-
-		foreach(GameObject g in FoodsOnPlate){
-			g.GetComponent<Food>().thisSprite[g.GetComponent<Food>().currentVariant].sortingLayerName = SortingLayers.MOVABLE_FURNITURE;
-		}
+		StartCoroutine(ReleasePlate());
 	}
 
 	void ReleaseFood(GameObject foodObject)
@@ -106,6 +106,23 @@ public class Plate : BaseFurniture {
 		FoodsOnPlate.Add(foodObject);
 
 		food.thisSprite[food.currentVariant].sortingOrder = FoodsOnPlate.Count;
+	}
+	#endregion
+//-------------------------------------------------------------------------------------------------------------------------------------------------	
+	#region coroutine
+	IEnumerator ReleasePlate()
+	{
+		thisCollider.enabled = true;
+		thisRigidbody.velocity = Vector2.zero;
+		thisRigidbody.simulated = true;
+		thisSprite[currentVariant].sortingLayerName = SortingLayers.MOVABLE_FURNITURE;
+
+		foreach(GameObject g in FoodsOnPlate){
+			g.GetComponent<Food>().thisSprite[g.GetComponent<Food>().currentVariant].sortingLayerName = SortingLayers.MOVABLE_FURNITURE;
+		}
+
+		yield return null;
+		flagHold = false;
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------	

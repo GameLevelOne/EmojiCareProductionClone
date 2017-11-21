@@ -47,6 +47,8 @@ public static class PlayerPrefKeys {
 
 	public static class Game
 	{
+		public const string TIME_FIRST_PLAY = "Game/TimeFirstPlay";
+
 		public const string HAS_INIT_INGREDIENT = "Game/HasInitIngredient";
 		public const string SEEDS = "Game/Garden/Seed";
 		public const string GOODS = "Game/Garden/Goods";
@@ -67,6 +69,18 @@ public static class PlayerPrefKeys {
 		public const string SEED_HARVEST_TIME1 = "Game/Garden/SeedHarvestTime/1";
 		public const string SEED_HARVEST_TIME2 = "Game/Garden/SeedHarvestTime/2";
 
+
+		public static class Garden{
+			public const string SEED_RESTOCK_TIME = "Game/Garden/SeedRestock";
+			public const string ITEM_RESTOCK_TIME = "Game/Garden/StallItemRestock";
+
+			public const string ITEM_CURRENT = "Game/Garden/CurrentItem/";
+			public const string SEED_CURRENT = "Game/Garden/CurrentSeed/";
+
+			public const string SEED_TYPE = "Game/Garden/SeedType/";
+			public const string SEED_WATER_COOLDOWN = "Game/Garden/SeedWaterCooldown/";
+			public const string SEED_HARVEST_TIME = "Game/Garden/SeedHarvestTime/";
+		}
 	}
 
 	public static class Tutorial{

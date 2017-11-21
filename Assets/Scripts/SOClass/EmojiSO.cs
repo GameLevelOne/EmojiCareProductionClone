@@ -14,7 +14,7 @@ public enum EmojiType{
 	Takoji
 }
 
-[CreateAssetMenu(fileName = "Emoji_",menuName = "Cards/EmojiSOData",order = 1)]
+[CreateAssetMenu(fileName = "Emoji_",menuName = "SOData/Emoji",order = 1)]
 public class EmojiSO : ScriptableObject {
 	public EmojiType emojiType;
 
