@@ -16,6 +16,8 @@ public class RoomController : MonoBehaviour {
 	public GameObject danceMat; //SEMENTARA
 	public GameObject cookBar; //SEMENTARA
 	public Pan pan;
+	public GardenStall stall;
+	public Soil soil;
 
 	public UIPlantProgress[] plantProgress;
 
@@ -43,6 +45,8 @@ public class RoomController : MonoBehaviour {
 			}
 		AdjustTouchAreaSize();
 		RegisterLockRoomEvent();
+		stall.Init();
+		soil.Init();
 	}
 
 	void RegisterLockRoomEvent()

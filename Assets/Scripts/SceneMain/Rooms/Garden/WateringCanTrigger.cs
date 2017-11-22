@@ -11,8 +11,8 @@ public class WateringCanTrigger : MonoBehaviour {
 	#region mechanics
 	void OnTriggerEnter2D(Collider2D other)
 	{
-		if(other.tag == Tags.PLANT){
-			other.transform.parent.GetComponent<PlantedSeed>().Grow();
+		if(other.tag == Tags.SOIL){
+			other.GetComponent<GardenField>().Watered();
 		}
 	}
 
