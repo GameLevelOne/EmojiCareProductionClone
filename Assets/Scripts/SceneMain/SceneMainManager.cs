@@ -59,7 +59,7 @@ public class SceneMainManager : MonoBehaviour {
 		}
 
 		screenTutorial.Init();
-		gachaReward.Init ();
+//		gachaReward.Init ();
 //		floatingStats.RegisterEvents ();
 
 		if (PlayerData.Instance.TutorialFirstVisit == 0) {
