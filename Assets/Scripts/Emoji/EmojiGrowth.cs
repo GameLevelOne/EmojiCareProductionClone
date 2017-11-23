@@ -22,7 +22,10 @@ public class EmojiGrowth : MonoBehaviour {
 		set{PlayerPrefs.SetFloat(PlayerPrefKeys.Emoji.CURRENT_SCALE,value);}
 	}
 
-
+	public Vector3 GetScale()
+	{
+		return new Vector3(currentScale,currentScale,1f);
+	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization

@@ -56,7 +56,9 @@ public class EmojiBody : MonoBehaviour {
 		//sementara
 		emoji.emojiExpressions.ResetExpressionDuration();
 		emoji.emojiExpressions.SetExpression(EmojiExpressionState.DEFAULT,0);
-		
+
+		emoji.transform.localScale = emoji.emojiGrowth.GetScale();
+
 	}
 
 	public void OnChangingRoomEnd()
@@ -180,6 +182,7 @@ public class EmojiBody : MonoBehaviour {
 	const string _Bounce = "Bounce";
 	IEnumerator Bounce(int currRoom)
 	{
+		
 		currentRoom = currRoom;
 		yield return new WaitForSeconds(0.5f);
 		if(previousRoom != -1){
@@ -190,8 +193,8 @@ public class EmojiBody : MonoBehaviour {
 				if(OnEmojiBouncingToCurrentRoom != null) OnEmojiBouncingToCurrentRoom();
 
 			}else if(currentRoom < previousRoom){
-				
-				emoji.transform.localScale = new Vector3(-1f,1f,1f);
+				Vector3 emojiScale = emoji.emojiGrowth.GetScale();
+				emoji.transform.localScale = new Vector3(-1f * emojiScale.x, emojiScale.y, emojiScale.z);
 				PlayerData.Instance.PlayerEmoji.emojiExpressions.ResetExpressionDuration();
 				emoji.emojiExpressions.SetExpression(EmojiExpressionState.CHANGE_ROOM,-1f);
 				if(OnEmojiBouncingToCurrentRoom != null) OnEmojiBouncingToCurrentRoom();
