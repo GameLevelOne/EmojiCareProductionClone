@@ -23,6 +23,8 @@ public class RoomController : MonoBehaviour {
 
 	public ScreenTutorial screenTutorial;
 
+	public UIGarden uiGarden;
+
 	int roomTotal = 0;
 	float distance = 0;
 	float xOnBeginDrag;
@@ -270,6 +272,13 @@ public class RoomController : MonoBehaviour {
 
 		if(currentRoom != RoomType.LivingRoom)
 			screenTutorial.CheckRoomPlayerPrefs (currentRoom);
+
+		if(currentRoom == RoomType.Garden){
+			uiGarden.InitGardenUI ();
+		} else{
+			if(PlayerData.Instance.TutorialFirstGarden == 1)
+				uiGarden.UnregisterGardenEvents ();
+		}
 
 		yield return null;
 	}
