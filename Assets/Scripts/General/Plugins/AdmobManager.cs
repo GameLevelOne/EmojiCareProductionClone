@@ -5,8 +5,21 @@ using admob;
 
 public class AdmobManager : MonoBehaviour {
 	static AdmobManager instance;
+
+	#region adsIds
+	//TODO: REPLACE WITH PRODUCTION IDs LATER
 	string androidBannerID = "ca-app-pub-3940256099942544/6300978111";
 	string iosBannerID;
+	string androidRewardedVideoID = "ca-app-pub-3940256099942544/5224354917";
+	string iosRewardedVideoID;
+	#endregion
+
+	#region events
+	public delegate void FinishLoadVideoAds();
+	public delegate void FinishWatchVideoAds();
+	public event FinishLoadVideoAds OnFinishLoadVideoAds;
+	public event FinishWatchVideoAds OnFinishWatchVideoAds;
+	#endregion
 
 	Admob ad;
 
@@ -25,19 +38,31 @@ public class AdmobManager : MonoBehaviour {
 		InitAdmob();
 	}
 
-	void OnEnable(){
+	void OnDisable(){
+		ad.rewardedVideoEventHandler -= rewardedVideoEventHandler;
 	}
 
 	void InitAdmob(){
 		ad = Admob.Instance();
+
 		#if UNITY_ANDROID
 		ad.initAdmob(androidBannerID,"");
+		ad.loadRewardedVideo (androidRewardedVideoID);
 		#endif
 
 		#if UNITY_IOS
 		ad.initAdmob(iosBannerID,"");
+		ad.loadRewardedVideo (iosRewardedVideoID);
 		#endif
 
+		ad.rewardedVideoEventHandler += rewardedVideoEventHandler;
+	}
+
+	void rewardedVideoEventHandler (string eventName, string msg)
+	{
+		if(eventName == AdmobEvent.onRewarded){
+			OnFinishWatchVideoAds ();
+		}
 	}
 
 	public void ShowBanner(){
@@ -53,4 +78,24 @@ public class AdmobManager : MonoBehaviour {
 		#endif
 		ad.removeBanner();
 	}
+
+	public void ShowRewardedVideo(){
+		StartCoroutine (WaitForAds ());
+	}
+
+	IEnumerator WaitForAds(){
+		bool adsReady = false;
+		while(!adsReady){
+			if(ad.isRewardedVideoReady()){
+				adsReady = true;
+			}
+			yield return null;
+		}
+
+		if(adsReady){
+			OnFinishLoadVideoAds ();
+			ad.showRewardedVideo ();
+		}
+	}
+
 }

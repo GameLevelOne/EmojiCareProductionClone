@@ -9,11 +9,15 @@ public class PopupRefillStall : MonoBehaviour {
 		screenPopup.ShowPopup (PopupType.AdsOrGems, PopupEventType.RefillStall);
 		ScreenPopup.OnRefillStallWithAds += OnRefillStallWithAds;
 		ScreenPopup.OnRefillStallWithGems += OnRefillStallWithGems;
+		AdmobManager.Instance.OnFinishLoadVideoAds += OnFinishLoadVideoAds;
+		AdmobManager.Instance.OnFinishWatchVideoAds += OnFinishWatchVideoAds;
 	}
 
 	void OnDisable(){
 		ScreenPopup.OnRefillStallWithAds -= OnRefillStallWithAds;
 		ScreenPopup.OnRefillStallWithGems -= OnRefillStallWithGems;
+		AdmobManager.Instance.OnFinishLoadVideoAds -= OnFinishLoadVideoAds;
+		AdmobManager.Instance.OnFinishWatchVideoAds -= OnFinishWatchVideoAds;
 	}
 
 	void OnRefillStallWithAds ()
@@ -27,8 +31,16 @@ public class PopupRefillStall : MonoBehaviour {
 	}
 
 	public void OnClickButtonAds(){
-		//UnityAdsManager.Instance.ShowAds (AdsEventType.RefillStall);
+		//show loading?
+		AdmobManager.Instance.ShowRewardedVideo ();
 	}
-	
+
+	void OnFinishLoadVideoAds(){
+		//disable loading
+	}
+
+	void OnFinishWatchVideoAds(){
+		//refill event
+	}
 
 }
