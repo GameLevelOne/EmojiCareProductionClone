@@ -7,20 +7,20 @@ public class UICoin : MonoBehaviour {
 	public Text textCurrentCoin;
 	public Text textItemPrice;
 
-	string triggerOpenBox = "coinBoxOpen";
-	string triggerCloseBox = "coinBoxClose";
+	string boolOpenBox = "coinBoxOpen";
 	int currentCoin=0;
 	int currentPrice=0;
 	bool isBought = false;
 
-	void ShowUI(){
+	public void ShowUI(int price){
 		currentCoin = PlayerData.Instance.PlayerCoin;
+		currentPrice = price;
 		UpdateDisplay (currentCoin, currentPrice);
-		GetComponent<Animator> ().SetTrigger (triggerOpenBox);
+		GetComponent<Animator> ().SetBool (boolOpenBox,true);
 	}
 
 	IEnumerator AutoCloseUI(){
-		GetComponent<Animator> ().SetTrigger (triggerCloseBox);
+		GetComponent<Animator> ().SetBool (boolOpenBox,false);
 		yield return new WaitForSeconds(0.16f);
 	}
 
@@ -35,7 +35,7 @@ public class UICoin : MonoBehaviour {
 		}
 	}
 
-	void OnEndDrag(){
+	public void CloseUI(){
 		if(isBought){
 			PlayerData.Instance.PlayerCoin -= currentPrice;
 			StartCoroutine (AnimateCoin ());

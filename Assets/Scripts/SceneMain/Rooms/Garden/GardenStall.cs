@@ -4,6 +4,10 @@ using UnityEngine;
 using System;
 
 public class GardenStall : BaseFurniture {
+	public delegate void StallItemTick(TimeSpan duration);
+	public event StallItemTick OnStallItemTick;
+	public delegate void StallSeedTick (TimeSpan duration);
+	public event StallSeedTick OnStallSeedTick;
 	#region attributes
 	[Header("Stall Attributes")]
 	public List<GameObject> AvailableItems = new List<GameObject>();
@@ -212,6 +216,8 @@ public class GardenStall : BaseFurniture {
 				PlayerPrefs.SetString(PlayerPrefKeys.Game.Garden.ITEM_RESTOCK_TIME,newRestockTime.ToString());
 			}else{
 				itemRestockDuration = restockTime.Subtract(DateTime.Now);
+				if (OnStallItemTick != null)
+					OnStallItemTick (itemRestockDuration);
 //				print("Item restock in "+itemRestockDuration.TotalMinutes+":"+itemRestockDuration.Seconds);
 			}
 
@@ -230,6 +236,8 @@ public class GardenStall : BaseFurniture {
 				PlayerPrefs.SetString(PlayerPrefKeys.Game.Garden.SEED_RESTOCK_TIME,newRestockTime.ToString());
 			}else{
 				seedRestockDuration = restockTime.Subtract(DateTime.Now);
+				if (OnStallSeedTick != null)
+					OnStallSeedTick (seedRestockDuration);
 //				print("Seed restock in "+seedRestockDuration.TotalMinutes+":"+seedRestockDuration.Seconds);
 			}
 			yield return new WaitForSeconds(1);
