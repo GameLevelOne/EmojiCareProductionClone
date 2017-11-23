@@ -27,3 +27,4 @@ sysinfo.txt
 *.apk
 *.unitypackage
 AssetBundles/
+Assets/Plugins/Android/GoogleMobileAdsPlugin.meta
