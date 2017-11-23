@@ -49,6 +49,11 @@ public class RoomController : MonoBehaviour {
 		RegisterLockRoomEvent();
 		stall.Init();
 		soil.Init();
+		if(currentRoom == RoomType.Garden){
+			uiGarden.InitGardenUI ();
+		} else{
+			uiGarden.UnregisterGardenEvents ();
+		}
 	}
 
 	void RegisterLockRoomEvent()
@@ -276,8 +281,7 @@ public class RoomController : MonoBehaviour {
 		if(currentRoom == RoomType.Garden){
 			uiGarden.InitGardenUI ();
 		} else{
-			if(PlayerData.Instance.TutorialFirstGarden == 1)
-				uiGarden.UnregisterGardenEvents ();
+			uiGarden.UnregisterGardenEvents ();
 		}
 
 		yield return null;

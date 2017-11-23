@@ -19,11 +19,14 @@ public class StallItem : MonoBehaviour {
 	public int itemIndex;
 	public bool inStall = true;
 	Vector3 startPos;
+	bool isBought = false;
 	#endregion
 
 	#region events
 	public delegate void DragStallItem(int price);
 	public static event DragStallItem OnDragStallItem;
+	public delegate void EndDragStallItem(bool isBought);
+	public static event EndDragStallItem OnEndDragStallItem;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
@@ -36,16 +39,25 @@ public class StallItem : MonoBehaviour {
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
 	//colliders
-	void OnTriggerEnter2D(Collider2D other)
+	void OnTriggerEnter2D (Collider2D other)
 	{
-		if(!inStall){
-			if(other.tag == Tags.BASKET){
-				StopAllCoroutines();
-				PlayerData.Instance.inventory.ModIngredientValue(type,1);
+		if (!inStall) {
+			if (other.tag == Tags.BASKET) {
 
-				if(OnItemPicked != null) OnItemPicked(this);
+				if(PlayerData.Instance.PlayerCoin>=price){
+					isBought = true;
+				}else{
+					isBought = false;
+				}
 
-				Destroy(this.gameObject);
+				StopAllCoroutines ();
+				PlayerData.Instance.inventory.ModIngredientValue (type, 1);
+
+				if (OnItemPicked != null)
+					OnItemPicked (this);
+
+				Destroy (this.gameObject);
+				
 			}
 		}
 	}
@@ -71,6 +83,10 @@ public class StallItem : MonoBehaviour {
 
 	public void EndDrag()
 	{
+		if(OnEndDragStallItem!=null){
+			Debug.Log ("isBought:" + isBought);
+			OnEndDragStallItem (isBought);
+		}
 		StartCoroutine(Return());
 	}
 	#endregion
@@ -93,5 +109,6 @@ public class StallItem : MonoBehaviour {
 		}
 		transform.localPosition = startPos;
 		inStall = true;
+
 	}
 }

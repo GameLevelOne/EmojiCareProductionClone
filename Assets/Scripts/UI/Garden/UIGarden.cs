@@ -22,7 +22,8 @@ public class UIGarden : MonoBehaviour {
 		gardenStall.OnStallSeedTick -= ShowSeedTimer;
 	}
 
-	public void InitGardenUI(){
+	public void InitGardenUI(){	
+		Debug.Log ("init garden");
 		RegisterEvents ();
 		timerSeed.gameObject.SetActive (true);
 		timerIngredientStall.gameObject.SetActive (true);
@@ -31,13 +32,28 @@ public class UIGarden : MonoBehaviour {
 	void RegisterEvents(){
 		Seed.OnDragSeed += HandleDragStallItem;
 		StallItem.OnDragStallItem += HandleDragStallItem;
+		Seed.OnEndDragSeed += OnEndDragSeed;
+		StallItem.OnEndDragStallItem += OnEndDragStallItem;
+	}
+
+	void OnEndDragStallItem (bool isBought)
+	{
+		coinBox.CloseUI (isBought);
+	}
+
+	void OnEndDragSeed (bool isBought)
+	{
+		coinBox.CloseUI (isBought);
 	}
 
 	public void UnregisterGardenEvents(){
-		Seed.OnDragSeed -= HandleDragStallItem;
-		StallItem.OnDragStallItem -= HandleDragStallItem;
+		Debug.Log ("disable ui");
 		boxTimerSeed.SetActive (false);
 		boxTimerIngredientStall.SetActive (false);
+		Seed.OnDragSeed -= HandleDragStallItem;
+		StallItem.OnDragStallItem -= HandleDragStallItem;
+		Seed.OnEndDragSeed -= OnEndDragSeed;
+		StallItem.OnEndDragStallItem -= OnEndDragStallItem;
 	}
 
 	void HandleDragStallItem (int price)
@@ -47,12 +63,10 @@ public class UIGarden : MonoBehaviour {
 	}
 
 	void ShowStallItemTimer(TimeSpan ingredientTimer){
-		boxTimerIngredientStall.SetActive (true);
 		timerIngredientStall.text = ingredientTimer.Minutes.ToString () + ":" + ingredientTimer.Seconds.ToString ();
 	}
 
 	void ShowSeedTimer(TimeSpan seedTimer){
-		boxTimerSeed.SetActive (true);
 		timerSeed.text = seedTimer.Minutes.ToString () + ":" + seedTimer.Seconds.ToString ();
 	}
 	

@@ -35,11 +35,17 @@ public class UICoin : MonoBehaviour {
 		}
 	}
 
-	public void CloseUI(){
+	public void CloseUI(bool isBought){
+		Debug.Log ("close ui");
 		if(isBought){
+			Debug.Log ("bought");
 			PlayerData.Instance.PlayerCoin -= currentPrice;
-			StartCoroutine (AnimateCoin ());
+			currentCoin -= currentPrice;
+			//StartCoroutine (AnimateCoin ());
+			textCurrentCoin.text = currentCoin.ToString ();
+			StartCoroutine (AutoCloseUI ());
 		} else{
+			Debug.Log ("back");
 			StartCoroutine (AutoCloseUI ());
 		}
 	}
