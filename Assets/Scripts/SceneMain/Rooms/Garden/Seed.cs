@@ -21,6 +21,12 @@ public class Seed : MonoBehaviour {
 	Vector3 startPos;
 	bool flagHold = false;
 	#endregion
+
+	#region events
+	public delegate void DragSeed(int price);
+	public static event DragSeed OnDragSeed;
+	#endregion
+
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
 	public void Init(int index)
@@ -48,9 +54,12 @@ public class Seed : MonoBehaviour {
 		}
 	}
 
-	public void BeginDrag()
+	public void BeginDrag ()
 	{
 		flagHold = true;
+		if (OnDragSeed != null) {
+			OnDragSeed (price);
+		}
 	}
 
 	public void Drag()

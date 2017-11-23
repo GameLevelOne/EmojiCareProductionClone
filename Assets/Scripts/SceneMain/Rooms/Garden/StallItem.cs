@@ -20,6 +20,11 @@ public class StallItem : MonoBehaviour {
 	public bool inStall = true;
 	Vector3 startPos;
 	#endregion
+
+	#region events
+	public delegate void DragStallItem(int price);
+	public static event DragStallItem OnDragStallItem;
+	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
 	public void Init(int index)
@@ -53,6 +58,9 @@ public class StallItem : MonoBehaviour {
 		thisAnim.SetBool(AnimatorParameters.Bools.HOLD,true);
 		thisRigidBody.simulated = false;
 		thisCollider.enabled = false;
+		if(OnDragStallItem!=null){
+			OnDragStallItem (price);
+		}
 	}
 
 	public void Drag()
