@@ -121,7 +121,7 @@ public class ScreenPopup : BaseUI {
 		} else if(eventType == PopupEventType.NotAbleToBuyFurniture){
 			return "Not enough coins";
 		} else if(eventType == PopupEventType.RefillStall){
-			return "Do you want to refill this stall?";
+			return "Do you want to refill?";
 		}
 		else{
 			return "";

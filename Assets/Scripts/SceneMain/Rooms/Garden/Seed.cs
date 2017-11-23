@@ -1,46 +1,65 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Seed : MonoBehaviour {
-	public delegate void SeedPlanted(int index);
+	public delegate void SeedPlanted(Seed seed);
 	public event SeedPlanted OnSeedPlanted;
 	#region attributes
-
-	public IngredientType type;
 	public Rigidbody2D thisRigidbody;
-	public Collider2D thisCollider;
 	public GameObject PlantObject;
 	public int growthDuration;
+
+	[Header("Custom Attribute")]
+	public IngredientType type;
+	public int price;
+
+	[Header("Do Not Modify")]
+	public List<GameObject> soilTarget = new List<GameObject>();
 	public int seedIndex;
+
 	Vector3 startPos;
+	bool flagHold = false;
 	#endregion
+
+	#region events
+	public delegate void DragSeed(int price);
+	public static event DragSeed OnDragSeed;
+	#endregion
+
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
-	public void Init(int idx)
+	public void Init(int index)
 	{
 		startPos = transform.localPosition;
-		seedIndex = idx;
+		seedIndex = index;
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
 	public void OnTriggerEnter2D(Collider2D other)
 	{
-		if(other.tag == Tags.SOIL){
-			int soilIndex = int.Parse(other.name);
-			string tempPrefKey = other.transform.parent.GetComponent<Soil>().prefKeyHasSeed[soilIndex];
-			if(PlayerPrefs.GetInt(tempPrefKey) == 0){
-				other.transform.parent.GetComponent<Soil>().AddSeed(soilIndex,type,growthDuration,false);
-				if(OnSeedPlanted != null) OnSeedPlanted(seedIndex);
-				Destroy(this.gameObject);
+		if(flagHold){
+			if(other.tag == Tags.SOIL){
+				soilTarget.Add(other.gameObject);
 			}
+		}
+
+	}
+
+	public void OnTriggerExit2D(Collider2D other)
+	{
+		if(other.tag == Tags.SOIL){
+			soilTarget.Remove(other.gameObject);
 		}
 	}
 
-	public void BeginDrag()
+	public void BeginDrag ()
 	{
-		thisRigidbody.simulated =false;
-		thisCollider.enabled = false;
+		flagHold = true;
+		if (OnDragSeed != null) {
+			OnDragSeed (price);
+		}
 	}
 
 	public void Drag()
@@ -51,6 +70,15 @@ public class Seed : MonoBehaviour {
 
 	public void EndDrag()
 	{
+		flagHold = false;
+		if(soilTarget.Count > 0){
+			if(!soilTarget[0].GetComponent<GardenField>().hasPlant){
+				soilTarget[0].GetComponent<GardenField>().PlantSeed(type);
+				if(OnSeedPlanted != null) OnSeedPlanted(this);
+				Destroy(gameObject);
+				return;
+			}
+		}
 		StartCoroutine(Return());	
 	}
 	#endregion
@@ -61,8 +89,6 @@ public class Seed : MonoBehaviour {
 //-------------------------------------------------------------------------------------------------------------------------------------------------	
 	IEnumerator Return()
 	{
-		thisCollider.enabled = true;
-		thisRigidbody.simulated = true;
 		yield return null;
 		Vector3 currentPos = transform.localPosition;
 		float t = 0;
@@ -72,5 +98,6 @@ public class Seed : MonoBehaviour {
 			yield return null;
 		}
 		transform.localPosition = startPos;
+		soilTarget.Clear();
 	}
 }

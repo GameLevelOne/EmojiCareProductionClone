@@ -4,6 +4,10 @@ using UnityEngine;
 using System;
 
 public class GardenStall : BaseFurniture {
+	public delegate void StallItemTick(TimeSpan duration);
+	public event StallItemTick OnStallItemTick;
+	public delegate void StallSeedTick (TimeSpan duration);
+	public event StallSeedTick OnStallSeedTick;
 	#region attributes
 	[Header("Stall Attributes")]
 	public List<GameObject> AvailableItems = new List<GameObject>();
@@ -12,11 +16,7 @@ public class GardenStall : BaseFurniture {
 	public Transform[] stallItemParent;
 	public Transform[] stallSeedParent;
 
-	public Soil soil;
-
 	public bool hasInit = false;
-	[Header("Custom Variables")]
-	public Vector3 itemScale;
 
 	[Header("Value in minutes")]
 	public int itemRestockTime = 90;
@@ -40,20 +40,25 @@ public class GardenStall : BaseFurniture {
 		if(!hasInit){
 			hasInit = true;
 
-			if(!PlayerPrefs.HasKey(PlayerPrefKeys.Game.Garden.ITEM_CURRENT)){
+			if(!PlayerPrefs.HasKey(PlayerPrefKeys.Game.Garden.ITEM_RESTOCK_TIME)){
 				RestockItems();
 				RestockSeeds();
+			
+				itemRestockDuration = TimeSpan.FromMinutes(itemRestockTime);
+				seedRestockDuration = TimeSpan.FromMinutes(seedRestockTime);
+				DateTime itemNextRestockTime = DateTime.Now.Add(itemRestockDuration);
+				DateTime seedNextRestockTime = DateTime.Now.Add(seedRestockDuration);
+				PlayerPrefs.SetString(PlayerPrefKeys.Game.Garden.ITEM_RESTOCK_TIME,itemNextRestockTime.ToString());
+				PlayerPrefs.SetString(PlayerPrefKeys.Game.Garden.SEED_RESTOCK_TIME,seedNextRestockTime.ToString());
 			}else{
 				ValidateItemRestocking();
 				ValidateSeedRestocking();
-				StartCoroutine(_RunItemRestockTime);
-				StartCoroutine(_RunSeedRestockTime);
 			}
+			StartCoroutine(_RunItemRestockTime);
+			StartCoroutine(_RunSeedRestockTime);
 		}
 	}
-	#endregion
-//-------------------------------------------------------------------------------------------------------------------------------------------------
-	#region mechanics
+
 	void ValidateItemRestocking()
 	{
 		DateTime restockTime = DateTime.Parse(PlayerPrefs.GetString(PlayerPrefKeys.Game.Garden.ITEM_RESTOCK_TIME));
@@ -70,7 +75,6 @@ public class GardenStall : BaseFurniture {
 			LoadItems();
 		}
 	}
-
 	void ValidateSeedRestocking()
 	{
 		DateTime restockTime = DateTime.Parse(PlayerPrefs.GetString(PlayerPrefKeys.Game.Garden.SEED_RESTOCK_TIME));
@@ -87,75 +91,112 @@ public class GardenStall : BaseFurniture {
 			LoadSeeds();
 		}
 	}
-
+	#endregion
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+	#region mechanics
 	public void LoadItems()
 	{
 		for(int i = 0;i<MAX_ITEM;i++){
-			GameObject tempItem = Instantiate(AvailableItems[LoadCurrentItemData(i)],stallItemParent[i]);
-			tempItem.transform.localPosition = new Vector3(0f,0f,-1f);
-			tempItem.transform.localScale = itemScale;
-			currentItems.Add(tempItem);
-			SaveCurrentItemData(i,tempItem.GetComponent<StallItem>().type);
+			int typeIndex = GetCurrentItemData(i);
+
+			if(typeIndex == -1) currentItems.Add(null);
+			else InstantiateItem(i);
 		}
 	}
 	public void LoadSeeds()
 	{
 		for(int i = 0;i<MAX_ITEM;i++){
-			GameObject tempSeed = Instantiate(AvailableItems[LoadCurrentSeedData(i)],stallSeedParent[i]);
-			tempSeed.transform.localPosition = new Vector3(0f,0f,-1f);
-			tempSeed.transform.localScale = itemScale;
-			currentSeeds.Add(tempSeed);
-			SaveCurrentSeedData(i,tempSeed.GetComponent<Seed>().type);
+			int typeIndex = GetCurrentSeedData(i);
+
+			if(typeIndex == -1) currentSeeds.Add(null);
+			else InstantiateSeed(i);
 		}
 	}
+
 
 	public void RestockItems()
 	{
-		foreach(GameObject g in currentItems) Destroy(g);
+		foreach(GameObject g in currentItems){ if(g != null) Destroy(g); }
 		currentItems.Clear();
 
-		for(int i = 0;i<MAX_ITEM;i++){
-			int rnd = UnityEngine.Random.Range(0,AvailableItems.Count);
-			GameObject tempItem = Instantiate(AvailableItems[rnd],stallItemParent[i]);
-			tempItem.transform.localPosition = new Vector3(0f,0f,-1f);
-			tempItem.transform.localScale = itemScale;
-			currentItems.Add(tempItem);
-			SaveCurrentItemData(i,tempItem.GetComponent<StallItem>().type);
-		}
+		for(int i = 0;i<MAX_ITEM;i++) InstantiateItem(i);
 	}
 	public void RestockSeeds()
 	{
-		foreach(GameObject g in currentSeeds) Destroy(g);
+		foreach(GameObject g in currentSeeds){ if(g != null) Destroy(g); }
 		currentSeeds.Clear();
 
-		for(int i = 0;i<MAX_ITEM;i++){
-			int rnd = UnityEngine.Random.Range(0,AvailableSeeds.Count);
-			GameObject tempSeed = Instantiate(AvailableItems[rnd],stallSeedParent[i]);
-			tempSeed.transform.localPosition = new Vector3(0f,0f,-1f);
-			tempSeed.transform.localScale = itemScale;
-			currentSeeds.Add(tempSeed);
-			SaveCurrentSeedData(i,tempSeed.GetComponent<Seed>().type);
-		}
+		for(int i = 0;i<MAX_ITEM;i++) InstantiateSeed(i);
 	}
 
+	//core mechanic
+	void InstantiateItem(int itemIndex)
+	{
+		int rnd = UnityEngine.Random.Range(0,AvailableItems.Count);
+		GameObject tempItem = Instantiate(AvailableItems[rnd],stallItemParent[itemIndex]);
+		tempItem.transform.localPosition = new Vector3(0f,0f,-1f);
+
+		StallItem item = tempItem.GetComponent<StallItem>();
+		item.Init(itemIndex);
+		item.OnItemPicked += OnItemPicked;
+
+		currentItems.Add(tempItem);
+		SetCurrentItemData(itemIndex,(int)item.type);
+	}
+	void InstantiateSeed(int seedIndex)
+	{
+		int rnd = UnityEngine.Random.Range(0,AvailableSeeds.Count);
+		GameObject tempSeed = Instantiate(AvailableSeeds[rnd],stallSeedParent[seedIndex]);
+		tempSeed.transform.localPosition = new Vector3(0f,0f,-1f);
+
+		Seed seed = tempSeed.GetComponent<Seed>();
+		seed.Init(seedIndex);
+		seed.OnSeedPlanted += OnSeedPlanted;
+
+		currentSeeds.Add(tempSeed);
+		SetCurrentSeedData(seedIndex,(int)seed.type);
+	}
+
+	//delegate events
+	void OnItemPicked(StallItem currentItem)
+	{
+		currentItem.OnItemPicked -= OnItemPicked;
+
+		int index = currentItem.itemIndex;
+		SetCurrentItemData(currentItem.itemIndex,-1);
+		Destroy(currentItem.gameObject);
+		
+		currentItems[index] = null;
+	}
+	void OnSeedPlanted(Seed currentSeed)
+	{
+		currentSeed.OnSeedPlanted -= OnSeedPlanted;
+
+		int index = currentSeed.seedIndex;
+		SetCurrentSeedData(currentSeed.seedIndex,-1);
+		Destroy(currentSeed.gameObject);
+
+		currentSeeds[index] = null;
+	}
 
 	//save load seed
-	void SaveCurrentItemData(int index, IngredientType type)
+	void SetCurrentItemData(int itemIndex,int typeIndex)
 	{
-		PlayerPrefs.SetInt(PlayerPrefKeys.Game.Garden.ITEM_CURRENT+index.ToString(),(int)type);
+		PlayerPrefs.SetInt(PlayerPrefKeys.Game.Garden.ITEM_CURRENT+itemIndex.ToString(),typeIndex);
 	}
-	void SaveCurrentSeedData(int index, IngredientType type)
+	void SetCurrentSeedData(int seedIndex, int typeIndex)
 	{
-		PlayerPrefs.SetInt(PlayerPrefKeys.Game.Garden.SEED_CURRENT+index.ToString(),(int)type);
+		PlayerPrefs.SetInt(PlayerPrefKeys.Game.Garden.SEED_CURRENT+seedIndex.ToString(),typeIndex);
 	}
 
-	int LoadCurrentItemData(int index)
+
+	int GetCurrentItemData(int itemIndex)
 	{
-		return PlayerPrefs.GetInt(PlayerPrefKeys.Game.Garden.ITEM_CURRENT);
+		return PlayerPrefs.GetInt(PlayerPrefKeys.Game.Garden.ITEM_CURRENT+itemIndex.ToString());
 	}
-	int LoadCurrentSeedData(int index)
+	int GetCurrentSeedData(int seedIndex)
 	{
-		return PlayerPrefs.GetInt(PlayerPrefKeys.Game.Garden.SEED_CURRENT);
+		return PlayerPrefs.GetInt(PlayerPrefKeys.Game.Garden.SEED_CURRENT+seedIndex.ToString());
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -175,6 +216,9 @@ public class GardenStall : BaseFurniture {
 				PlayerPrefs.SetString(PlayerPrefKeys.Game.Garden.ITEM_RESTOCK_TIME,newRestockTime.ToString());
 			}else{
 				itemRestockDuration = restockTime.Subtract(DateTime.Now);
+				if (OnStallItemTick != null)
+					OnStallItemTick (itemRestockDuration);
+//				print("Item restock in "+itemRestockDuration.TotalMinutes+":"+itemRestockDuration.Seconds);
 			}
 
 			yield return new WaitForSeconds(1);
@@ -192,6 +236,9 @@ public class GardenStall : BaseFurniture {
 				PlayerPrefs.SetString(PlayerPrefKeys.Game.Garden.SEED_RESTOCK_TIME,newRestockTime.ToString());
 			}else{
 				seedRestockDuration = restockTime.Subtract(DateTime.Now);
+				if (OnStallSeedTick != null)
+					OnStallSeedTick (seedRestockDuration);
+//				print("Seed restock in "+seedRestockDuration.TotalMinutes+":"+seedRestockDuration.Seconds);
 			}
 			yield return new WaitForSeconds(1);
 		}

@@ -16,10 +16,14 @@ public class RoomController : MonoBehaviour {
 	public GameObject danceMat; //SEMENTARA
 	public GameObject cookBar; //SEMENTARA
 	public Pan pan;
+	public GardenStall stall;
+	public Soil soil;
 
 	public UIPlantProgress[] plantProgress;
 
 	public ScreenTutorial screenTutorial;
+
+	public UIGarden uiGarden;
 
 	int roomTotal = 0;
 	float distance = 0;
@@ -43,6 +47,8 @@ public class RoomController : MonoBehaviour {
 			}
 		AdjustTouchAreaSize();
 		RegisterLockRoomEvent();
+		stall.Init();
+		soil.Init();
 	}
 
 	void RegisterLockRoomEvent()
@@ -266,6 +272,13 @@ public class RoomController : MonoBehaviour {
 
 		if(currentRoom != RoomType.LivingRoom)
 			screenTutorial.CheckRoomPlayerPrefs (currentRoom);
+
+		if(currentRoom == RoomType.Garden){
+			uiGarden.InitGardenUI ();
+		} else{
+			if(PlayerData.Instance.TutorialFirstGarden == 1)
+				uiGarden.UnregisterGardenEvents ();
+		}
 
 		yield return null;
 	}

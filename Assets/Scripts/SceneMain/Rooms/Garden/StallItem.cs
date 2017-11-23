@@ -2,8 +2,8 @@
 using UnityEngine;
 
 public class StallItem : MonoBehaviour {
-	public delegate void GoodHarvested(int index);
-	public event GoodHarvested OnGoodHarvested;
+	public delegate void GoodHarvested(StallItem item);
+	public event GoodHarvested OnItemPicked;
 	#region attributes
 	[Header("Reference")]
 	public Rigidbody2D thisRigidBody;
@@ -11,40 +11,56 @@ public class StallItem : MonoBehaviour {
 	public SpriteRenderer thisSprite;
 	public Animator thisAnim;
 
+	[Header("Custom Attribute")]
 	public IngredientType type;
-	[Header("Do Not Modify This!")]
-	public int goodIndex;
+	public int price;
 
+	[Header("Do Not Modify")]
+	public int itemIndex;
+	public bool inStall = true;
 	Vector3 startPos;
+	#endregion
+
+	#region events
+	public delegate void DragStallItem(int price);
+	public static event DragStallItem OnDragStallItem;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
 	public void Init(int index)
 	{
 		startPos = transform.localPosition;
-		goodIndex = index;
+		itemIndex = index;
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
+	//colliders
 	void OnTriggerEnter2D(Collider2D other)
 	{
-		if(other.tag == Tags.BASKET){
-			StopAllCoroutines();
-			PlayerData.Instance.inventory.ModIngredientValue(type,1);
+		if(!inStall){
+			if(other.tag == Tags.BASKET){
+				StopAllCoroutines();
+				PlayerData.Instance.inventory.ModIngredientValue(type,1);
 
-			if(OnGoodHarvested != null) OnGoodHarvested(goodIndex);
+				if(OnItemPicked != null) OnItemPicked(this);
 
-			Destroy(this.gameObject);
+				Destroy(this.gameObject);
+			}
 		}
 	}
 
+	//event triggers
 	public void BeginDrag()
 	{
+		inStall = false;
 		thisSprite.sortingLayerName = SortingLayers.HELD;
 		thisAnim.SetBool(AnimatorParameters.Bools.HOLD,true);
 		thisRigidBody.simulated = false;
 		thisCollider.enabled = false;
+		if(OnDragStallItem!=null){
+			OnDragStallItem (price);
+		}
 	}
 
 	public void Drag()
@@ -58,6 +74,7 @@ public class StallItem : MonoBehaviour {
 		StartCoroutine(Return());
 	}
 	#endregion
+//-------------------------------------------------------------------------------------------------------------------------------------------------
 	IEnumerator Return()
 	{
 		thisSprite.sortingLayerName = SortingLayers.MOVABLE_FURNITURE;
@@ -75,5 +92,6 @@ public class StallItem : MonoBehaviour {
 			yield return null;
 		}
 		transform.localPosition = startPos;
+		inStall = true;
 	}
 }
