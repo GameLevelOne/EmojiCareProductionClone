@@ -19,12 +19,18 @@ public class Plant : MonoBehaviour {
 
 	public bool flagHarvest = false;
 	public int currentStage = -1;
+	public int plantLocationIndex;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
 	void Start()
 	{
 		currentStage = 0;
+	}
+
+	public void Init(int locationIndex)
+	{
+		plantLocationIndex = locationIndex;
 	}
 
 	///<summary>
@@ -68,7 +74,8 @@ public class Plant : MonoBehaviour {
 
 	void DestroyPlant()
 	{
-		print("HARVESTED! test");
+		if(OnPlantDestroyed != null) OnPlantDestroyed(plantLocationIndex);
+		Destroy(gameObject);
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -76,9 +83,14 @@ public class Plant : MonoBehaviour {
 	public void PointerClick()
 	{
 		if(!flagHarvest){
-			thisAnim.SetInteger(AnimatorParameters.Ints.STATE,(int)PlantState.Animate);
+			if (thisAnim.GetInteger(AnimatorParameters.Ints.STATE)!=1)
+				thisAnim.SetInteger(AnimatorParameters.Ints.STATE,(int)PlantState.Animate);
 		}else{
-			//DestroyPlant();
+			GameObject crop = (GameObject) Instantiate(plantSO.cropObject,transform.parent);
+			crop.transform.localPosition = new Vector3(0,0,-1f);
+			crop.transform.SetParent(transform.parent.parent.parent.parent);
+			crop.GetComponent<Crop>().thisRigidbody.AddForce(new Vector2(0,200f));
+			DestroyPlant();
 		}
 	}
 	#endregion

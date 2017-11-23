@@ -4,6 +4,8 @@ using UnityEngine;
 using System;
 
 public class GardenField : MonoBehaviour {
+	public delegate void TimerTick(TimeSpan duration);
+	public event TimerTick OnTimerTick;
 	#region attributes
 	[Header("GardenFiemd Attributes")]
 	public Soil soil;
@@ -39,6 +41,7 @@ public class GardenField : MonoBehaviour {
 		prefKeyWaterCooldownTime = PlayerPrefKeys.Game.Garden.SEED_WATER_COOLDOWN+fieldIndex.ToString();
 
 		foreach(SpriteRenderer s in wetSoil) s.enabled = false;
+		post.gameObject.SetActive(false);
 
 		if(PlayerPrefs.HasKey(prefKeySeedType))
 		{
@@ -80,6 +83,11 @@ public class GardenField : MonoBehaviour {
 				GameObject tempPlant = Instantiate(plantToInstantiate,fieldLocations[i]);
 				tempPlant.transform.localPosition = Vector3.zero;
 				currentPlants.Add(tempPlant);
+
+				Plant plant = tempPlant.GetComponent<Plant>();
+				plant.Init(i);
+				plant.OnPlantDestroyed += OnPlantDestroyed;
+
 			}
 			hasPlant = true;
 		}
@@ -118,6 +126,21 @@ public class GardenField : MonoBehaviour {
 			StartCoroutine(StartWaterCooldown());
 		}
 	}
+
+	void OnPlantDestroyed(int locationIndex)
+	{
+		currentPlants[locationIndex].GetComponent<Plant>().OnPlantDestroyed -= OnPlantDestroyed;
+		wetSoil[locationIndex].enabled = false;
+
+		int plantCount = 0;
+		foreach(GameObject g in currentPlants){
+			if(g != null) plantCount++;
+		}
+		if(plantCount == 0){
+			hasPlant = false;
+			currentPlants.Clear();
+		}
+	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------	
 	#region coroutine
@@ -134,6 +157,7 @@ public class GardenField : MonoBehaviour {
 			}else{
 				plantGrowDuration = plantHarvestTime.Subtract(DateTime.Now);
 //				print("Field "+fieldIndex+" harvest in "+plantGrowDuration.Minutes+":"+plantGrowDuration.Seconds);
+				if(OnTimerTick != null) OnTimerTick(plantGrowDuration);
 				foreach(GameObject g in currentPlants) g.GetComponent<Plant>().UpdatePlantStage((int)plantGrowDuration.TotalSeconds);
 				yield return new WaitForSeconds(1f);
 			}

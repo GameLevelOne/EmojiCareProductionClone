@@ -21,6 +21,7 @@ public static class Tags {
 
 	public const string PLANT = "Plant";
 	public const string SOIL = "Soil";
+	public const string CROP = "Crop";
 
 	public static class UI
 	{

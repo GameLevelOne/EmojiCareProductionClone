@@ -4,7 +4,7 @@
 public class PlantSO : ScriptableObject {
 	public IngredientType type;
 	public Sprite[] plantStages;
-	public GameObject ingredientObject;
+	public GameObject cropObject;
 
 	[Header("Duration is in minutes")]
 	public int GrowTime = 30;

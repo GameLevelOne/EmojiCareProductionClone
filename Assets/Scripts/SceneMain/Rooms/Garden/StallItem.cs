@@ -17,7 +17,7 @@ public class StallItem : MonoBehaviour {
 
 	[Header("Do Not Modify")]
 	public int itemIndex;
-
+	public bool inStall = true;
 	Vector3 startPos;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -33,19 +33,22 @@ public class StallItem : MonoBehaviour {
 	//colliders
 	void OnTriggerEnter2D(Collider2D other)
 	{
-		if(other.tag == Tags.BASKET){
-			StopAllCoroutines();
-			PlayerData.Instance.inventory.ModIngredientValue(type,1);
+		if(!inStall){
+			if(other.tag == Tags.BASKET){
+				StopAllCoroutines();
+				PlayerData.Instance.inventory.ModIngredientValue(type,1);
 
-			if(OnItemPicked != null) OnItemPicked(this);
+				if(OnItemPicked != null) OnItemPicked(this);
 
-			Destroy(this.gameObject);
+				Destroy(this.gameObject);
+			}
 		}
 	}
 
 	//event triggers
 	public void BeginDrag()
 	{
+		inStall = false;
 		thisSprite.sortingLayerName = SortingLayers.HELD;
 		thisAnim.SetBool(AnimatorParameters.Bools.HOLD,true);
 		thisRigidBody.simulated = false;
@@ -81,5 +84,6 @@ public class StallItem : MonoBehaviour {
 			yield return null;
 		}
 		transform.localPosition = startPos;
+		inStall = true;
 	}
 }
