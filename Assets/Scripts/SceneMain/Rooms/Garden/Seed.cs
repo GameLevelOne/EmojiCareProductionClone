@@ -20,11 +20,14 @@ public class Seed : MonoBehaviour {
 
 	Vector3 startPos;
 	bool flagHold = false;
+	bool isBought=false;
 	#endregion
 
 	#region events
 	public delegate void DragSeed(int price);
 	public static event DragSeed OnDragSeed;
+	public delegate void EndDragSeed(bool isBought);
+	public static event EndDragSeed OnEndDragSeed;
 	#endregion
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -42,6 +45,11 @@ public class Seed : MonoBehaviour {
 		if(flagHold){
 			if(other.tag == Tags.SOIL){
 				soilTarget.Add(other.gameObject);
+				if(PlayerData.Instance.PlayerCoin>=price){
+					isBought = true;
+				}else{
+					isBought = false;
+				}
 			}
 		}
 
@@ -70,6 +78,11 @@ public class Seed : MonoBehaviour {
 
 	public void EndDrag()
 	{
+		if(OnEndDragSeed!=null){
+			Debug.Log ("isBought:" + isBought);
+			OnEndDragSeed(isBought);
+		}
+
 		flagHold = false;
 		if(soilTarget.Count > 0){
 			if(!soilTarget[0].GetComponent<GardenField>().hasPlant){
@@ -79,6 +92,7 @@ public class Seed : MonoBehaviour {
 				return;
 			}
 		}
+
 		StartCoroutine(Return());	
 	}
 	#endregion
@@ -99,5 +113,6 @@ public class Seed : MonoBehaviour {
 		}
 		transform.localPosition = startPos;
 		soilTarget.Clear();
+
 	}
 }

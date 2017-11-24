@@ -24,7 +24,8 @@ public class FieldPost : MonoBehaviour {
 	#region mechanics
 	void OnTimerTick (TimeSpan duration)
 	{
-		textTimer.text = duration.TotalMinutes+":"+duration.Seconds;
+//		print(duration.TotalMinutes+":"+duration.Seconds);
+		textTimer.text = (int)duration.TotalMinutes+":"+duration.Seconds;
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -32,11 +33,14 @@ public class FieldPost : MonoBehaviour {
 	public void Show()
 	{
 		gameObject.SetActive(true);
+		textTimer.gameObject.SetActive(true);
 	}
 	public void Hide()
 	{
 		gameObject.SetActive(false);
+		textTimer.gameObject.SetActive(false);
 	}
+
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------	
 
