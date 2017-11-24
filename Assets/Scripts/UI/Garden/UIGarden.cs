@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class UIGarden : MonoBehaviour {
 	public GardenStall gardenStall;
+	public ScreenPopup screenPopup;
 	public UICoin coinBox;
 	public GameObject boxTimerSeed;
 	public GameObject boxTimerIngredientStall;
@@ -39,16 +40,6 @@ public class UIGarden : MonoBehaviour {
 		StallItem.OnEndDragStallItem += OnEndDragStallItem;
 	}
 
-	void OnEndDragStallItem (bool isBought)
-	{
-		coinBox.CloseUI (isBought);
-	}
-
-	void OnEndDragSeed (bool isBought)
-	{
-		coinBox.CloseUI (isBought);
-	}
-
 	public void UnregisterGardenEvents(){
 		Debug.Log ("disable ui");
 		boxTimerSeed.SetActive (false);
@@ -57,6 +48,20 @@ public class UIGarden : MonoBehaviour {
 		StallItem.OnDragStallItem -= HandleDragStallItem;
 		Seed.OnEndDragSeed -= OnEndDragSeed;
 		StallItem.OnEndDragStallItem -= OnEndDragStallItem;
+	}
+
+	public void ShowPopupRefillStall(){
+		screenPopup.ShowPopup (PopupType.AdsOrGems, PopupEventType.RefillStall);
+	}
+
+	void OnEndDragStallItem (bool isBought)
+	{
+		coinBox.CloseUI (isBought);
+	}
+
+	void OnEndDragSeed (bool isBought)
+	{
+		coinBox.CloseUI (isBought);
 	}
 
 	void HandleDragStallItem (int price)

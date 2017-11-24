@@ -9,7 +9,7 @@ public class DanceMatMinigameTile : MonoBehaviour {
 	public int tileIndex;
 	int clickCount;
 
-	int maxCount = 4;
+	int maxCount = 6;
 
 	public void OnClickTile ()
 	{
