@@ -279,6 +279,7 @@ public class RoomController : MonoBehaviour {
 			screenTutorial.CheckRoomPlayerPrefs (currentRoom);
 
 		if(currentRoom == RoomType.Garden){
+			Debug.Log ("show ui");
 			uiGarden.InitGardenUI ();
 		} else{
 			uiGarden.UnregisterGardenEvents ();
