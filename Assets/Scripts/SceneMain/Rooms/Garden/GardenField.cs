@@ -41,7 +41,7 @@ public class GardenField : MonoBehaviour {
 		prefKeyWaterCooldownTime = PlayerPrefKeys.Game.Garden.SEED_WATER_COOLDOWN+fieldIndex.ToString();
 
 		foreach(SpriteRenderer s in wetSoil) s.enabled = false;
-		post.gameObject.SetActive(false);
+		post.Hide();
 
 		if(PlayerPrefs.HasKey(prefKeySeedType))
 		{
@@ -90,6 +90,8 @@ public class GardenField : MonoBehaviour {
 
 			}
 			hasPlant = true;
+			post.Show();
+			StartCoroutine(StartPlantGrowing());
 		}
 	}
 
@@ -107,6 +109,7 @@ public class GardenField : MonoBehaviour {
 			PlayerPrefs.SetInt(prefKeySeedType,(int)type);
 			PlayerPrefs.SetString(prefKeyHarvestTime,plantHarvestTime.ToString());
 			hasPlant = true;
+			post.Show();
 			StartCoroutine(StartPlantGrowing());
 		}
 	}
@@ -153,6 +156,7 @@ public class GardenField : MonoBehaviour {
 				//ready harvest
 				foreach(GameObject g in currentPlants) g.GetComponent<Plant>().UpdatePlantStage(0);
 				flag = false;
+				post.Hide();
 				break;
 			}else{
 				plantGrowDuration = plantHarvestTime.Subtract(DateTime.Now);
