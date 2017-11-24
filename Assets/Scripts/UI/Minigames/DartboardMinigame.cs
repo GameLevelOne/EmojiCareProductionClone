@@ -8,6 +8,7 @@ public class DartboardMinigame : BaseUI {
 	Animator dartAnim;
 	string boolShoot = "Shoot";
 	string boolReset = "Reset";
+	Vector3 stopPosition;
 
 	void OnEnable(){
 		dartAnim = dartMark.GetComponent<Animator>();
@@ -16,16 +17,15 @@ public class DartboardMinigame : BaseUI {
 	}
 
 	public void OnClickStop(){
-		//dartMark.SetActive(true);
 		StopCoroutine ("MoveArrow");
-		Vector3 stopPosition = Vector3.zero;
+		stopPosition = Vector3.zero;
 		stopPosition = dartMark.transform.localPosition;
 		moveMark=false;
 		if(!moveMark){
 			dartAnim.SetBool (boolShoot, true);
 			dartAnim.SetBool (boolReset, false);
 		}
-		PlayerData.Instance.PlayerEmoji.playerInput.OnDartboardMingameDone (CalculateStatGain (stopPosition.x));
+		StartCoroutine (ResetDart ());
 	}
 
 	int CalculateStatGain(float xPos){
@@ -41,6 +41,7 @@ public class DartboardMinigame : BaseUI {
 	}
 
 	public void OnClickBack(){
+		PlayerData.Instance.PlayerEmoji.playerInput.OnDartboardMingameDone (CalculateStatGain (stopPosition.x));
 		dartAnim.SetBool (boolShoot, false);
 		dartAnim.SetBool (boolReset, true);
 		moveMark = false;
@@ -52,5 +53,13 @@ public class DartboardMinigame : BaseUI {
 			dartMark.transform.localPosition = new Vector3 ((Mathf.PingPong (Time.time*500, 400) - 200), -500, 0);
 			yield return null;
 		}
+	}
+
+	IEnumerator ResetDart(){
+		yield return new WaitForSeconds (3f);
+		dartAnim.SetBool (boolReset, true);
+		dartAnim.SetBool (boolShoot, false);
+		moveMark = true;
+		StartCoroutine (MoveArrow ());
 	}
 }
