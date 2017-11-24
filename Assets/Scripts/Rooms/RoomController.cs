@@ -273,6 +273,7 @@ public class RoomController : MonoBehaviour {
 			screenTutorial.CheckRoomPlayerPrefs (currentRoom);
 
 		if(currentRoom == RoomType.Garden){
+			Debug.Log ("garden");
 			gardenTimer.SetActive(true);
 		} else{
 			gardenTimer.SetActive(false);
