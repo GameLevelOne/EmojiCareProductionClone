@@ -22,17 +22,7 @@ public class UIGarden : MonoBehaviour {
 		gardenStall.OnStallItemTick -= ShowStallItemTimer;
 		gardenStall.OnStallSeedTick -= ShowSeedTimer;
 	}
-
-	public void Show(){
-		boxTimerSeed.SetActive(true);
-		boxTimerIngredientStall.SetActive(true);
-	}
-	public void Hide()
-	{
-		boxTimerSeed.SetActive(false);
-		boxTimerIngredientStall.SetActive(false);
-	}
-
+ 
 	public void Init(){	
 		Seed.OnDragSeed += HandleDragStallItem;
 		StallItem.OnDragStallItem += HandleDragStallItem;
