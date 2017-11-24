@@ -15,15 +15,13 @@ public class RoomController : MonoBehaviour {
 	public RoomType currentRoom = RoomType.LivingRoom;
 	public GameObject danceMat; //SEMENTARA
 	public GameObject cookBar; //SEMENTARA
+	public GameObject gardenTimer;
+	public UIGarden uiGarden;
 	public Pan pan;
 	public GardenStall stall;
 	public Soil soil;
 
-	public UIPlantProgress[] plantProgress;
-
 	public ScreenTutorial screenTutorial;
-
-	public UIGarden uiGarden;
 
 	int roomTotal = 0;
 	float distance = 0;
@@ -49,11 +47,7 @@ public class RoomController : MonoBehaviour {
 		RegisterLockRoomEvent();
 		stall.Init();
 		soil.Init();
-		if(currentRoom == RoomType.Garden){
-			uiGarden.InitGardenUI ();
-		} else{
-			uiGarden.UnregisterGardenEvents ();
-		}
+		uiGarden.Init();
 	}
 
 	void RegisterLockRoomEvent()
@@ -124,7 +118,8 @@ public class RoomController : MonoBehaviour {
 				float x = getWorldPositionFromTouchInput().x;
 				distance = transform.localPosition.x - x;
 
-				foreach(UIPlantProgress pp in plantProgress) pp.Hide();
+				gardenTimer.SetActive(false);
+				uiGarden.Hide();
 				//			Emoji.Instance.emojiObject.GetComponent<EmojiObject>().OnRoomChangingStart();
 			}
 		}
@@ -279,9 +274,11 @@ public class RoomController : MonoBehaviour {
 			screenTutorial.CheckRoomPlayerPrefs (currentRoom);
 
 		if(currentRoom == RoomType.Garden){
-			uiGarden.InitGardenUI ();
+			gardenTimer.SetActive(true);
+			uiGarden.Show();
 		} else{
-			uiGarden.UnregisterGardenEvents ();
+			gardenTimer.SetActive(false);
+			uiGarden.Hide();
 		}
 
 		yield return null;
