@@ -23,7 +23,7 @@ public class GardenField : MonoBehaviour {
 	public int waterCooldownTime = 5;
 
 	[Header("Do Not modify")]
-	public List<GameObject> currentPlants;
+	public GameObject[] currentPlants = new GameObject[3]{null,null,null};
 
 	DateTime plantHarvestTime;
 	TimeSpan plantGrowDuration;
@@ -80,9 +80,9 @@ public class GardenField : MonoBehaviour {
 		if(!hasPlant){
 			GameObject plantToInstantiate = soil.GetPlant(type);
 			for(int i = 0;i<fieldLocations.Count;i++){
-				GameObject tempPlant = Instantiate(plantToInstantiate,fieldLocations[i]);
+				GameObject tempPlant = Instantiate(plantToInstantiate,fieldLocations[i]) as GameObject;
 				tempPlant.transform.localPosition = Vector3.zero;
-				currentPlants.Add(tempPlant);
+				currentPlants[i] = tempPlant;
 
 				Plant plant = tempPlant.GetComponent<Plant>();
 				plant.Init(i);
@@ -100,9 +100,9 @@ public class GardenField : MonoBehaviour {
 		if(!hasPlant){
 			GameObject plantToInstantiate = soil.GetPlant(type);
 			for(int i = 0;i<fieldLocations.Count;i++){
-				GameObject tempPlant = Instantiate(plantToInstantiate,fieldLocations[i]);
+				GameObject tempPlant = Instantiate(plantToInstantiate,fieldLocations[i]) as GameObject;
 				tempPlant.transform.localPosition = Vector3.zero;
-				currentPlants.Add(tempPlant);
+				currentPlants[i] = tempPlant;
 			}
 
 			plantHarvestTime = DateTime.Now.Add(TimeSpan.FromMinutes(currentPlants[0].GetComponent<Plant>().plantSO.GrowTime));
@@ -141,7 +141,6 @@ public class GardenField : MonoBehaviour {
 		}
 		if(plantCount == 0){
 			hasPlant = false;
-			currentPlants.Clear();
 		}
 	}
 	#endregion
