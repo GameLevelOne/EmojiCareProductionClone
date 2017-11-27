@@ -90,7 +90,6 @@ public class StallItem : MonoBehaviour {
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	IEnumerator Return()
 	{
-		thisSprite.sortingLayerName = SortingLayers.MOVABLE_FURNITURE;
 		thisAnim.SetBool(AnimatorParameters.Bools.HOLD,false);
 		thisRigidBody.simulated = true;
 		thisCollider.enabled = true;
@@ -105,7 +104,7 @@ public class StallItem : MonoBehaviour {
 			yield return null;
 		}
 		transform.localPosition = startPos;
+		thisSprite.sortingLayerName = SortingLayers.MOVABLE_FURNITURE;
 		inStall = true;
-
 	}
 }
