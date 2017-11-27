@@ -160,7 +160,7 @@ public class ScreenPopup : BaseUI {
 	}
 
 	public void RefillButtonWithAds(){
-		OnRefillStallWithAds ();
+		AdmobManager.Instance.ShowRewardedVideo ();
 	}
 
 	public void RefillButtonWithGems(){

@@ -25,7 +25,9 @@ public class Toy : MovableFurniture {
 	{
 		base.BeginDrag();
 		if(!flagEditMode && !endDrag){
-			thisRigidbody.angularVelocity = 0f;
+			thisRigidbody.simulated = false;
+
+
 			prevPos = transform.position;
 		}
 	}
@@ -43,6 +45,8 @@ public class Toy : MovableFurniture {
 	{	
 		if(!flagEditMode && !endDrag){
 			endDrag = true;
+			thisRigidbody.angularVelocity = 0f;
+			thisRigidbody.velocity = Vector2.zero;
 			thisRigidbody.simulated = true;
 			thisCollider.enabled = true;
 			thisSprite.sortingLayerName = SortingLayers.MOVABLE_FURNITURE;

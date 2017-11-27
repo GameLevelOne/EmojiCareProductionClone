@@ -17,7 +17,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 	public bool flagFalling = false;
 	public bool flagSleeping = false;
 	public float eatDuration = 3f;
-	public float rejectDuration = 1.5f;
+	public float rejectDuration = 2.5f;
 	[Header("HoldMove Mechanic")]
 	public float slowMediumTreshold = 3f;
 	public float mediumFastTreshold = 6f;
@@ -317,6 +317,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 				float emojiHealth = emoji.health.StatValue/emoji.health.MaxStatValue;
 				if(emojiHealth >= 0.3f){
 					emoji.health.statsModifier = -3f;
+
 				}else{
 					emoji.ResetEmojiStatsModifier();
 				}
@@ -377,6 +378,11 @@ public class EmojiPlayerInput : MonoBehaviour {
 		emoji.emojiExpressions.SetExpression(EmojiExpressionState.REJECT,rejectDuration);
 		StartCoroutine(_LockInteractions,rejectDuration);
 		emoji.body.OnEmojiEatOrReject(rejectDuration);
+	}
+
+	public void ApplyMedicineOrSyringe(float duration)
+	{
+		StartCoroutine(_LockInteractions,duration);
 	}
 
 	public void Fall()
@@ -506,8 +512,9 @@ public class EmojiPlayerInput : MonoBehaviour {
 	{
 		shakeExpressionRetain = true;
 		yield return new WaitForSeconds (cooldown);
-		print ("RESET RETAIN SHAKE RESPONSE");
 		shakeExpressionRetain = false;
+		barfSound = false;
+		dizzySound = false;
 	}
 
 	const string _StartHold = "StartHold";

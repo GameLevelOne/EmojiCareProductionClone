@@ -119,7 +119,6 @@ public class RoomController : MonoBehaviour {
 				distance = transform.localPosition.x - x;
 
 				gardenTimer.SetActive(false);
-				uiGarden.Hide();
 				//			Emoji.Instance.emojiObject.GetComponent<EmojiObject>().OnRoomChangingStart();
 			}
 		}
@@ -274,11 +273,10 @@ public class RoomController : MonoBehaviour {
 			screenTutorial.CheckRoomPlayerPrefs (currentRoom);
 
 		if(currentRoom == RoomType.Garden){
+			Debug.Log ("garden");
 			gardenTimer.SetActive(true);
-			uiGarden.Show();
 		} else{
 			gardenTimer.SetActive(false);
-			uiGarden.Hide();
 		}
 
 		yield return null;

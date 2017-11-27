@@ -35,6 +35,15 @@ public class GardenStall : BaseFurniture {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
+
+	void OnEnable(){
+		if(AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds += OnFinishWatchVideoAds;
+	}
+
+	void OnDisable(){
+		if(AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds -= OnFinishWatchVideoAds;
+	}
+
 	public void Init()
 	{
 		if(!hasInit){
@@ -177,6 +186,9 @@ public class GardenStall : BaseFurniture {
 		Destroy(currentSeed.gameObject);
 
 		currentSeeds[index] = null;
+	}
+	void OnFinishWatchVideoAds(){
+		RestockItems ();
 	}
 
 	//save load seed

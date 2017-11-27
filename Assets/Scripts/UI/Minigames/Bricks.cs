@@ -35,6 +35,8 @@ public class Bricks : MonoBehaviour {
 	}
 
 	public void EndDrag(){
+		thisRigidbody.angularVelocity = 0;
+		thisRigidbody.velocity = Vector2.zero;
 		thisRigidbody.simulated=true;
 	}
 }

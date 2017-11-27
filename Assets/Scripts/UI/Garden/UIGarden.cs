@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class UIGarden : MonoBehaviour {
 	public GardenStall gardenStall;
+	public ScreenPopup screenPopup;
 	public UICoin coinBox;
 	public GameObject boxTimerSeed;
 	public GameObject boxTimerIngredientStall;
@@ -21,32 +22,12 @@ public class UIGarden : MonoBehaviour {
 		gardenStall.OnStallItemTick -= ShowStallItemTimer;
 		gardenStall.OnStallSeedTick -= ShowSeedTimer;
 	}
-
-	public void Show(){
-		boxTimerSeed.SetActive(true);
-		boxTimerIngredientStall.SetActive(true);
-	}
-	public void Hide()
-	{
-		boxTimerSeed.SetActive(false);
-		boxTimerIngredientStall.SetActive(false);
-	}
-
+ 
 	public void Init(){	
 		Seed.OnDragSeed += HandleDragStallItem;
 		StallItem.OnDragStallItem += HandleDragStallItem;
 		Seed.OnEndDragSeed += OnEndDragSeed;
 		StallItem.OnEndDragStallItem += OnEndDragStallItem;
-	}
-
-	void OnEndDragStallItem (bool isBought)
-	{
-		coinBox.CloseUI (isBought);
-	}
-
-	void OnEndDragSeed (bool isBought)
-	{
-		coinBox.CloseUI (isBought);
 	}
 
 	public void UnregisterGardenEvents(){
@@ -57,6 +38,20 @@ public class UIGarden : MonoBehaviour {
 		StallItem.OnDragStallItem -= HandleDragStallItem;
 		Seed.OnEndDragSeed -= OnEndDragSeed;
 		StallItem.OnEndDragStallItem -= OnEndDragStallItem;
+	}
+
+	public void ShowPopupRefillStall(){
+		screenPopup.ShowPopup (PopupType.AdsOrGems, PopupEventType.RefillStall);
+	}
+
+	void OnEndDragStallItem (bool isBought)
+	{
+		coinBox.CloseUI (isBought);
+	}
+
+	void OnEndDragSeed (bool isBought)
+	{
+		coinBox.CloseUI (isBought);
 	}
 
 	void HandleDragStallItem (int price)

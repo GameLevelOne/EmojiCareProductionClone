@@ -38,7 +38,7 @@ public class Emoji : MonoBehaviour {
 
 	[Header("")]
 	public string emojiName;
-	public EmojiStats hunger, hygiene,happiness,stamina, health;
+	public EmojiStats hunger, hygiene, happiness, stamina, health;
 	public EmojiExpression emojiExpressions;
 	public EmojiActivity activity;
 	public EmojiGrowth emojiGrowth;
@@ -173,39 +173,43 @@ public class Emoji : MonoBehaviour {
 
 	void TickHealth()
 	{
-		float hungerValue = hunger.StatValue/hunger.MaxStatValue;
-		float hygieneValue = hygiene.StatValue/hygiene.MaxStatValue;
-		float happinessValue = happiness.StatValue/happiness.MaxStatValue;
-		float staminaValue = stamina.StatValue/stamina.MaxStatValue;
+		if(!playerInput.barfSound){
+			float hungerValue = hunger.StatValue/hunger.MaxStatValue;
+			float hygieneValue = hygiene.StatValue/hygiene.MaxStatValue;
+			float happinessValue = happiness.StatValue/happiness.MaxStatValue;
+			float staminaValue = stamina.StatValue/stamina.MaxStatValue;
 
-		int LowStatsCounter = 0;
-		if(hungerValue < statsTresholdLow) LowStatsCounter++;
-		if(hygieneValue < statsTresholdLow) LowStatsCounter++;
-		if(happinessValue < statsTresholdLow) LowStatsCounter++;
-		if(staminaValue < statsTresholdLow) LowStatsCounter++;
+			int LowStatsCounter = 0;
+			if(hungerValue < statsTresholdLow) LowStatsCounter++;
+			if(hygieneValue < statsTresholdLow) LowStatsCounter++;
+			if(happinessValue < statsTresholdLow) LowStatsCounter++;
+			if(staminaValue < statsTresholdLow) LowStatsCounter++;
 
-		if(LowStatsCounter < 2){
-			int highStatsCounter = 0;
-			if(hungerValue >= statsTresholdHigh) highStatsCounter++;
-			if(hygieneValue >= statsTresholdHigh) highStatsCounter++;
-			if(happinessValue >= statsTresholdHigh) highStatsCounter++;
-			if(staminaValue >= statsTresholdHigh) highStatsCounter++;
+			if(LowStatsCounter < 2){
+				int highStatsCounter = 0;
+				if(hungerValue >= statsTresholdHigh) highStatsCounter++;
+				if(hygieneValue >= statsTresholdHigh) highStatsCounter++;
+				if(happinessValue >= statsTresholdHigh) highStatsCounter++;
+				if(staminaValue >= statsTresholdHigh) highStatsCounter++;
 
-			if(highStatsCounter > 0){
-				health.statsModifier = healthTick[highStatsCounter-1];
+				if(highStatsCounter > 0){
+					health.statsModifier = healthTick[highStatsCounter-1];
+				}else{
+					health.statsModifier = 0f;
+				}
 			}else{
-				health.statsModifier = 0f;
+				health.statsModifier = -1 * healthTick[LowStatsCounter-1];
 			}
-		}else{
-			health.statsModifier = -1 * healthTick[LowStatsCounter-1];
 		}
-
 		health.TickStats();
 
 		if(health.StatValue <= 0){
-			emojiDead = true;
-			if(OnEmojiDead != null) OnEmojiDead();
+			if(!emojiDead){
+				emojiDead = true;
+				if(OnEmojiDead != null) OnEmojiDead();
+			}
 		}
+		
 	}
 
 	int GetTotalTicks(TimeSpan duration)
