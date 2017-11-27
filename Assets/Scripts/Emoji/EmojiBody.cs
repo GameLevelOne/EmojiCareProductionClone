@@ -219,7 +219,7 @@ public class EmojiBody : MonoBehaviour {
 		//for 3 seconds, foam state increase from 1 to 10.
 		while(foamState < 10f){
 			foamState += (Time.deltaTime * (10f/3f));
-			print(foamState);
+			//print(foamState);
 			yield return null;
 		}
 		foamState = 10f;

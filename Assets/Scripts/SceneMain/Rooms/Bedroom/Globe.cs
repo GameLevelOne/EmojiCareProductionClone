@@ -5,6 +5,8 @@ using UnityEngine;
 public class Globe : ActionableFurniture {
 	[Header("Globe Attributes")]
 	public List<Sprite> globeSpinning = new List<Sprite>();
+	public Rigidbody2D thisRigidbody;
+	public Collider2D thisCollider;
 
 	bool isSpining = false;
 
@@ -24,6 +26,28 @@ public class Globe : ActionableFurniture {
 	IEnumerator Spinning()
 	{
 		isSpining = true;
+		Vector3 startRotation = thisSprite[currentVariant].transform.eulerAngles;
+		Vector3 shakeRotation = new Vector3(0,0,-10f);
+
+		thisRigidbody.simulated = false;
+		thisCollider.enabled = false;
+		float t = 0;
+		while(t < 1){
+			thisSprite[currentVariant].transform.eulerAngles = Vector3.Lerp(startRotation,shakeRotation,t);
+			t += Time.deltaTime * 10f;
+			yield return null;
+		}
+		thisSprite[currentVariant].transform.eulerAngles = shakeRotation;
+		t = 0;
+		while(t < 1){
+			thisSprite[currentVariant].transform.eulerAngles = Vector3.Lerp(shakeRotation,startRotation,t);
+			t += Time.deltaTime * 10f;
+			yield return null;
+		}
+		thisSprite[currentVariant].transform.eulerAngles = startRotation;
+		thisRigidbody.simulated = true;
+		thisCollider.enabled = true;
+
 		int counter = 0;
 		while(counter < 8){
 			for(int i = 0;i<globeSpinning.Count;i++){
