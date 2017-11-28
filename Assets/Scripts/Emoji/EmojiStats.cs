@@ -2,6 +2,7 @@
 using UnityEngine;
 using System;
 
+[Serializable]
 public class EmojiStats {
 	#region attributes
 	//constructor
@@ -15,10 +16,10 @@ public class EmojiStats {
 
 	public delegate void ShowSingleStatBar (int type, float mod);
 	public static event ShowSingleStatBar OnShowSingleStatBar;
-
+	[Header("StatAttribute")]
 	string prefKey;
 	float maxStatValue;
-	float emojiModifier;
+	public float emojiModifier;
 	float roomModifier = 0f;
 	public bool Debug = false;
 	/// <summary>

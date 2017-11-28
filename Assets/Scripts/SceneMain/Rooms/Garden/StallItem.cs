@@ -43,22 +43,23 @@ public class StallItem : MonoBehaviour {
 	{
 		if (!inStall) {
 			if (other.tag == Tags.BASKET) {
-
-				if(PlayerData.Instance.PlayerCoin>=price){
-					isBought = true;
-				}else{
-					isBought = false;
-				}
-
-				StopAllCoroutines ();
-				PlayerData.Instance.inventory.ModIngredientValue (type, 1);
-
-				if (OnItemPicked != null)
-					OnItemPicked (this);
-
-				Destroy (this.gameObject);
-				
+				CheckPlayerCoin();
 			}
+		}
+	}
+
+	void CheckPlayerCoin()
+	{
+		if(PlayerData.Instance.PlayerCoin>=price){
+			StopAllCoroutines();
+
+			if (OnItemPicked != null) OnItemPicked (this);
+			if(OnEndDragStallItem != null) OnEndDragStallItem (true);
+			PlayerData.Instance.inventory.ModIngredientValue (type, 1);
+	
+			Destroy (this.gameObject);
+		}else{
+			if(OnEndDragStallItem != null) OnEndDragStallItem (false);
 		}
 	}
 
@@ -83,17 +84,12 @@ public class StallItem : MonoBehaviour {
 
 	public void EndDrag()
 	{
-		if(OnEndDragStallItem!=null){
-			Debug.Log ("isBought:" + isBought);
-			OnEndDragStallItem (isBought);
-		}
 		StartCoroutine(Return());
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	IEnumerator Return()
 	{
-		thisSprite.sortingLayerName = SortingLayers.MOVABLE_FURNITURE;
 		thisAnim.SetBool(AnimatorParameters.Bools.HOLD,false);
 		thisRigidBody.simulated = true;
 		thisCollider.enabled = true;
@@ -108,7 +104,7 @@ public class StallItem : MonoBehaviour {
 			yield return null;
 		}
 		transform.localPosition = startPos;
+		thisSprite.sortingLayerName = SortingLayers.MOVABLE_FURNITURE;
 		inStall = true;
-
 	}
 }

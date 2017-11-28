@@ -4,6 +4,7 @@ using UnityEngine;
 public class ShowerTrigger : MonoBehaviour {
 	public Shower shower;
 	public GameObject showerWater;
+	public Vector2 offset;
 	bool flagWatering = false;
 	void OnTriggerStay2D(Collider2D other)
 	{
@@ -38,7 +39,7 @@ public class ShowerTrigger : MonoBehaviour {
 		flagWatering = true;
 		SoundManager.Instance.PlaySFX(SFXList.Shower);
 		while(true){
-			Instantiate(showerWater,new Vector3(transform.position.x,transform.position.y-1f,transform.position.z),Quaternion.identity);
+			Instantiate(showerWater,new Vector3(transform.position.x+offset.x,transform.position.y+offset.y,transform.position.z),Quaternion.identity);
 			yield return new WaitForSeconds(0.4f);
 		}
 	}

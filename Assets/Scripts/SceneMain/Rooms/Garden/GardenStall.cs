@@ -37,11 +37,11 @@ public class GardenStall : BaseFurniture {
 	#region initialization
 
 	void OnEnable(){
-		AdmobManager.Instance.OnFinishWatchVideoAds += OnFinishWatchVideoAds;
+		if(AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds += OnFinishWatchVideoAds;
 	}
 
 	void OnDisable(){
-		AdmobManager.Instance.OnFinishWatchVideoAds -= OnFinishWatchVideoAds;
+		if(AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds -= OnFinishWatchVideoAds;
 	}
 
 	public void Init()

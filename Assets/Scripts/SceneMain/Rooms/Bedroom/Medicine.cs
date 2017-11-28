@@ -2,19 +2,26 @@
 using UnityEngine;
 
 public class Medicine : Syringe {
-	protected override void OnTriggerEnter2D (Collider2D other)
+	protected override void CheckPlayerCoin()
 	{
-		if(other.tag == Tags.EMOJI_BODY){
-			Emoji emoji = other.transform.parent.GetComponent<Emoji>();
+		//check price, if enough coin
+		print("Price = "+price+", you have "+PlayerData.Instance.PlayerCoin);
+		if(PlayerData.Instance.PlayerCoin >= price){
+			//check stats, if low
 			float healthValue = emoji.health.StatValue/emoji.health.MaxStatValue;
 			if(healthValue >= Emoji.statsTresholdLow && healthValue < Emoji.statsTresholdMed){
-				emoji.health.SetStats(emojiHealthSet);
-				emoji.emojiExpressions.SetExpression(emojiResponse,2f);
+				//apply
+				StopAllCoroutines();
+				HideUICoin(true);
+				emoji.playerInput.ApplyMedicineOrSyringe(reactionDuration+2f);
+				StartCoroutine(_Apply);
+
+				return;
 			}else{
+				//reject
 				emoji.playerInput.Reject();
 			}
-			StopCoroutine(_Return);
-			ResetPosition();
 		}
+		HideUICoin(false);
 	}
 }
