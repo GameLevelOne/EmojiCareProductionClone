@@ -38,7 +38,7 @@ public class MovableFurniture : MonoBehaviour {
 	public virtual void BeginDrag()
 	{
 		if(!flagEditMode && !endDrag){
-			thisAnim.SetBool(AnimatorParameters.Bools.HOLD,true);
+			if(thisAnim) thisAnim.SetBool(AnimatorParameters.Bools.HOLD,true);
 			thisRigidbody.simulated = false;
 			thisSprite.sortingLayerName = SortingLayers.HELD;
 
@@ -65,7 +65,7 @@ public class MovableFurniture : MonoBehaviour {
 		if(!flagEditMode && !endDrag){
 			endDrag = true;
 
-			thisAnim.SetBool(AnimatorParameters.Bools.HOLD,false);
+			if(thisAnim) thisAnim.SetBool(AnimatorParameters.Bools.HOLD,false);
 			thisRigidbody.velocity = Vector2.zero;
 			thisRigidbody.simulated = true;
 			AdjustSortingOrder();

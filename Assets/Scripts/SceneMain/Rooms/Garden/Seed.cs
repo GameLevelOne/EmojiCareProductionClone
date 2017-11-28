@@ -6,7 +6,6 @@ public class Seed : MonoBehaviour {
 	public delegate void SeedPlanted(Seed seed);
 	public event SeedPlanted OnSeedPlanted;
 	#region attributes
-	public Rigidbody2D thisRigidbody;
 	public GameObject PlantObject;
 	public int growthDuration;
 
@@ -45,15 +44,12 @@ public class Seed : MonoBehaviour {
 		if(flagHold){
 			if(other.tag == Tags.SOIL){
 				soilTarget.Add(other.gameObject);
-				if(PlayerData.Instance.PlayerCoin>=price){
-					isBought = true;
-				}else{
-					isBought = false;
-				}
 			}
 		}
 
 	}
+
+
 
 	public void OnTriggerExit2D(Collider2D other)
 	{
@@ -86,13 +82,16 @@ public class Seed : MonoBehaviour {
 		flagHold = false;
 		if(soilTarget.Count > 0){
 			if(!soilTarget[0].GetComponent<GardenField>().hasPlant){
-				soilTarget[0].GetComponent<GardenField>().PlantSeed(type);
-				if(OnSeedPlanted != null) OnSeedPlanted(this);
-				Destroy(gameObject);
-				return;
+				if(PlayerData.Instance.PlayerCoin >= price){
+					soilTarget[0].GetComponent<GardenField>().PlantSeed(type);
+					if(OnSeedPlanted != null) OnSeedPlanted(this);
+					if(OnEndDragSeed != null) OnEndDragSeed(true);
+					Destroy(gameObject);
+					return;
+				}
 			}
 		}
-
+		if(OnEndDragSeed != null) OnEndDragSeed(false);
 		StartCoroutine(Return());	
 	}
 	#endregion

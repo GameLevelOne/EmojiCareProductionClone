@@ -103,6 +103,10 @@ public class GardenField : MonoBehaviour {
 				GameObject tempPlant = Instantiate(plantToInstantiate,fieldLocations[i]) as GameObject;
 				tempPlant.transform.localPosition = Vector3.zero;
 				currentPlants[i] = tempPlant;
+
+				Plant plant = tempPlant.GetComponent<Plant>();
+				plant.Init(i);
+				plant.OnPlantDestroyed += OnPlantDestroyed;
 			}
 
 			plantHarvestTime = DateTime.Now.Add(TimeSpan.FromMinutes(currentPlants[0].GetComponent<Plant>().plantSO.GrowTime));
@@ -139,8 +143,12 @@ public class GardenField : MonoBehaviour {
 		foreach(GameObject g in currentPlants){
 			if(g != null) plantCount++;
 		}
-		if(plantCount == 0){
+
+		//not 0, because count first then destroy. 3 2 1
+		if(plantCount == 1){
+			StopAllCoroutines();
 			hasPlant = false;
+			hasWatered = false;
 		}
 	}
 	#endregion

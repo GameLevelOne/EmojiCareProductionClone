@@ -23,6 +23,9 @@ public static class Tags {
 	public const string SOIL = "Soil";
 	public const string CROP = "Crop";
 
+	public const string FALLING_WATER = "FallingWater";
+	public const string WATER_END = "WaterEnd";
+
 	public static class UI
 	{
 		public const string BOWL = "UIBowl";
