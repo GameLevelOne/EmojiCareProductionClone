@@ -21,11 +21,12 @@ public class Crop : MonoBehaviour {
 	{
 		if(other.tag == Tags.BASKET){
 			PlayerData.Instance.inventory.ModIngredientValue(type,1);
+			other.transform.parent.GetComponent<Basket>().Animate();
 			Destroy(gameObject);
 		}
 	}
 
-	void OnColissionEnter2D(Collision2D other)
+	void OnCollisionEnter2D(Collision2D other)
 	{
 		if(other.gameObject.tag == Tags.CROP){
 			Physics2D.IgnoreCollision(thisCollider,other.collider);
@@ -55,5 +56,8 @@ public class Crop : MonoBehaviour {
 	
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------	
-
+	void OnApplicationQuit()
+	{
+		PlayerData.Instance.inventory.ModIngredientValue(type,1);
+	}
 }

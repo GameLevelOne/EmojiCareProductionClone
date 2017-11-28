@@ -37,7 +37,7 @@ public class BathroomAppliances : MovableFurniture {
 	{
 		if(!flagEditMode && !endDrag){
 			thisTriggerable.holding = true;
-			thisAnim.SetBool(AnimatorParameters.Bools.HOLD,true);
+			//thisAnim.SetBool(AnimatorParameters.Bools.HOLD,true);
 			thisSprite.sortingLayerName = SortingLayers.HELD;
 
 			if(collidersToIgnore.Count != 0){
@@ -54,7 +54,7 @@ public class BathroomAppliances : MovableFurniture {
 			thisTriggerable.holding = false;
 			endDrag = true;
 
-			thisAnim.SetBool(AnimatorParameters.Bools.HOLD,false);
+			//thisAnim.SetBool(AnimatorParameters.Bools.HOLD,false);
 			thisSprite.sortingLayerName = SortingLayers.MOVABLE_FURNITURE;
 
 			StartCoroutine(BackToFixedPosition());
