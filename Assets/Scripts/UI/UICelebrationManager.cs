@@ -18,6 +18,9 @@ public class UICelebrationManager : MonoBehaviour {
 	public ParticlePlayer particlePlayer;
 	public GameObject buttonGacha;
 
+	List<NotificationNewExpression> notificationObj = new List<NotificationNewExpression>();
+	bool isShowingNotif = false;
+
 	void OnEnable(){
 		Debug.Log("celebration events");
 		ScreenPopup.OnCelebrationNewEmoji += OnCelebrationNewEmoji;
@@ -49,7 +52,6 @@ public class UICelebrationManager : MonoBehaviour {
 			if(PlayerData.Instance.TutorialFirstExpressionFull == 0)
 				screenTutorial.ShowFirstDialog (TutorialType.TriggerFirstExpressionFull);
 		}
-
 		StartCoroutine(WaitForNewExpression(expressionStateIndex,isNewExpression));
 	}
 
@@ -80,17 +82,9 @@ public class UICelebrationManager : MonoBehaviour {
 		screenEmojiTransfer.ShowUI(sprite,screenEmojiTransfer.gameObject);
 	}
 
-	IEnumerator WaitForNewExpression(int expressionStateIndex,bool isNewExpression){
-		Debug.Log("wait");
-		yield return new WaitForSeconds(2);
+	void ProcessNotification(){
 		NotificationNewExpression obj = Instantiate(notificationExpressionProgress,canvasParent,false) as NotificationNewExpression;
-		if(isNewExpression){
-			buttonGacha.SetActive (true);
-//			gachaReward.GetGachaReward ();
-		} 
-
-		obj.AddNotifToList (obj.gameObject);
-		obj.ShowUI (expressionStateIndex, expressionIcons, particlePlayer, isNewExpression);
+		notificationObj.Add (obj);
 	}
 
 	void ResetData(){
@@ -100,5 +94,43 @@ public class UICelebrationManager : MonoBehaviour {
 		PlayerPrefs.DeleteKey (PlayerPrefKeys.Emoji.STAMINA);
 		PlayerPrefs.DeleteKey (PlayerPrefKeys.Emoji.HEALTH);
 		PlayerPrefs.DeleteKey (PlayerPrefKeys.Player.LAST_TIME_PLAYED);
+	}
+
+	IEnumerator WaitForNewExpression(int expressionStateIndex,bool isNewExpression){
+		Debug.Log("wait");
+		NotificationNewExpression obj = Instantiate(notificationExpressionProgress,canvasParent,false) as NotificationNewExpression;
+		if(isNewExpression){
+			buttonGacha.SetActive (true);
+//			gachaReward.GetGachaReward ();
+		} 
+		notificationObj.Add (obj);
+		StartCoroutine(ShowNotifExpression (expressionStateIndex, isNewExpression));
+//		obj.AddNotifToList (obj.gameObject);
+//		obj.ShowUI (expressionStateIndex, expressionIcons, particlePlayer, isNewExpression);
+		yield return null;
+	}
+
+	IEnumerator ShowNotifExpression(int expressionStateIndex,bool isNewExpression){
+		while(true){
+			if(notificationObj.Count>0 && !isShowingNotif){
+				isShowingNotif = true;
+				//yield return new WaitForSeconds (2);
+				notificationObj [0].gameObject.SetActive (true);
+				notificationObj [0].ShowUI (expressionStateIndex, expressionIcons, particlePlayer,isNewExpression);
+				yield return new WaitForSeconds (2);
+				StartCoroutine (AutoCloseNotif ());
+			}
+			yield return null;
+		}
+	}
+
+	IEnumerator AutoCloseNotif(){
+		//particles.StopParticles();
+		GameObject obj = notificationObj[0].gameObject;
+		notificationObj[0].GetComponent<Animator> ().SetTrigger ("CloseNotif");
+		yield return new WaitForSeconds(0.16f);
+		notificationObj.RemoveAt (0);
+		Destroy(obj);
+		isShowingNotif = false;
 	}
 }

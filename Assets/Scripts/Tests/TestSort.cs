@@ -9,8 +9,28 @@ public class TestSort : MonoBehaviour {
 	int[] a = new int[5]{33,161,200,5,43};
 	int temp=0;
 
+	List<int> testList = new List<int>();
+
 	void Start(){
-		Init();
+		InvokeRepeating ("AddNotif", 0, 5);
+		StartCoroutine (AutoDelete ());
+	}
+
+	public void AddNotif(){
+		testList.Add (10);
+		Debug.Log ("EVENT ADD - member count:" + testList.Count.ToString ());
+	}
+
+	IEnumerator AutoDelete(){
+		while(true){
+			if(testList.Count>=1){
+				yield return new WaitForSeconds (2);
+				testList.RemoveAt (0);
+				Debug.Log ("EVENT REMOVE - member count:" + testList.Count.ToString ());
+				yield return null;
+			}
+			yield return null;
+		}
 	}
 
 	public void Sort(){

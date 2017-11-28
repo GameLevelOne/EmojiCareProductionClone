@@ -52,7 +52,7 @@ public class NotificationNewExpression : MonoBehaviour {
 
 	public void OnClickContinue(){
 		particles.StopParticles();
-		StopCoroutine("AutoCloseNotif");
+		//StopCoroutine("AutoCloseNotif");
 		StartCoroutine(WaitForAnim());
 	}
 
@@ -90,11 +90,11 @@ public class NotificationNewExpression : MonoBehaviour {
 		progressBarFill.fillAmount = (currentProgress - 1) / totalProgress;
 		StartCoroutine (AnimateProgressBar (currentProgress, totalProgress));
 
-		if (isNewExpression) {
-			particles.ShowParticles ();
-		} else {
-			StartCoroutine (AutoCloseNotif (time));
-		}
+//		if (isNewExpression) {
+//			particles.ShowParticles ();
+//		} else {
+//			StartCoroutine (AutoCloseNotif (time));
+//		}
 	}
 
 	IEnumerator WaitForAnim(){
