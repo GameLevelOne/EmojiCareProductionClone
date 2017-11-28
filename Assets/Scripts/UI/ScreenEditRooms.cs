@@ -77,7 +77,9 @@ public class ScreenEditRooms : BaseUI {
 	}
 
 	void DisplayItem(int index){
+		FurnitureVariant item = currentItem.variant [currentVariant];
 		boxVariants.SetActive (true);
+		currentItem.transform.GetChild (1).GetComponent<SpriteRenderer> ().sprite = item.sprite[0];
 		if(currentItem.variant[index].bought){
 			boxPrice.SetActive (false);
 		} else {

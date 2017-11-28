@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class DoodleMinigame : BaseUI {
 	public GameObject doodleUI;
 	public RectTransform rectBoard;
-	public RawImage furnitureBoard;
+	public SpriteRenderer furnitureBoard;
 	GameObject particleParent;
 	int width;
 	int height;
@@ -14,10 +14,12 @@ public class DoodleMinigame : BaseUI {
 	void OnEnable(){
 		width = System.Convert.ToInt32(rectBoard.rect.width);
 		height = System.Convert.ToInt32(rectBoard.rect.height);
+		Debug.Log ("width:" + width);
+		Debug.Log ("height:" + height);
 	}
 
 	public void OnClickBack(){
-		PlayerData.Instance.PlayerEmoji.playerInput.OnDoodleMinigameDone ();
+		//PlayerData.Instance.PlayerEmoji.playerInput.OnDoodleMinigameDone ();
 		StartCoroutine(TakeScreenshot());
 	}
 
@@ -25,24 +27,28 @@ public class DoodleMinigame : BaseUI {
 		yield return new WaitForEndOfFrame();
 
 		Vector3 boardPos = rectBoard.transform.position;
-//		float startX = boardPos.x - width/2 - 100;
-//		float startY = boardPos.y - height/2 - 100;
 		float startX = boardPos.x - width/2;
 		float startY = boardPos.y - height/2;
+//		float startX = boardPos.x - width/2;
+//		float startY = boardPos.y - height/2;
 		Debug.Log("boardPos:"+boardPos);
 		Debug.Log("startX:"+startX);
 		Debug.Log("startY:"+startY);
 
-//		int newWidth = width+200;
-//		int newHeight = height+200;
+//		int newWidth = width-107;
+//		int newHeight = height-103;
+
 		int newWidth = width;
 		int newHeight = height;
 
 		Texture2D tex = new Texture2D(newWidth,newHeight,TextureFormat.RGB24,false);
-		tex.ReadPixels(new Rect(startX,startY,newWidth,newHeight),0,0);
+		//tex.ReadPixels(new Rect(startX,startY,newWidth,newHeight),0,0);
+		tex.ReadPixels (new Rect (100,100,Screen.width,Screen.height), 0, 0);
+//		tex.ReadPixels(new Rect(286,508,newWidth,newHeight),0,0);
 		tex.Apply();
 
-		furnitureBoard.texture = tex;
+		furnitureBoard.sprite = Sprite.Create (tex, new Rect (0f, 0f, tex.width, tex.height), new Vector2 (0.5f, 0.5f));
+		furnitureBoard.transform.localScale = new Vector3 (0.34f, 0.34f, 1);
 
 		Destroy(particleParent);
 	}
