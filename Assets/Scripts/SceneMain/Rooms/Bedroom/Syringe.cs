@@ -33,8 +33,10 @@ public class Syringe : MonoBehaviour {
 	{
 		print(other.name);
 		if(other.tag == Tags.EMOJI_BODY){
-			emoji = other.transform.parent.GetComponent<Emoji>();
-			CheckPlayerCoin();
+			if(!other.GetComponent<EmojiBody>().emoji.playerInput.flagSleeping){
+				emoji = other.transform.parent.GetComponent<Emoji>();
+				CheckPlayerCoin();
+			}
 		}
 	}
 

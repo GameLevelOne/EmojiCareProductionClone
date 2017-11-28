@@ -129,6 +129,8 @@ public class GardenStall : BaseFurniture {
 		currentItems.Clear();
 
 		for(int i = 0;i<MAX_ITEM;i++) InstantiateItem(i);
+		DateTime newRestockTime = DateTime.Now.Add(TimeSpan.FromMinutes(itemRestockTime));
+		PlayerPrefs.SetString(PlayerPrefKeys.Game.Garden.ITEM_RESTOCK_TIME,newRestockTime.ToString());
 	}
 	public void RestockSeeds()
 	{
@@ -136,6 +138,8 @@ public class GardenStall : BaseFurniture {
 		currentSeeds.Clear();
 
 		for(int i = 0;i<MAX_ITEM;i++) InstantiateSeed(i);
+		DateTime newRestockTime = DateTime.Now.Add(TimeSpan.FromMinutes(seedRestockTime));
+		PlayerPrefs.SetString(PlayerPrefKeys.Game.Garden.SEED_RESTOCK_TIME,newRestockTime.ToString());
 	}
 
 	//core mechanic
@@ -224,8 +228,7 @@ public class GardenStall : BaseFurniture {
 			DateTime restockTime = DateTime.Parse(PlayerPrefs.GetString(PlayerPrefKeys.Game.Garden.ITEM_RESTOCK_TIME));
 			if(DateTime.Now.CompareTo(restockTime) >= 0){
 				RestockItems();
-				DateTime newRestockTime = DateTime.Now.Add(TimeSpan.FromMinutes(itemRestockTime));
-				PlayerPrefs.SetString(PlayerPrefKeys.Game.Garden.ITEM_RESTOCK_TIME,newRestockTime.ToString());
+
 			}else{
 				itemRestockDuration = restockTime.Subtract(DateTime.Now);
 				if (OnStallItemTick != null)
@@ -244,8 +247,7 @@ public class GardenStall : BaseFurniture {
 			DateTime restockTime = DateTime.Parse(PlayerPrefs.GetString(PlayerPrefKeys.Game.Garden.SEED_RESTOCK_TIME));
 			if(DateTime.Now.CompareTo(restockTime) >= 0){
 				RestockSeeds();
-				DateTime newRestockTime = DateTime.Now.Add(TimeSpan.FromMinutes(seedRestockTime));
-				PlayerPrefs.SetString(PlayerPrefKeys.Game.Garden.SEED_RESTOCK_TIME,newRestockTime.ToString());
+
 			}else{
 				seedRestockDuration = restockTime.Subtract(DateTime.Now);
 				if (OnStallSeedTick != null)

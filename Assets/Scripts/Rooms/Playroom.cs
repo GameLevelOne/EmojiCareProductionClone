@@ -4,10 +4,10 @@ using UnityEngine;
 public class Playroom : BaseRoom {
 	[Header("Playroom attributes")]
 	public Collider2D[] walls;
-
+	public RandomPassingToyManager randomPassingToyManager;
 	public void Init()
 	{
-		
+		randomPassingToyManager.Cycle();
 	}
 
 	public override void OnRoomChanged (RoomType currentRoom)

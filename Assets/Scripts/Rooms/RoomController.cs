@@ -17,6 +17,7 @@ public class RoomController : MonoBehaviour {
 	public GameObject cookBar; //SEMENTARA
 	public GameObject gardenTimer;
 	public UIGarden uiGarden;
+	public RandomPassingToyManager randomPassingToyManager;
 	public Pan pan;
 	public GardenStall stall;
 	public Soil soil;
@@ -120,6 +121,9 @@ public class RoomController : MonoBehaviour {
 
 				gardenTimer.SetActive(false);
 				//			Emoji.Instance.emojiObject.GetComponent<EmojiObject>().OnRoomChangingStart();
+				if(currentRoom == RoomType.Playroom){
+					randomPassingToyManager.Stop();
+				}
 			}
 		}
 

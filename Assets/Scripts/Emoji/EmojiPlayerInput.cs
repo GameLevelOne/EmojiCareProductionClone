@@ -4,7 +4,9 @@ using UnityEngine;
 public class EmojiPlayerInput : MonoBehaviour {
 	#region attributes
 	public delegate void EmojiPouting();
+	public delegate void EmojiWake();
 	public event EmojiPouting OnEmojiPouting;
+	public event EmojiWake OnEmojiWake;
 
 	public bool interactable;
 	public Emoji emoji;
@@ -93,6 +95,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 				flagTouching = false;
 			}else{
 				Wake();
+				if(OnEmojiWake != null) OnEmojiWake();
 			}
 		}
 		dizzySound = barfSound = false;

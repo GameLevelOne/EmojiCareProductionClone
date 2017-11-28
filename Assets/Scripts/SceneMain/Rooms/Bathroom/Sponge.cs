@@ -5,11 +5,16 @@ public class Sponge : TriggerableFurniture {
 	[Header("Sponge Attributes")]
 	public SpriteRenderer soapLiquid;
 	public GameObject bubble;
+
+	[Header("Do Not Modify")]
+	public float foamState = 0;
+
 	public void ApplySoapLiquid(Sprite liquidSprite)
 	{
 		if(soapLiquid.enabled == false){ 
 			PlayerData.Instance.PlayerEmoji.emojiExpressions.SetExpression(EmojiExpressionState.LIKE,2f);
 			soapLiquid.enabled = true;
+			foamState = 10f;
 		}
 		soapLiquid.sprite = liquidSprite;
 	}

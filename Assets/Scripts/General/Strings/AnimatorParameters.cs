@@ -5,6 +5,7 @@ public static class AnimatorParameters {
 	{
 		public const string HOLD = "hold";
 		public const string RADIO_ON = "RadioOn";
+		public const string DRAG = "Drag";
 
 	}
 
