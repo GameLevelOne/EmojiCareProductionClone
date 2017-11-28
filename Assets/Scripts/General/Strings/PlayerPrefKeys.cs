@@ -69,6 +69,7 @@ public static class PlayerPrefKeys {
 		public const string SEED_HARVEST_TIME1 = "Game/Garden/SeedHarvestTime/1";
 		public const string SEED_HARVEST_TIME2 = "Game/Garden/SeedHarvestTime/2";
 
+		public const string DANCE_MAT_TILE_COLOR_DATA = "Game/Playroom/DanceMatTileColorData/TileNo";
 
 		public static class Garden{
 			public const string SEED_RESTOCK_TIME = "Game/Garden/SeedRestock";
