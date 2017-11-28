@@ -161,20 +161,18 @@ public class EmojiBody : MonoBehaviour {
 	{
 		StopCoroutine(_Bounce);
 	}
-
-	public void StartFoaming()
-	{
-		StartCoroutine(_Foamed);
-	}
-
-	public void StopFoaming()
-	{
-		StopCoroutine(_Foamed);
-	}
-
+		
 	public void OnEmojiEatOrReject(float duration)
 	{
 		if(OnEmojiEatEvent != null) OnEmojiEatEvent(duration);
+	}
+
+	//bathrooom
+	public void SetEmojiFoamedValue(float value)
+	{
+		if(foamState <= 10f){
+			foamState += value;
+		}
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------

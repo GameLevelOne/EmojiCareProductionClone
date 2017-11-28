@@ -2,44 +2,48 @@
 using UnityEngine;
 
 public class Sponge : TriggerableFurniture {
+	#region attributes
 	[Header("Sponge Attributes")]
-	public SpriteRenderer soapLiquid;
+	public Animator thisAnim;
 	public GameObject bubble;
+	public float foamSpeed = 0.25f;
+	bool isBrushing = false;
 
 	[Header("Do Not Modify")]
 	public float foamState = 0;
-
-	public void ApplySoapLiquid(Sprite liquidSprite)
+	#endregion
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+	#region mechanics
+	//animation event
+	public void ChangeSprite()
 	{
-		if(soapLiquid.enabled == false){ 
-			PlayerData.Instance.PlayerEmoji.emojiExpressions.SetExpression(EmojiExpressionState.LIKE,2f);
-			soapLiquid.enabled = true;
-			foamState = 10f;
-		}
-		soapLiquid.sprite = liquidSprite;
+		thisSprite[currentVariant].sprite = variant[currentVariant].sprite[1];
 	}
 
-	public void RemoveSoapLiquid()
-	{
-		soapLiquid.enabled = false;
-	}
-
+	//collider modules
 	protected void OnTriggerStay2D(Collider2D other)
 	{
 		if(other.tag == Tags.EMOJI_BODY){
 			if(holding){
-				if(soapLiquid.enabled == true){
-					if(other.transform.parent.GetComponent<Emoji>().emojiExpressions.currentExpression != EmojiExpressionState.BATHING){
-						other.GetComponent<EmojiBody>().StartFoaming();
-						other.transform.parent.GetComponent<Emoji>().emojiExpressions.SetExpression(EmojiExpressionState.BATHING,-1);
-						StartCoroutine(_Bubbles);
-					}
-					if(SoundManager.Instance.SFXSource.clip != SoundManager.Instance.SFXClips[(int)SFXList.Sponge]){
-						SoundManager.Instance.PlaySFX(SFXList.Sponge);
-					}
+				//system
+				if(foamState > 0){
+					float foamValue = Time.fixedDeltaTime * foamSpeed;
+					foamState -= foamValue;
+					other.GetComponent<EmojiBody>().SetEmojiFoamedValue(foamValue);
+				}else{
+					foamState = 0;
+					thisSprite[currentVariant].sprite = variant[currentVariant].sprite[0];
+				}
+
+				//animation
+				if(other.transform.parent.GetComponent<Emoji>().emojiExpressions.currentExpression != EmojiExpressionState.BATHING){
+					other.transform.parent.GetComponent<Emoji>().emojiExpressions.SetExpression(EmojiExpressionState.BATHING,-1);
+					StartCoroutine(_Bubbles);
+				}
+				if(SoundManager.Instance.SFXSource.clip != SoundManager.Instance.SFXClips[(int)SFXList.Sponge]){
+					SoundManager.Instance.PlaySFX(SFXList.Sponge);
 				}
 			}
-
 		}
 	}
 
@@ -47,18 +51,35 @@ public class Sponge : TriggerableFurniture {
 	{
 		if(other.tag == Tags.EMOJI_BODY){
 			StopCoroutine(_Bubbles);
-			other.GetComponent<EmojiBody>().StopFoaming();
+			isBrushing = false;
+
 			other.transform.parent.GetComponent<Emoji>().emojiExpressions.ResetExpressionDuration();
 			SoundManager.Instance.StopSFX();
 		}
 	}
-
+	#endregion
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+	#region public modules
+	public void ApplySoapLiquid()
+	{
+		if(foamState <= 0) PlayerData.Instance.PlayerEmoji.emojiExpressions.SetExpression(EmojiExpressionState.LIKE,2f);
+		foamState = 10f;
+		thisAnim.SetTrigger(AnimatorParameters.Triggers.ANIMATE);
+	}
+	#endregion
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+	#region coroutines
 	const string _Bubbles = "Bubbles";
 	IEnumerator Bubbles()
 	{
-		while(true){
-			Instantiate(bubble,transform.position,Quaternion.identity);
-			yield return new WaitForSeconds(0.25f);
+		if(!isBrushing){
+			isBrushing = true;
+			while(true){
+				Instantiate(bubble,transform.position,Quaternion.identity);
+				yield return new WaitForSeconds(0.25f);
+			}
 		}
 	}
+	#endregion
+//-------------------------------------------------------------------------------------------------------------------------------------------------
 }
