@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DartboardMinigame : BaseUI {
+	public GameObject buttonBack;
 	public GameObject dartMark;
 	bool moveMark = false;
 	Animator dartAnim;
@@ -13,10 +14,12 @@ public class DartboardMinigame : BaseUI {
 	void OnEnable(){
 		dartAnim = dartMark.GetComponent<Animator>();
 		moveMark=true;
+		buttonBack.SetActive (true);
 		StartCoroutine(MoveArrow());
 	}
 
 	public void OnClickStop(){
+		buttonBack.SetActive (false);
 		StopCoroutine ("MoveArrow");
 		stopPosition = Vector3.zero;
 		stopPosition = dartMark.transform.localPosition;
@@ -60,6 +63,7 @@ public class DartboardMinigame : BaseUI {
 		dartAnim.SetBool (boolReset, true);
 		dartAnim.SetBool (boolShoot, false);
 		moveMark = true;
+		buttonBack.SetActive (true);
 		StartCoroutine (MoveArrow ());
 	}
 }

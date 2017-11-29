@@ -12,8 +12,15 @@ public class Blackboard : MonoBehaviour {
 	Vector3 dragPos1;
 	Vector3 dragPos2;
 
-	void OnEnable(){
-		particleParent = Instantiate(particleParentPrefab,rectBoard.transform,false) as GameObject;
+	void OnEnable ()
+	{
+		if (particleParent == null) {
+			particleParent = Instantiate (particleParentPrefab, rectBoard.transform, false) as GameObject;
+		}
+	}
+
+	void OnDisable(){
+		Destroy (particleParent);
 	}
 
 	public void OnBeginDrag(){

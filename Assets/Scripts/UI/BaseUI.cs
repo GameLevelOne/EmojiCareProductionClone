@@ -41,6 +41,13 @@ public class BaseUI : MonoBehaviour {
 		StartCoroutine(WaitForAnim(obj));
 	}
 
+	public void ClosePopup(GameObject obj){
+		if (AdmobManager.Instance)
+			AdmobManager.Instance.HideBanner ();
+		obj.GetComponent<Animator>().SetBool(boolShowUI,false);
+		StartCoroutine(WaitForAnim(obj));
+	}
+
 	public void ClosePanel(PanelType panel){
 		GameObject obj = UIPanels[(int)panel];
 		CloseUI(obj);

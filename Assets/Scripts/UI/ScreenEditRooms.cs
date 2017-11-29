@@ -15,6 +15,7 @@ public class ScreenEditRooms : BaseUI {
 
 	BaseFurniture currentItem;
 	int currentVariant = 0;
+	bool isShowingUI = false;
 
 	public override void InitUI ()
 	{
@@ -27,7 +28,9 @@ public class ScreenEditRooms : BaseUI {
 
 		if(PlayerData.Instance.TutorialFirstEditRoom == 0){
 			screenTutorial.ShowFirstDialog (TutorialType.FirstEditRoomUI);
+			PlayerData.Instance.TutorialFirstEditRoom = 1;
 		}
+		isShowingUI = true;
 	}
 
 	//register event on click furniture
@@ -37,6 +40,9 @@ public class ScreenEditRooms : BaseUI {
 	}
 
 	void OnDisable(){
+		isShowingUI = false;
+		StopCoroutine ("CheckAdBanner");
+
 		EditFurnitureButton.OnClickToEdit -= OnClickFurnitureItem;
 		ScreenPopup.OnBuyFurniture -= OnBuyFurniture;
 	}
@@ -44,6 +50,8 @@ public class ScreenEditRooms : BaseUI {
 	void OnClickFurnitureItem(BaseFurniture currentItem){
 		//laod furniture variant data
 		//display in UI
+		if (AdmobManager.Instance)
+			AdmobManager.Instance.HideBanner ();
 		this.currentItem = currentItem;
 		this.currentVariant = currentItem.currentVariant;
 		DisplayItem (currentVariant);
@@ -114,6 +122,14 @@ public class ScreenEditRooms : BaseUI {
 		 } else {
 			screenPopup.ShowPopup (PopupType.Confirmation, PopupEventType.NotAbleToBuyFurniture, true, false);
 		 }
+	}
+
+	IEnumerator CheckAdBanner(){
+		while(true){
+			if(isShowingUI){
+				AdmobManager.Instance.HideBanner ();
+			}
+		}
 	}
 
 }
