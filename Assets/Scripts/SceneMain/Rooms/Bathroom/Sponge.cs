@@ -29,10 +29,12 @@ public class Sponge : TriggerableFurniture {
 				if(foamState > 0){
 					float foamValue = Time.fixedDeltaTime * foamSpeed;
 					foamState -= foamValue;
-					other.GetComponent<EmojiBody>().SetEmojiFoamedValue(foamValue);
+					other.GetComponent<EmojiBody>().ModEmojiFoamedValue(foamValue);
 				}else{
-					foamState = 0;
-					thisSprite[currentVariant].sprite = variant[currentVariant].sprite[0];
+					if(foamState < 0) foamState = 0;
+
+					if(thisSprite[currentVariant].sprite != variant[currentVariant].sprite[0]) 
+						thisSprite[currentVariant].sprite = variant[currentVariant].sprite[0];
 				}
 
 				//animation

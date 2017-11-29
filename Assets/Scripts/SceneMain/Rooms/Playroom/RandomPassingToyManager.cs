@@ -7,13 +7,9 @@ public class RandomPassingToyManager : MonoBehaviour {
 	public RoomController roomController;
 	public GameObject[] toyList;
 
-	[Header("DelayRange (Random)")]
-	public float delayMin = 5f;
-	public float delayMax = 10f;
-
-	[Header("ToySpeed (Random)")]
-	public float toySpeedMin = 0.1f;
-	public float toySpeedMax = 0.25f;
+	[Header("DelayRange")]
+	public float delayMin = 2f;
+	public float delayMax = 4f;
 
 	[Header("Do Not Modify")]
 	public GameObject tempToyObject;
@@ -30,16 +26,13 @@ public class RandomPassingToyManager : MonoBehaviour {
 		transform.localScale = new Vector3(xScale,1,1);
 
 		tempToyObject = Instantiate(toyList[Random.Range(0,toyList.Length)],transform);
-		RandomPassingToyObject toyObj = tempToyObject.GetComponent<RandomPassingToyObject>();
-		toyObj.init(toySpeedMin,toySpeedMax);
-		toyObj.OnFinish += Cycle;
+		tempToyObject.GetComponent<RandomPassingToyObject>().OnFinish += Cycle;
 	}
 	#endregion
 	//-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
 	public void Cycle()
 	{
-		
 		StartCoroutine(_CycleToys);
 	}
 

@@ -28,15 +28,21 @@ public class EmojiBody : MonoBehaviour {
 
 	#region attributes
 	public Animator thisAnim;
+
 	public Collider2D thisCollider;
 	public Rigidbody2D parentRigidbody;
 	public Emoji emoji;
 
 	public int previousRoom = -1, currentRoom = -1;
 
-	public float foamState = 1f;
+	public float foamState = 0f;
 	public bool flagSleep = false;
 	public bool flagAfterChangingRoom = false;
+
+	[Header("BubbleEffect")]
+	public Animator bubbleEffectAnim;
+	public Animator kinclongAnim;
+	public EmojiBubbleEffect bubbleEFfect;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
@@ -168,10 +174,22 @@ public class EmojiBody : MonoBehaviour {
 	}
 
 	//bathrooom
-	public void SetEmojiFoamedValue(float value)
+	public void ModEmojiFoamedValue(float value)
 	{
-		if(foamState <= 10f){
-			foamState += value;
+		foamState += value;
+		if(foamState > 10f) foamState = 10f;
+		else if(foamState < 0) foamState = 0;
+		print("FOAM STATE = "+foamState);
+		bubbleEffectAnim.SetFloat(AnimatorParameters.Floats.FOAM_STATE,foamState);
+		bubbleEFfect.SetBubbleAlpha(foamState/10f);
+	}
+
+	public void CheckRoom(RoomType room)
+	{
+		if(room != RoomType.Bathroom){
+			StartCoroutine(_ReduceBubbleEffect);
+		}else{
+			StopCoroutine(_ReduceBubbleEffect);
 		}
 	}
 	#endregion
@@ -180,7 +198,6 @@ public class EmojiBody : MonoBehaviour {
 	const string _Bounce = "Bounce";
 	IEnumerator Bounce(int currRoom)
 	{
-		
 		currentRoom = currRoom;
 		yield return new WaitForSeconds(0.5f);
 		if(previousRoom != -1){
@@ -211,16 +228,15 @@ public class EmojiBody : MonoBehaviour {
 		emoji.emojiExpressions.currentDuration = 0;
 	}
 
-	const string _Foamed = "Foamed";
-	IEnumerator Foamed()
+	const string _ReduceBubbleEffect = "ReduceBubbleEffect";
+	IEnumerator ReduceBubbleEffect()
 	{
-		//for 3 seconds, foam state increase from 1 to 10.
-		while(foamState < 10f){
-			foamState += (Time.deltaTime * (10f/3f));
-			//print(foamState);
+		while(foamState > 0f){
+			ModEmojiFoamedValue(Time.fixedDeltaTime * 0.2f);
+			print(foamState);
 			yield return null;
 		}
-		foamState = 10f;
+		foamState = 0f;
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
