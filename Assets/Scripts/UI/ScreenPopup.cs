@@ -19,7 +19,8 @@ public enum PopupEventType{
 	AlbumLocked,
 	AbleToBuyFurniture,
 	NotAbleToBuyFurniture,
-	RefillStall
+	RestockStall,
+	RestockSeeds
 }
 
 public class ScreenPopup : BaseUI {
@@ -120,7 +121,7 @@ public class ScreenPopup : BaseUI {
 			return "Do you want to buy this furniture?";
 		} else if(eventType == PopupEventType.NotAbleToBuyFurniture){
 			return "Not enough coins";
-		} else if(eventType == PopupEventType.RefillStall){
+		} else if(eventType == PopupEventType.RestockSeeds || eventType == PopupEventType.RestockStall){
 			return "Do you want to refill?";
 		}
 		else{
@@ -159,8 +160,14 @@ public class ScreenPopup : BaseUI {
 		base.ClosePopup(this.gameObject);
 	}
 
-	public void RefillButtonWithAds(){
-		AdmobManager.Instance.ShowRewardedVideo ();
+	public void RefillButtonWithAds ()
+	{
+		if (currentEventType == PopupEventType.RestockSeeds) {
+			AdmobManager.Instance.ShowRewardedVideo (AdEvents.RestockSeeds);
+		} else if(currentEventType == PopupEventType.RestockStall){
+			AdmobManager.Instance.ShowRewardedVideo (AdEvents.RestockStall);
+		}
+		base.ClosePopup (this.gameObject);
 	}
 
 	public void RefillButtonWithGems(){

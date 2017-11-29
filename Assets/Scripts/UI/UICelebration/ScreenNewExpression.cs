@@ -27,7 +27,7 @@ public class ScreenNewExpression : BaseUI {
 
 		EmojiExpression emojiExpression = PlayerData.Instance.PlayerEmoji.emojiExpressions;
 
-		emojiExpression.expressionProgress = ((float)emojiExpression.unlockedExpressions.Count / (float) emojiExpression.totalExpression)*100;
+		//emojiExpression.expressionProgress = ((float)emojiExpression.unlockedExpressions.Count / (float) emojiExpression.totalExpression)*100;
 	}
 
 	public void OnClickContinue(){

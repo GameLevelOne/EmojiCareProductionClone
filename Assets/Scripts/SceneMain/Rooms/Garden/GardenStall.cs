@@ -191,8 +191,13 @@ public class GardenStall : BaseFurniture {
 
 		currentSeeds[index] = null;
 	}
-	void OnFinishWatchVideoAds(){
-		RestockItems ();
+
+	void OnFinishWatchVideoAds(AdEvents eventName){
+		if(eventName == AdEvents.RestockStall){
+			RestockItems ();
+		} else if(eventName == AdEvents.RestockSeeds){
+			RestockSeeds ();
+		}
 	}
 
 	//save load seed

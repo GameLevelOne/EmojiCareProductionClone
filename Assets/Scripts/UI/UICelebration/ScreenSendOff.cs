@@ -34,7 +34,7 @@ public class ScreenSendOff : BaseUI {
 
 		emojiIcon.sprite = sprite;
 		expressionProgress.text = "Expression Progress: "+ 
-		(PlayerData.Instance.PlayerEmoji.emojiExpressions.expressionProgress*100).ToString()+"%";
+		(PlayerData.Instance.PlayerEmoji.emojiExpressions.GetTotalExpressionProgress()*100).ToString()+"%";
 		reward.text = "Reward: ";
 
 		screenAlbum.AddEmojiRecord();

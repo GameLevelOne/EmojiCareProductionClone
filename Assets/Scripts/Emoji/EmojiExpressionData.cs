@@ -9,11 +9,16 @@ public class EmojiExpressionData {
 	public int expressionCurrentProgress=0;
 	public int expressionTotalProgress=0; //temp
 
-	public EmojiExpressionData(int expressionState,int totalProgress){
+	public EmojiExpressionData (int expressionState, int totalProgress)
+	{
 		this.expressionState = (EmojiExpressionState)expressionState;
 		this.expressionTotalProgress = totalProgress;
 
-		expressionCurrentProgress = PlayerPrefs.GetInt (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_PROGRESS + expressionState.ToString (), 0);
+		if (expressionState == 0) {
+			expressionCurrentProgress = PlayerPrefs.GetInt (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_PROGRESS + this.expressionState.ToString (), 1);
+		} else {
+			expressionCurrentProgress = PlayerPrefs.GetInt (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_PROGRESS + this.expressionState.ToString (), 0);
+		}
 	}
 
 	public void AddToCurrentProgress(int mod){
