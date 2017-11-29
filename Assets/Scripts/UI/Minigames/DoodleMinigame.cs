@@ -16,6 +16,8 @@ public class DoodleMinigame : BaseUI {
 		height = System.Convert.ToInt32(rectBoard.rect.height);
 		Debug.Log ("width:" + width);
 		Debug.Log ("height:" + height);
+		Debug.Log ("screenwidth:" + Screen.width);
+		Debug.Log ("screenheight:" + Screen.height);
 	}
 
 	public void OnClickBack(){
@@ -26,31 +28,19 @@ public class DoodleMinigame : BaseUI {
 	IEnumerator TakeScreenshot(){
 		yield return new WaitForEndOfFrame();
 
-		Vector3 boardPos = rectBoard.transform.position;
-		float startX = boardPos.x - width/2;
-		float startY = boardPos.y - height/2;
-//		float startX = boardPos.x - width/2;
-//		float startY = boardPos.y - height/2;
-		Debug.Log("boardPos:"+boardPos);
-		Debug.Log("startX:"+startX);
-		Debug.Log("startY:"+startY);
+		Texture2D tex = new Texture2D(width,height,TextureFormat.RGB24,false);
 
-//		int newWidth = width-107;
-//		int newHeight = height-103;
+		float newWidth = Screen.width * width / 720;
+		float newHeight = Screen.height * height / 1280 - 10;
 
-		int newWidth = width;
-		int newHeight = height;
-
-		Texture2D tex = new Texture2D(newWidth,newHeight,TextureFormat.RGB24,false);
-		//tex.ReadPixels(new Rect(startX,startY,newWidth,newHeight),0,0);
-		tex.ReadPixels (new Rect (100,100,Screen.width,Screen.height), 0, 0);
-//		tex.ReadPixels(new Rect(286,508,newWidth,newHeight),0,0);
+		tex.ReadPixels (new Rect (45f, 170f, newWidth, newHeight), 0, 0); //calculate manually,Screen.width/height = 342/608
 		tex.Apply();
 
-		furnitureBoard.sprite = Sprite.Create (tex, new Rect (0f, 0f, tex.width, tex.height), new Vector2 (0.5f, 0.5f));
-		furnitureBoard.transform.localScale = new Vector3 (0.34f, 0.34f, 1);
+		furnitureBoard.sprite = Sprite.Create (tex, new Rect (0f, 0f, newWidth, newHeight), new Vector2 (0.5f, 0.5f));
+		furnitureBoard.transform.localScale = new Vector3 (0.84f, 0.91f, 1);
 
 		Destroy(particleParent);
 	}
 	
 }
+

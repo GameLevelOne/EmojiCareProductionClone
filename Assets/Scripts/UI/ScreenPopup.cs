@@ -131,7 +131,7 @@ public class ScreenPopup : BaseUI {
 	public void OnClickButtonOk ()
 	{
 		if (currentPopupType == PopupType.Confirmation) {
-			CloseUI (this.gameObject);
+			base.ClosePopup (this.gameObject);
 			if (currentEventType == PopupEventType.SelectEmoji) {
 				Debug.Log("new emoji");
 				OnCelebrationNewEmoji(tempEmojiSprite,tempEmojiName);
@@ -150,13 +150,13 @@ public class ScreenPopup : BaseUI {
 			} 
 		} else{
 			Debug.Log("3");
-			CloseUI(this.gameObject);
+			base.ClosePopup(this.gameObject);
 		}
 
 	}
 
 	public void OnClickButtonCancel(){
-		CloseUI(this.gameObject);
+		base.ClosePopup(this.gameObject);
 	}
 
 	public void RefillButtonWithAds(){

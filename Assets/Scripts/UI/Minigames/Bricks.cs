@@ -5,24 +5,15 @@ using UnityEngine.UI;
 
 public class Bricks : MonoBehaviour {
 	Rigidbody2D thisRigidbody;
-	public Vector3 startPos;
-
-	void Awake(){
-		startPos = transform.localPosition;
-		Debug.Log(startPos);
-	}
 
 	void OnEnable(){
 		thisRigidbody = GetComponent<Rigidbody2D>();
-		thisRigidbody.simulated=false;
-		transform.localPosition = startPos;
-		transform.localRotation = Quaternion.identity;
+		StartCoroutine (WaitForUIAnim ());
 		RandomColor ();
 	}
 
 	void RandomColor(){
-		Color[] colors = new Color[]{Color.white,Color.cyan,Color.magenta,Color.yellow,Color.blue };
-		GetComponent<Image> ().color = colors [Random.Range (0,colors.Length)];
+		GetComponent<Image> ().color = GetColor (Random.Range (1, 6));
 	}
 
 	public void BeginDrag(){
@@ -38,5 +29,27 @@ public class Bricks : MonoBehaviour {
 		thisRigidbody.angularVelocity = 0;
 		thisRigidbody.velocity = Vector2.zero;
 		thisRigidbody.simulated=true;
+	}
+
+	Color GetColor(int count){
+		Color currentColor;
+		if (count == 1) {
+			return new Color (0.98f, 0.01f, 0.42f, 1);
+		} else if (count == 2) {
+			return new Color (0.19f, 0.7f, 0.27f, 1);
+		} else if (count == 3) {
+			return new Color (0.98f, 0.37f, 0.1f, 1);
+		} else if (count == 4) {
+			return new Color (0.91f, 0.74f, 0.29f, 1);
+		} else if (count == 5) {
+			return new Color (0.4f, 0.39f, 0.85f, 1);
+		} else
+			return Color.white;
+	}
+
+	IEnumerator WaitForUIAnim(){
+		thisRigidbody.simulated = false;
+		yield return new WaitForSeconds (0.16f);
+		thisRigidbody.simulated = true;
 	}
 }
