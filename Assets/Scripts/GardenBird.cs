@@ -10,8 +10,12 @@ public class GardenBird : MonoBehaviour {
 	float timer=0;
 	float duration=5;
 
-	void Start(){
+	public void Init(){
 		InvokeRepeating ("MoveBird", 0, 10);
+	}
+
+	public void Stop(){
+		CancelInvoke ();
 	}
 
 	void MoveBird(){

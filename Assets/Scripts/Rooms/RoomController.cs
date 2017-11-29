@@ -17,6 +17,7 @@ public class RoomController : MonoBehaviour {
 	public GameObject cookBar; //SEMENTARA
 	public GameObject gardenTimer;
 	public UIGarden uiGarden;
+	public GardenMiscItemsManager gardenMiscItemsManager;
 	public RandomPassingToyManager randomPassingToyManager;
 	public Pan pan;
 	public GardenStall stall;
@@ -49,6 +50,7 @@ public class RoomController : MonoBehaviour {
 		stall.Init();
 		soil.Init();
 		uiGarden.Init();
+
 	}
 
 	void RegisterLockRoomEvent()
@@ -260,6 +262,12 @@ public class RoomController : MonoBehaviour {
 		else{
 			if(pan.isCooking) cookBar.SetActive(true);
 		} 
+
+		if(currentRoom == RoomType.Garden){
+			gardenMiscItemsManager.Init ();
+		} else{
+			gardenMiscItemsManager.Hide ();
+		}
 
 		while(t <= 1){
 			t += Time.fixedDeltaTime * snapSpeed;
