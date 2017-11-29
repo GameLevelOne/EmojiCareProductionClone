@@ -4,6 +4,8 @@ using UnityEngine;
 public class BathroomAppliances : MovableFurniture {
 	public delegate void ApplyEmoji(EmojiExpressionState expression);
 	public event ApplyEmoji OnApplyEmoji;
+	public delegate void HoldEvent(bool flagHold);
+	public event HoldEvent OnHoldEvent;
 
 	#region attributes
 	[Header("BathroomAppliances Attributes")]
@@ -37,13 +39,10 @@ public class BathroomAppliances : MovableFurniture {
 	{
 		if(!flagEditMode && !endDrag){
 			thisTriggerable.holding = true;
-			//thisAnim.SetBool(AnimatorParameters.Bools.HOLD,true);
+			if(thisAnim) thisAnim.SetBool(AnimatorParameters.Bools.HOLD,true);
 			thisSprite.sortingLayerName = SortingLayers.HELD;
 
-			if(collidersToIgnore.Count != 0){
-				foreach(Collider2D c in collidersToIgnore) Physics2D.IgnoreCollision(c,thisCollider,false);
-			}
-			collidersToIgnore.Clear();
+			if(OnHoldEvent != null) OnHoldEvent(true);
 		}
 	}
 
@@ -54,10 +53,11 @@ public class BathroomAppliances : MovableFurniture {
 			thisTriggerable.holding = false;
 			endDrag = true;
 
-			//thisAnim.SetBool(AnimatorParameters.Bools.HOLD,false);
+			if(thisAnim) thisAnim.SetBool(AnimatorParameters.Bools.HOLD,false);
 			thisSprite.sortingLayerName = SortingLayers.MOVABLE_FURNITURE;
 
 			StartCoroutine(BackToFixedPosition());
+			if(OnHoldEvent != null) OnHoldEvent(false);
 		}
 	}
 	#endregion

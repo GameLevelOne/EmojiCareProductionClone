@@ -6,19 +6,14 @@ public class RandomPassingToyObject : MonoBehaviour {
 	public event Finish OnFinish;
 
 	#region attributes
-	float speedMin;
-	float speedMax;
+	[Header("Custom Attributes")]
+	public float speedMin;
+	public float speedMax;
 
 	float speed;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
-	public void init(float speedMin, float speedMax)
-	{
-		this.speedMin = speedMin;
-		this.speedMax = speedMax;
-	}
-
 	IEnumerator Start()
 	{
 		gameObject.SetActive(true);

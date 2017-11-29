@@ -106,5 +106,6 @@ public class StallItem : MonoBehaviour {
 		transform.localPosition = startPos;
 		thisSprite.sortingLayerName = SortingLayers.MOVABLE_FURNITURE;
 		inStall = true;
+		if(OnEndDragStallItem != null) OnEndDragStallItem (false);
 	}
 }
