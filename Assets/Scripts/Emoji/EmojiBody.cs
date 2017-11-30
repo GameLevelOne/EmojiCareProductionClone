@@ -42,7 +42,7 @@ public class EmojiBody : MonoBehaviour {
 	[Header("BubbleEffect")]
 	public Animator bubbleEffectAnim;
 	public Animator kinclongAnim;
-	public EmojiBubbleEffect bubbleEFfect;
+	public EmojiBubbleEffect bubbleEffect;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
@@ -132,6 +132,10 @@ public class EmojiBody : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D other)
 	{
+		if(other.gameObject.tag == Tags.IMMOVABLE_FURNITURE){
+			if(flagSleep) Physics2D.IgnoreCollision(thisCollider,other.collider);
+		}
+
 		emoji.playerInput.Landing();
 
 		if(other.gameObject.tag == Tags.BED){
@@ -181,7 +185,12 @@ public class EmojiBody : MonoBehaviour {
 		else if(foamState < 0) foamState = 0;
 		print("FOAM STATE = "+foamState);
 		bubbleEffectAnim.SetFloat(AnimatorParameters.Floats.FOAM_STATE,foamState);
-		bubbleEFfect.SetBubbleAlpha(foamState/10f);
+		bubbleEffect.SetBubbleAlpha(foamState/10f);
+	}
+
+	public void EmojiKinclong()
+	{
+		kinclongAnim.SetTrigger(AnimatorParameters.Triggers.ANIMATE);
 	}
 
 	public void CheckRoom(RoomType room)

@@ -6,7 +6,7 @@ public class Sponge : TriggerableFurniture {
 	[Header("Sponge Attributes")]
 	public Animator thisAnim;
 	public GameObject bubble;
-	public float foamSpeed = 0.25f;
+	public float spongeSpeed = 1f;
 	bool isBrushing = false;
 
 	[Header("Do Not Modify")]
@@ -27,7 +27,7 @@ public class Sponge : TriggerableFurniture {
 			if(holding){
 				//system
 				if(foamState > 0){
-					float foamValue = Time.fixedDeltaTime * foamSpeed;
+					float foamValue = Time.fixedDeltaTime * spongeSpeed;
 					foamState -= foamValue;
 					other.GetComponent<EmojiBody>().ModEmojiFoamedValue(foamValue);
 				}else{

@@ -41,4 +41,23 @@ public class PlayerInventory {
 		return PlayerPrefs.GetInt(tempPrefKey,0);
 	}
 	#endregion
+
+	#region hat
+	/// <summary>
+	/// <para>0 = available</para>
+	/// <para>1 = bought</para>
+	/// <para>2 = used</para>
+	/// </summary>
+	public void SetHatData(string ID, int value)
+	{
+		string tempPrefKey = PlayerPrefKeys.Player.Inventory.HAT + ID;
+		PlayerPrefs.SetInt(tempPrefKey,value);
+	}
+
+	public int GetHatData(string ID)
+	{
+		string tempPrefKey = PlayerPrefKeys.Player.Inventory.HAT + ID;
+		return PlayerPrefs.GetInt(tempPrefKey,0);
+	}
+	#endregion
 }

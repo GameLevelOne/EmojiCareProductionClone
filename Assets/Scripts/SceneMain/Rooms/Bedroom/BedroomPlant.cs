@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class EmojiBubbleEffect : MonoBehaviour {
+public class BedroomPlant : ActionableFurniture {
 	#region attributes
-	[Header("EmojiBubbleAttributes")]
-	public SpriteRenderer[] bubbleSprites;
+	[Header("BedroomPlant Attributes")]
+	public Animator thisAnim;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
@@ -12,16 +12,14 @@ public class EmojiBubbleEffect : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
-	
+	public override void PointerClick ()
+	{
+		thisAnim.SetTrigger(AnimatorParameters.Triggers.ANIMATE);
+	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
-	public void SetBubbleAlpha(float alpha)
-	{
-		foreach(SpriteRenderer sr in bubbleSprites){
-			sr.color = new Color(sr.color.r,sr.color.g,sr.color.b, (alpha*0.8f) );
-		}
-	}
+	
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------	
 }

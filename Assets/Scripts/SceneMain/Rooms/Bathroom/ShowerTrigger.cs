@@ -35,7 +35,6 @@ public class ShowerTrigger : MonoBehaviour {
 		if(other.tag == Tags.EMOJI_BODY){
 			if(shower.holding){
 				if(other.transform.parent.GetComponent<Emoji>().emojiExpressions.currentExpression != EmojiExpressionState.BATHING){
-					shower.emoji = other.transform.parent.GetComponent<Emoji>();
 					shower.ModEmojiHygiene();
 
 					if(other.transform.parent.GetComponent<Emoji>().emojiExpressions.currentExpression != EmojiExpressionState.BATHING)
