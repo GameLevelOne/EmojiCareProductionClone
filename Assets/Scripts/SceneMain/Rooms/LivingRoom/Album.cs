@@ -8,20 +8,14 @@ public class Album : ActionableFurniture {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
-	public override void InitVariant ()
-	{
-		base.InitVariant ();
 
-
-		if(PlayerData.Instance.EmojiAlbumData.Count <= 0) gameObject.SetActive(false);
-	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
 	public override void PointerClick ()
 	{
 		//open album ui
-		UIAlbum.ShowUI(UIAlbum.gameObject);
+		if(!flagEditMode) UIAlbum.ShowUI(UIAlbum.gameObject);
 	} 
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------

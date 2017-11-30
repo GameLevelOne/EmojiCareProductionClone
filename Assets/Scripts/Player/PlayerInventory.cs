@@ -46,7 +46,6 @@ public class PlayerInventory {
 	/// <summary>
 	/// <para>0 = available</para>
 	/// <para>1 = bought</para>
-	/// <para>2 = used</para>
 	/// </summary>
 	public void SetHatData(string ID, int value)
 	{
@@ -58,6 +57,16 @@ public class PlayerInventory {
 	{
 		string tempPrefKey = PlayerPrefKeys.Player.Inventory.HAT + ID;
 		return PlayerPrefs.GetInt(tempPrefKey,0);
+	}
+
+	public void SetCurrentHat(string ID)
+	{
+		PlayerPrefs.SetString(PlayerPrefKeys.Player.Inventory.CURRENT_HAT,ID);
+	}
+
+	public string GetCurrentHat()
+	{
+		return PlayerPrefs.GetString(PlayerPrefKeys.Player.Inventory.CURRENT_HAT,string.Empty);
 	}
 	#endregion
 }

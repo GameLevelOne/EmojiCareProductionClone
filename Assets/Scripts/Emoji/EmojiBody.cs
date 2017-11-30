@@ -31,6 +31,7 @@ public class EmojiBody : MonoBehaviour {
 
 	public Collider2D thisCollider;
 	public Rigidbody2D parentRigidbody;
+	public Transform hatParent;
 	public Emoji emoji;
 
 	public int previousRoom = -1, currentRoom = -1;
@@ -193,13 +194,25 @@ public class EmojiBody : MonoBehaviour {
 		kinclongAnim.SetTrigger(AnimatorParameters.Triggers.ANIMATE);
 	}
 
-	public void CheckRoom(RoomType room)
+	public void CheckRoomForBubbleMechanic(RoomType room)
 	{
 		if(room != RoomType.Bathroom){
 			StartCoroutine(_ReduceBubbleEffect);
 		}else{
 			StopCoroutine(_ReduceBubbleEffect);
 		}
+	}
+
+	public void WearHat(string ID, GameObject hatObject)
+	{
+		GameObject tempHatObject = Instantiate(hatObject,hatParent) as GameObject;
+		PlayerData.Instance.inventory.SetCurrentHat(ID);
+	}
+
+	public void RemoveHat()
+	{
+		Destroy(hatParent.GetChild(0).gameObject);
+		PlayerData.Instance.inventory.SetCurrentHat(string.Empty);
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -241,7 +254,7 @@ public class EmojiBody : MonoBehaviour {
 	IEnumerator ReduceBubbleEffect()
 	{
 		while(foamState > 0f){
-			ModEmojiFoamedValue(Time.fixedDeltaTime * 0.2f);
+			ModEmojiFoamedValue((Time.fixedDeltaTime * 0.2f) * -1f);
 			print(foamState);
 			yield return null;
 		}

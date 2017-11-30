@@ -43,6 +43,7 @@ public static class PlayerPrefKeys {
 		{
 			public const string INGREDIENT = "Player/Inventory/Ingredient/";
 			public const string HAT = "Player/Inventory/Hat/";
+			public const string CURRENT_HAT = "Player/Inventory/CurrentHat";
 		}
 	}
 

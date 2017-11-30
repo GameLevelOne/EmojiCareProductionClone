@@ -31,7 +31,7 @@ public class MovableFurniture : MonoBehaviour {
 	protected virtual void OnCollisionEnter2D(Collision2D other)
 	{
 		if(other.gameObject.tag == Tags.MOVABLE_FURNITURE) 
-			Physics2D.IgnoreCollision(other.gameObject.GetComponent<Collider2D>(),thisCollider);
+			Physics2D.IgnoreCollision(other.collider,thisCollider);
 	}
 
 	//event trigger modules

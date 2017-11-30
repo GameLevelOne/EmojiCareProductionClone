@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Bedroom : BaseRoom {
 	[Header("Bedroom Attributes")]
+	public RandomBedroomObjectController randomBedroomObjectController;
 	public SpriteRenderer darkLight;
 	public float fadeSpeed = 3f;
 
@@ -14,6 +15,7 @@ public class Bedroom : BaseRoom {
 	public void Init()
 	{
 		RegisterDarkLightEvent();
+		randomBedroomObjectController.Init();
 	}
 
 	void RegisterDarkLightEvent()

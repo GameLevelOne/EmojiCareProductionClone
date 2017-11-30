@@ -1,21 +1,23 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class Envelope : ActionableFurniture {
+public class BedroomCabinet : BaseFurniture {
 	#region attributes
-	[Header("Envelope Attributes")]
-	public ScreenProgress UIProgress;
+
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
-	
+	public override void InitVariant ()
+	{
+		thisSprite[0].sprite = variant[currentVariant].sprite[0];
+		for(int i = 1; i < thisSprite.Length;i++){
+			thisSprite[i].sprite = variant[currentVariant].sprite[1];
+		}
+	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
-	public override void PointerClick ()
-	{
-		if(!flagEditMode) UIProgress.ShowUI(UIProgress.gameObject);
-	}
+	
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
