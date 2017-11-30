@@ -14,7 +14,7 @@ public class Envelope : ActionableFurniture {
 	#region mechanics
 	public override void PointerClick ()
 	{
-		UIProgress.ShowUI(UIProgress.gameObject);
+		if(!flagEditMode) UIProgress.ShowUI(UIProgress.gameObject);
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------

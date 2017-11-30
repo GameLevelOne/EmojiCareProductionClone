@@ -12,7 +12,6 @@ public class Toy : MovableFurniture {
 	protected override void OnCollisionEnter2D(Collision2D other)
 	{
 		
-		base.OnCollisionEnter2D(other);
 		if(other.gameObject.tag == Tags.EMOJI){
 			other.gameObject.GetComponent<EmojiPlayerInput>().OnToyBumped();
 			SoundManager.Instance.PlaySFXOneShot(SFXList.Bounce);

@@ -120,11 +120,10 @@ public class EmojiExpression {
 				counter++;
 			}
 		}
-		Debug.Log ("expressionCount:" + counter);
-		Debug.Log ("totalExpression:" + totalExpression);
-		Debug.Log ("ratio:" + ((float)counter / totalExpression));
+
 		return (float) System.Math.Round((double)counter / totalExpression,4);
 	}
+
 
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------

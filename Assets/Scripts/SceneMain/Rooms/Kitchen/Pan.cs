@@ -199,6 +199,7 @@ public class Pan : BaseFurniture {
 		StopAllCoroutines();
 
 		SoundManager.Instance.StopSFX();
+		SoundManager.Instance.PlaySFXOneShot(SFXList.Ding);
 		Animate(PanState.OpenClose);
 
 		if(smoke.isPlaying) smoke.Stop();

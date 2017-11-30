@@ -82,7 +82,7 @@ public class ScreenProgress : BaseUI {
 		}
 
 		currentTotalProgress = currentEmojiData.emojiExpressions.GetTotalExpressionProgress ();
-		totalExpressionProgressText.text = (currentTotalProgress*100).ToString() + "%";
+		totalExpressionProgressText.text = (currentTotalProgress*(1f/sendOffPercentage)*100f).ToString() + "%";
 		totalProgressBarFill.fillAmount = currentTotalProgress;
 
 		if(currentTotalProgress>=sendOffPercentage){

@@ -14,7 +14,8 @@ public enum SFXList{
 	Cook,
 	OpenThings,
 	Shower,
-	Sponge
+	Sponge,
+	Ding
 }
 
 public enum VoiceList{
