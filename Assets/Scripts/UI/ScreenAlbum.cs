@@ -112,7 +112,7 @@ public class ScreenAlbum : BaseUI {
 
 		PlayerData.Instance.EmojiAlbumData.Add(PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType);
 		PlayerData.Instance.EmojiAlbumEntryTime.Add(System.DateTime.Now.ToString());
-		PlayerData.Instance.EmojiCompletionRate.Add(PlayerData.Instance.PlayerEmoji.emojiExpressions.expressionProgress);
+		PlayerData.Instance.EmojiCompletionRate.Add(PlayerData.Instance.PlayerEmoji.emojiExpressions.GetTotalExpressionProgress());
 		PlayerPrefs.SetInt(PlayerPrefKeys.Player.EMOJI_RECORD_COUNT,currentRecordCount);
 
 		//set emoji status

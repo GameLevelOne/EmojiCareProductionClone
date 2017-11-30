@@ -10,11 +10,13 @@ public class ScreenProgress : BaseUI {
 	public EmojiIcons emojiIcons;
 
 	public GameObject buttonSend;
-	public Image progressBarFill;
+	public Image totalProgressBarFill;
+	public Image indivProgressBarFill;
 	public Text progressText;
 	public Image expressionIcon;
 	public Text expressionNameText;
 	public Text expressionUnlockConditionText;
+	public Text totalExpressionProgressText;
 
 	public GameObject expressionBoxPrefab;
 	public RectTransform contentBox;
@@ -26,6 +28,8 @@ public class ScreenProgress : BaseUI {
 	int tileHeight = 15;
 	float expressionBoxWidth = 120f;
 	float contentBoxMarginX = 50f;
+	float currentTotalProgress = 0f;
+	float sendOffPercentage = 0.8f;
 	bool canSendOff = false;
 	Emoji currentEmojiData;
 
@@ -44,10 +48,6 @@ public class ScreenProgress : BaseUI {
 		currentEmojiData = PlayerData.Instance.PlayerEmoji;
 		List<EmojiExpressionState> exprList = currentEmojiData.emojiExpressions.unlockedExpressions;
 
-		expressionTotalCount = currentEmojiData.emojiExpressions.totalExpression;
-
-		currentEmojiData.emojiExpressions.expressionProgress = (float)exprList.Count / (float)expressionTotalCount; 
-
 		SortList(exprList);
 
 		//for testing
@@ -64,31 +64,28 @@ public class ScreenProgress : BaseUI {
 				obj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-200+j*125,770-i*125);
 				obj.GetComponent<ProgressTile>().exprType = (EmojiExpressionState)exprTileIdx;
 				obj.name = "Expr"+exprTileIdx.ToString();
-				condition = expressionIcons.GetExpressionUnlockCondition(currentEmojiData.emojiBaseData.emojiType,exprTileIdx);
+				//condition = expressionIcons.GetExpressionUnlockCondition(currentEmojiData.emojiBaseData.emojiType,exprTileIdx);
 				name = expressionIcons.GetExpressionName(currentEmojiData.emojiBaseData.emojiType,exprTileIdx);
+				Sprite sprite = expressionIcons.GetExpressionIcon(currentEmojiData.emojiBaseData.emojiType,exprTileIdx);
+				float fillAmount = PlayerData.Instance.PlayerEmoji.emojiExpressions.expressionDataInstances [exprTileIdx].GetProgressRatio ();
+
+				obj.GetComponent<ProgressTile>().InitTile(sprite,name,condition,fillAmount);
 
 				if(unlockedExprIdx < exprList.Count){
 					if((int)exprList[unlockedExprIdx] == exprTileIdx){
-						Sprite sprite = expressionIcons.GetExpressionIcon(currentEmojiData.emojiBaseData.emojiType,(int)exprList[unlockedExprIdx]);
-
-						obj.GetComponent<ProgressTile>().InitTile(sprite,name,condition,false);
 						unlockedExprIdx++;
-					}else{
-						obj.GetComponent<ProgressTile>().InitTile(lockedExpression,name,condition,true);
-						//obj.GetComponent<Button>().interactable=false;
 					}
-
-				}else{
-					obj.GetComponent<ProgressTile>().InitTile(lockedExpression,name,condition,true);
-					//obj.GetComponent<Button>().interactable=false;
 				}
 
 				exprTileIdx++;
 			}
 		}
-		float progressValue = (float)exprList.Count/(float)expressionTotalCount;
-		progressBarFill.fillAmount = progressValue;
-		if(progressValue>=1){
+
+		currentTotalProgress = currentEmojiData.emojiExpressions.GetTotalExpressionProgress ();
+		totalExpressionProgressText.text = (currentTotalProgress*100).ToString() + "%";
+		totalProgressBarFill.fillAmount = currentTotalProgress;
+
+		if(currentTotalProgress>=sendOffPercentage){
 			canSendOff=true;
 		}
 
@@ -119,13 +116,11 @@ public class ScreenProgress : BaseUI {
 		ProgressTile.OnSelectExpression -= OnSelectExpression;
 	}
 
-	void OnSelectExpression (Sprite item, string expressionName,string condition,bool isLocked)
+	void OnSelectExpression (Sprite item, string expressionName,string condition,bool isLocked,float progress)
 	{
-		if (!isLocked) {
-			expressionIcon.sprite = item;
-			expressionNameText.text = expressionName;
-			expressionUnlockConditionText.text = condition;
-		}
+		expressionIcon.sprite = item;
+		expressionNameText.text = expressionName;
+		indivProgressBarFill.fillAmount = progress;
 	}
 
 	void SortList(List<EmojiExpressionState> list){

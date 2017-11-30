@@ -43,10 +43,6 @@ public class NotificationNewExpression : MonoBehaviour {
 			progressText.text = expressionCurrentProgress.ToString () + "/" + expressionTotalProgress.ToString ();
 		}
 
-		if (isNewExpression) {
-			emojiExpression.expressionProgress = ((float)emojiExpression.unlockedExpressions.Count / (float)emojiExpression.totalExpression) * 100;
-		} 
-
 		ShowNotification (expressionCurrentProgress,expressionTotalProgress);
 	}
 

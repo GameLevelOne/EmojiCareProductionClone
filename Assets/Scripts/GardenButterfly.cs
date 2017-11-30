@@ -12,12 +12,16 @@ public class GardenButterfly : MonoBehaviour {
 	float flyingSpeed = 10;
 	float timer=0;
 	float flyDuration=1;
-	float breakTime = 180; //in seconds
+	float breakTime = 60; //in seconds
 	int startPosIdx=-1;
 	int endPosIdx=0;
 
-	void Start(){
+	public void Init(){
 		InvokeRepeating ("ShowButterfly", 0, breakTime);
+	}
+
+	public void Stop(){
+		CancelInvoke ();
 	}
 
 	void ShowButterfly ()

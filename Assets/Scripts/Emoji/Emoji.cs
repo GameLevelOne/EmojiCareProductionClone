@@ -120,7 +120,7 @@ public class Emoji : MonoBehaviour {
 	void InitEmojiExpression()
 	{
 		emojiExpressions.Init();
-		emojiGrowth.UpdateGrowth(emojiExpressions.GetTotalProgress());
+		emojiGrowth.UpdateGrowth(emojiExpressions.GetTotalExpressionProgress());
 		emojiExpressions.SetExpression(EmojiExpressionState.DEFAULT,0);
 
 	}

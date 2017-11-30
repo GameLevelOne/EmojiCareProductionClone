@@ -40,8 +40,13 @@ public class UIGarden : MonoBehaviour {
 		StallItem.OnEndDragStallItem -= OnEndDragStallItem;
 	}
 
-	public void ShowPopupRefillStall(){
-		screenPopup.ShowPopup (PopupType.AdsOrGems, PopupEventType.RefillStall);
+	public void ShowPopupRefillStall (int eventID)
+	{
+		if (eventID == 1) {
+			screenPopup.ShowPopup (PopupType.AdsOrGems, PopupEventType.RestockSeeds);
+		} else {
+			screenPopup.ShowPopup (PopupType.AdsOrGems, PopupEventType.RestockStall);
+		}
 	}
 
 	void OnEndDragStallItem (bool isBought)

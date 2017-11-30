@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using admob;
 
+public enum AdEvents{
+	RestockStall,
+	RestockSeeds
+}
+
 public class AdmobManager : MonoBehaviour {
 	static AdmobManager instance;
 
@@ -16,12 +21,13 @@ public class AdmobManager : MonoBehaviour {
 
 	#region events
 	public delegate void FinishLoadVideoAds();
-	public delegate void FinishWatchVideoAds();
+	public delegate void FinishWatchVideoAds(AdEvents eventName);
 	public event FinishLoadVideoAds OnFinishLoadVideoAds;
 	public event FinishWatchVideoAds OnFinishWatchVideoAds;
 	#endregion
 
 	Admob ad;
+	AdEvents currentEvent;
 
 	public static AdmobManager Instance{
 		get{return instance;}
@@ -61,7 +67,7 @@ public class AdmobManager : MonoBehaviour {
 	void rewardedVideoEventHandler (string eventName, string msg)
 	{
 		if(eventName == AdmobEvent.onRewarded){
-			OnFinishWatchVideoAds ();
+			OnFinishWatchVideoAds (currentEvent);
 		}
 	}
 
@@ -79,7 +85,8 @@ public class AdmobManager : MonoBehaviour {
 		ad.removeBanner();
 	}
 
-	public void ShowRewardedVideo(){
+	public void ShowRewardedVideo(AdEvents eventName){
+		currentEvent = eventName;
 		StartCoroutine (WaitForAds ());
 	}
 
@@ -92,8 +99,10 @@ public class AdmobManager : MonoBehaviour {
 			yield return null;
 		}
 
+
 		if(adsReady){
-			OnFinishLoadVideoAds ();
+			adsReady = false;
+			//OnFinishLoadVideoAds ();
 			ad.showRewardedVideo ();
 		}
 	}

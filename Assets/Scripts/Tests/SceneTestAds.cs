@@ -22,13 +22,13 @@ public class SceneTestAds : MonoBehaviour {
 		buttonVideoAds.text = "Video Loaded";
 	}
 
-	void OnFinishWatchVideoAds ()
+	void OnFinishWatchVideoAds (AdEvents eventName)
 	{
 		buttonVideoAds.text = "Got reward";
 	}
 
 	public void OnClickVideoAds(){
 		buttonVideoAds.text = "Loading...";
-		AdmobManager.Instance.ShowRewardedVideo ();
+		AdmobManager.Instance.ShowRewardedVideo (AdEvents.RestockSeeds);
 	}
 }

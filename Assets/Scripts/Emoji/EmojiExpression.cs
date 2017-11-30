@@ -81,7 +81,6 @@ public class EmojiExpression {
 	public Animator bodyAnim;
 	public Animator faceAnim;
 	public Animator effectAnim;
-	public float expressionProgress = 0f;
 	public int totalExpression = 60;
 	public bool isExpressing = false;
 	public EmojiExpressionData[] expressionDataInstances;
@@ -113,7 +112,7 @@ public class EmojiExpression {
 		}
 	}
 
-	public float GetTotalProgress()
+	public float GetTotalExpressionProgress()
 	{
 		int counter = 0;
 		foreach(EmojiExpressionData data in expressionDataInstances){
@@ -121,7 +120,10 @@ public class EmojiExpression {
 				counter++;
 			}
 		}
-		return (float) counter / totalExpression;
+		Debug.Log ("expressionCount:" + counter);
+		Debug.Log ("totalExpression:" + totalExpression);
+		Debug.Log ("ratio:" + ((float)counter / totalExpression));
+		return (float) System.Math.Round((double)counter / totalExpression,4);
 	}
 
 	#endregion
@@ -150,6 +152,7 @@ public class EmojiExpression {
 				unlockedExpressions.Add((EmojiExpressionState)node[RESOURCE_DATA][i].AsInt);
 			}
 		}
+		totalExpression = 60;
 		expressionDataInstances = new EmojiExpressionData[60];
 		for(int i=0;i<expressionDataInstances.Length;i++){
 			expressionDataInstances [i] = new EmojiExpressionData (i,
@@ -181,7 +184,7 @@ public class EmojiExpression {
 					if (OnNewExpression != null) {
 						OnNewExpression ((int)expression,true);
 
-						PlayerData.Instance.PlayerEmoji.emojiGrowth.UpdateGrowth(GetTotalProgress());
+						PlayerData.Instance.PlayerEmoji.emojiGrowth.UpdateGrowth(GetTotalExpressionProgress());
 					}	
 				}
 				else{
