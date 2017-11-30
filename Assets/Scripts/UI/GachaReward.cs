@@ -11,9 +11,23 @@ public enum HatType{
 	One,Two,Three,COUNT
 }
 
+public enum AnimState{
+	OpenGacha,CloseGacha
+}
+
 public class GachaReward : BaseUI {
-	public Text gachaCountText;
+	public Button touchArea;
+	public Text gachaCountTextInButton;
+	public Text rewardAmount;
 	public Image rewardIcon;
+	public Animator gachaAnim;
+	public GameObject screenGacha;
+	public GameObject buttonGacha;
+
+	public Sprite iconCoin;
+	public Sprite iconGem;
+	public Sprite[] iconIngredients;
+
 	List<HatType> unlockedHats = new List<HatType> ();
 
 	float rateCoin = 0f;
@@ -21,18 +35,28 @@ public class GachaReward : BaseUI {
 	float rateIngredients = 0f;
 	float rateCostume = 0f;
 
-	int gachaCount = 10;
+	int gachaCount = 0;
 	int minGem = 0;
 	int maxGem = 0;
 	int minCoin = 0;
 	int maxCoin = 0;
+
+	AnimState currentAnimState = AnimState.CloseGacha;
+
+	//TEMP
+	string gachaPrefKey = "GachaCount";
+
+	void Start(){
+		Init ();
+	}
 
 	//INIT TEMP DATA
 	public void Init(){
 		SetGachaRates (0.7f, 0.05f, 0.22f, 0.03f);
 		SetMinMaxCoinGem (10, 100, 1, 3);
 		unlockedHats.Add (HatType.One);
-		//SimulateGacha ();
+		gachaCount = PlayerPrefs.GetInt (gachaPrefKey, 0);
+		gachaCountTextInButton.text = gachaCount.ToString ();
 	}
 
 	public void OpenGacha(){
@@ -44,8 +68,40 @@ public class GachaReward : BaseUI {
 		}
 	}
 
-	IEnumerator WaitForAnim(float time,string animBool){
-		yield return null;
+	public void TapGachaPack(){
+		if(currentAnimState == AnimState.CloseGacha){
+			//opening
+			currentAnimState = AnimState.OpenGacha;
+			gachaCount--;
+			PlayerPrefs.SetInt (gachaPrefKey, gachaCount);
+			gachaCountTextInButton.text = gachaCount.ToString ();
+			StartGacha ();
+			StartCoroutine (WaitForAnim (AnimState.OpenGacha.ToString ()));
+		} else if(currentAnimState == AnimState.OpenGacha){
+			//closing
+			currentAnimState = AnimState.CloseGacha;
+			if(gachaCount>0){
+				StartCoroutine (WaitForAnim (AnimState.CloseGacha.ToString ()));
+			} else{
+				base.CloseUI (screenGacha);
+			}
+		}
+	}
+
+	public void OpenScreenGacha ()
+	{
+		if (gachaCount > 0) {
+			base.ShowUI (screenGacha);
+			buttonGacha.SetActive (false);
+		}
+	}
+
+	IEnumerator WaitForAnim(string animBool){
+		gachaAnim.SetBool (animBool, true);
+		touchArea.interactable = false;
+		yield return new WaitForSeconds (0.35f);
+		gachaAnim.SetBool (animBool, false);
+		touchArea.interactable = true;
 	}
 
 	void SimulateGacha()
@@ -105,26 +161,49 @@ public class GachaReward : BaseUI {
 
 	public void GetGachaReward(){
 		gachaCount++; 
-		gachaCountText.text = gachaCount.ToString ();
+		gachaCountTextInButton.text = gachaCount.ToString ();
 	}
 
 	void ProcessReward(RewardType type){
-		string rewardDebug = "";
+		int gem = 0;
+		int coin = 0;
+
 		if(type == RewardType.Gem){
-			int gem = Random.Range (minGem, (maxGem + 1));
+			gem = Random.Range (minGem, (maxGem + 1));
 			PlayerData.Instance.PlayerGem += gem;
-			rewardDebug = "Gem " + gem.ToString ();
+			Debug.Log ("Gem: "+gem);
+			UpdateRewardDisplay (type, IngredientType.COUNT,gem);
 		} else if(type == RewardType.Costume){
 			CheckDuplicateCostume (Random.Range (0, (int)HatType.COUNT));
+			//update reward
 		} else if(type == RewardType.Ingredients){
 			IngredientType ingredient =	(IngredientType) Random.Range (0, (int)IngredientType.COUNT);
 			Debug.Log ("Ingredients: "+ingredient);
 			PlayerData.Instance.inventory.ModIngredientValue (ingredient,1);
+			UpdateRewardDisplay (type, ingredient, 1);
 		} else if(type == RewardType.Coin){
-			int coin = Random.Range (minCoin, (maxCoin + 1));
+			coin = Random.Range (minCoin, (maxCoin + 1));
 			Debug.Log("coin "+coin.ToString());
 			PlayerData.Instance.PlayerCoin += coin;
+			UpdateRewardDisplay (type, IngredientType.COUNT,coin);
 		}	
+	}
+
+	void UpdateRewardDisplay(RewardType type,IngredientType ingredientType = IngredientType.COUNT,int amount=1){
+		if(amount == 1){
+			rewardAmount.gameObject.SetActive (false);
+		} else{
+			rewardAmount.gameObject.SetActive (true);
+			rewardAmount.text = "x" + amount.ToString ();
+		}
+
+		if(type == RewardType.Coin){
+			rewardIcon.sprite = iconCoin;
+		} else if(type == RewardType.Gem){
+			rewardIcon.sprite = iconGem;
+		} else if(type == RewardType.Ingredients){
+			rewardIcon.sprite = iconIngredients [(int)ingredientType];
+		} 
 	}
 
 	void CheckDuplicateCostume(int result){

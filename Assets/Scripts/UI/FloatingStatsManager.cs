@@ -28,12 +28,23 @@ public class FloatingStatsManager : MonoBehaviour {
 		statsMeterObj[type].GetComponent<PopupStatsMeter>().ShowUI((EmojiStatsState)type,currentValue,targetValue,maxValue);
 	}
 
+	public void ShowStatsFromMagnifyingGlass(){
+		int counter = 0;
+		for(int i=0;i<5;i++){
+			statsMeterObj [i].SetActive (true);
+			statsMeterObj [i].transform.localPosition = new Vector3 (0, 400 - 100 * counter);
+			statsMeterObj [i].GetComponent<PopupStatsMeter> ().ShowStaticMeter (GetCurrentStatValue (i));
+			counter++;
+		}
+	}
+
 	public void ShowMultipleMeters(float[] mod){
 		int counter = 0;
 		for(int i=0;i<mod.Length;i++){
 			if(mod[i] != 0){
 				statsMeterObj [i].SetActive (true);
 				statsMeterObj [i].transform.localPosition = new Vector3 (0, 400 - 100 * counter);
+				ShowSingleMeter (i, mod [i]);
 				counter++;
 			} else{
 				statsMeterObj [i].SetActive (false);

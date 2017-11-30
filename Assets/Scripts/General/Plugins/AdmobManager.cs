@@ -68,6 +68,7 @@ public class AdmobManager : MonoBehaviour {
 	{
 		if(eventName == AdmobEvent.onRewarded){
 			OnFinishWatchVideoAds (currentEvent);
+			ad.loadRewardedVideo (androidRewardedVideoID);
 		}
 	}
 

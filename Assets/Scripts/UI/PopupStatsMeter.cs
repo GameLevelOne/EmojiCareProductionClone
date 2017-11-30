@@ -22,6 +22,12 @@ public class PopupStatsMeter : MonoBehaviour {
 		StartCoroutine (AnimateMeter (currentValue,targetValue,maxValue));
 	}
 
+	public void ShowStaticMeter(float value){
+		GetComponent<Animator> ().SetTrigger (triggerOpenNotif);
+		barFill.fillAmount = value;
+		StartCoroutine (AutoClose ());
+	}
+
 	IEnumerator AnimateMeter(float currentValue,float targetValue,float maxValue){
 		yield return new WaitForSeconds (1f);
 		float time = 0;
