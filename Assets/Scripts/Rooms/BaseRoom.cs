@@ -67,7 +67,9 @@ public class BaseRoom : MonoBehaviour {
 	{
 		if(thisRoom == currentRoom){
 			//show furnitures
-			foreach(MovableFurniture f in movableFurnitures) f.gameObject.SetActive(true);
+			foreach(MovableFurniture f in movableFurnitures){ 
+				f.gameObject.SetActive(true);
+			}
 			SetEmojiRoomModifier();
 			PlayerData.Instance.PlayerEmoji.triggerFall.AddAndIgnoreColliders(collidersToIgnoreWhenChangingRoom);
 		}else{

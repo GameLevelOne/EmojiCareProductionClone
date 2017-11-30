@@ -31,6 +31,7 @@ public class EmojiBody : MonoBehaviour {
 
 	public Collider2D thisCollider;
 	public Rigidbody2D parentRigidbody;
+	public Transform hatParent;
 	public Emoji emoji;
 
 	public int previousRoom = -1, currentRoom = -1;
@@ -42,7 +43,7 @@ public class EmojiBody : MonoBehaviour {
 	[Header("BubbleEffect")]
 	public Animator bubbleEffectAnim;
 	public Animator kinclongAnim;
-	public EmojiBubbleEffect bubbleEFfect;
+	public EmojiBubbleEffect bubbleEffect;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
@@ -132,6 +133,10 @@ public class EmojiBody : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D other)
 	{
+		if(other.gameObject.tag == Tags.IMMOVABLE_FURNITURE){
+			if(flagSleep) Physics2D.IgnoreCollision(thisCollider,other.collider);
+		}
+
 		emoji.playerInput.Landing();
 
 		if(other.gameObject.tag == Tags.BED){
@@ -181,16 +186,33 @@ public class EmojiBody : MonoBehaviour {
 		else if(foamState < 0) foamState = 0;
 		print("FOAM STATE = "+foamState);
 		bubbleEffectAnim.SetFloat(AnimatorParameters.Floats.FOAM_STATE,foamState);
-		bubbleEFfect.SetBubbleAlpha(foamState/10f);
+		bubbleEffect.SetBubbleAlpha(foamState/10f);
 	}
 
-	public void CheckRoom(RoomType room)
+	public void EmojiKinclong()
+	{
+		kinclongAnim.SetTrigger(AnimatorParameters.Triggers.ANIMATE);
+	}
+
+	public void CheckRoomForBubbleMechanic(RoomType room)
 	{
 		if(room != RoomType.Bathroom){
 			StartCoroutine(_ReduceBubbleEffect);
 		}else{
 			StopCoroutine(_ReduceBubbleEffect);
 		}
+	}
+
+	public void WearHat(string ID, GameObject hatObject)
+	{
+		GameObject tempHatObject = Instantiate(hatObject,hatParent) as GameObject;
+		PlayerData.Instance.inventory.SetCurrentHat(ID);
+	}
+
+	public void RemoveHat()
+	{
+		Destroy(hatParent.GetChild(0).gameObject);
+		PlayerData.Instance.inventory.SetCurrentHat(string.Empty);
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -232,7 +254,7 @@ public class EmojiBody : MonoBehaviour {
 	IEnumerator ReduceBubbleEffect()
 	{
 		while(foamState > 0f){
-			ModEmojiFoamedValue(Time.fixedDeltaTime * 0.2f);
+			ModEmojiFoamedValue((Time.fixedDeltaTime * 0.2f) * -1f);
 			print(foamState);
 			yield return null;
 		}

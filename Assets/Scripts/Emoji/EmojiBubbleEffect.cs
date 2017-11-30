@@ -19,7 +19,7 @@ public class EmojiBubbleEffect : MonoBehaviour {
 	public void SetBubbleAlpha(float alpha)
 	{
 		foreach(SpriteRenderer sr in bubbleSprites){
-			sr.color = new Color(sr.color.r,sr.color.g,sr.color.b,alpha);
+			sr.color = new Color(sr.color.r,sr.color.g,sr.color.b, (alpha*0.8f) );
 		}
 	}
 	#endregion

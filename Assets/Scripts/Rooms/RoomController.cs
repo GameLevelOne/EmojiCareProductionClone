@@ -16,6 +16,7 @@ public class RoomController : MonoBehaviour {
 	public GameObject danceMat; //SEMENTARA
 	public GameObject cookBar; //SEMENTARA
 	public GameObject gardenTimer;
+	public GameObject Album;
 	public UIGarden uiGarden;
 	public GardenMiscItemsManager gardenMiscItemsManager;
 	public RandomPassingToyManager randomPassingToyManager;
@@ -42,9 +43,11 @@ public class RoomController : MonoBehaviour {
 		PlayerData.Instance.PlayerEmoji.body.previousRoom = (int)currentRoom;
 
 		foreach(BaseRoom r in rooms) if(r != null){
-				r.InitRoom();
-				r.OnRoomChanged(currentRoom);
-			}
+			r.InitRoom();
+			r.OnRoomChanged(currentRoom);
+		}
+		if(PlayerData.Instance.EmojiAlbumData.Count <= 0) Album.SetActive(false);
+
 		AdjustTouchAreaSize();
 		RegisterLockRoomEvent();
 		stall.Init();
@@ -252,6 +255,7 @@ public class RoomController : MonoBehaviour {
 		case RoomType.Bathroom: 	rooms[(int)currentRoom].GetComponent<Bathroom>().Init(); break;
 		}
 
+		PlayerData.Instance.PlayerEmoji.body.CheckRoomForBubbleMechanic(currentRoom);
 
 		//SEMENTARA
 //		if(currentRoom != RoomType.Playroom) danceMat.SetActive(false);

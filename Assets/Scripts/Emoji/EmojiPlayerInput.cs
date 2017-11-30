@@ -95,7 +95,6 @@ public class EmojiPlayerInput : MonoBehaviour {
 				flagTouching = false;
 			}else{
 				Wake();
-				if(OnEmojiWake != null) OnEmojiWake();
 			}
 		}
 		dizzySound = barfSound = false;
@@ -337,7 +336,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 		emoji.emojiExpressions.SetExpression(EmojiExpressionState.DEFAULT,0);
 	}
 
-	void Wake()
+	public void Wake()
 	{
 		print("wake");
 		float staminaValue = emoji.stamina.StatValue / emoji.stamina.MaxStatValue;
@@ -352,7 +351,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 		emoji.EmojiSleeping = false;
 		emoji.ResetEmojiStatsModifier();
 		interactable = false;
-
+		if(OnEmojiWake != null) OnEmojiWake();
 	}
 	//----------------------------------------------------------------=====NON-VOID MODULES=====----------------------------------------------------------------
 	Vector3 getEmojiPositionOnHold(Vector3 touchWorldPosition)
