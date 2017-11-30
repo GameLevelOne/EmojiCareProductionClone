@@ -19,11 +19,11 @@ public class EmojiSelectionData : MonoBehaviour {
 		currentEmojiData = emojiData;
 		tempEmojiIcon=emojiIcon;
 		if(emojiData.price == 0){
-			priceBox.SetActive(false);	
+			//priceBox.SetActive(false);	
 			needToBuy=false;
 		} else{
-			priceBox.SetActive(true);
-			textPrice.text = emojiData.price.ToString();
+			//priceBox.SetActive(true);
+			//textPrice.text = emojiData.price.ToString();
 			needToBuy=true;
 		}
 		//gameObject.name = emojiData.emojiType.ToString();

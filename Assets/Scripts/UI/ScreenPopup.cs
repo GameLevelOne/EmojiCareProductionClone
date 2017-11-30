@@ -75,15 +75,15 @@ public class ScreenPopup : BaseUI {
 			buttonGroupWarning.SetActive(false);
 			buttonGroupAdsAndGems.SetActive (false);
 			if(toShop){
-				buttonShop.SetActive(true);
+				//buttonShop.SetActive(true);
 				buttonTransfer.SetActive(false);
 				buttonOk.SetActive(false);
 			} else if(toTransfer){
-				buttonShop.SetActive(false);
+				//buttonShop.SetActive(false);
 				buttonTransfer.SetActive(true);
 				buttonOk.SetActive(false);
 			} else{
-				buttonShop.SetActive(false);
+				//buttonShop.SetActive(false);
 				buttonTransfer.SetActive(false);
 				buttonOk.SetActive(true);
 			}
@@ -133,12 +133,9 @@ public class ScreenPopup : BaseUI {
 	{
 		if (currentPopupType == PopupType.Confirmation) {
 			base.ClosePopup (this.gameObject);
-			if (currentEventType == PopupEventType.SelectEmoji) {
+			if (currentEventType == PopupEventType.SelectEmoji || currentEventType == PopupEventType.BuyEmoji) {
 				Debug.Log("new emoji");
 				OnCelebrationNewEmoji(tempEmojiSprite,tempEmojiName);
-			} else if(currentEventType == PopupEventType.BuyEmoji){
-				Debug.Log("cannot buy");
-				ShowPopup(PopupType.Warning,PopupEventType.NotAbleToBuyEmoji,false,false);
 			} else if(currentEventType == PopupEventType.AbleToSendOff){
 				Debug.Log("send off");
 				OnSendOffEmoji(tempEmojiSprite,tempEmojiName);

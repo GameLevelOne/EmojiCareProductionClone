@@ -4,8 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class SceneSelectionManager : MonoBehaviour {
+	public ScreenSuptixEmoji screenSuptixEmoji;
 	public ScreenPopup screenPopup;
 	public EmojiIcons emojiIcons;
+	public GameObject[] emojiObjects; //3 free, 1 paid
 	public EmojiSO[] emojiSO;
 	public Transform parentObj;
 	public EmojiSelectionData[] emojiObj;
@@ -14,7 +16,7 @@ public class SceneSelectionManager : MonoBehaviour {
 	List<int> freeEmoji = new List<int>();
 	List<int> paidEmoji = new List<int>();
 
-	Vector3[] selectionPos = new Vector3[]{new Vector3(-200,200,0),new Vector3(200,200,0),new Vector3(0,-100,0)};
+	//Vector3[] selectionPos = new Vector3[]{new Vector3(-200,200,0),new Vector3(200,200,0),new Vector3(0,-100,0)};
 
 	void Start ()
 	{
@@ -23,15 +25,24 @@ public class SceneSelectionManager : MonoBehaviour {
 
 	void OnEnable(){
 		EmojiSelectionData.OnEmojiClicked += OnEmojiClicked;
+		if(AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds += OnFinishWatchVideoAds;
 	}
 
 	void OnDisable(){
 		EmojiSelectionData.OnEmojiClicked -= OnEmojiClicked;
+		if(AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds -= OnFinishWatchVideoAds;
 	}
 
 	void OnEmojiClicked (bool needToBuy,Sprite sprite,EmojiSO emojiData)
 	{
 		ConfirmEmoji(needToBuy,sprite,emojiData);
+	}
+
+	void OnFinishWatchVideoAds(AdEvents eventName){
+		if (eventName == AdEvents.ShuffleEmoji){
+			GenerateFreeEmojiSelectionPool ();
+			GeneratePaidEmojiSelection ();
+		}
 	}
 
 	void Init(){
@@ -76,11 +87,24 @@ public class SceneSelectionManager : MonoBehaviour {
 		emojiObj [3].InitEmoji (emojiSO [paidEmoji[randomIdx]], tempSprites [paidEmoji[randomIdx]]);
 	}
 
+	public void ShuffleEmojiPool(){
+		if (AdmobManager.Instance)
+			AdmobManager.Instance.ShowRewardedVideo (AdEvents.ShuffleEmoji);
+	}
+
+	public void ChooseEmoji(){
+		screenSuptixEmoji.ShowUI (screenSuptixEmoji.gameObject);
+	}
+
 	void ConfirmEmoji(bool needToBuy,Sprite sprite,EmojiSO emojiData){
 		PlayerData.Instance.SelectedEmoji = emojiData.emojiType;
 		PlayerData.Instance.PlayerEmojiType = (int)emojiData.emojiType;
 		if(needToBuy){
-			screenPopup.ShowPopup(PopupType.Confirmation,PopupEventType.BuyEmoji,needToBuy,false,sprite,emojiData.emojiType.ToString());
+			if(PlayerData.Instance.PlayerGem>= emojiData.price){
+				screenPopup.ShowPopup(PopupType.Confirmation,PopupEventType.BuyEmoji,needToBuy,false,sprite,emojiData.emojiType.ToString());
+			} else{
+				screenPopup.ShowPopup (PopupType.Warning, PopupEventType.NotAbleToBuyEmoji);
+			}
 		}
 		else{
 			screenPopup.ShowPopup(PopupType.Confirmation,PopupEventType.SelectEmoji,needToBuy,false,sprite,emojiData.emojiType.ToString());
