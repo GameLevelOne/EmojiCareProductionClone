@@ -20,7 +20,12 @@ public enum PopupEventType{
 	AbleToBuyFurniture,
 	NotAbleToBuyFurniture,
 	RestockStall,
-	RestockSeeds
+	RestockSeeds,
+	ResetEmoji,
+	ReviveEmoji,
+	NotAbleToReviveEmoji,
+	AbleToBuyCoin,
+	NotAbleToBuyCoin
 }
 
 public class ScreenPopup : BaseUI {
@@ -38,6 +43,8 @@ public class ScreenPopup : BaseUI {
 
 	bool emojiTransfer = false;
 
+	int reviveCost = 100; //TODO: ADJUST THIS LATER
+
 	#region events
 	public delegate void CelebrationNewEmoji(Sprite sprite,string emojiName);
 	public static event CelebrationNewEmoji OnCelebrationNewEmoji;
@@ -48,8 +55,17 @@ public class ScreenPopup : BaseUI {
 	public delegate void TransferEmoji();
 	public static event TransferEmoji OnTransferEmoji;
 
+	public delegate void ResetEmoji();
+	public static event ResetEmoji OnResetEmoji;
+
+	public delegate void ReviveEmoji();
+	public static event ReviveEmoji OnReviveEmoji;
+
 	public delegate void BuyFurniture();
 	public static event BuyFurniture OnBuyFurniture;
+
+	public delegate void BuyCoin();
+	public static event BuyCoin OnBuyCoin;
 
 	public delegate void RefillStallWithAds();
 	public static event RefillStallWithAds OnRefillStallWithAds;
@@ -113,7 +129,7 @@ public class ScreenPopup : BaseUI {
 			return "Send off this emoji?";
 		} else if (eventType == PopupEventType.NotAbleToSendOff) {
 			return "Cannot send off yet";
-		} else if(eventType == PopupEventType.NotAbleToBuyEmoji){
+		} else if(eventType == PopupEventType.NotAbleToBuyEmoji || eventType == PopupEventType.NotAbleToReviveEmoji){
 			return "Not enough gems";
 		} else if(eventType == PopupEventType.AlbumLocked){
 			return "Finish your first emoji to unlock this menu";
@@ -121,9 +137,17 @@ public class ScreenPopup : BaseUI {
 			return "Do you want to buy this furniture?";
 		} else if(eventType == PopupEventType.NotAbleToBuyFurniture){
 			return "Not enough coins";
+		} else if(eventType == PopupEventType.AbleToBuyCoin){
+			return "Are you sure?";
+		} else if(eventType == PopupEventType.NotAbleToBuyCoin){
+			return "Not enough gems";
 		} else if(eventType == PopupEventType.RestockSeeds || eventType == PopupEventType.RestockStall){
 			return "Do you want to refill?";
-		}
+		} else if(eventType == PopupEventType.ResetEmoji){
+			return "Do you want to reset your progress?";
+		} else if(eventType == PopupEventType.ReviveEmoji){
+			return "Do you want to revive " + PlayerData.Instance.EmojiName + " ? You will not lose your progress";
+		} 
 		else{
 			return "";
 		}
@@ -145,7 +169,20 @@ public class ScreenPopup : BaseUI {
 			} else if(currentEventType == PopupEventType.AbleToBuyFurniture){
 				Debug.Log ("buy furniture");
 				OnBuyFurniture ();
-			} 
+			} else if(currentEventType == PopupEventType.ResetEmoji){
+				Debug.Log ("reset emoji");
+				OnResetEmoji ();
+			} else if(currentEventType == PopupEventType.ReviveEmoji){
+				Debug.Log ("revive emoji");
+				if(PlayerData.Instance.PlayerGem>=reviveCost){
+					OnReviveEmoji ();
+				} else{
+					ShowPopup (PopupType.Warning, PopupEventType.NotAbleToReviveEmoji);
+				}
+
+			} else if(currentEventType == PopupEventType.AbleToBuyCoin){
+				OnBuyCoin ();
+			}
 		} else{
 			Debug.Log("3");
 			base.ClosePopup(this.gameObject);

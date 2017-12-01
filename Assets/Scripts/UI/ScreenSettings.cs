@@ -20,6 +20,11 @@ public class ScreenSettings : BaseUI {
 
 	}
 
+	public void OnClickResetCoin(){
+		PlayerData.Instance.PlayerCoin = 50000;
+		PlayerData.Instance.PlayerGem = 500;
+	}
+
 	public void AdjustMusicVolume(int type){
 		SoundManager.Instance.SetAudioVolume(type,sliders[type].value);
 	}

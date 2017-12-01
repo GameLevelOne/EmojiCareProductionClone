@@ -21,7 +21,7 @@ public class DoodleMinigame : BaseUI {
 	}
 
 	public void OnClickBack(){
-		//PlayerData.Instance.PlayerEmoji.playerInput.OnDoodleMinigameDone ();
+		PlayerData.Instance.PlayerEmoji.playerInput.OnDoodleMinigameDone ();
 		StartCoroutine(TakeScreenshot());
 	}
 

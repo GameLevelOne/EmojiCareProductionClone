@@ -6,15 +6,15 @@ using UnityEngine.UI;
 public class SceneSelectionManager : MonoBehaviour {
 	public ScreenSuptixEmoji screenSuptixEmoji;
 	public ScreenPopup screenPopup;
-	public EmojiIcons emojiIcons;
-	public GameObject[] emojiObjects; //3 free, 1 paid
 	public EmojiSO[] emojiSO;
-	public Transform parentObj;
-	public EmojiSelectionData[] emojiObj;
+	public EmojiSelectionData[] emojiObj; //3 free, 1 paid
 	public Sprite[] tempSprites;
+	public Transform emojiSuptixParent;
+	public GameObject emojiSelectionObjPrefab;
 
 	List<int> freeEmoji = new List<int>();
 	List<int> paidEmoji = new List<int>();
+	List<int> unlockedEmoji = new List<int> ();
 
 	//Vector3[] selectionPos = new Vector3[]{new Vector3(-200,200,0),new Vector3(200,200,0),new Vector3(0,-100,0)};
 
@@ -51,6 +51,10 @@ public class SceneSelectionManager : MonoBehaviour {
 				freeEmoji.Add(i);
 			} else{
 				paidEmoji.Add(i);
+			}
+
+			if(emojiSO[i].isUnlocked){
+				unlockedEmoji.Add (i);
 			}
 		}
 		GenerateFreeEmojiSelectionPool ();
@@ -90,10 +94,12 @@ public class SceneSelectionManager : MonoBehaviour {
 	public void ShuffleEmojiPool(){
 		if (AdmobManager.Instance)
 			AdmobManager.Instance.ShowRewardedVideo (AdEvents.ShuffleEmoji);
+		OnFinishWatchVideoAds (AdEvents.ShuffleEmoji);
 	}
 
 	public void ChooseEmoji(){
 		screenSuptixEmoji.ShowUI (screenSuptixEmoji.gameObject);
+		InitSuptixPool ();
 	}
 
 	void ConfirmEmoji(bool needToBuy,Sprite sprite,EmojiSO emojiData){
@@ -101,14 +107,24 @@ public class SceneSelectionManager : MonoBehaviour {
 		PlayerData.Instance.PlayerEmojiType = (int)emojiData.emojiType;
 		if(needToBuy){
 			if(PlayerData.Instance.PlayerGem>= emojiData.price){
-				screenPopup.ShowPopup(PopupType.Confirmation,PopupEventType.BuyEmoji,needToBuy,false,sprite,emojiData.emojiType.ToString());
+				screenPopup.ShowPopup(PopupType.Confirmation,PopupEventType.BuyEmoji,false,false,sprite,emojiData.emojiType.ToString());
 			} else{
 				screenPopup.ShowPopup (PopupType.Warning, PopupEventType.NotAbleToBuyEmoji);
 			}
 		}
 		else{
-			screenPopup.ShowPopup(PopupType.Confirmation,PopupEventType.SelectEmoji,needToBuy,false,sprite,emojiData.emojiType.ToString());
+			screenPopup.ShowPopup(PopupType.Confirmation,PopupEventType.SelectEmoji,false,false,sprite,emojiData.emojiType.ToString());
 		}
 	}
 
+	void InitSuptixPool(){
+		float startX = -200f;
+		float startY = 230;
+		for(int i=0;i<unlockedEmoji.Count;i++){
+			GameObject obj = Instantiate (emojiSelectionObjPrefab, emojiSuptixParent,false);
+			obj.transform.localPosition = new Vector3 (startX + ((i % 3) * 200), startY - (float)(Mathf.FloorToInt (i / 3) * 200));
+			Debug.Log (obj.transform.localPosition);
+			obj.GetComponent<EmojiSelectionData> ().InitEmoji (emojiSO [unlockedEmoji [i]], tempSprites [unlockedEmoji [i]]);
+		}
+	}
 }

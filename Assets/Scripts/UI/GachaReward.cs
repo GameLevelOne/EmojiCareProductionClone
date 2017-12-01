@@ -7,10 +7,6 @@ public enum RewardType{
 	Coin,Gem,Ingredients,Costume
 }
 
-public enum HatType{
-	One,Two,Three,COUNT
-}
-
 public enum AnimState{
 	OpenGacha,CloseGacha
 }
@@ -52,9 +48,8 @@ public class GachaReward : BaseUI {
 
 	//INIT TEMP DATA
 	public void Init(){
-		SetGachaRates (0.7f, 0.05f, 0.22f, 0.03f);
+		SetGachaRates (0.7f, 0.05f, 0.22f, 0f);
 		SetMinMaxCoinGem (10, 100, 1, 3);
-		unlockedHats.Add (HatType.One);
 		gachaCount = PlayerPrefs.GetInt (gachaPrefKey, 0);
 		gachaCountTextInButton.text = gachaCount.ToString ();
 	}

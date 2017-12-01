@@ -5,6 +5,7 @@ public class HatStand : ActionableFurniture {
 	#region attributes
 	[Header("HatStand Attributes")]
 	public GameObject[] hatObjects;
+	public UIChangeHat uiChangeHat;
 
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -16,6 +17,7 @@ public class HatStand : ActionableFurniture {
 	public override void PointerClick ()
 	{
 		//open hat UI menu
+		uiChangeHat.ShowHatUI();
 	}
 
 

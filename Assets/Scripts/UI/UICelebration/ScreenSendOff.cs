@@ -9,7 +9,8 @@ public class ScreenSendOff : BaseUI {
 
 	public Image emojiIcon;
 	public Text expressionProgress;
-	public Text reward;
+	public Text textRewardCoin;
+	public Text textRewardGem;
 
 	public ScreenAlbum screenAlbum;
 
@@ -33,9 +34,9 @@ public class ScreenSendOff : BaseUI {
 		this.sceneLoader = sceneLoader;
 
 		emojiIcon.sprite = sprite;
-		expressionProgress.text = "Expression Progress: "+ 
+		expressionProgress.text =  
 		(PlayerData.Instance.PlayerEmoji.emojiExpressions.GetTotalExpressionProgress()*100).ToString()+"%";
-		reward.text = "Reward: ";
+		GenerateReward ();
 
 		screenAlbum.AddEmojiRecord();
 	}
@@ -46,5 +47,12 @@ public class ScreenSendOff : BaseUI {
 
 	public void OnClickShare(){
 		
+	}
+
+	void GenerateReward(){
+		int randCoin = Random.Range (1000, 5000);
+		int randGem = Random.Range (10, 50);
+		textRewardCoin.text = "x" + randCoin.ToString ();
+		textRewardGem.text = "x" + randCoin.ToString ();
 	}
 }
