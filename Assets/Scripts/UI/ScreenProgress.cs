@@ -104,7 +104,7 @@ public class ScreenProgress : BaseUI {
 		if(canSendOff){
 			screenPopup.ShowPopup(PopupType.Confirmation,PopupEventType.AbleToSendOff,false,false,sprite,emojiName);
 		}else{
-			screenPopup.ShowPopup(PopupType.Confirmation,PopupEventType.NotAbleToSendOff,false,true);
+			screenPopup.ShowPopup(PopupType.Warning,PopupEventType.NotAbleToSendOff,false,false);
 		}
 	} 
 
