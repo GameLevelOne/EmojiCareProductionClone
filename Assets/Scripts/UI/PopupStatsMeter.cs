@@ -12,7 +12,6 @@ public enum EmojiStatsState{
 }
 
 public class PopupStatsMeter : MonoBehaviour {
-
 	public Image barFill;
 	string triggerOpenNotif = "OpenNotif";
 	string triggerCloseNotif = "CloseNotif";
@@ -25,26 +24,32 @@ public class PopupStatsMeter : MonoBehaviour {
 	public void ShowStaticMeter(float value){
 		GetComponent<Animator> ().SetTrigger (triggerOpenNotif);
 		barFill.fillAmount = value;
+
+	}
+
+	public void HideMeter(){
 		StartCoroutine (AutoClose ());
 	}
 
-	IEnumerator AnimateMeter(float currentValue,float targetValue,float maxValue){
+	IEnumerator AnimateMeter (float currentValue, float targetValue, float maxValue)
+	{
 		yield return new WaitForSeconds (1f);
 		float time = 0;
 		float startValue = currentValue / maxValue;
 		float endValue = targetValue / maxValue;
 		Debug.Log ("start:" + startValue);
 		Debug.Log ("end:" + endValue);
-		while(barFill.fillAmount < endValue){
+		while (barFill.fillAmount < endValue) {
 			barFill.fillAmount = Mathf.Lerp (startValue, endValue, time);
-			time += Time.deltaTime*2;
+			time += Time.deltaTime * 2;
 			yield return null;
 		}
+
 		StartCoroutine (AutoClose ());
 	}
 
 	IEnumerator AutoClose(){
-		yield return new WaitForSeconds (0.16f);
+		yield return new WaitForSeconds (0.3f);
 		GetComponent<Animator> ().SetTrigger (triggerCloseNotif);
 		yield return new WaitForSeconds (0.16f);
 		print("ASKJDKASDJKLASJDKLASJKD");

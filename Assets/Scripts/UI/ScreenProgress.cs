@@ -27,7 +27,7 @@ public class ScreenProgress : BaseUI {
 	int tileWidth = 4;
 	int tileHeight = 15;
 	float expressionBoxWidth = 120f;
-	float contentBoxMarginX = 50f;
+	float contentBoxMarginX = 100f;
 	float currentTotalProgress = 0f;
 	float sendOffPercentage = 0.8f;
 	bool canSendOff = false;
@@ -61,7 +61,7 @@ public class ScreenProgress : BaseUI {
 		for(int i=0;i<tileHeight;i++){
 			for(int j=0;j<tileWidth;j++){
 				GameObject obj = Instantiate(expressionBoxPrefab,contentBox,false) as GameObject;
-				obj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-200+j*125,770-i*125);
+				obj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-200+j*125,880-i*125);
 				obj.GetComponent<ProgressTile>().exprType = (EmojiExpressionState)exprTileIdx;
 				obj.name = "Expr"+exprTileIdx.ToString();
 				//condition = expressionIcons.GetExpressionUnlockCondition(currentEmojiData.emojiBaseData.emojiType,exprTileIdx);

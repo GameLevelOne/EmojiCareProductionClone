@@ -58,6 +58,13 @@ public class FloatingStatsManager : MonoBehaviour {
 		}
 	}
 
+	public void HideStatsFromMagnifyingGlass(){
+		int counter = 0;
+		for (int i=0;i<5;i++){
+			statsMeterObj [i].GetComponent<PopupStatsMeter> ().HideMeter (GetCurrentStatValue (i));
+		}
+	}
+
 	public void ShowMultipleMeters(float[] mod){
 		int counter = 0;
 		for(int i=0;i<mod.Length;i++){
