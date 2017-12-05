@@ -35,12 +35,12 @@ public class PopupStatsMeter : MonoBehaviour {
 	{
 		yield return new WaitForSeconds (1f);
 		float time = 0;
-		float startValue = currentValue / maxValue;
-		float endValue = targetValue / maxValue;
-		Debug.Log ("start:" + startValue);
-		Debug.Log ("end:" + endValue);
-		while (barFill.fillAmount < endValue) {
-			barFill.fillAmount = Mathf.Lerp (startValue, endValue, time);
+//		float startValue = currentValue / maxValue;
+//		float endValue = targetValue / maxValue;
+		Debug.Log ("start:" + currentValue);
+		Debug.Log ("end:" + targetValue);
+		while (barFill.fillAmount < targetValue) {
+			barFill.fillAmount = Mathf.Lerp (currentValue, targetValue, time);
 			time += Time.deltaTime * 2;
 			yield return null;
 		}
@@ -53,6 +53,6 @@ public class PopupStatsMeter : MonoBehaviour {
 		GetComponent<Animator> ().SetTrigger (triggerCloseNotif);
 		yield return new WaitForSeconds (0.16f);
 		print("ASKJDKASDJKLASJDKLASJKD");
-		gameObject.SetActive (false);
+		//gameObject.SetActive (false);
 	}
 }

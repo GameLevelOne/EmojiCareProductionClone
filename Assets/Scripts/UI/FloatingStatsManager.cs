@@ -37,15 +37,15 @@ public class FloatingStatsManager : MonoBehaviour {
 			currentValue = startValue;
 		}
 
-		float targetValue = currentValue + mod;
 		float maxValue = PlayerData.Instance.PlayerEmoji.emojiBaseData.maxStatValue;
+		float targetValue = currentValue + mod/maxValue;
 
-		if(targetValue > maxValue){
-			targetValue = maxValue;
+		if(targetValue > 1){
+			targetValue = 1;
 		}
 
 		statsMeterObj [type].SetActive (true);
-		statsMeterObj[type].GetComponent<PopupStatsMeter>().ShowUI((EmojiStatsState)type,currentValue,targetValue,maxValue);
+		statsMeterObj[type].GetComponent<PopupStatsMeter>().ShowUI((EmojiStatsState)type,currentValue,targetValue,1);
 	}
 
 	public void ShowStatsFromMagnifyingGlass(){
@@ -94,4 +94,5 @@ public class FloatingStatsManager : MonoBehaviour {
 		} else
 			return 0;
 	}
+
 }

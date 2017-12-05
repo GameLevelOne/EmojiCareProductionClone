@@ -45,6 +45,6 @@ public class UIHotkeys : MonoBehaviour {
 
 	IEnumerator WaitForAnim(GameObject obj){
 		yield return new WaitForSeconds(0.51f);
-		obj.SetActive(false);
+		//obj.SetActive(false);
 	}
 }

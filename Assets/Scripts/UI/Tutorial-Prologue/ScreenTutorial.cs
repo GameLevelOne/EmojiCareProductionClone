@@ -144,7 +144,8 @@ public class ScreenTutorial : BaseUI {
 		popupName.ShowUI(popupName.gameObject);
 	}
 
-	public void ClosePopup(){
+	public void ClosePopup ()
+	{
 		popupName.CloseUI (popupName.gameObject);
 		OnClickNext ();
 	}

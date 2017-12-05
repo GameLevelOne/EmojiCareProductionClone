@@ -93,7 +93,7 @@ public class NotificationNewExpression : MonoBehaviour {
 	IEnumerator WaitForAnim(){
 		GetComponent<Animator>().SetTrigger(triggerCloseNotif);
 		particles.StopParticles();
-		yield return new WaitForSeconds(0.16f);
+		yield return new WaitForSeconds(0.2f);
 		Destroy(gameObject);
 	}
 
@@ -101,7 +101,7 @@ public class NotificationNewExpression : MonoBehaviour {
 		yield return new WaitForSeconds(time);
 		particles.StopParticles();
 		GetComponent<Animator>().SetTrigger(triggerCloseNotif);
-		yield return new WaitForSeconds(0.16f);
+		yield return new WaitForSeconds(0.2f);
 		Destroy(this.gameObject);
 	}
 
