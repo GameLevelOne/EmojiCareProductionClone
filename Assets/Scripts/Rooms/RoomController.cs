@@ -14,10 +14,7 @@ public class RoomController : MonoBehaviour {
 	BoxCollider2D thisCollider;
 	public RoomType currentRoom = RoomType.LivingRoom;
 	public GameObject danceMat; //SEMENTARA
-	public GameObject cookBar; //SEMENTARA
-	public GameObject gardenTimer;
 	public GameObject Album;
-	public UIGarden uiGarden;
 	public GardenMiscItemsManager gardenMiscItemsManager;
 	public RandomPassingToyManager randomPassingToyManager;
 	public Pan pan;
@@ -60,7 +57,6 @@ public class RoomController : MonoBehaviour {
 		RegisterLockRoomEvent();
 		stall.Init();
 		soil.Init();
-		uiGarden.Init();
 
 	}
 
@@ -143,8 +139,6 @@ public class RoomController : MonoBehaviour {
 				xOnBeginDrag = transform.localPosition.x;
 				float x = getWorldPositionFromTouchInput().x;
 				distance = transform.localPosition.x - x;
-
-				gardenTimer.SetActive(false);
 
 				if(currentRoom == RoomType.Playroom){
 					randomPassingToyManager.Stop();
@@ -293,12 +287,6 @@ public class RoomController : MonoBehaviour {
 //		if(currentRoom != RoomType.Playroom) danceMat.SetActive(false);
 //		else danceMat.SetActive(true);
 
-		//SEMENTARA
-		if(currentRoom != RoomType.Kitchen) cookBar.SetActive(false);
-		else{
-			if(pan.isCooking) cookBar.SetActive(true);
-		} 
-
 		if(currentRoom == RoomType.Garden){
 			gardenMiscItemsManager.Init ();
 		} else{
@@ -320,13 +308,6 @@ public class RoomController : MonoBehaviour {
 
 		if(currentRoom != RoomType.LivingRoom)
 			screenTutorial.CheckRoomPlayerPrefs (currentRoom);
-
-		if(currentRoom == RoomType.Garden){
-			Debug.Log ("garden");
-			gardenTimer.SetActive(true);
-		} else{
-			gardenTimer.SetActive(false);
-		}
 
 		yield return null;
 	}

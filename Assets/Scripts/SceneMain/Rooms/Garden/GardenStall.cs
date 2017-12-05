@@ -10,6 +10,7 @@ public class GardenStall : BaseFurniture {
 	public event StallSeedTick OnStallSeedTick;
 	#region attributes
 	[Header("Stall Attributes")]
+	public GardenStallTimer gardenStallTimer;
 	public List<GameObject> AvailableItems = new List<GameObject>();
 	public List<GameObject> AvailableSeeds = new List<GameObject>();
 
@@ -48,6 +49,8 @@ public class GardenStall : BaseFurniture {
 	{
 		if(!hasInit){
 			hasInit = true;
+
+			gardenStallTimer.Init();
 
 			if(!PlayerPrefs.HasKey(PlayerPrefKeys.Game.Garden.ITEM_RESTOCK_TIME)){
 				RestockItems();

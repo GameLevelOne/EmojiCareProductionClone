@@ -191,8 +191,7 @@ public class PlayerData : MonoBehaviour {
 
 	public void InitPlayerEmoji(GameObject playerEmoji)
 	{
-		GameObject temp = (GameObject) Instantiate(playerEmoji);
-		temp.transform.SetParent(emojiParentTransform,true);
+		GameObject temp = (GameObject) Instantiate(playerEmoji,emojiParentTransform);
 
 		this.playerEmoji = temp.GetComponent<Emoji>();
 		this.playerEmoji.Init();

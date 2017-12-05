@@ -37,6 +37,7 @@ public class Plate : BaseFurniture {
 		if(flagHold){
 			if(other.tag == Tags.EMOJI_BODY){
 				FoodsOnPlate[FoodsOnPlate.Count-1].GetComponent<Food>().ValidateEmojiHunger(other.transform.parent.GetComponent<Emoji>());
+
 			}
 		}
 
@@ -130,7 +131,7 @@ public class Plate : BaseFurniture {
 	{
 		if(FoodsOnPlate.Count > 0){
 			for(int i = 0;i<FoodsOnPlate.Count;i++){
-				if(FoodsOnPlate[i].GetComponent<Food>().onPlate){
+				if(FoodsOnPlate != null && FoodsOnPlate[i].GetComponent<Food>().onPlate){
 					FoodsOnPlate[i].transform.localPosition = new Vector3(0,(i * nextY)+startY);
 				}
 			}
