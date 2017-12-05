@@ -11,10 +11,12 @@ public class MagnifyingGlassTrigger : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
-	protected void OnTriggerEnter2D (Collider2D other)
+	void OnTriggerEnter2D (Collider2D other)
 	{
+		Debug.Log (other.name);
 		if(parent.holding && other.tag == Tags.EMOJI_BODY){
 			//show stats popup
+			Debug.Log ("msukkk");
 			parent.ShowStatsPopup();
 		}
 	}
