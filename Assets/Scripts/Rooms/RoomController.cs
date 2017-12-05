@@ -29,7 +29,12 @@ public class RoomController : MonoBehaviour {
 	int roomTotal = 0;
 	float distance = 0;
 	float xOnBeginDrag;
+	float beginXTouch;
 	bool snapping = false;
+	bool flagTouchRoom = false;
+	bool flagDragging = false;
+
+	[Header("Do Not Modify")]
 	public bool interactable = true;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -115,7 +120,18 @@ public class RoomController : MonoBehaviour {
 	#region mechanics
 	public void PointerDown()
 	{
-		PlayerData.Instance.PlayerEmoji.body.CancelBouncing();
+		if(interactable){
+			PlayerData.Instance.PlayerEmoji.body.CancelBouncing();
+			flagTouchRoom = true;
+		}
+	}
+
+	public void PointerUp()
+	{
+		if(interactable){
+			flagTouchRoom = false;
+			flagDragging = false;
+		}
 	}
 
 	//event triggers
@@ -123,24 +139,37 @@ public class RoomController : MonoBehaviour {
 	{
 		if(interactable){
 			if(!snapping){
+				beginXTouch = getWorldPositionFromTouchInput().x;
 				xOnBeginDrag = transform.localPosition.x;
 				float x = getWorldPositionFromTouchInput().x;
 				distance = transform.localPosition.x - x;
 
 				gardenTimer.SetActive(false);
-				//			Emoji.Instance.emojiObject.GetComponent<EmojiObject>().OnRoomChangingStart();
+
 				if(currentRoom == RoomType.Playroom){
 					randomPassingToyManager.Stop();
 				}
 			}
 		}
-
 	}
 		
 	public void Drag()
 	{
 		if(interactable){
-			if(!snapping) transform.position = new Vector3(getWorldPositionFromTouchInput().x + distance,0f,0f);
+			if(!snapping){
+				
+				if(flagTouchRoom){
+					float currentXTouch = getWorldPositionFromTouchInput().x;
+					if(Mathf.Abs(currentXTouch - beginXTouch) > 0.03f){
+						flagTouchRoom = false;
+						flagDragging = true;
+					}
+				}else if(flagDragging){
+					transform.position = new Vector3(getWorldPositionFromTouchInput().x + distance,0f,0f);
+				}
+
+
+			}
 		}
 	}
 
