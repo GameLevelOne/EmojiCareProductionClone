@@ -82,15 +82,15 @@ public class FloatingStatsManager : MonoBehaviour {
 	float GetCurrentStatValue(int type){
 		Emoji emojiData = PlayerData.Instance.PlayerEmoji;
 		if (type == 0) {
-			return emojiData.hunger.StatValue;
+			return emojiData.hunger.StatValue/emojiData.hunger.MaxStatValue;
 		} else if (type == 1) {
-			return emojiData.hygiene.StatValue;
+			return emojiData.hygiene.StatValue/emojiData.hygiene.MaxStatValue;
 		} else if (type == 2) {
-			return emojiData.happiness.StatValue;
+			return emojiData.happiness.StatValue/emojiData.happiness.MaxStatValue;
 		} else if (type == 3) {
-			return emojiData.stamina.StatValue;
+			return emojiData.stamina.StatValue/emojiData.stamina.MaxStatValue;
 		} else if (type == 4) {
-			return emojiData.health.StatValue;
+			return emojiData.health.StatValue/emojiData.health.MaxStatValue;
 		} else
 			return 0;
 	}
