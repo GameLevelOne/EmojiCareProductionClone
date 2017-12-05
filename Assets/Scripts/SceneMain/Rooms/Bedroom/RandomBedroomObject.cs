@@ -13,11 +13,17 @@ public class RandomBedroomObject : MonoBehaviour {
 	{
 		StartCoroutine(RandomColor());
 
+		//position
+		Vector3 randomRotation = new Vector3(0,0,Random.Range(rotateMin,rotateMax));
+
+		//rotation
 		Quaternion tempRotation = thisSprite.transform.localRotation;
 		tempRotation.eulerAngles = new Vector3(0,0,Random.Range(0,360f));
 		thisSprite.transform.localRotation = tempRotation;
 
-		Vector3 randomRotation = new Vector3(0,0,Random.Range(rotateMin,rotateMax));
+		//scale
+		float randomScale = Random.Range(1f,1.75f);
+		thisSprite.transform.localScale = new Vector3(randomScale,randomScale,1f);
 
 		float speed = Random.Range(speedMin,speedMax);
 		while(true){

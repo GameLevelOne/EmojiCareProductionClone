@@ -23,7 +23,7 @@ public class BaseRoom : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
-	public void InitRoom()
+	public virtual void InitRoom()
 	{
 		if(furnitures.Length == 0) return;
 
