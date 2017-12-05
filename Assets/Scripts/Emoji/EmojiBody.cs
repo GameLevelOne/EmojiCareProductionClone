@@ -211,7 +211,8 @@ public class EmojiBody : MonoBehaviour {
 
 	public void RemoveHat()
 	{
-		Destroy(hatParent.GetChild(0).gameObject);
+		if(hatParent.GetChild(0).gameObject != null)
+			Destroy(hatParent.GetChild(0).gameObject);
 		PlayerData.Instance.inventory.SetCurrentHat(string.Empty);
 	}
 	#endregion

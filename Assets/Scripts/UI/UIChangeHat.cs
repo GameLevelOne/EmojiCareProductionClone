@@ -5,6 +5,7 @@ using UnityEngine;
 public class UIChangeHat : MonoBehaviour {
 	public Animator animator;
 	string UIHatAnimTrigger = "UIHatOpen";
+	GameObject currentHat;
 
 	void OnEnable(){
 		HatUIItem.OnClickHatUIItem += OnClickHatUIItem;
@@ -16,6 +17,10 @@ public class UIChangeHat : MonoBehaviour {
 
 	void OnClickHatUIItem (string hatID, int price, bool isBought, GameObject hatObj)
 	{
+		if(currentHat !=null){
+			PlayerData.Instance.PlayerEmoji.body.RemoveHat ();
+			currentHat = hatObj;
+		}
 		PlayerData.Instance.PlayerEmoji.body.WearHat (hatID, hatObj);
 	}
 
