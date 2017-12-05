@@ -10,6 +10,10 @@ public class SceneMainManager : MonoBehaviour {
 	public GachaReward gachaReward;
 	public Fader fader;
 
+	[Header("EWmoji Sleeping Event")]
+	public RandomBedroomObjectController randomBedroomController;
+	public Bedroom bedroom;
+
 	//sementara
 	public GameObject[] emojiSamples;
 
@@ -45,6 +49,8 @@ public class SceneMainManager : MonoBehaviour {
 			PlayerData.Instance.PlayerEmoji.transform.position = new Vector3(0,0.0025f,-2f);
 			PlayerData.Instance.PlayerEmoji.emojiExpressions.SetExpression(EmojiExpressionState.SLEEP,-1);
 			PlayerData.Instance.PlayerEmoji.body.DoSleep();
+			bedroom.DimLight();
+			randomBedroomController.StartGeneratingObjects();
 		}
 		PlayerData.Instance.PlayerEmoji.InitEmojiStats();
 		statsExpressionController.Init();

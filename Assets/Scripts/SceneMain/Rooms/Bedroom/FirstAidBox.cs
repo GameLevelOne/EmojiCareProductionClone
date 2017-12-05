@@ -5,6 +5,8 @@ using UnityEngine;
 public class FirstAidBox : BaseFurniture {
 	#region attributes
 	[Header("FirstAidBox Attribtues")]
+	public GameObject syringe;
+	public GameObject medicine;
 	public GameObject doorOpen;
 	public GameObject doorClosed;
 	public List<GameObject> contents = new List<GameObject>();
@@ -25,6 +27,8 @@ public class FirstAidBox : BaseFurniture {
 	public void Open()
 	{
 		doorOpen.SetActive(true);
+		medicine.SetActive(true);
+		syringe.SetActive(true);
 		doorClosed.SetActive(false);
 		foreach(GameObject g in contents){
 			g.SetActive(true);
@@ -35,6 +39,8 @@ public class FirstAidBox : BaseFurniture {
 	public void Close()
 	{
 		doorOpen.SetActive(false);
+		medicine.SetActive(false);
+		syringe.SetActive(false);
 		doorClosed.SetActive(true);
 		foreach(GameObject g in contents){
 			g.SetActive(false);

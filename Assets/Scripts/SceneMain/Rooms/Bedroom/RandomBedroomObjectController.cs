@@ -28,13 +28,19 @@ public class RandomBedroomObjectController : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
+	public void StartGeneratingObjects()
+	{
+		StartCoroutine(_GenerateRandomObjects);
+	}
+
 	void OnSleepEvent(bool sleep)
 	{
-		if(sleep) StartCoroutine(_GenerateRandomObjects);
+		if(sleep) StartGeneratingObjects();
 	}
 
 	void OnEmojiWake (float a,float b)
 	{
+		print("RANDOMBEDROOMOBJECT STOP GENERATE");
 		StopCoroutine(_GenerateRandomObjects);
 	}
 	#endregion
