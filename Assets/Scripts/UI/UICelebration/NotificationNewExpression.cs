@@ -32,16 +32,11 @@ public class NotificationNewExpression : MonoBehaviour {
 		this.isNewExpression = isNewExpression;
 
 		SetNotificationProgressReferences ();
-		unlockDetailsText.gameObject.SetActive (false);
+		//unlockDetailsText.gameObject.SetActive (false);
 
 		expressionImage.sprite = expressionIcons.GetExpressionIcon (currentEmoji, expression);
 		expressionNameText.text = expressionIcons.GetExpressionName (currentEmoji, expression);
-
-		if (isNewExpression) {
-			unlockDetailsText.text = expressionIcons.GetExpressionUnlockCondition (currentEmoji, expression);
-		} else{
-			progressText.text = expressionCurrentProgress.ToString () + "/" + expressionTotalProgress.ToString ();
-		}
+		progressText.text = expressionCurrentProgress.ToString () + "/" + expressionTotalProgress.ToString ();
 
 		ShowNotification (expressionCurrentProgress,expressionTotalProgress);
 	}
@@ -60,7 +55,7 @@ public class NotificationNewExpression : MonoBehaviour {
 	void SetNotificationNewExpressionReferences(){
 		expressionImage = parentFrame.GetChild(1).GetComponent<Image>();
 		expressionNameText = parentFrame.GetChild(2).GetComponent<Text>();
-		unlockDetailsText = parentFrame.GetChild(3).GetComponent<Text>();
+		//unlockDetailsText = parentFrame.GetChild(3).GetComponent<Text>();
 		continueButton = parentFrame.GetChild(4).GetComponent<Button>();
 		continueButton.onClick.AddListener(OnClickContinue);
 	}
@@ -72,7 +67,7 @@ public class NotificationNewExpression : MonoBehaviour {
 		progressBar = parentFrame.GetChild (4).GetComponent<Image> ();
 		progressBarFill = parentFrame.GetChild (5).GetComponent<Image> ();
 		progressText = parentFrame.GetChild (6).GetComponent<Text> ();
-		unlockDetailsText = parentFrame.GetChild (7).GetComponent<Text> ();
+		//unlockDetailsText = parentFrame.GetChild (7).GetComponent<Text> ();
 		continueButton.onClick.AddListener(OnClickContinue);
 	}
 
@@ -86,9 +81,11 @@ public class NotificationNewExpression : MonoBehaviour {
 		progressBarFill.fillAmount = (currentProgress - 1) / totalProgress;
 		StartCoroutine (AnimateProgressBar (currentProgress, totalProgress));
 
-//		if (isNewExpression) {
-//			particles.ShowParticles ();
-//		} else {
+		if (isNewExpression) {
+			particles.ShowParticles ();
+		}
+
+//		 else {
 //			StartCoroutine (AutoCloseNotif (time));
 //		}
 	}
@@ -132,7 +129,7 @@ public class NotificationNewExpression : MonoBehaviour {
 			time += Time.deltaTime * 2;
 			yield return null;
 		}
-		unlockDetailsText.gameObject.SetActive (true);
+		//unlockDetailsText.gameObject.SetActive (true);
 		StartCoroutine (AutoCloseNotif ());
 	}
 }

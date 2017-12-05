@@ -32,11 +32,14 @@ public class Shower : TriggerableFurniture {
 		}
 	}
 
-	public void StopDecreasingEmojiFoamState()
+	public void StopDecreasingEmojiFoamState ()
 	{
-		StopCoroutine(_StartDecreasingEmojiFoamState);
+		StopCoroutine (_StartDecreasingEmojiFoamState);
 
-		if(OnFinishShower != null) OnFinishShower (hygieneMod, currentHygieneStat);
+		if (PlayerData.Instance.PlayerEmoji != null && PlayerData.Instance.PlayerEmoji.body.foamState <= 0f) {
+			if (OnFinishShower != null)
+				OnFinishShower (hygieneMod, currentHygieneStat);
+		}
 
 		PlayerData.Instance.PlayerEmoji.ResetEmojiStatsModifier();
 		PlayerData.Instance.PlayerEmoji.emojiExpressions.ResetExpressionDuration();

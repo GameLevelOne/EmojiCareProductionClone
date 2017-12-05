@@ -39,10 +39,12 @@ public class EmojiExpressionData {
 	}
 
 	public int GetCurrentProgress(){
+		Debug.Log ("currentprogress:" + expressionCurrentProgress);
 		return expressionCurrentProgress;
 	}
 
 	public int GetTotalProgress(){
+		Debug.Log ("totalprogress:" + expressionTotalProgress);
 		return expressionTotalProgress;
 	}
 
