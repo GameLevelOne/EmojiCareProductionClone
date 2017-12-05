@@ -24,6 +24,7 @@ public class Bedroom : BaseRoom {
 			hasRegisterDarkLightEvent = true;
 			PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent += OnEmojiSleepEvent;
 			PlayerData.Instance.PlayerEmoji.playerInput.OnEmojiWake += OnEmojiWake;
+
 		}
 	}
 
@@ -39,7 +40,7 @@ public class Bedroom : BaseRoom {
 		}
 	}
 
-	public void OnEmojiWake()
+	public void OnEmojiWake(float a,float b)
 	{
 		StartCoroutine(fadeLight(dimmedColor,brightColor));
 	}

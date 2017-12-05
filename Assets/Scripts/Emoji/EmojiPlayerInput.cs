@@ -4,7 +4,7 @@ using UnityEngine;
 public class EmojiPlayerInput : MonoBehaviour {
 	#region attributes
 	public delegate void EmojiPouting();
-	public delegate void EmojiWake();
+	public delegate void EmojiWake(float startStamina,float mod);
 	public event EmojiPouting OnEmojiPouting;
 	public event EmojiWake OnEmojiWake;
 
@@ -62,6 +62,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 	float touchX;
 	float prevHoldFactor = 0f;
 	float prevXPos = 0f;
+	float startSleepStamina = 0f;
 
 	int shakeCounter = 0;
 	bool shakeExpressionRetain = false;
@@ -351,7 +352,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 		emoji.EmojiSleeping = false;
 		emoji.ResetEmojiStatsModifier();
 		interactable = false;
-		if(OnEmojiWake != null) OnEmojiWake();
+		if(OnEmojiWake != null) OnEmojiWake(startSleepStamina,(staminaValue-startSleepStamina));
 	}
 	//----------------------------------------------------------------=====NON-VOID MODULES=====----------------------------------------------------------------
 	Vector3 getEmojiPositionOnHold(Vector3 touchWorldPosition)
@@ -458,17 +459,21 @@ public class EmojiPlayerInput : MonoBehaviour {
 	public void OnDanceMatMinigameDone()
 	{
 		if(!danceMatRetaining){
+			Debug.Log ("ondancematdone");
 			emoji.emojiExpressions.SetExpression (EmojiExpressionState.HAPPY, 2f);
 			emoji.happiness.ModStats(happinessModOnDanceMat);
 			StartCoroutine(_RetainDanceMatMinigameCooldown);
 		}	
 	}
 
-	public void Sleep()
+	public void Sleep ()
 	{
-		if(!flagSleeping){
+		if (!flagSleeping) {
 			flagSleeping = true;
-			if(emoji.stamina != null) emoji.stamina.statsModifier = 0.004f;
+			if (emoji.stamina != null) {
+				startSleepStamina = emoji.stamina.StatValue;
+				emoji.stamina.statsModifier = 0.004f;
+			}
 			emoji.emojiExpressions.SetExpression(EmojiExpressionState.SLEEP,-1);
 		}
 	}

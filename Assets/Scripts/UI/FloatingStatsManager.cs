@@ -6,17 +6,37 @@ public class FloatingStatsManager : MonoBehaviour {
 	public GameObject[] statsMeterObj;
 
 	void OnDisable(){
-//		Emoji.OnShowFloatingStatsBar -= ShowMultipleMeters;
-//		EmojiStats.OnShowSingleStatBar -= ShowSingleMeter;
+		Emoji.OnShowFloatingStatsBar -= ShowMultipleMeters;
+		EmojiStats.OnShowSingleStatBar -= ShowSingleMeter;
+		PlayerData.Instance.PlayerEmoji.playerInput.OnEmojiWake -= OnEmojiWake;
+		Shower.OnFinishShower -= OnFinishShower;
 	}
 
 	public void RegisterEvents(){
 		Emoji.OnShowFloatingStatsBar += ShowMultipleMeters;
 		EmojiStats.OnShowSingleStatBar += ShowSingleMeter;
+		PlayerData.Instance.PlayerEmoji.playerInput.OnEmojiWake += OnEmojiWake;
+		Shower.OnFinishShower += OnFinishShower;
 	}
 
-	public void ShowSingleMeter(int type,float mod){
-		float currentValue = GetCurrentStatValue (type);
+	void OnFinishShower (float mod, float startValue)
+	{
+		ShowSingleMeter ((int)EmojiStatsState.Hygiene, mod, startValue);
+	}
+
+	void OnEmojiWake (float startStamina, float mod)
+	{
+		ShowSingleMeter ((int)EmojiStatsState.Stamina, mod, startStamina);
+	}
+
+	public void ShowSingleMeter(int type,float mod,float startValue = 0f){
+		float currentValue = 0;
+		if(startValue==0){
+			currentValue = GetCurrentStatValue (type);
+		} else{
+			currentValue = startValue;
+		}
+
 		float targetValue = currentValue + mod;
 		float maxValue = PlayerData.Instance.PlayerEmoji.emojiBaseData.maxStatValue;
 

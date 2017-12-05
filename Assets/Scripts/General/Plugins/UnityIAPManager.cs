@@ -6,14 +6,19 @@ public class UnityIAPManager : IStoreListener {
     private IStoreController controller;
     private IExtensionProvider extensions;
 
+    string id_Coin1 = "emojicare.coin1";
+    string id_Gem1 = "emojicare.gem1";
+    string id_Gem2 = "emojicare.gem2";
+    string id_Gem3 = "emojicare.gem3";
+    string id_Gem4 = "emojicare.gem4";
+
 	public UnityIAPManager () {
         var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
-        builder.AddProduct("100_gold_coins", ProductType.Consumable, new IDs
-        {
-            {"100_gold_coins_google", GooglePlay.Name},
-            {"100_gold_coins_mac", MacAppStore.Name}
-        });
-
+		builder.AddProduct (id_Coin1, ProductType.Consumable);
+		builder.AddProduct (id_Gem1, ProductType.Consumable);
+		builder.AddProduct (id_Gem2, ProductType.Consumable);
+		builder.AddProduct (id_Gem3, ProductType.Consumable);
+		builder.AddProduct (id_Gem4, ProductType.Consumable);
         UnityPurchasing.Initialize (this, builder);
     }
 
@@ -34,6 +39,7 @@ public class UnityIAPManager : IStoreListener {
     /// </summary>
     public void OnInitializeFailed (InitializationFailureReason error)
     {
+
     }
 
     /// <summary>
@@ -51,5 +57,6 @@ public class UnityIAPManager : IStoreListener {
     /// </summary>
     public void OnPurchaseFailed (Product i, PurchaseFailureReason p)
     {
+
     }
 }
