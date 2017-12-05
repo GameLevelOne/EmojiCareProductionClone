@@ -37,7 +37,9 @@ public class RoomController : MonoBehaviour {
 	public void Init()
 	{
 		thisCollider = GetComponent<BoxCollider2D>();
-		currentRoom = GetCurrentRoom(transform.localPosition.x);
+
+		transform.position = new Vector3(-16f,0f,0f);
+		currentRoom = RoomType.LivingRoom;
 
 		PlayerData.Instance.PlayerEmoji.body.currentRoom = (int)currentRoom;
 		PlayerData.Instance.PlayerEmoji.body.previousRoom = (int)currentRoom;
@@ -46,6 +48,7 @@ public class RoomController : MonoBehaviour {
 			r.InitRoom();
 			r.OnRoomChanged(currentRoom);
 		}
+		print("ALBUM DATA = "+PlayerData.Instance.EmojiAlbumData.Count);
 		if(PlayerData.Instance.EmojiAlbumData.Count <= 0) Album.SetActive(false);
 
 		AdjustTouchAreaSize();
@@ -280,6 +283,7 @@ public class RoomController : MonoBehaviour {
 		}
 
 		transform.position = endPos;
+		print("T E R P A N G G I L");
 		snapping = false;
 
 		PlayerData.Instance.PlayerEmoji.transform.parent = rooms[(int)currentRoom].transform;

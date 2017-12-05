@@ -27,6 +27,7 @@ public class EmojiBody : MonoBehaviour {
 	public event EmojiEatEvent OnEmojiEatEvent;
 
 	#region attributes
+	[Header("Emoji Body Attributes")]
 	public Animator thisAnim;
 
 	public Collider2D thisCollider;
@@ -40,10 +41,15 @@ public class EmojiBody : MonoBehaviour {
 	public bool flagSleep = false;
 	public bool flagAfterChangingRoom = false;
 
+
+
 	[Header("BubbleEffect")]
 	public Animator bubbleEffectAnim;
 	public Animator kinclongAnim;
 	public EmojiBubbleEffect bubbleEffect;
+
+	[Header("Do Not Modify")]
+	public GameObject hatObject;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
@@ -91,7 +97,7 @@ public class EmojiBody : MonoBehaviour {
 
 	public void Reposition()
 	{
-		transform.parent.localPosition = new Vector3(0,-2.485f,-2f);
+		transform.parent.localPosition = new Vector3(0,-2.665f,-2f);
 		emoji.triggerFall.thisCollider.enabled = false;
 	}
 
@@ -205,15 +211,18 @@ public class EmojiBody : MonoBehaviour {
 
 	public void WearHat(string ID, GameObject hatObject)
 	{
-		GameObject tempHatObject = Instantiate(hatObject,hatParent) as GameObject;
+		RemoveHat();
+		hatObject = Instantiate(hatObject,hatParent) as GameObject;
 		PlayerData.Instance.inventory.SetCurrentHat(ID);
 	}
 
 	public void RemoveHat()
 	{
-		if(hatParent.GetChild(0).gameObject != null)
+		if(hatObject != null){
 			Destroy(hatParent.GetChild(0).gameObject);
-		PlayerData.Instance.inventory.SetCurrentHat(string.Empty);
+			PlayerData.Instance.inventory.SetCurrentHat(string.Empty);
+			hatObject = null;
+		}		
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
