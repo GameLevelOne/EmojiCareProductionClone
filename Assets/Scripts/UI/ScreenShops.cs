@@ -31,6 +31,7 @@ public class ScreenShops : BaseUI {
 	public Animator shopScrollAnim;
 
 	CurrencyType currentItemCurrency;
+	ItemType itemType;
 	int currentItemPrice;
 	int currentItemAmount;
 
@@ -47,18 +48,26 @@ public class ScreenShops : BaseUI {
 	void OnEnable (){
 		InitShopDisplay();
 		ShopItem.OnClickShopItem += OnClickShopItem;
+		ScreenPopup.OnBuyCoin += OnBuyCoin;
 	}
 
 	void OnDisable(){
 		ShopItem.OnClickShopItem -= OnClickShopItem;
+		ScreenPopup.OnBuyCoin -= OnBuyCoin;
 	}
 
-	void OnClickShopItem (CurrencyType itemCurrency, int itemPrice, int itemAmount,string itemDescription)
+	void OnBuyCoin ()
+	{
+		PlayerData.Instance.PlayerCoin += currentItemAmount;
+	}
+
+	void OnClickShopItem (CurrencyType itemCurrency, ItemType itemType, int itemPrice, int itemAmount,string itemDescription)
 	{
 		currentItemCurrency = itemCurrency;
 		currentItemPrice = itemPrice;
 		currentItemAmount = itemAmount;
 		itemDescriptionText.text = itemDescription;
+		this.itemType = itemType;
 	}
 
 	public void InitShopDisplay(){
@@ -96,7 +105,23 @@ public class ScreenShops : BaseUI {
 	}
 
 	public void ConfirmToBuyItem(){
-		screenPopup.ShowPopup(PopupType.Confirmation,PopupEventType.BuyItem,false,false);
+		if(itemType == ItemType.Coin){
+			if(PlayerData.Instance.PlayerGem >= currentItemPrice){
+				screenPopup.ShowPopup (PopupType.Confirmation, PopupEventType.AbleToBuyCoin);
+			} else{
+				screenPopup.ShowPopup (PopupType.Warning, PopupEventType.NotAbleToBuyCoin);
+			}
+		} else if(itemType == ItemType.Furniture){
+			if(PlayerData.Instance.PlayerCoin >= currentItemPrice){
+				screenPopup.ShowPopup (PopupType.Confirmation, PopupEventType.AbleToBuyFurniture);
+			} else{
+				screenPopup.ShowPopup (PopupType.Warning, PopupEventType.NotAbleToBuyFurniture);
+			}
+		} else if(itemType == ItemType.Gem){
+			//IAP transaction here
+			//TEMP local transaction
+			PlayerData.Instance.PlayerGem += currentItemAmount;
+		}
 	}
 
 	public void OnClickNext(){

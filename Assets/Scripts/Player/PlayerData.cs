@@ -10,8 +10,8 @@ public class PlayerData : MonoBehaviour {
 
 	public PlayerInventory inventory = new PlayerInventory();
 
-	int defaultCoin = 10000; //TODO: ADJUST THIS LATER
-	int defulatGem = 0;
+	int defaultCoin = 50000; //TODO: ADJUST THIS LATER
+	int defulatGem = 500; //TODO: ADJUST THIS LATER
 
 	public Transform emojiParentTransform;
 

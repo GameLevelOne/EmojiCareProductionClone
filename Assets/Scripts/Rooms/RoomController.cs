@@ -29,7 +29,12 @@ public class RoomController : MonoBehaviour {
 	int roomTotal = 0;
 	float distance = 0;
 	float xOnBeginDrag;
+	float beginXTouch;
 	bool snapping = false;
+	bool flagTouchRoom = false;
+	bool flagDragging = false;
+
+	[Header("Do Not Modify")]
 	public bool interactable = true;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -37,7 +42,9 @@ public class RoomController : MonoBehaviour {
 	public void Init()
 	{
 		thisCollider = GetComponent<BoxCollider2D>();
-		currentRoom = GetCurrentRoom(transform.localPosition.x);
+
+		transform.position = new Vector3(-16f,0f,0f);
+		currentRoom = RoomType.LivingRoom;
 
 		PlayerData.Instance.PlayerEmoji.body.currentRoom = (int)currentRoom;
 		PlayerData.Instance.PlayerEmoji.body.previousRoom = (int)currentRoom;
@@ -46,6 +53,7 @@ public class RoomController : MonoBehaviour {
 			r.InitRoom();
 			r.OnRoomChanged(currentRoom);
 		}
+		print("ALBUM DATA = "+PlayerData.Instance.EmojiAlbumData.Count);
 		if(PlayerData.Instance.EmojiAlbumData.Count <= 0) Album.SetActive(false);
 
 		AdjustTouchAreaSize();
@@ -112,7 +120,18 @@ public class RoomController : MonoBehaviour {
 	#region mechanics
 	public void PointerDown()
 	{
-		PlayerData.Instance.PlayerEmoji.body.CancelBouncing();
+		if(interactable){
+			PlayerData.Instance.PlayerEmoji.body.CancelBouncing();
+			flagTouchRoom = true;
+		}
+	}
+
+	public void PointerUp()
+	{
+		if(interactable){
+			flagTouchRoom = false;
+			flagDragging = false;
+		}
 	}
 
 	//event triggers
@@ -120,24 +139,37 @@ public class RoomController : MonoBehaviour {
 	{
 		if(interactable){
 			if(!snapping){
+				beginXTouch = getWorldPositionFromTouchInput().x;
 				xOnBeginDrag = transform.localPosition.x;
 				float x = getWorldPositionFromTouchInput().x;
 				distance = transform.localPosition.x - x;
 
 				gardenTimer.SetActive(false);
-				//			Emoji.Instance.emojiObject.GetComponent<EmojiObject>().OnRoomChangingStart();
+
 				if(currentRoom == RoomType.Playroom){
 					randomPassingToyManager.Stop();
 				}
 			}
 		}
-
 	}
 		
 	public void Drag()
 	{
 		if(interactable){
-			if(!snapping) transform.position = new Vector3(getWorldPositionFromTouchInput().x + distance,0f,0f);
+			if(!snapping){
+				
+				if(flagTouchRoom){
+					float currentXTouch = getWorldPositionFromTouchInput().x;
+					if(Mathf.Abs(currentXTouch - beginXTouch) > 0.03f){
+						flagTouchRoom = false;
+						flagDragging = true;
+					}
+				}else if(flagDragging){
+					transform.position = new Vector3(getWorldPositionFromTouchInput().x + distance,0f,0f);
+				}
+
+
+			}
 		}
 	}
 
@@ -280,6 +312,7 @@ public class RoomController : MonoBehaviour {
 		}
 
 		transform.position = endPos;
+		print("T E R P A N G G I L");
 		snapping = false;
 
 		PlayerData.Instance.PlayerEmoji.transform.parent = rooms[(int)currentRoom].transform;

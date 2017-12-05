@@ -5,7 +5,8 @@ using admob;
 
 public enum AdEvents{
 	RestockStall,
-	RestockSeeds
+	RestockSeeds,
+	ShuffleEmoji
 }
 
 public class AdmobManager : MonoBehaviour {

@@ -31,7 +31,7 @@ public class Syringe : MonoBehaviour {
 	#region mechanics
 	protected virtual void OnTriggerEnter2D (Collider2D other)
 	{
-		print(other.name);
+//		print(other.name);
 		if(other.tag == Tags.EMOJI_BODY){
 			if(!other.GetComponent<EmojiBody>().emoji.playerInput.flagSleeping){
 				emoji = other.transform.parent.GetComponent<Emoji>();

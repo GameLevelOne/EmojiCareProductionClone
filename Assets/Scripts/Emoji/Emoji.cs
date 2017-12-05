@@ -87,7 +87,7 @@ public class Emoji : MonoBehaviour {
 		if(!hasInit){
 			hasInit = true;
 			InitEmojiExpression();
-
+			body.RemoveHat ();
 		}
 	}
 

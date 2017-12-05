@@ -17,7 +17,7 @@ public class MagnifyingGlass : TriggerableFurniture {
 		base.OnTriggerEnter2D (other);
 		if(holding && other.tag == Tags.EMOJI_BODY){
 				//show stats popup
-
+			popupStats.ShowStatsFromMagnifyingGlass();
 		}
 	}
 

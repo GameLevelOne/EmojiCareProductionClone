@@ -21,6 +21,7 @@ public class Shower : TriggerableFurniture {
 	public void ModEmojiHygiene()
 	{
 		float hygieneMod = hygieneModifier + ((PlayerData.Instance.PlayerEmoji.body.foamState / 10f) * hygieneModifier);
+		PlayerData.Instance.PlayerEmoji.hygiene.statsModifier = hygieneMod;
 		if(!flagDecreasingEmojiFoamState){
 			flagDecreasingEmojiFoamState = true;
 			StartCoroutine(_StartDecreasingEmojiFoamState);
