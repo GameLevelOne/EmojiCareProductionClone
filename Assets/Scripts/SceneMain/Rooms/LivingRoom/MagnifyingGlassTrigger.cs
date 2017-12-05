@@ -14,7 +14,7 @@ public class MagnifyingGlassTrigger : MonoBehaviour {
 	void OnTriggerEnter2D (Collider2D other)
 	{
 		Debug.Log (other.name);
-		if(parent.holding && other.tag == Tags.EMOJI_BODY){
+		if(other.tag == Tags.EMOJI_BODY){
 			//show stats popup
 			Debug.Log ("msukkk");
 			parent.ShowStatsPopup();
@@ -23,7 +23,7 @@ public class MagnifyingGlassTrigger : MonoBehaviour {
 
 	void OnTriggerExit2D(Collider2D other)
 	{
-		if(parent.holding && other.tag == Tags.EMOJI_BODY){
+		if(other.tag == Tags.EMOJI_BODY){
 			//hide stats popup
 			parent.HideStatsPopup();
 
