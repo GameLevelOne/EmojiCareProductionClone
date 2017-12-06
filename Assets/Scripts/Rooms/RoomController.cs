@@ -66,6 +66,7 @@ public class RoomController : MonoBehaviour {
 		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent += OnEmojiSleepEvent;
 		PlayerData.Instance.PlayerEmoji.playerInput.OnEmojiPouting += OnEmojiPouting;
 		PlayerData.Instance.PlayerEmoji.body.OnEmojiEatEvent += OnEmojiEatEvent;
+		pan.OnCookingDone += OnCookingDone;
 	}
 
 
@@ -80,6 +81,7 @@ public class RoomController : MonoBehaviour {
 		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent -= OnEmojiSleepEvent;
 		PlayerData.Instance.PlayerEmoji.playerInput.OnEmojiPouting -= OnEmojiPouting;
 		PlayerData.Instance.PlayerEmoji.body.OnEmojiEatEvent -= OnEmojiEatEvent;
+		pan.OnCookingDone -= OnCookingDone;
 	}
 
 	void OnEmojiEatEvent (float lockDuration)
@@ -96,7 +98,11 @@ public class RoomController : MonoBehaviour {
 	{
 		LockInteraction(1f);
 	}
-
+		
+	void OnCookingDone()
+	{
+		LockInteraction(1f + (40f/60f));
+	}
 	/// <summary>
 	///<para>Automatically adjust the room collider size for touch function.</para> 
 	/// <para> </para>
@@ -154,15 +160,13 @@ public class RoomController : MonoBehaviour {
 				
 				if(flagTouchRoom){
 					float currentXTouch = getWorldPositionFromTouchInput().x;
-					if(Mathf.Abs(currentXTouch - beginXTouch) > 0.03f){
+					if(Mathf.Abs(currentXTouch - beginXTouch) > 0.1f){
 						flagTouchRoom = false;
 						flagDragging = true;
 					}
 				}else if(flagDragging){
 					transform.position = new Vector3(getWorldPositionFromTouchInput().x + distance,0f,0f);
 				}
-
-
 			}
 		}
 	}

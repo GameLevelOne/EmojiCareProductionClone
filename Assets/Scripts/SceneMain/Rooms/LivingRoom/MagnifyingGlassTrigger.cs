@@ -16,17 +16,19 @@ public class MagnifyingGlassTrigger : MonoBehaviour {
 		Debug.Log (other.name);
 		if(other.tag == Tags.EMOJI_BODY){
 			//show stats popup
-			Debug.Log ("msukkk");
-			parent.ShowStatsPopup();
+			if(parent.thisMovable.flagHolding){
+//				Debug.Log ("msukkk");
+				parent.ShowStatsPopup();
+			}
 		}
 	}
 
 	void OnTriggerExit2D(Collider2D other)
 	{
 		if(other.tag == Tags.EMOJI_BODY){
-			//hide stats popup
-			parent.HideStatsPopup();
-
+			if(parent.thisMovable.flagHolding){
+				parent.HideStatsPopup();
+			}
 		}
 	}
 	#endregion

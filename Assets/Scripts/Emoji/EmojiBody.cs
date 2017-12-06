@@ -209,10 +209,15 @@ public class EmojiBody : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// ID = 0 >>> Remove hat / emoji does not wear any hat
+	/// </summary>
 	public void WearHat(string ID, GameObject hatObject)
 	{
 		RemoveHat();
-		hatObject = Instantiate(hatObject,hatParent) as GameObject;
+		if(ID == "0") return;
+
+		this.hatObject = Instantiate(hatObject,hatParent) as GameObject;
 		PlayerData.Instance.inventory.SetCurrentHat(ID);
 	}
 

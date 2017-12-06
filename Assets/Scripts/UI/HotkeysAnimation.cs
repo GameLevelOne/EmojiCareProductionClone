@@ -20,9 +20,8 @@ public class HotkeysAnimation : MonoBehaviour {
 
 	public void ShowHotkeys ()
 	{
-		buttonHotkey.SetActive (false);
-		if (AdmobManager.Instance)
-			AdmobManager.Instance.HideBanner ();
+		buttonHotkey.SetActive(false);
+		if (AdmobManager.Instance) AdmobManager.Instance.HideBanner ();
 
 		int temp = PlayerData.Instance.EmojiAlbumData.Count;
 		if (temp > 1) {
@@ -40,24 +39,25 @@ public class HotkeysAnimation : MonoBehaviour {
 				buttonEditRoom.GetComponent<Button> ().interactable = true;
 			}
 		}
-
-		hotkeyPanel.SetActive(true);
+			
 		hotkeyAnim.SetBool(boolOpenHotkeys,true);
 	}
 
-	public void CloseHotkeys(){
+	public void CloseHotkeys()
+	{
 		hotkeyAnim.SetBool(boolOpenHotkeys,false);
-		StartCoroutine(WaitForAnim(hotkeyPanel));
 	}
 
-	public void BackToGame(){
-		buttonHotkey.SetActive(true);
-		CloseHotkeys();
+	public void BackToGame()
+	{
+		hotkeyAnim.SetBool(boolOpenHotkeys,false);
 		if(AdmobManager.Instance) AdmobManager.Instance.ShowBanner();
+		StartCoroutine(DelayShowHotkeyButton());
 	}
 
-	IEnumerator WaitForAnim(GameObject obj){
-		yield return new WaitForSeconds(0.31f);
-		obj.SetActive(false);
+	IEnumerator DelayShowHotkeyButton()
+	{
+		yield return new WaitForSeconds(8f/24f);
+		buttonHotkey.SetActive(true);
 	}
 }

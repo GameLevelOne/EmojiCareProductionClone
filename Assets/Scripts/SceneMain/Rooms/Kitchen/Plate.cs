@@ -14,7 +14,7 @@ public class Plate : BaseFurniture {
 	public float nextY = 0.3f;
 
 	public bool flagHold = false;
-
+//	public bool flagDoneCooking = false;
 	[Header("")]
 	public List<GameObject> FoodsOnPlate = new List<GameObject>();
 	#endregion
@@ -55,7 +55,6 @@ public class Plate : BaseFurniture {
 	//event trigger
 	public void BeginDrag()
 	{
-		
 		thisCollider.enabled = false;
 		thisRigidbody.simulated = false;
 		thisSprite[currentVariant].sortingLayerName = SortingLayers.HELD;
@@ -64,6 +63,7 @@ public class Plate : BaseFurniture {
 		foreach(GameObject g in FoodsOnPlate){
 			g.GetComponent<Food>().thisSprite[g.GetComponent<Food>().currentVariant].sortingLayerName = SortingLayers.HELD;
 		}
+
 	}
 
 	public void Drag()
@@ -75,6 +75,7 @@ public class Plate : BaseFurniture {
 	public void EndDrag()
 	{
 		StartCoroutine(ReleasePlate());
+		
 	}
 
 	void ReleaseFood(GameObject foodObject)
@@ -108,6 +109,7 @@ public class Plate : BaseFurniture {
 
 		food.thisSprite[food.currentVariant].sortingOrder = FoodsOnPlate.Count;
 	}
+
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------	
 	#region coroutine

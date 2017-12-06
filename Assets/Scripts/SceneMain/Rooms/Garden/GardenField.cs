@@ -15,14 +15,15 @@ public class GardenField : MonoBehaviour {
 
 	[Header("Custom Attributes")]
 	public int fieldIndex;
-	public bool hasPlant;
-	public bool hasWatered = false;
+
 
 	[Header("value in minutes")]
 	public int harvestTimeCut = 5;
 	public int waterCooldownTime = 5;
 
 	[Header("Do Not modify")]
+	public bool hasPlant;
+	public bool hasWatered = false;
 	public GameObject[] currentPlants = new GameObject[3]{null,null,null};
 
 	DateTime plantHarvestTime;
@@ -56,13 +57,17 @@ public class GardenField : MonoBehaviour {
 			}else{
 				StartCoroutine(StartPlantGrowing());
 
-				DateTime waterAvailableTime = DateTime.Parse(PlayerPrefs.GetString(prefKeyWaterCooldownTime));
-				if(DateTime.Now.CompareTo(waterAvailableTime) < 0){
-					foreach(SpriteRenderer s in wetSoil) s.enabled = true;
-					StartCoroutine(StartWaterCooldown());
-					hasWatered = true;
+				if(PlayerPrefs.HasKey(prefKeyWaterCooldownTime)){
+					DateTime waterAvailableTime = DateTime.Parse(PlayerPrefs.GetString(prefKeyWaterCooldownTime));
+					if(DateTime.Now.CompareTo(waterAvailableTime) < 0){
+						foreach(SpriteRenderer s in wetSoil) s.enabled = true;
+						StartCoroutine(StartWaterCooldown());
+						hasWatered = true;
+					}else{
+						foreach(SpriteRenderer s in wetSoil) s.enabled = false;
+						hasWatered = false;
+					}
 				}else{
-					foreach(SpriteRenderer s in wetSoil) s.enabled = false;
 					hasWatered = false;
 				}
 			}
@@ -149,6 +154,7 @@ public class GardenField : MonoBehaviour {
 			StopAllCoroutines();
 			hasPlant = false;
 			hasWatered = false;
+			PlayerPrefs.DeleteKey(prefKeySeedType);
 		}
 	}
 	#endregion

@@ -25,9 +25,9 @@ public class StallItem : MonoBehaviour {
 
 	#region events
 	public delegate void DragStallItem(int price);
-	public static event DragStallItem OnDragStallItem;
+	public event DragStallItem OnDragStallItem;
 	public delegate void EndDragStallItem(bool isBought);
-	public static event EndDragStallItem OnEndDragStallItem;
+	public event EndDragStallItem OnEndDragStallItem;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
@@ -54,9 +54,9 @@ public class StallItem : MonoBehaviour {
 	{
 		if(PlayerData.Instance.PlayerCoin>=price){
 			StopAllCoroutines();
-
-			if (OnItemPicked != null) OnItemPicked (this);
 			if(OnEndDragStallItem != null) OnEndDragStallItem (true);
+			if (OnItemPicked != null) OnItemPicked (this);
+
 			PlayerData.Instance.inventory.ModIngredientValue (type, 1);
 			basket.Animate();
 			Destroy (this.gameObject);
