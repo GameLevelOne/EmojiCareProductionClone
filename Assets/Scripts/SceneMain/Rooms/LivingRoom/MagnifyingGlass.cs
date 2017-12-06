@@ -4,11 +4,21 @@ using UnityEngine;
 public class MagnifyingGlass : TriggerableFurniture {
 	#region attributes
 	[Header("MagnifyingGlass Attributes")]
+	public MovableFurniture thisMovable;
 	public FloatingStatsManager popupStats;
+	
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
-	
+	void Start()
+	{
+		thisMovable.OnItemReleased += HideStatsPopup;
+	}
+
+	void OnDestroy()
+	{
+		thisMovable.OnItemReleased -= HideStatsPopup;
+	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics

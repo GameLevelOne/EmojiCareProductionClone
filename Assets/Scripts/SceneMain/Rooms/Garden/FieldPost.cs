@@ -25,7 +25,7 @@ public class FieldPost : MonoBehaviour {
 	void OnTimerTick (TimeSpan duration)
 	{
 //		print(duration.TotalMinutes+":"+duration.Seconds);
-		textTimer.text = (int)duration.TotalMinutes+":"+duration.Seconds;
+		textTimer.text = ((int)duration.TotalMinutes).ToString("00")+":"+duration.Seconds.ToString("00");
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------

@@ -27,12 +27,12 @@ public class GardenStallTimer : MonoBehaviour {
 	#region mechanics
 	void OnStallSeedTick (TimeSpan duration)
 	{
-		textTimerSeed.text = (int)duration.TotalMinutes+":"+duration.Seconds;
+		textTimerSeed.text = ((int)duration.TotalMinutes).ToString("00")+":"+duration.Seconds.ToString("00");
 	}
 
 	void OnStallItemTick (TimeSpan duration)
 	{
-		textTimerItem.text = (int)duration.TotalMinutes+":"+duration.Seconds;
+		textTimerItem.text = ((int)duration.TotalMinutes).ToString("00")+":"+duration.Seconds.ToString("00");
 	}
 
 	//button module

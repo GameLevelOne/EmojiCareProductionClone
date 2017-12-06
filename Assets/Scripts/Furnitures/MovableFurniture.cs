@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine.EventSystems;
 
 public class MovableFurniture : MonoBehaviour {
+	public delegate void ItemReleased();
+	public event ItemReleased OnItemReleased;
 	#region attributes
 	[Header("MovableFurniture Attributes")]
 	public Collider2D thisCollider;
@@ -17,6 +19,8 @@ public class MovableFurniture : MonoBehaviour {
 	[Header("leave empty for BathroomAppliances Object")]
 	public Rigidbody2D thisRigidbody;
 
+	[Header("Do Not Modify")]
+	public bool flagHolding = false;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
@@ -47,6 +51,7 @@ public class MovableFurniture : MonoBehaviour {
 					Physics2D.IgnoreCollision(c,thisCollider,false);
 			}
 			collidersToIgnore.Clear();
+			flagHolding = true;
 		}
 	}
 
@@ -71,6 +76,8 @@ public class MovableFurniture : MonoBehaviour {
 			AdjustSortingOrder();
 
 			StartCoroutine(ChangeDragState());
+			flagHolding = false;
+			if(OnItemReleased != null) OnItemReleased();
 		}
 	}
 

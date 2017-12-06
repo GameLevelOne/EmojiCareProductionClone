@@ -56,7 +56,6 @@ public class SoundManager : MonoBehaviour {
 		BGMSource.Stop();
 		BGMSource.clip = BGMClips[(int)bgm];
 		BGMSource.Play();
-
 	}
 
 	public void StopBGM()
@@ -72,6 +71,7 @@ public class SoundManager : MonoBehaviour {
 	public void PlaySFX(SFXList sfx)
 	{
 		SFXSource.Stop();
+		SFXSource.loop = true;
 		SFXSource.clip = SFXClips[(int)sfx];
 		SFXSource.Play();
 	}
@@ -79,6 +79,7 @@ public class SoundManager : MonoBehaviour {
 	public void StopSFX()
 	{
 		SFXSource.Stop();
+		if(SFXSource.loop) SFXSource.loop = false;
 	}
 
 	public void PlayVoice(VoiceList voice)

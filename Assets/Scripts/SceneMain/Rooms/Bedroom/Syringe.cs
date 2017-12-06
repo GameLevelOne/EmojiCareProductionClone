@@ -40,31 +40,37 @@ public class Syringe : MonoBehaviour {
 		}
 	}
 
-	protected virtual void CheckPlayerCoin()
+	void CheckPlayerCoin()
 	{
 		//check price, if enough coin
 		print("Price = "+price+", you have "+PlayerData.Instance.PlayerCoin);
 		if(PlayerData.Instance.PlayerCoin >= price){
 			//check stats, if low
-			float healthValue = emoji.health.StatValue/emoji.health.MaxStatValue;
-			if(healthValue < Emoji.statsTresholdLow){
-				//apply
-				StopAllCoroutines();
-				HideUICoin(true);
-				emoji.playerInput.ApplyMedicineOrSyringe(reactionDuration+2f);
-				StartCoroutine(_Apply);
-
-				return;
-			}else{
-				//reject
-				emoji.playerInput.Reject();
-			}
+			CheckEmojiHealth();
 		}
 
 		HideUICoin(false);
 		
 	}
 
+	protected virtual void CheckEmojiHealth()
+	{
+		float healthValue = emoji.health.StatValue/emoji.health.MaxStatValue;
+		if(healthValue < Emoji.statsTresholdLow){
+			//apply
+			StopAllCoroutines();
+			HideUICoin(true);
+			emoji.playerInput.ApplyMedicineOrSyringe(reactionDuration+2f);
+			StartCoroutine(_Apply);
+
+			return;
+		}else{
+			//reject
+			emoji.playerInput.Reject();
+		}
+	}
+
+	//event trigger
 	public void BeginDrag()
 	{
 		thisCollider.enabled = false;
@@ -83,9 +89,9 @@ public class Syringe : MonoBehaviour {
 		StartCoroutine(_Return);
 	}
 
+
 	protected void ShowUICoin()
 	{
-		uiCoin.gameObject.SetActive(true);
 		uiCoin.ShowUI(price);
 	}
 	protected void HideUICoin(bool bought)
@@ -112,7 +118,7 @@ public class Syringe : MonoBehaviour {
 //-------------------------------------------------------------------------------------------------------------------------------------------------	
 	#region coroutine
 	protected const string _Return = "Return";
-	IEnumerator Return()
+	protected IEnumerator Return()
 	{
 		thisCollider.enabled = true;
 		yield return null;
@@ -130,7 +136,7 @@ public class Syringe : MonoBehaviour {
 	}
 		
 	protected const string _Apply = "Apply";
-	IEnumerator Apply()
+	protected IEnumerator Apply()
 	{
 		thisCollider.enabled = false;
 		Vector3 startPos = transform.position;

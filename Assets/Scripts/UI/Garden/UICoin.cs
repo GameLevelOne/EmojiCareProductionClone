@@ -25,8 +25,8 @@ public class UICoin : MonoBehaviour {
 	}
 
 	void UpdateDisplay(int currentCoin,int itemPrice){
-		textCurrentCoin.text = currentCoin.ToString();
-		textItemPrice.text = itemPrice.ToString();
+		textCurrentCoin.text = currentCoin.ToString("N0");
+		textItemPrice.text = "-"+itemPrice.ToString();
 
 		if(currentCoin < itemPrice){
 			textCurrentCoin.color = Color.red;
@@ -36,17 +36,15 @@ public class UICoin : MonoBehaviour {
 	}
 
 	public void CloseUI(bool isBought){
-		Debug.Log ("close ui");
+//		Debug.Log ("close ui");
 		if(isBought){
-			Debug.Log ("bought");
+//			Debug.Log ("bought");
 			PlayerData.Instance.PlayerCoin -= currentPrice;
 			currentCoin -= currentPrice;
-			//StartCoroutine (AnimateCoin ());
-			textCurrentCoin.text = currentCoin.ToString ();
-			StartCoroutine (AutoCloseUI ());
+			StartCoroutine (AnimateCoin ());
 		} else{
-			Debug.Log ("back");
-			StartCoroutine (AutoCloseUI ());
+//			Debug.Log ("back");
+			GetComponent<Animator> ().SetBool (boolOpenBox,false);
 		}
 	}
 
@@ -60,7 +58,7 @@ public class UICoin : MonoBehaviour {
 			textCurrentCoin.text = current.ToString ();
 			yield return null;
 		}
-
-		StartCoroutine (AutoCloseUI ());
+		textCurrentCoin.text = currentCoin.ToString ();
+		GetComponent<Animator> ().SetBool (boolOpenBox,false);
 	}
 }
