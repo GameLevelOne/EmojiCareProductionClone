@@ -16,27 +16,24 @@ public class PopupStatsMeter : MonoBehaviour {
 	string triggerOpenNotif = "OpenNotif";
 	string triggerCloseNotif = "CloseNotif";
 
-	public void ShowUI(EmojiStatsState type,float currentValue,float targetValue,float maxValue){
+	public void ShowMeter(EmojiStatsState type,bool sleepOrBath,float currentValue,float targetValue,Sprite barSprite){
+		barFill.sprite = barSprite;
 		GetComponent<Animator> ().SetTrigger (triggerOpenNotif);
-		StartCoroutine (AnimateMeter (currentValue,targetValue,maxValue));
-	}
-
-	public void ShowStaticMeter(float value){
-		GetComponent<Animator> ().SetTrigger (triggerOpenNotif);
-		barFill.fillAmount = value;
-
+		if(targetValue >= -1){
+			StartCoroutine (AnimateMeter (currentValue,targetValue));
+		} else{
+			barFill.fillAmount = currentValue;
+		}	
 	}
 
 	public void HideMeter(){
 		StartCoroutine (AutoClose ());
 	}
 
-	IEnumerator AnimateMeter (float currentValue, float targetValue, float maxValue)
+	IEnumerator AnimateMeter (float currentValue, float targetValue)
 	{
 		yield return new WaitForSeconds (1f);
 		float time = 0;
-//		float startValue = currentValue / maxValue;
-//		float endValue = targetValue / maxValue;
 		Debug.Log ("start:" + currentValue);
 		Debug.Log ("end:" + targetValue);
 		while (barFill.fillAmount < targetValue) {
@@ -51,8 +48,6 @@ public class PopupStatsMeter : MonoBehaviour {
 	IEnumerator AutoClose(){
 		yield return new WaitForSeconds (0.3f);
 		GetComponent<Animator> ().SetTrigger (triggerCloseNotif);
-		yield return new WaitForSeconds (0.16f);
 		print("ASKJDKASDJKLASJDKLASJKD");
-		//gameObject.SetActive (false);
 	}
 }

@@ -28,7 +28,7 @@ public class SceneLoader : MonoBehaviour {
 
 	void HandleFadeOutFinished ()
 	{
-		asop.allowSceneActivation = true;
+		if(asop != null) asop.allowSceneActivation = true;
 	}
 
 	public string NextScene{
@@ -45,8 +45,9 @@ public class SceneLoader : MonoBehaviour {
 		asop.allowSceneActivation = false;
 
 		while(!barIsFilled){
-			progressBar.fillAmount +=0.05f;
-			if(progressBar.fillAmount == 1f){
+			float progress = Mathf.Clamp01 (asop.progress / 0.9f);
+			progressBar.fillAmount = progress;
+			if(asop.progress >= 0.9f){
 				barIsFilled = true;
 			}
 			yield return null;

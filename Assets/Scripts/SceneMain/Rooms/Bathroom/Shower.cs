@@ -13,8 +13,6 @@ public class Shower : TriggerableFurniture {
 	bool flagDecreasingEmojiFoamState = false;
 	float currentHygieneStat = 0f;
 	float hygieneMod = 0f;
-	public delegate void FinishShower(float mod,float startValue);
-	public static event FinishShower OnFinishShower;
 
 	public override void InitVariant ()
 	{
@@ -35,11 +33,6 @@ public class Shower : TriggerableFurniture {
 	public void StopDecreasingEmojiFoamState ()
 	{
 		StopCoroutine (_StartDecreasingEmojiFoamState);
-
-		if (PlayerData.Instance.PlayerEmoji != null && PlayerData.Instance.PlayerEmoji.body.foamState <= 0f) {
-			if (OnFinishShower != null)
-				OnFinishShower (hygieneMod, currentHygieneStat);
-		}
 
 		PlayerData.Instance.PlayerEmoji.ResetEmojiStatsModifier();
 		PlayerData.Instance.PlayerEmoji.emojiExpressions.ResetExpressionDuration();

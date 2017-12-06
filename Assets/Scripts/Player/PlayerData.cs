@@ -59,7 +59,7 @@ public class PlayerData : MonoBehaviour {
 	}
 
 	public string EmojiName{
-		get{return PlayerPrefs.GetString (PlayerPrefKeys.Emoji.EMOJI_NAME, "Emoji");}
+		get{return PlayerPrefs.GetString (PlayerPrefKeys.Emoji.EMOJI_NAME, "");}
 		set{PlayerPrefs.SetString (PlayerPrefKeys.Emoji.EMOJI_NAME, value);}
 	}
 

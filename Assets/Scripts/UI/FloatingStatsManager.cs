@@ -3,30 +3,43 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class FloatingStatsManager : MonoBehaviour {
-	public GameObject[] statsMeterObj;
-
-	void OnDisable(){
-		Emoji.OnShowFloatingStatsBar -= ShowMultipleMeters;
-		EmojiStats.OnShowSingleStatBar -= ShowSingleMeter;
-		PlayerData.Instance.PlayerEmoji.playerInput.OnEmojiWake -= OnEmojiWake;
-		Shower.OnFinishShower -= OnFinishShower;
-	}
+	public PopupStatsMeter[] statsMeterObj;
+	public Sprite[] barSprites; //green,yellow,orange,red
 
 	public void RegisterEvents(){
 		Emoji.OnShowFloatingStatsBar += ShowMultipleMeters;
 		EmojiStats.OnShowSingleStatBar += ShowSingleMeter;
+		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent += OnEmojiSleepEvent;
 		PlayerData.Instance.PlayerEmoji.playerInput.OnEmojiWake += OnEmojiWake;
-		Shower.OnFinishShower += OnFinishShower;
+		ShowerTrigger.OnEnterShower += OnEnterShower;
+		ShowerTrigger.OnExitShower += OnExitShower;
 	}
 
-	void OnFinishShower (float mod, float startValue)
+	void OnDisable(){
+		Emoji.OnShowFloatingStatsBar -= ShowMultipleMeters;
+		EmojiStats.OnShowSingleStatBar -= ShowSingleMeter;
+		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent -= OnEmojiSleepEvent;
+		PlayerData.Instance.PlayerEmoji.playerInput.OnEmojiWake -= OnEmojiWake;
+	}
+
+	void OnEmojiSleepEvent (bool sleeping)
 	{
-		ShowSingleMeter ((int)EmojiStatsState.Hygiene, mod, startValue);
+		StartCoroutine (UpdateMeterDisplay ((int)EmojiStatsState.Stamina, PlayerData.Instance.PlayerEmoji.stamina.totalModifier));
 	}
 
 	void OnEmojiWake (float startStamina, float mod)
 	{
-		ShowSingleMeter ((int)EmojiStatsState.Stamina, mod, startStamina);
+		statsMeterObj [(int)EmojiStatsState.Stamina].HideMeter ();
+	}
+
+	void OnEnterShower ()
+	{
+		StartCoroutine (UpdateMeterDisplay ((int)EmojiStatsState.Hygiene, PlayerData.Instance.PlayerEmoji.hygiene.totalModifier));
+	}
+
+	void OnExitShower ()
+	{
+		statsMeterObj [(int)EmojiStatsState.Hygiene].HideMeter ();
 	}
 
 	public void ShowSingleMeter(int type,float mod,float startValue = 0f){
@@ -44,16 +57,17 @@ public class FloatingStatsManager : MonoBehaviour {
 			targetValue = 1;
 		}
 
-		statsMeterObj [type].SetActive (true);
-		statsMeterObj[type].GetComponent<PopupStatsMeter>().ShowUI((EmojiStatsState)type,currentValue,targetValue,1);
+		statsMeterObj [type].gameObject.SetActive (true);
+		statsMeterObj[type].ShowMeter((EmojiStatsState)type,false,currentValue,targetValue,GetCurrentBarSprite(currentValue));
 	}
 
 	public void ShowStatsFromMagnifyingGlass(){
 		int counter = 0;
 		for(int i=0;i<5;i++){
-			statsMeterObj [i].SetActive (true);
-			statsMeterObj [i].transform.localPosition = new Vector3 (0, 400 - 100 * counter);
-			statsMeterObj [i].GetComponent<PopupStatsMeter> ().ShowStaticMeter (GetCurrentStatValue (i));
+			statsMeterObj [i].gameObject.SetActive (true);
+			statsMeterObj [i].transform.localPosition = new Vector3 (0, 452 - 100 * counter);
+			float value = GetCurrentStatValue (i);
+			statsMeterObj [i].ShowMeter((EmojiStatsState)i,false,GetCurrentStatValue(i),-1,GetCurrentBarSprite(value));
 			counter++;
 		}
 	}
@@ -61,7 +75,7 @@ public class FloatingStatsManager : MonoBehaviour {
 	public void HideStatsFromMagnifyingGlass(){
 		int counter = 0;
 		for (int i=0;i<5;i++){
-			statsMeterObj [i].GetComponent<PopupStatsMeter> ().HideMeter ();
+			statsMeterObj [i].HideMeter ();
 		}
 	}
 
@@ -69,12 +83,12 @@ public class FloatingStatsManager : MonoBehaviour {
 		int counter = 0;
 		for(int i=0;i<mod.Length;i++){
 			if(mod[i] != 0){
-				statsMeterObj [i].SetActive (true);
-				statsMeterObj [i].transform.localPosition = new Vector3 (0, 400 - 100 * counter);
+				statsMeterObj [i].gameObject.SetActive (true);
+				statsMeterObj [i].transform.localPosition = new Vector3 (0, 452 - 100 * counter);
 				ShowSingleMeter (i, mod [i]);
 				counter++;
 			} else{
-				statsMeterObj [i].SetActive (false);
+				statsMeterObj [i].gameObject.SetActive (false);
 			}
 		}
 	}
@@ -95,4 +109,20 @@ public class FloatingStatsManager : MonoBehaviour {
 			return 0;
 	}
 
+	Sprite GetCurrentBarSprite(float value){
+		if(value>=0.9f){
+			return barSprites [0];
+		} else if(value>=0.4f && value<0.9f){
+			return barSprites [1];
+		} else if(value>=0.2f && value<0.4f){
+			return barSprites [2];
+		} else{
+			return barSprites [3];
+		}
+	}
+
+	IEnumerator UpdateMeterDisplay(int type,float mod){
+		ShowSingleMeter (type, mod, 0);
+		yield return null;
+	}
 }
