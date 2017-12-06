@@ -12,6 +12,8 @@ public enum PanState{
 }
 
 public class Pan : BaseFurniture {
+	public delegate void CookingDone();
+	public event CookingDone OnCookingDone;
 	#region attributes
 	[Header("Pan Attributes")]
 	public List<GameObject> ingredients = new List<GameObject>();
@@ -28,6 +30,7 @@ public class Pan : BaseFurniture {
 	public bool isCooking;
 
 	const int MAX_INGREDIENT = 5;
+	Foods foodToCook;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initializations
@@ -66,7 +69,6 @@ public class Pan : BaseFurniture {
 	public void AddIngredient(GameObject ingredient)
 	{
 		if(ingredients.Count < MAX_INGREDIENT){
-			
 			if(!isCooking){
 				if(!hasIngredient){
 					hasIngredient = true;
@@ -76,6 +78,7 @@ public class Pan : BaseFurniture {
 				ingredients.Add(ingredient);
 				CheckIngredientCombination();
 				print("Inserting "+ingredient+" to pan, current ingredient = "+ingredients.Count);
+				SoundManager.Instance.PlaySFXOneShot(SFXList.Bong);
 			}
 		}else{
 			print("Max Ingredient amount reached (5)");
@@ -135,7 +138,8 @@ public class Pan : BaseFurniture {
 			return;
 		}
 		print("Cooking "+cookBook.recipes[foodIndex].foodObject.name+" for "+cookBook.recipes[foodIndex].cookDuration+" seconds.");
-		StartCoroutine(Cook(cookBook.recipes[foodIndex]));
+		foodToCook = cookBook.recipes[foodIndex];
+		StartCoroutine(Cook());
 	}
 
 	//event triggers
@@ -169,7 +173,7 @@ public class Pan : BaseFurniture {
 //		}
 //	}
 
-	IEnumerator Cook(Foods food)
+	IEnumerator Cook()
 	{
 		DestroyIngredients();
 		PlayerData.Instance.PlayerEmoji.emojiExpressions.SetExpression(EmojiExpressionState.WHISTLE,3f);
@@ -177,34 +181,62 @@ public class Pan : BaseFurniture {
 
 		Animate(PanState.Cooking);
 
-		cookingBar.GetComponent<UICookBar>().duration = food.cookDuration;
+		cookingBar.GetComponent<UICookBar>().duration = foodToCook.cookDuration;
 		cookingBar.SetActive(true);
 
 		SoundManager.Instance.PlaySFX(SFXList.Cook);
 
 		float current = 0;
-		while(current < food.cookDuration){
+		while(current < foodToCook.cookDuration){
 			cookingBar.GetComponent<UICookBar>().UpdateBar(current);
 			current += Time.deltaTime;
 			yield return new WaitForSeconds(Time.deltaTime);
 		}
 
-		//instantiate food
-		GameObject foodObject = Instantiate(food.foodObject,transform.parent);
-//		cookedFoodObject.transform.localPosition = new Vector3(0.2f,0.6f,-1f);
-		plate.AddFood(foodObject);
-		cookingBar.SetActive(false);
-		isCooking = false;
-
-		StopAllCoroutines();
-
+		//-----DONE COOKING-----
+		if(OnCookingDone != null) OnCookingDone();
 		SoundManager.Instance.StopSFX();
 		SoundManager.Instance.PlaySFXOneShot(SFXList.Ding);
+
+		StopAllCoroutines();
 		Animate(PanState.OpenClose);
 
 		if(smoke.isPlaying) smoke.Stop();
+	}
+	#endregion
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+	#region PlateAnimationEvent
+	public void MovePlate()
+	{
+		StartCoroutine(MovingPlate());
+	}
+	IEnumerator MovingPlate()
+	{
+		//MOVE PLATE TO TOP OF PAN
+		Vector3 plateStartPos = plate.transform.localPosition;
+		Vector3 plateTargetPos = new Vector3(1.456f,2.548f,-1f);
 
+		plate.thisCollider.enabled = false;
+		plate.thisRigidbody.simulated = false;
+		float current = 0;
+		while(current < 1){
+			plate.transform.localPosition = Vector3.Lerp(plateStartPos,plateTargetPos,current);
+			current += Time.deltaTime * 4f;
+			yield return null;
+		}
+		plate.transform.localPosition = plateTargetPos;
+		plate.thisCollider.enabled = true;
+		plate.thisRigidbody.simulated = true;
+	}
 
+	public void InstantiateFood()
+	{
+		//instantiate food, GIVE UP FORCE
+		GameObject foodObject = Instantiate(foodToCook.foodObject,transform.parent);
+		foodObject.transform.localPosition = new Vector3(1.456f,3f,-1f);
+		foodObject.GetComponent<Food>().thisRigidbody.AddForce(new Vector2(0,300f));
+		cookingBar.SetActive(false);
+		isCooking = false;
 	}
 	#endregion
 }

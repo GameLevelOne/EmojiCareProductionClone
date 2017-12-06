@@ -3,6 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[System.Serializable]
+public class EditroomButtons
+{	
+	public GameObject parent;
+	public GameObject[] Buttons;
+}
+
 public class ScreenEditRooms : BaseUI {
 	public ScreenPopup screenPopup;
 	public ScreenTutorial screenTutorial;
@@ -13,6 +20,8 @@ public class ScreenEditRooms : BaseUI {
 	public Text textPrice;
 	public Text textPlayerCoin;
 
+	public EditroomButtons[] editRoomButtons;
+
 	BaseFurniture currentItem;
 	int currentVariant = 0;
 	bool isShowingUI = false;
@@ -22,15 +31,24 @@ public class ScreenEditRooms : BaseUI {
 		Debug.Log("edit room");	
 		int currentRoom = (int)roomController.currentRoom;
 		textPlayerCoin.text = PlayerData.Instance.PlayerCoin.ToString();
-		for(int i=0;i<roomController.rooms[currentRoom].furnitures.Length;i++){
-			roomController.rooms [currentRoom].furnitures [i].EnterEditmode ();
-		}
+
+		ShowCurrentRoomEditButtons();
+//		for(int i=0;i<roomController.rooms[currentRoom].furnitures.Length;i++){
+//			roomController.rooms [currentRoom].furnitures [i].EnterEditmode ();
+//		}
 
 		if(PlayerData.Instance.TutorialFirstEditRoom == 0){
 			screenTutorial.ShowFirstDialog (TutorialType.FirstEditRoomUI);
 			PlayerData.Instance.TutorialFirstEditRoom = 1;
 		}
 		isShowingUI = true;
+	}
+
+	public void ShowCurrentRoomEditButtons()
+	{
+		foreach(EditroomButtons e in editRoomButtons) e.parent.SetActive(false);
+		editRoomButtons[(int)(roomController.currentRoom)-1].parent.SetActive(true);
+		foreach(GameObject g in editRoomButtons[(int)(roomController.currentRoom)-1].Buttons) g.SetActive(true);
 	}
 
 	//register event on click furniture
@@ -47,7 +65,7 @@ public class ScreenEditRooms : BaseUI {
 		ScreenPopup.OnBuyFurniture -= OnBuyFurniture;
 	}
 
-	void OnClickFurnitureItem(BaseFurniture currentItem){
+	public void OnClickFurnitureItem(BaseFurniture currentItem){
 		//laod furniture variant data
 		//display in UI
 		if (AdmobManager.Instance)
@@ -97,6 +115,11 @@ public class ScreenEditRooms : BaseUI {
 		iconVariant.sprite = currentItem.variant [index].sprite[0];
 	}
 
+	public void HideDisplayItem()
+	{
+		boxVariants.SetActive(false);
+	}
+
 	public void ApplyVariant(){
 		FurnitureVariant item = currentItem.variant [currentVariant];
 		bool isBought = item.bought;
@@ -109,9 +132,10 @@ public class ScreenEditRooms : BaseUI {
 
 	public void DisableEditMode(){
 		int currentRoom = (int)roomController.currentRoom;
-		for(int i=0;i<roomController.rooms[currentRoom].furnitures.Length;i++){
-			roomController.rooms [currentRoom].furnitures [i].ExitEditmode ();
-		}
+//		for(int i=0;i<roomController.rooms[currentRoom].furnitures.Length;i++){
+//			roomController.rooms [currentRoom].furnitures [i].ExitEditmode ();
+//		}
+		foreach(EditroomButtons e in editRoomButtons) e.parent.SetActive(false);
 	}
 
 	void ConfirmBuyObject(int price){

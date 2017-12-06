@@ -25,6 +25,7 @@ public class Globe : ActionableFurniture {
 
 	IEnumerator Spinning()
 	{
+		SoundManager.Instance.PlaySFXOneShot(SFXList.Globe);
 		isSpining = true;
 		Vector3 startRotation = thisSprite[currentVariant].transform.eulerAngles;
 		Vector3 shakeRotation = new Vector3(0,0,-10f);

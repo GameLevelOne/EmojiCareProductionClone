@@ -15,7 +15,10 @@ public enum SFXList{
 	OpenThings,
 	Shower,
 	Sponge,
-	Ding
+	Ding,
+	AlarmClock,
+	Globe,
+	Bong
 }
 
 public enum VoiceList{
