@@ -126,11 +126,16 @@ public class UICelebrationManager : MonoBehaviour {
 
 	IEnumerator AutoCloseNotif(){
 		//particles.StopParticles();
-		GameObject obj = notificationObj[0].gameObject;
-		notificationObj[0].GetComponent<Animator> ().SetTrigger ("CloseNotif");
-		yield return new WaitForSeconds(0.16f);
-		notificationObj.RemoveAt (0);
-		Destroy(obj);
-		isShowingNotif = false;
+		if(notificationObj[0] != null){
+			GameObject obj = notificationObj[0].gameObject;
+			notificationObj[0].GetComponent<Animator> ().SetBool ("ShowNotif",false);
+			yield return new WaitForSeconds(40f/60f);
+			notificationObj.RemoveAt (0);
+			Destroy(obj);
+			isShowingNotif = false;
+		} else{
+			notificationObj.RemoveAt (0);
+			isShowingNotif = false;
+		}
 	}
 }
