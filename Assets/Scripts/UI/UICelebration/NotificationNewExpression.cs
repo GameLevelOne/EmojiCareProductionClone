@@ -56,7 +56,7 @@ public class NotificationNewExpression : MonoBehaviour {
 		expressionNameText = parentFrame.GetChild(2).GetComponent<Text>();
 		//unlockDetailsText = parentFrame.GetChild(3).GetComponent<Text>();
 		continueButton = parentFrame.GetChild(4).GetComponent<Button>();
-		continueButton.onClick.AddListener(OnClickContinue);
+//		continueButton.onClick.AddListener(() => OnClickContinue());
 	}
 
 	void SetNotificationProgressReferences(){
@@ -67,7 +67,7 @@ public class NotificationNewExpression : MonoBehaviour {
 		progressBarFill = parentFrame.GetChild (5).GetComponent<Image> ();
 		progressText = parentFrame.GetChild (6).GetComponent<Text> ();
 		//unlockDetailsText = parentFrame.GetChild (7).GetComponent<Text> ();
-		continueButton.onClick.AddListener(OnClickContinue);
+//		continueButton.onClick.AddListener( () => OnClickContinue());
 	}
 
 	void ShowNotification (float currentProgress, float totalProgress)
@@ -92,7 +92,8 @@ public class NotificationNewExpression : MonoBehaviour {
 	IEnumerator WaitForAnim(){
 		GetComponent<Animator>().SetBool(boolShowNotif,false);
 		particles.StopParticles();
-		yield return new WaitForSeconds(0.2f);
+		yield return new WaitForSeconds(40f/60f);
+
 		Destroy(gameObject);
 	}
 
@@ -100,7 +101,8 @@ public class NotificationNewExpression : MonoBehaviour {
 		yield return new WaitForSeconds(time);
 		particles.StopParticles();
 		GetComponent<Animator>().SetBool(boolShowNotif,false);
-		yield return new WaitForSeconds(0.2f);
+		yield return new WaitForSeconds(40f/60f);
+
 		Destroy(this.gameObject);
 	}
 

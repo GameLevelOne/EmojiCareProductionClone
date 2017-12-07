@@ -12,6 +12,7 @@ public class Gordyn : ActionableFurniture {
 
 	public override void SetCurrentVariant ()
 	{
+		base.SetCurrentVariant();
 		open = variant[currentVariant].sprite[0];
 		close = variant[currentVariant].sprite[1];
 	}

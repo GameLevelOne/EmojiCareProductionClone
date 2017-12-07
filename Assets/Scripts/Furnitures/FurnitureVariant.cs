@@ -26,7 +26,7 @@ public class FurnitureVariant {
 			PlayerPrefKeys.Game.FURNITURE_VARIAN_STATUS+
 			currentVariant.ToString();
 		
-		Debug.Log(prefKey);
+//		Debug.Log(prefKey);
 
 		PlayerPrefs.SetInt(prefKey,1);
 		bought = true;

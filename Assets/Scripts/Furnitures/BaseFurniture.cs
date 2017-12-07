@@ -18,9 +18,9 @@ public class BaseFurniture : MonoBehaviour {
 	{
 		variant[0].SetBought(gameObject.name,0);
 		prefKeyVariant = PlayerPrefKeys.Game.FURNITURE_VARIANT+gameObject.name;
-		print(prefKeyVariant);
+//		print(prefKeyVariant);
 		currentVariant = PlayerPrefs.GetInt(prefKeyVariant,0);
-		print ("currentvariant: " +gameObject.name+" "+ currentVariant);
+
 		for(int i = 0;i<thisSprite.Length;i++) {
 			thisSprite[i].sprite = variant[currentVariant].sprite[i];
 		}
