@@ -50,7 +50,11 @@ public class KitchenTable : ActionableFurniture {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
-	
+	public override void SetCurrentVariant ()
+	{
+		spriteClose = variant[currentVariant].sprite[1];
+		spriteOpen = variant[currentVariant].sprite[2];
+	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------	
 }

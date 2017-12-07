@@ -73,6 +73,9 @@ public static class PlayerPrefKeys {
 
 		public const string DANCE_MAT_TILE_COLOR_DATA = "Game/Playroom/DanceMatTileColorData/TileNo";
 
+		public const string FURNITURE_VARIANT = "Game/Furnitures/";
+		public const string FURNITURE_VARIAN_STATUS = "/Variant/";
+
 		public static class Garden{
 			public const string SEED_RESTOCK_TIME = "Game/Garden/SeedRestock";
 			public const string ITEM_RESTOCK_TIME = "Game/Garden/StallItemRestock";
