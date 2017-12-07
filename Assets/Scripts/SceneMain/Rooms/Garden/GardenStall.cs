@@ -40,12 +40,12 @@ public class GardenStall : BaseFurniture {
 
 	void OnEnable(){
 		if(AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds += OnFinishWatchVideoAds;
-		ScreenPopup.OnRefillStallWithGems += OnRefillStallWithGems;
+		GardenStallTimer.OnRefillStallWithGems += OnRefillStallWithGems;
 	}
 
 	void OnDisable(){
 		if(AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds -= OnFinishWatchVideoAds;
-		ScreenPopup.OnRefillStallWithGems -= OnRefillStallWithGems;
+		GardenStallTimer.OnRefillStallWithGems -= OnRefillStallWithGems;
 	}
 
 	public void Init()

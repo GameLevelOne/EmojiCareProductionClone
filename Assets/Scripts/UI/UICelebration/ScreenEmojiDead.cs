@@ -7,6 +7,7 @@ public class ScreenEmojiDead : BaseUI {
 	public ScreenAlbum screenAlbum;
 	public SceneLoader sceneLoader;
 	public ScreenPopup screenPopup;
+	public UICoin uiCoin;
 	public Fader fader;
 	public Image emojiIcon;
 
@@ -38,15 +39,18 @@ public class ScreenEmojiDead : BaseUI {
 	void OnReviveEmoji ()
 	{
 		ResetEmojiStats ();
+		base.CloseUI (this.gameObject);
 	}
 
 	void OnResetEmoji ()
 	{
 		ResetEmojiStats ();
 		ResetExpressionProgress ();
+		base.CloseUI (this.gameObject);
 	}
 
 	public void OnClickRevive(){
+		uiCoin.ShowUI (100, false);
 		screenPopup.ShowPopup (PopupType.Confirmation, PopupEventType.ReviveEmoji);
 	}
 

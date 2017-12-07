@@ -33,6 +33,7 @@ public enum PopupEventType{
 }
 
 public class ScreenPopup : BaseUI {
+	public UICoin uiCoin;
 	public GameObject popupObject;
 	public GameObject buttonGroupWarning;
 	public GameObject buttonGroupConfirmation;
@@ -78,11 +79,6 @@ public class ScreenPopup : BaseUI {
 	public delegate void BuyCoin();
 	public static event BuyCoin OnBuyCoin;
 
-	public delegate void RefillStallWithAds();
-	public static event RefillStallWithAds OnRefillStallWithAds;
-
-	public delegate void RefillStallWithGems(AdEvents eventName);
-	public static event RefillStallWithGems OnRefillStallWithGems;
 	#endregion
 
 	PopupEventType currentEventType;
@@ -192,6 +188,7 @@ public class ScreenPopup : BaseUI {
 			} else if(currentEventType == PopupEventType.ReviveEmoji){
 				Debug.Log ("revive emoji");
 				if(PlayerData.Instance.PlayerGem>=reviveCost){
+					PlayerData.Instance.PlayerGem -= reviveCost;
 					OnReviveEmoji ();
 				} else{
 					ShowPopup (PopupType.Warning, PopupEventType.NotAbleToReviveEmoji);
@@ -210,36 +207,10 @@ public class ScreenPopup : BaseUI {
 	public void OnClickButtonCancel(){
 		if(currentEventType == PopupEventType.AbleToBuyFurniture){
 			OnCancelBuyFurniture ();
+		} else if(currentEventType == PopupEventType.RestockSeeds || currentEventType == PopupEventType.RestockStall){
+			uiCoin.CloseUI (false);
 		}
 
 		base.ClosePopup(this.gameObject);
 	}
-
-	public void RefillButtonWithAds ()
-	{
-		if (currentEventType == PopupEventType.RestockSeeds) {
-			AdmobManager.Instance.ShowRewardedVideo (AdEvents.RestockSeeds);
-		} else if(currentEventType == PopupEventType.RestockStall){
-			AdmobManager.Instance.ShowRewardedVideo (AdEvents.RestockStall);
-		}
-		base.ClosePopup (this.gameObject);
-	}
-
-	public void RefillButtonWithGems(){
-		base.ClosePopup (this.gameObject);
-		if(PlayerData.Instance.PlayerGem >= 100){
-			if (currentEventType == PopupEventType.RestockSeeds) {
-				if (OnRefillStallWithGems != null)
-					OnRefillStallWithGems (AdEvents.RestockSeeds);
-			} else if(currentEventType == PopupEventType.RestockStall){
-				if (OnRefillStallWithGems != null)
-					OnRefillStallWithGems (AdEvents.RestockStall);
-			}
-
-		} else{
-			ShowPopup (PopupType.Warning, PopupEventType.NotAbleToRestock);
-		}
-	}
-
-
 }
