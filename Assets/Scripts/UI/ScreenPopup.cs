@@ -19,6 +19,8 @@ public enum PopupEventType{
 	AlbumLocked,
 	AbleToBuyFurniture,
 	NotAbleToBuyFurniture,
+	ShopAbleToBuyFurniture,
+	ShopNotAbleToBuyFurniture,
 	RestockStall,
 	RestockSeeds,
 	ResetEmoji,
@@ -26,7 +28,7 @@ public enum PopupEventType{
 	NotAbleToReviveEmoji,
 	AbleToBuyCoin,
 	NotAbleToBuyCoin,
-	IAPFail
+	IAPFail,
 }
 
 public class ScreenPopup : BaseUI {
@@ -68,6 +70,9 @@ public class ScreenPopup : BaseUI {
 
 	public delegate void CancelBuyFurniture();
 	public static event CancelBuyFurniture OnCancelBuyFurniture;
+
+	public delegate void ShopBuyFurniture();
+	public static event ShopBuyFurniture OnShopBuyFurniture;
 
 	public delegate void BuyCoin();
 	public static event BuyCoin OnBuyCoin;
@@ -139,9 +144,9 @@ public class ScreenPopup : BaseUI {
 			return "Not enough gems";
 		} else if(eventType == PopupEventType.AlbumLocked){
 			return "Finish your first emoji to unlock this menu";
-		} else if(eventType == PopupEventType.AbleToBuyFurniture){
+		} else if(eventType == PopupEventType.AbleToBuyFurniture || eventType == PopupEventType.ShopAbleToBuyFurniture){
 			return "Do you want to buy this furniture?";
-		} else if(eventType == PopupEventType.NotAbleToBuyFurniture){
+		} else if(eventType == PopupEventType.NotAbleToBuyFurniture || eventType == PopupEventType.ShopNotAbleToBuyFurniture){
 			return "Not enough coins";
 		} else if(eventType == PopupEventType.AbleToBuyCoin){
 			return "Are you sure?";
@@ -175,8 +180,11 @@ public class ScreenPopup : BaseUI {
 				Debug.Log("transfer");
 				OnTransferEmoji();
 			} else if(currentEventType == PopupEventType.AbleToBuyFurniture){
-				Debug.Log ("buy furniture");
+				Debug.Log ("buy furniture edit room");
 				OnBuyFurniture ();
+			} else if(currentEventType == PopupEventType.ShopAbleToBuyFurniture){
+				Debug.Log ("buy furniture shop");
+				OnShopBuyFurniture ();
 			} else if(currentEventType == PopupEventType.ResetEmoji){
 				Debug.Log ("reset emoji");
 				OnResetEmoji ();

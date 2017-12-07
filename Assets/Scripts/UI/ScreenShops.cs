@@ -38,9 +38,11 @@ public class ScreenShops : BaseUI {
 	int currentItemPrice;
 	int currentItemAmount;
 	string currentItemDescription;
+	string currentItemID;
 
 	int selectedItem;
 	ShopType selectedStore = ShopType.GemStore;
+	ShopItem currentItem;
 
 	string triggerRightToUtilStore = "rightToUtilStore";
 	string triggerRightToDecorStore = "rightToDecorStore";
@@ -58,7 +60,7 @@ public class ScreenShops : BaseUI {
 		InitShopDisplay();
 		ShopItem.OnClickShopItem += OnClickShopItem;
 		ScreenPopup.OnBuyCoin += OnBuyCoin;
-		ScreenPopup.OnBuyFurniture += OnBuyFurniture;
+		ScreenPopup.OnShopBuyFurniture += OnShopBuyFurniture;
 		UnityIAPManager.Instance.OnFinishBuyProduct += OnFinishBuyProduct;
 		UnityIAPManager.Instance.OnFailToBuyProduct += OnFailToBuyProduct;
 	}
@@ -66,14 +68,17 @@ public class ScreenShops : BaseUI {
 	void OnDisable(){
 		ShopItem.OnClickShopItem -= OnClickShopItem;
 		ScreenPopup.OnBuyCoin -= OnBuyCoin;
-		ScreenPopup.OnBuyFurniture -= OnBuyFurniture;
+		ScreenPopup.OnShopBuyFurniture -= OnShopBuyFurniture;
 		UnityIAPManager.Instance.OnFinishBuyProduct -= OnFinishBuyProduct;
 		UnityIAPManager.Instance.OnFailToBuyProduct -= OnFailToBuyProduct;
 	}
 
-	void OnBuyFurniture ()
+	void OnShopBuyFurniture ()
 	{
-		
+		PlayerData.Instance.PlayerCoin -= currentItemPrice;
+		UpdateCurrencyDisplay ();
+		PlayerPrefs.SetInt (PlayerPrefKeys.Game.FURNITURE_VARIANT + currentItemID, 1);
+		currentItem.SetOverlay ();
 	}
 
 	void OnBuyCoin ()
@@ -82,12 +87,14 @@ public class ScreenShops : BaseUI {
 		UpdateCurrencyDisplay ();
 	}
 
-	void OnClickShopItem (CurrencyType itemCurrency, ItemType itemType, int itemPrice, int itemAmount,string itemDescription)
-	{
-		currentItemCurrency = itemCurrency;
-		currentItemPrice = itemPrice;
-		currentItemAmount = itemAmount;
-		currentItemDescription = itemDescription;
+	//void OnClickShopItem (CurrencyType itemCurrency, ItemType itemType, int itemPrice, int itemAmount,string itemDescription,string itemID)
+	void OnClickShopItem (ShopItem thisItem){
+		currentItem = thisItem;
+		currentItemCurrency = thisItem.itemCurrency;
+		currentItemPrice = thisItem.itemPrice;
+		currentItemAmount = thisItem.itemAmount;
+		currentItemDescription = thisItem.itemDescrption;
+		currentItemID = thisItem.itemID;
 		this.itemType = itemType;
 		UpdateItemDescription ();
 	}

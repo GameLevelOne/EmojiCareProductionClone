@@ -22,6 +22,7 @@ public class UnityIAPManager : MonoBehaviour,IStoreListener {
     	} else{
 			instance = this;
     	}
+		DontDestroyOnLoad (this.gameObject);
     }
 
     void Start(){
