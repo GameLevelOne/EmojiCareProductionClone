@@ -17,8 +17,7 @@ public class NotificationNewExpression : MonoBehaviour {
 
 	List<GameObject> notificationObj = new List<GameObject>();
 
-	string triggerOpenNotif = "OpenNotif";
-	string triggerCloseNotif = "CloseNotif";
+	string boolShowNotif = "ShowNotif";
 
 	public void ShowUI (int expression, ExpressionIcons expressionIcons, ParticlePlayer particlePlayer, bool isNewExpression)
 	{
@@ -74,7 +73,7 @@ public class NotificationNewExpression : MonoBehaviour {
 	void ShowNotification (float currentProgress, float totalProgress)
 	{
 		gameObject.SetActive (true);
-		GetComponent<Animator> ().SetTrigger (triggerOpenNotif);
+		GetComponent<Animator> ().SetBool (boolShowNotif,true);
 		float time = 2 + (notificationObj.Count - 1);
 
 		progressBarFill = parentFrame.GetChild (5).GetComponent<Image> ();
@@ -91,7 +90,7 @@ public class NotificationNewExpression : MonoBehaviour {
 	}
 
 	IEnumerator WaitForAnim(){
-		GetComponent<Animator>().SetTrigger(triggerCloseNotif);
+		GetComponent<Animator>().SetBool(boolShowNotif,false);
 		particles.StopParticles();
 		yield return new WaitForSeconds(0.2f);
 		Destroy(gameObject);
@@ -100,7 +99,7 @@ public class NotificationNewExpression : MonoBehaviour {
 	IEnumerator AutoCloseNotif(float time=2){
 		yield return new WaitForSeconds(time);
 		particles.StopParticles();
-		GetComponent<Animator>().SetTrigger(triggerCloseNotif);
+		GetComponent<Animator>().SetBool(boolShowNotif,false);
 		yield return new WaitForSeconds(0.2f);
 		Destroy(this.gameObject);
 	}

@@ -4,7 +4,7 @@ using UnityEngine;
 public class EmojiPlayerInput : MonoBehaviour {
 	#region attributes
 	public delegate void EmojiPouting();
-	public delegate void EmojiWake(float startStamina,float mod);
+	public delegate void EmojiWake();
 	public event EmojiPouting OnEmojiPouting;
 	public event EmojiWake OnEmojiWake;
 
@@ -352,7 +352,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 		emoji.EmojiSleeping = false;
 		emoji.ResetEmojiStatsModifier();
 		interactable = false;
-		if(OnEmojiWake != null) OnEmojiWake(startSleepStamina,(staminaValue-startSleepStamina));
+		if(OnEmojiWake != null) OnEmojiWake();
 	}
 	//----------------------------------------------------------------=====NON-VOID MODULES=====----------------------------------------------------------------
 	Vector3 getEmojiPositionOnHold(Vector3 touchWorldPosition)

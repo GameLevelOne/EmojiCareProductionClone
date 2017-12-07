@@ -5,6 +5,7 @@ using UnityEngine;
 public class FloatingStatsManager : MonoBehaviour {
 	public PopupStatsMeter[] statsMeterObj;
 	public Sprite[] barSprites; //green,yellow,orange,red
+	bool barIsShowing = false;
 
 	public void RegisterEvents(){
 		Emoji.OnShowFloatingStatsBar += ShowMultipleMeters;
@@ -24,22 +25,32 @@ public class FloatingStatsManager : MonoBehaviour {
 
 	void OnEmojiSleepEvent (bool sleeping)
 	{
-		StartCoroutine (UpdateMeterDisplay ((int)EmojiStatsState.Stamina, PlayerData.Instance.PlayerEmoji.stamina.totalModifier));
+		if (sleeping) {
+			barIsShowing = true;
+			StartCoroutine (UpdateMeterDisplay ((int)EmojiStatsState.Stamina, PlayerData.Instance.PlayerEmoji.stamina.StatValue));
+		}
 	}
 
-	void OnEmojiWake (float startStamina, float mod)
+	void OnEmojiWake ()
 	{
-		statsMeterObj [(int)EmojiStatsState.Stamina].HideMeter ();
+		Debug.Log ("WAKEUP");
+		barIsShowing = false;
+		//StopCoroutine ("UpdateMeterDisplay");
+		//statsMeterObj [(int)EmojiStatsState.Stamina].HideMeter ();
 	}
 
 	void OnEnterShower ()
 	{
-		StartCoroutine (UpdateMeterDisplay ((int)EmojiStatsState.Hygiene, PlayerData.Instance.PlayerEmoji.hygiene.totalModifier));
+		barIsShowing = true;
+		StartCoroutine (UpdateMeterDisplay ((int)EmojiStatsState.Hygiene, PlayerData.Instance.PlayerEmoji.hygiene.StatValue));
 	}
 
 	void OnExitShower ()
 	{
-		statsMeterObj [(int)EmojiStatsState.Hygiene].HideMeter ();
+		Debug.Log ("FINISH BATHING");
+		barIsShowing = false;
+		//StopCoroutine ("UpdateMeterDisplay");
+		//statsMeterObj [(int)EmojiStatsState.Hygiene].HideMeter ();
 	}
 
 	public void ShowSingleMeter(int type,float mod,float startValue = 0f){
@@ -83,7 +94,6 @@ public class FloatingStatsManager : MonoBehaviour {
 		int counter = 0;
 		for(int i=0;i<mod.Length;i++){
 			if(mod[i] != 0){
-				statsMeterObj [i].gameObject.SetActive (true);
 				statsMeterObj [i].transform.localPosition = new Vector3 (0, 452 - 100 * counter);
 				ShowSingleMeter (i, mod [i]);
 				counter++;
@@ -121,8 +131,17 @@ public class FloatingStatsManager : MonoBehaviour {
 		}
 	}
 
-	IEnumerator UpdateMeterDisplay(int type,float mod){
-		ShowSingleMeter (type, mod, 0);
-		yield return null;
+	IEnumerator UpdateMeterDisplay (int type, float value)
+	{
+		while (barIsShowing) {
+			statsMeterObj [type].gameObject.SetActive (true);
+			statsMeterObj [type].ShowMeter ((EmojiStatsState)type, true, GetCurrentStatValue (type), -1, GetCurrentBarSprite (value));
+			yield return null;
+		}
+
+		if(!barIsShowing){
+			statsMeterObj [type].HideMeter ();
+			StopCoroutine ("UpdateMeterDisplay");
+		}
 	}
 }

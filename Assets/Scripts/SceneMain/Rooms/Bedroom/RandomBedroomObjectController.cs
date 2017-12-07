@@ -38,7 +38,7 @@ public class RandomBedroomObjectController : MonoBehaviour {
 		if(sleep) StartGeneratingObjects();
 	}
 
-	void OnEmojiWake (float a,float b)
+	void OnEmojiWake ()
 	{
 		print("RANDOMBEDROOMOBJECT STOP GENERATE");
 		StopCoroutine(_GenerateRandomObjects);

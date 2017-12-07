@@ -20,7 +20,7 @@ public class BaseFurniture : MonoBehaviour {
 		prefKeyVariant = PlayerPrefKeys.Game.FURNITURE_VARIANT+gameObject.name;
 		print(prefKeyVariant);
 		currentVariant = PlayerPrefs.GetInt(prefKeyVariant,0);
-
+		print ("currentvariant: " +gameObject.name+" "+ currentVariant);
 		for(int i = 0;i<thisSprite.Length;i++) {
 			thisSprite[i].sprite = variant[currentVariant].sprite[i];
 		}
@@ -46,6 +46,7 @@ public class BaseFurniture : MonoBehaviour {
 	{
 		variant[variantIndex].SetBought(gameObject.name,variantIndex);
 		PlayerPrefs.SetInt(prefKeyVariant,variantIndex);
+		print (gameObject.name + " OnVariantBought " + PlayerPrefs.GetInt (prefKeyVariant));
 		currentVariant = variantIndex;
 		SetCurrentVariant();
 	}

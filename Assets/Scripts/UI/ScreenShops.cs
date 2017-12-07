@@ -22,6 +22,9 @@ public class ScreenShops : BaseUI {
 	public GameObject buttonPrev;
 	public GameObject shopDescriptionBox;
 	public GameObject itemDescriptionBox;
+	public Text userCoinText;
+	public Text userGemText;
+	public Text itemPriceText;
 
 	public ScreenPopup screenPopup;
 
@@ -34,6 +37,7 @@ public class ScreenShops : BaseUI {
 	ItemType itemType;
 	int currentItemPrice;
 	int currentItemAmount;
+	string currentItemDescription;
 
 	int selectedItem;
 	ShopType selectedStore = ShopType.GemStore;
@@ -43,22 +47,39 @@ public class ScreenShops : BaseUI {
 	string triggerLeftToUtilStore = "leftToUtilStore";
 	string triggerLeftToGemStore = "leftToGemStore";
 
+	int gemAmount1 = 50;
+	int gemAmount2 = 100;
+	int gemAmount3 = 200;
+	int gemAmount4 = 500;
+
 	string[] shopDescription = new string[3]{"Gem Store","Utility Store","Decoration Store"};
 
 	void OnEnable (){
 		InitShopDisplay();
 		ShopItem.OnClickShopItem += OnClickShopItem;
 		ScreenPopup.OnBuyCoin += OnBuyCoin;
+		ScreenPopup.OnBuyFurniture += OnBuyFurniture;
+		UnityIAPManager.Instance.OnFinishBuyProduct += OnFinishBuyProduct;
+		UnityIAPManager.Instance.OnFailToBuyProduct += OnFailToBuyProduct;
 	}
 
 	void OnDisable(){
 		ShopItem.OnClickShopItem -= OnClickShopItem;
 		ScreenPopup.OnBuyCoin -= OnBuyCoin;
+		ScreenPopup.OnBuyFurniture -= OnBuyFurniture;
+		UnityIAPManager.Instance.OnFinishBuyProduct -= OnFinishBuyProduct;
+		UnityIAPManager.Instance.OnFailToBuyProduct -= OnFailToBuyProduct;
+	}
+
+	void OnBuyFurniture ()
+	{
+		
 	}
 
 	void OnBuyCoin ()
 	{
 		PlayerData.Instance.PlayerCoin += currentItemAmount;
+		UpdateCurrencyDisplay ();
 	}
 
 	void OnClickShopItem (CurrencyType itemCurrency, ItemType itemType, int itemPrice, int itemAmount,string itemDescription)
@@ -66,8 +87,51 @@ public class ScreenShops : BaseUI {
 		currentItemCurrency = itemCurrency;
 		currentItemPrice = itemPrice;
 		currentItemAmount = itemAmount;
-		itemDescriptionText.text = itemDescription;
+		currentItemDescription = itemDescription;
 		this.itemType = itemType;
+		UpdateItemDescription ();
+	}
+
+	void OnFailToBuyProduct (string message)
+	{
+		screenPopup.ShowPopup (PopupType.Warning, PopupEventType.IAPFail, false,false,null,null,message);
+	}
+
+	void OnFinishBuyProduct (string productId)
+	{
+		if(productId == ShortCode.ProductIDs.id_Gem1){
+			PlayerData.Instance.PlayerGem += gemAmount1;
+		} else if(productId == ShortCode.ProductIDs.id_Gem2){
+			PlayerData.Instance.PlayerGem += gemAmount2;
+		} else if(productId == ShortCode.ProductIDs.id_Gem3){
+			PlayerData.Instance.PlayerGem += gemAmount3;
+		} else if(productId == ShortCode.ProductIDs.id_Gem4){
+			PlayerData.Instance.PlayerGem += gemAmount4;
+		}
+		UpdateCurrencyDisplay ();
+	}
+
+	void UpdateCurrencyDisplay(){
+		userGemText.text = PlayerData.Instance.PlayerGem.ToString ("N0");
+		userCoinText.text = PlayerData.Instance.PlayerCoin.ToString ("N0");
+	}
+
+	void UpdateItemDescription(){
+		itemDescriptionText.text = currentItemDescription;
+		itemPriceText.text = currentItemPrice.ToString ("N0");
+		if(currentItemCurrency == CurrencyType.Cash){
+			displayCurrencies [0].SetActive (true);
+			displayCurrencies [1].SetActive (false);
+			displayCurrencies [2].SetActive (false);
+		} else if(currentItemCurrency == CurrencyType.Gem){
+			displayCurrencies [0].SetActive (false);
+			displayCurrencies [1].SetActive (true);
+			displayCurrencies [2].SetActive (false);
+		} else if(currentItemCurrency == CurrencyType.Coin){
+			displayCurrencies [0].SetActive (false);
+			displayCurrencies [1].SetActive (false);
+			displayCurrencies [2].SetActive (true);
+		}
 	}
 
 	public void InitShopDisplay(){
@@ -118,9 +182,19 @@ public class ScreenShops : BaseUI {
 				screenPopup.ShowPopup (PopupType.Warning, PopupEventType.NotAbleToBuyFurniture);
 			}
 		} else if(itemType == ItemType.Gem){
-			//IAP transaction here
-			//TEMP local transaction
-			PlayerData.Instance.PlayerGem += currentItemAmount;
+			string productID = "";
+			if(currentItemCurrency == CurrencyType.Cash){
+				if (currentItemPrice == gemAmount1)
+					productID = ShortCode.ProductIDs.id_Gem1;
+				else if (currentItemPrice == gemAmount2)
+					productID = ShortCode.ProductIDs.id_Gem2;
+				else if (currentItemPrice == gemAmount3)
+					productID = ShortCode.ProductIDs.id_Gem3;
+				else if (currentItemPrice == gemAmount4)
+					productID = ShortCode.ProductIDs.id_Gem4;
+
+				UnityIAPManager.Instance.BuyConsumable (productID);
+			} 	
 		}
 	}
 
@@ -150,6 +224,7 @@ public class ScreenShops : BaseUI {
 		parentShopContent.SetActive(false);
 		parentShop.SetActive(true);
 		DisplayShopDescription(true);
+		UpdateButtonDisplay ();
 	}
 
 	public void UpdateButtonDisplay ()

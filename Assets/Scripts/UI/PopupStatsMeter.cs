@@ -13,15 +13,15 @@ public enum EmojiStatsState{
 
 public class PopupStatsMeter : MonoBehaviour {
 	public Image barFill;
-	string triggerOpenNotif = "OpenNotif";
-	string triggerCloseNotif = "CloseNotif";
+	string boolShowNotif = "ShowNotif";
 
 	public void ShowMeter(EmojiStatsState type,bool sleepOrBath,float currentValue,float targetValue,Sprite barSprite){
 		barFill.sprite = barSprite;
-		GetComponent<Animator> ().SetTrigger (triggerOpenNotif);
-		if(targetValue >= -1){
+		GetComponent<Animator> ().SetBool (boolShowNotif,true);
+		if(targetValue > -1){
 			StartCoroutine (AnimateMeter (currentValue,targetValue));
 		} else{
+			Debug.Log ("stay");
 			barFill.fillAmount = currentValue;
 		}	
 	}
@@ -47,7 +47,6 @@ public class PopupStatsMeter : MonoBehaviour {
 
 	IEnumerator AutoClose(){
 		yield return new WaitForSeconds (0.3f);
-		GetComponent<Animator> ().SetTrigger (triggerCloseNotif);
-		print("ASKJDKASDJKLASJDKLASJKD");
+		GetComponent<Animator> ().SetBool (boolShowNotif,false);
 	}
 }

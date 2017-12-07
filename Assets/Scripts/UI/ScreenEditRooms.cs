@@ -16,6 +16,7 @@ public class ScreenEditRooms : BaseUI {
 	public RoomController roomController;
 	public GameObject boxVariants;
 	public GameObject boxPrice;
+	public GameObject currentUsedIcon;
 	public Image iconVariant;
 	public Text textPrice;
 	public Text textPlayerCoin;
@@ -24,13 +25,16 @@ public class ScreenEditRooms : BaseUI {
 
 	BaseFurniture currentItem;
 	int currentVariant = 0;
+	int currentUsedVariant = 0;
 	bool isShowingUI = false;
 
 	public override void InitUI ()
 	{
 		Debug.Log("edit room");	
 		int currentRoom = (int)roomController.currentRoom;
-		textPlayerCoin.text = PlayerData.Instance.PlayerCoin.ToString();
+		textPlayerCoin.text = PlayerData.Instance.PlayerCoin.ToString("N0");
+		boxVariants.SetActive (false);
+		boxPrice.SetActive (false);
 
 		ShowCurrentRoomEditButtons();
 //		for(int i=0;i<roomController.rooms[currentRoom].furnitures.Length;i++){
@@ -55,6 +59,7 @@ public class ScreenEditRooms : BaseUI {
 	void OnEnable(){
 		EditFurnitureButton.OnClickToEdit += OnClickFurnitureItem;
 		ScreenPopup.OnBuyFurniture += OnBuyFurniture;
+		ScreenPopup.OnCancelBuyFurniture += OnCancelBuyFurniture;
 	}
 
 	void OnDisable(){
@@ -63,6 +68,7 @@ public class ScreenEditRooms : BaseUI {
 
 		EditFurnitureButton.OnClickToEdit -= OnClickFurnitureItem;
 		ScreenPopup.OnBuyFurniture -= OnBuyFurniture;
+		ScreenPopup.OnCancelBuyFurniture -= OnCancelBuyFurniture;
 	}
 
 	public void OnClickFurnitureItem(BaseFurniture currentItem){
@@ -72,14 +78,32 @@ public class ScreenEditRooms : BaseUI {
 			AdmobManager.Instance.HideBanner ();
 		this.currentItem = currentItem;
 		this.currentVariant = currentItem.currentVariant;
+		currentUsedVariant = currentItem.currentVariant;
+		currentUsedIcon.SetActive (true);
 		DisplayItem (currentVariant);
 	}
 
 	void OnBuyFurniture ()
 	{
+		currentItem.currentVariant = currentVariant;
 		currentItem.variant [currentVariant].bought = true;
+		currentUsedVariant = currentVariant;
 		PlayerData.Instance.PlayerCoin -= currentItem.variant [currentVariant].price;
-		ApplyVariant ();
+		currentItem.OnVariantBought (currentVariant);
+	}
+
+	void OnCancelBuyFurniture ()
+	{
+	}
+
+	void ConfirmBuyObject(int price){
+		int currentCoin = PlayerData.Instance.PlayerCoin;
+//		int currentCoin = 500;
+		 if(currentCoin>=price){
+			screenPopup.ShowPopup (PopupType.Confirmation, PopupEventType.AbleToBuyFurniture, false, false);
+		 } else {
+			screenPopup.ShowPopup (PopupType.Confirmation, PopupEventType.NotAbleToBuyFurniture, true, false);
+		 }
 	}
 
 	public void OnClickNextItem(){
@@ -89,6 +113,10 @@ public class ScreenEditRooms : BaseUI {
 		if(currentVariant == maxVariant){
 			currentVariant = 0;
 		} 
+		if (currentVariant != currentUsedVariant)
+			currentUsedIcon.SetActive (false);
+		else
+			currentUsedIcon.SetActive (true);
 		DisplayItem (currentVariant);
 	}
 
@@ -99,13 +127,18 @@ public class ScreenEditRooms : BaseUI {
 		if(currentVariant<0){
 			currentVariant = maxVariant - 1;
 		}
+		if (currentVariant != currentUsedVariant)
+			currentUsedIcon.SetActive (false);
+		else
+			currentUsedIcon.SetActive (true);
 		DisplayItem (currentVariant);
 	}
 
 	void DisplayItem(int index){
 		FurnitureVariant item = currentItem.variant [currentVariant];
 		boxVariants.SetActive (true);
-		currentItem.transform.GetChild (1).GetComponent<SpriteRenderer> ().sprite = item.sprite[0];
+		currentItem.currentVariant = currentVariant;
+		currentItem.SetCurrentVariant ();
 		if(currentItem.variant[index].bought){
 			boxPrice.SetActive (false);
 		} else {
@@ -124,10 +157,15 @@ public class ScreenEditRooms : BaseUI {
 		FurnitureVariant item = currentItem.variant [currentVariant];
 		bool isBought = item.bought;
 		if(isBought){
-			currentItem.transform.GetChild (1).GetComponent<SpriteRenderer> ().sprite = item.sprite[0];
+			currentItem.currentVariant = currentVariant;
+			currentUsedVariant = currentVariant;
+			currentItem.SetCurrentVariant ();
+			boxPrice.SetActive (false);
+			currentUsedIcon.SetActive (true);
 		} else{
 			ConfirmBuyObject (item.price);
 		}
+		textPlayerCoin.text = PlayerData.Instance.PlayerCoin.ToString("N0");
 	}
 
 	public void DisableEditMode(){
@@ -138,14 +176,13 @@ public class ScreenEditRooms : BaseUI {
 		foreach(EditroomButtons e in editRoomButtons) e.parent.SetActive(false);
 	}
 
-	void ConfirmBuyObject(int price){
-		int currentCoin = PlayerData.Instance.PlayerCoin;
-//		int currentCoin = 500;
-		 if(currentCoin>=price){
-			screenPopup.ShowPopup (PopupType.Confirmation, PopupEventType.AbleToBuyFurniture, false, false);
-		 } else {
-			screenPopup.ShowPopup (PopupType.Confirmation, PopupEventType.NotAbleToBuyFurniture, true, false);
-		 }
+	public void OnClickBack(){
+		Debug.Log ("used:" + currentUsedVariant);
+		Debug.Log ("current:" + currentVariant);
+		if(currentUsedVariant != currentItem.currentVariant){
+			currentItem.currentVariant = currentUsedVariant;
+		}
+		currentItem.SetCurrentVariant ();
 	}
 
 	IEnumerator CheckAdBanner(){

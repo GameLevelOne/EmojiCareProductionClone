@@ -51,7 +51,7 @@ public class Bedroom : BaseRoom {
 		}
 	}
 
-	public void OnEmojiWake(float a,float b)
+	public void OnEmojiWake()
 	{
 		print("BEDROOM TURN ON LIGHT ");
 		StartCoroutine(fadeLight(dimmedColor,brightColor));

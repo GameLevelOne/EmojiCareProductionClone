@@ -21,7 +21,7 @@ public class ScreenSettings : BaseUI {
 	}
 
 	public void OnClickResetCoin(){
-		PlayerData.Instance.PlayerCoin = 50000;
+		PlayerData.Instance.PlayerCoin = 1000000;
 		PlayerData.Instance.PlayerGem = 500;
 	}
 

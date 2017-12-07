@@ -25,7 +25,8 @@ public enum PopupEventType{
 	ReviveEmoji,
 	NotAbleToReviveEmoji,
 	AbleToBuyCoin,
-	NotAbleToBuyCoin
+	NotAbleToBuyCoin,
+	IAPFail
 }
 
 public class ScreenPopup : BaseUI {
@@ -40,6 +41,7 @@ public class ScreenPopup : BaseUI {
 
 	Sprite tempEmojiSprite;
 	string tempEmojiName;
+	string tempMessage;
 
 	bool emojiTransfer = false;
 
@@ -64,6 +66,9 @@ public class ScreenPopup : BaseUI {
 	public delegate void BuyFurniture();
 	public static event BuyFurniture OnBuyFurniture;
 
+	public delegate void CancelBuyFurniture();
+	public static event CancelBuyFurniture OnCancelBuyFurniture;
+
 	public delegate void BuyCoin();
 	public static event BuyCoin OnBuyCoin;
 
@@ -77,10 +82,11 @@ public class ScreenPopup : BaseUI {
 	PopupEventType currentEventType;
 	PopupType currentPopupType;
 
-	public void ShowPopup(PopupType type,PopupEventType eventType,bool toShop=false,bool toTransfer=false,Sprite sprite = null,string emojiName = null){
+	public void ShowPopup(PopupType type,PopupEventType eventType,bool toShop=false,bool toTransfer=false,Sprite sprite = null,string emojiName = null,string message = null){
 		currentEventType = eventType;
 		currentPopupType = type;
 		emojiTransfer = toTransfer;
+		tempMessage = message;
 		popupText.text = SetPopupText(eventType);
 		if(type == PopupType.Warning){
 			buttonGroupWarning.SetActive(true);
@@ -92,15 +98,15 @@ public class ScreenPopup : BaseUI {
 			buttonGroupAdsAndGems.SetActive (false);
 			if(toShop){
 				//buttonShop.SetActive(true);
-				buttonTransfer.SetActive(false);
+				//buttonTransfer.SetActive(false);
 				buttonOk.SetActive(false);
 			} else if(toTransfer){
 				//buttonShop.SetActive(false);
-				buttonTransfer.SetActive(true);
+				//buttonTransfer.SetActive(true);
 				buttonOk.SetActive(false);
 			} else{
 				//buttonShop.SetActive(false);
-				buttonTransfer.SetActive(false);
+				//buttonTransfer.SetActive(false);
 				buttonOk.SetActive(true);
 			}
 		} else{
@@ -147,7 +153,9 @@ public class ScreenPopup : BaseUI {
 			return "Do you want to reset your progress?";
 		} else if(eventType == PopupEventType.ReviveEmoji){
 			return "Do you want to revive " + PlayerData.Instance.EmojiName + " ? You will not lose your progress";
-		} 
+		} else if(eventType == PopupEventType.IAPFail){
+			return tempMessage;
+		}
 		else{
 			return "";
 		}
@@ -191,6 +199,10 @@ public class ScreenPopup : BaseUI {
 	}
 
 	public void OnClickButtonCancel(){
+		if(currentEventType == PopupEventType.AbleToBuyFurniture){
+			OnCancelBuyFurniture ();
+		}
+
 		base.ClosePopup(this.gameObject);
 	}
 
