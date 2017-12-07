@@ -5,10 +5,17 @@ public class BathroomGordyn : ActionableFurniture {
 	#region attributes
 	[Header("BathroomGordyn attributes")]
 	public GameObject buttonOpenGordyn;
+	public Sprite spriteOpen;
+	public Sprite spriteClose;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
-	
+	public override void InitVariant ()
+	{
+		base.InitVariant ();
+		spriteOpen = variant[currentVariant].sprite[0];
+		spriteClose = variant[currentVariant].sprite[1];
+	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
@@ -19,10 +26,17 @@ public class BathroomGordyn : ActionableFurniture {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
+	public override void SetCurrentVariant ()
+	{
+		base.SetCurrentVariant ();
+		spriteOpen = variant[currentVariant].sprite[0];
+		spriteClose = variant[currentVariant].sprite[1];
+	}
+
 	public void OpenGordyn()
 	{
 		if(!flagEditMode){
-			thisSprite[currentVariant].sprite = variant[currentVariant].sprite[0];
+			thisSprite[0].sprite = spriteOpen;
 
 			buttonOpenGordyn.SetActive(false);
 		}
@@ -31,7 +45,7 @@ public class BathroomGordyn : ActionableFurniture {
 	public void CloseGordyn()
 	{
 		if(!flagEditMode){
-			thisSprite[currentVariant].sprite = variant[currentVariant].sprite[1];
+			thisSprite[0].sprite = spriteClose;
 
 			buttonOpenGordyn.SetActive(true);
 		}
