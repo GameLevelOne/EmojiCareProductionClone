@@ -33,11 +33,11 @@ public class ScreenShops : BaseUI {
 
 	public Animator shopScrollAnim;
 
-	CurrencyType currentItemCurrency;
+	CurrencyType currentItemCurrency = CurrencyType.Gem;
 	ItemType itemType;
-	int currentItemPrice;
-	int currentItemAmount;
-	string currentItemDescription;
+	int currentItemPrice = 10;
+	int currentItemAmount = 1000;
+	string currentItemDescription = "1000 coins";
 	string currentItemID;
 
 	int selectedItem;
@@ -49,10 +49,10 @@ public class ScreenShops : BaseUI {
 	string triggerLeftToUtilStore = "leftToUtilStore";
 	string triggerLeftToGemStore = "leftToGemStore";
 
-	int gemAmount1 = 50;
-	int gemAmount2 = 100;
-	int gemAmount3 = 200;
-	int gemAmount4 = 500;
+	int gemAmount1 = 100;
+	int gemAmount2 = 500;
+	int gemAmount3 = 1000;
+	int gemAmount4 = 5000;
 
 	string[] shopDescription = new string[3]{"Gem Store","Utility Store","Decoration Store"};
 
@@ -150,6 +150,8 @@ public class ScreenShops : BaseUI {
 		parentShop.SetActive(false);
 		parentShopContent.SetActive(true);
 		parentShopContent.GetComponent<ScreenShopContent>().ShowUI(parentShopContent);
+		UpdateItemDescription ();
+		UpdateCurrencyDisplay ();
 		StartCoroutine(WaitForAnim(shopIndex));
 	}
 

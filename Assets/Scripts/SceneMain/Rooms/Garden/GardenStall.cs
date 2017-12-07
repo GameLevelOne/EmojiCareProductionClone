@@ -40,10 +40,12 @@ public class GardenStall : BaseFurniture {
 
 	void OnEnable(){
 		if(AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds += OnFinishWatchVideoAds;
+		ScreenPopup.OnRefillStallWithGems += OnRefillStallWithGems;
 	}
 
 	void OnDisable(){
 		if(AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds -= OnFinishWatchVideoAds;
+		ScreenPopup.OnRefillStallWithGems -= OnRefillStallWithGems;
 	}
 
 	public void Init()
@@ -212,10 +214,19 @@ public class GardenStall : BaseFurniture {
 		}
 	}
 
+	void OnRefillStallWithGems (AdEvents eventName)
+	{
+		if(eventName == AdEvents.RestockStall){
+			RestockItems ();
+		} else if(eventName == AdEvents.RestockSeeds){
+			RestockSeeds ();
+		}
+	}
+
 	//coin panel
 	void ShowUICoin(int price)
 	{
-		uiCoin.ShowUI(price);
+		uiCoin.ShowUI(price,true);
 	}
 	void HideUICoin(bool isBought)
 	{

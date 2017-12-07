@@ -7,6 +7,7 @@ public class GardenStallTimer : MonoBehaviour {
 	public ScreenPopup screenPopup;
 	public GardenStall stall;
 	public Text textTimerSeed, textTimerItem;
+	public UICoin uiCoin;
 
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -38,6 +39,7 @@ public class GardenStallTimer : MonoBehaviour {
 	//button module
 	public void ShowPopupRefillStall (int eventID)
 	{
+		uiCoin.ShowUI (100, false);
 		if (eventID == 1) {
 			screenPopup.ShowPopup (PopupType.AdsOrGems, PopupEventType.RestockSeeds);
 		} else {

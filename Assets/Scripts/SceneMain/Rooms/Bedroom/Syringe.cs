@@ -92,7 +92,7 @@ public class Syringe : MonoBehaviour {
 
 	protected void ShowUICoin()
 	{
-		uiCoin.ShowUI(price);
+		uiCoin.ShowUI(price,true);
 	}
 	protected void HideUICoin(bool bought)
 	{

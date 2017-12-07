@@ -5,17 +5,36 @@ using UnityEngine.UI;
 
 public class UICoin : MonoBehaviour {
 	public Text textCurrentCoin;
+	public Text textCurrentGem;
 	public Text textItemPrice;
+	public GameObject coinIcon;
+	public GameObject gemIcon;
 
 	string boolOpenBox = "coinBoxOpen";
 	int currentCoin=0;
+	int currentGem=0;
 	int currentPrice=0;
 	bool isBought = false;
 
-	public void ShowUI(int price){
-		currentCoin = PlayerData.Instance.PlayerCoin;
+	public void ShowUI (int price, bool isCoin)
+	{
+		if (isCoin) {
+			coinIcon.SetActive (true);
+			gemIcon.SetActive (false);
+			textCurrentCoin.gameObject.SetActive (true);
+			textCurrentGem.gameObject.SetActive (false);
+			currentCoin = PlayerData.Instance.PlayerCoin;
+			UpdateDisplay (currentCoin, currentPrice,isCoin);
+		} else {
+			coinIcon.SetActive (false);
+			gemIcon.SetActive (true);
+			textCurrentCoin.gameObject.SetActive (false);
+			textCurrentGem.gameObject.SetActive (true);
+			currentGem = PlayerData.Instance.PlayerGem;
+			UpdateDisplay (currentGem, currentPrice,isCoin);
+		}
 		currentPrice = price;
-		UpdateDisplay (currentCoin, currentPrice);
+
 		GetComponent<Animator> ().SetBool (boolOpenBox,true);
 	}
 
@@ -24,8 +43,12 @@ public class UICoin : MonoBehaviour {
 		yield return new WaitForSeconds(0.16f);
 	}
 
-	void UpdateDisplay(int currentCoin,int itemPrice){
-		textCurrentCoin.text = currentCoin.ToString("N0");
+	void UpdateDisplay(int currentCoin,int itemPrice,bool isCoin){
+		if(isCoin){
+			textCurrentCoin.text = currentCoin.ToString("N0");
+		} else{
+			textCurrentGem.text = currentCoin.ToString("N0");
+		}
 		textItemPrice.text = "-"+itemPrice.ToString();
 
 		if(currentCoin < itemPrice){

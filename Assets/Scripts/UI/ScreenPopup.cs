@@ -23,6 +23,7 @@ public enum PopupEventType{
 	ShopNotAbleToBuyFurniture,
 	RestockStall,
 	RestockSeeds,
+	NotAbleToRestock,
 	ResetEmoji,
 	ReviveEmoji,
 	NotAbleToReviveEmoji,
@@ -80,7 +81,7 @@ public class ScreenPopup : BaseUI {
 	public delegate void RefillStallWithAds();
 	public static event RefillStallWithAds OnRefillStallWithAds;
 
-	public delegate void RefillStallWithGems();
+	public delegate void RefillStallWithGems(AdEvents eventName);
 	public static event RefillStallWithGems OnRefillStallWithGems;
 	#endregion
 
@@ -140,7 +141,7 @@ public class ScreenPopup : BaseUI {
 			return "Send off this emoji?";
 		} else if (eventType == PopupEventType.NotAbleToSendOff) {
 			return "Cannot send off yet";
-		} else if(eventType == PopupEventType.NotAbleToBuyEmoji || eventType == PopupEventType.NotAbleToReviveEmoji){
+		} else if(eventType == PopupEventType.NotAbleToBuyEmoji || eventType == PopupEventType.NotAbleToReviveEmoji || eventType == PopupEventType.NotAbleToRestock){
 			return "Not enough gems";
 		} else if(eventType == PopupEventType.AlbumLocked){
 			return "Finish your first emoji to unlock this menu";
@@ -225,7 +226,19 @@ public class ScreenPopup : BaseUI {
 	}
 
 	public void RefillButtonWithGems(){
-		OnRefillStallWithGems ();
+		base.ClosePopup (this.gameObject);
+		if(PlayerData.Instance.PlayerGem >= 100){
+			if (currentEventType == PopupEventType.RestockSeeds) {
+				if (OnRefillStallWithGems != null)
+					OnRefillStallWithGems (AdEvents.RestockSeeds);
+			} else if(currentEventType == PopupEventType.RestockStall){
+				if (OnRefillStallWithGems != null)
+					OnRefillStallWithGems (AdEvents.RestockStall);
+			}
+
+		} else{
+			ShowPopup (PopupType.Warning, PopupEventType.NotAbleToRestock);
+		}
 	}
 
 
