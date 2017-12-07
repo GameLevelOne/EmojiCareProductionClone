@@ -53,8 +53,8 @@ public class GachaReward : BaseUI {
 	#region initializations
 	void Start(){
 		Init ();
-		GetGachaReward();
-		GetGachaReward();
+//		GetGachaReward();
+//		GetGachaReward();
 	}
 
 	public void Init(){

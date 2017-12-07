@@ -118,24 +118,11 @@ public class UICelebrationManager : MonoBehaviour {
 				notificationObj [0].gameObject.SetActive (true);
 				notificationObj [0].ShowUI (expressionStateIndex, expressionIcons, particlePlayer,isNewExpression);
 				yield return new WaitForSeconds (2);
-				StartCoroutine (AutoCloseNotif ());
+
+				notificationObj.RemoveAt (0);
+				isShowingNotif = false;
 			}
 			yield return null;
-		}
-	}
-
-	IEnumerator AutoCloseNotif(){
-		//particles.StopParticles();
-		if(notificationObj[0] != null){
-			GameObject obj = notificationObj[0].gameObject;
-			notificationObj[0].GetComponent<Animator> ().SetBool ("ShowNotif",false);
-			yield return new WaitForSeconds(40f/60f);
-			notificationObj.RemoveAt (0);
-			Destroy(obj);
-			isShowingNotif = false;
-		} else{
-			notificationObj.RemoveAt (0);
-			isShowingNotif = false;
 		}
 	}
 }

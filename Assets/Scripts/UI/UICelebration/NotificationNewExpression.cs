@@ -81,7 +81,8 @@ public class NotificationNewExpression : MonoBehaviour {
 		StartCoroutine (AnimateProgressBar (currentProgress, totalProgress));
 
 		if (isNewExpression) {
-			particles.ShowParticles ();
+//			particles.ShowParticles ();
+			particles.ShowParticleConfetti();
 		}
 
 //		 else {
@@ -99,7 +100,8 @@ public class NotificationNewExpression : MonoBehaviour {
 
 	IEnumerator AutoCloseNotif(float time=2){
 		yield return new WaitForSeconds(time);
-		particles.StopParticles();
+//		particles.StopParticles();
+		particles.StopParticleConfettiAndStarBoom();
 		GetComponent<Animator>().SetBool(boolShowNotif,false);
 		yield return new WaitForSeconds(40f/60f);
 
@@ -117,9 +119,14 @@ public class NotificationNewExpression : MonoBehaviour {
 			yield return null;
 		}
 		time = 0;
+
 		if(isNewExpression){
+			particles.ShowParticleStarBoom();
 			StartCoroutine (NewExpressionSequence ());
+			yield return new WaitForSeconds(3f);
 		}
+
+		StartCoroutine (AutoCloseNotif ());
 	}
 
 	IEnumerator NewExpressionSequence(){
