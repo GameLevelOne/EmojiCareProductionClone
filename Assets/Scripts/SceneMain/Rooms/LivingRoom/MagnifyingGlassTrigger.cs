@@ -13,7 +13,7 @@ public class MagnifyingGlassTrigger : MonoBehaviour {
 	#region mechanics
 	void OnTriggerEnter2D (Collider2D other)
 	{
-		Debug.Log (other.name);
+//		Debug.Log (other.name);
 		if(other.tag == Tags.EMOJI_BODY){
 			//show stats popup
 			if(parent.thisMovable.flagHolding){
