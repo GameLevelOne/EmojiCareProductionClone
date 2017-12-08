@@ -28,12 +28,12 @@ public class MagnifyingGlass : TriggerableFurniture {
 	#region public modules
 	public void ShowStatsPopup()
 	{
-		Debug.Log ("scan");
+//		Debug.Log ("scan");
 		popupStats.ShowStatsFromMagnifyingGlass();
 	}
 	public void HideStatsPopup()
 	{
-		Debug.Log ("scan end");
+//		Debug.Log ("scan end");
 		popupStats.HideStatsFromMagnifyingGlass ();
 	}
 	#endregion
