@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum CurrencyType{
 	Cash,Gem,Coin
@@ -32,8 +33,10 @@ public class ShopItem : MonoBehaviour {
 			int pp = PlayerPrefs.GetInt (PlayerPrefKeys.Game.FURNITURE_VARIANT + itemID);
 			if(pp == 0){
 				overlay.SetActive (false);
+				GetComponent<Button> ().interactable = true;
 			} else{
 				overlay.SetActive (true);
+				GetComponent<Button> ().interactable = false;
 			}
 		}
 	}

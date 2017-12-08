@@ -12,17 +12,18 @@ public class ScreenSettings : BaseUI {
 		sliders[2].value = PlayerData.Instance.VoicesVolume;
 	}
 
-	public void OnClickTAndC(){
-
-	}
-
-	public void OnClickCredits(){
-
+	public void OnToggleDebug(bool debug)
+	{
+		print("debug = "+debug);
+		PlayerData.Instance.PlayerEmoji.SwitchDebugMode(debug);
 	}
 
 	public void OnClickResetCoin(){
 		PlayerData.Instance.PlayerCoin = 1000000;
-		PlayerData.Instance.PlayerGem = 500;
+	}
+
+	public void OnClickResetGem(){
+		PlayerData.Instance.PlayerGem = 10000;
 	}
 
 	public void AdjustMusicVolume(int type){

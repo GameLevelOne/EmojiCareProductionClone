@@ -57,7 +57,12 @@ public class GachaReward : BaseUI {
 		//GetGachaReward();
 	}
 
+	void OnDisable(){
+		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent -= OnEmojiSleepEvent;
+	}
+
 	public void Init(){
+		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent += OnEmojiSleepEvent;
 		gachaCount = PlayerPrefs.GetInt (gachaPrefKey, 0);
 		textGachaCount.text = gachaCount.ToString ();
 		if(gachaCount <= 0) buttonGacha.SetActive(false);
@@ -200,6 +205,10 @@ public class GachaReward : BaseUI {
 			Debug.Log ("Hat " + (HatType)result);
 		}
 	}
+
+	void OnEmojiSleepEvent(bool isSleeping){
+		buttonGacha.GetComponent<Button> ().interactable = !isSleeping;
+	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
@@ -211,6 +220,7 @@ public class GachaReward : BaseUI {
 
 		if(gachaCount > 0) buttonGacha.SetActive(true);
 	}
+
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region coroutines

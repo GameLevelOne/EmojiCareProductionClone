@@ -441,6 +441,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 	public void OnBlocksMinigameDone()
 	{
 		if(!blocksRetaining){
+			//PlayerData.Instance.PlayerEmoji.gameObject.SetActive (true);
 			emoji.emojiExpressions.SetExpression (EmojiExpressionState.HAPPY, 2f);
 			emoji.happiness.ModStats(happinessModOnBlocks);
 			StartCoroutine(_RetainBlocksMinigameCooldown);

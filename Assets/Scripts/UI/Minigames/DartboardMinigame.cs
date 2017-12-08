@@ -6,6 +6,7 @@ public class DartboardMinigame : BaseUI {
 	public GameObject buttonBack;
 	public GameObject dartMark;
 	bool moveMark = false;
+	bool isWaiting = false;
 	Animator dartAnim;
 	string boolShoot = "Shoot";
 	string boolReset = "Reset";
@@ -18,17 +19,21 @@ public class DartboardMinigame : BaseUI {
 		StartCoroutine(MoveArrow());
 	}
 
-	public void OnClickStop(){
-		buttonBack.SetActive (false);
-		StopCoroutine ("MoveArrow");
-		stopPosition = Vector3.zero;
-		stopPosition = dartMark.transform.localPosition;
-		moveMark=false;
-		if(!moveMark){
-			dartAnim.SetBool (boolShoot, true);
-			dartAnim.SetBool (boolReset, false);
+	public void OnClickStop ()
+	{
+		if (!isWaiting) {
+			buttonBack.SetActive (false);
+			isWaiting = true;
+			StopCoroutine ("MoveArrow");
+			stopPosition = Vector3.zero;
+			stopPosition = dartMark.transform.localPosition;
+			moveMark = false;
+			if (!moveMark) {
+				dartAnim.SetBool (boolShoot, true);
+				dartAnim.SetBool (boolReset, false);
+			}
+			StartCoroutine (ResetDart ());
 		}
-		StartCoroutine (ResetDart ());
 	}
 
 	int CalculateStatGain(float xPos){
@@ -63,6 +68,7 @@ public class DartboardMinigame : BaseUI {
 		dartAnim.SetBool (boolReset, true);
 		dartAnim.SetBool (boolShoot, false);
 		moveMark = true;
+		isWaiting = false;
 		buttonBack.SetActive (true);
 		StartCoroutine (MoveArrow ());
 	}

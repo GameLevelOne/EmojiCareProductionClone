@@ -98,7 +98,6 @@ public class ScreenEditRooms : BaseUI {
 
 	void ConfirmBuyObject(int price){
 		int currentCoin = PlayerData.Instance.PlayerCoin;
-//		int currentCoin = 500;
 		 if(currentCoin>=price){
 			screenPopup.ShowPopup (PopupType.Confirmation, PopupEventType.AbleToBuyFurniture, false, false);
 		 } else {
@@ -176,13 +175,16 @@ public class ScreenEditRooms : BaseUI {
 		foreach(EditroomButtons e in editRoomButtons) e.parent.SetActive(false);
 	}
 
-	public void OnClickBack(){
+	public void OnClickBack ()
+	{
 		Debug.Log ("used:" + currentUsedVariant);
 		Debug.Log ("current:" + currentVariant);
-		if(currentUsedVariant != currentItem.currentVariant){
-			currentItem.currentVariant = currentUsedVariant;
+		if (currentItem != null) {
+			if (currentUsedVariant != currentItem.currentVariant) {
+				currentItem.currentVariant = currentUsedVariant;
+			}
+			currentItem.SetCurrentVariant ();
 		}
-		currentItem.SetCurrentVariant ();
 	}
 
 	IEnumerator CheckAdBanner(){

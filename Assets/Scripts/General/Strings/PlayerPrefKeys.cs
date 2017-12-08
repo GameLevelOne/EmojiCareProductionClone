@@ -115,4 +115,10 @@ public static class PlayerPrefKeys {
 		public const string SFX_VOLUME = "Sound/SFXVolume";
 		public const string VOICES_VOLUME = "Sound/VoicesVolume";
 	}
+
+	public static class Album{
+		public const string EMOJI_TYPE = "Album/EmojiType/";
+		public const string ENTRY_TIME = "Album/EmojiEntryTime/";
+		public const string COMPLETION_RATE = "Album/EmojiCompletionRate/";
+	}
 }

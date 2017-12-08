@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public enum ShopType{
-	GemStore,UtilStore,DecorStore
+	GemStore,DecorStore
 }
 
 public enum ShopItems{
@@ -16,7 +16,7 @@ public enum ShopItems{
 public class ScreenShops : BaseUI {
 	public GameObject parentShop;
 	public GameObject parentShopContent;
-	public GameObject[] panelShopContents = new GameObject[3];
+	public GameObject[] panelShopContents = new GameObject[2];
 	public GameObject[] displayCurrencies = new GameObject[3];
 	public GameObject buttonNext;
 	public GameObject buttonPrev;
@@ -44,17 +44,14 @@ public class ScreenShops : BaseUI {
 	ShopType selectedStore = ShopType.GemStore;
 	ShopItem currentItem;
 
-	string triggerRightToUtilStore = "rightToUtilStore";
-	string triggerRightToDecorStore = "rightToDecorStore";
-	string triggerLeftToUtilStore = "leftToUtilStore";
-	string triggerLeftToGemStore = "leftToGemStore";
+	string boolMoveRight = "moveRight";
 
 	int gemAmount1 = 100;
 	int gemAmount2 = 500;
 	int gemAmount3 = 1000;
 	int gemAmount4 = 5000;
 
-	string[] shopDescription = new string[3]{"Gem Store","Utility Store","Decoration Store"};
+	string[] shopDescription = new string[2]{"Gem Store","Decoration Store"};
 
 	void OnEnable (){
 		InitShopDisplay();
@@ -77,6 +74,7 @@ public class ScreenShops : BaseUI {
 	{
 		PlayerData.Instance.PlayerCoin -= currentItemPrice;
 		UpdateCurrencyDisplay ();
+		Debug.Log (PlayerPrefKeys.Game.FURNITURE_VARIANT + currentItemID);
 		PlayerPrefs.SetInt (PlayerPrefKeys.Game.FURNITURE_VARIANT + currentItemID, 1);
 		currentItem.SetOverlay ();
 	}
@@ -84,6 +82,7 @@ public class ScreenShops : BaseUI {
 	void OnBuyCoin ()
 	{
 		PlayerData.Instance.PlayerCoin += currentItemAmount;
+		PlayerData.Instance.PlayerGem -= currentItemPrice;
 		UpdateCurrencyDisplay ();
 	}
 
@@ -95,7 +94,7 @@ public class ScreenShops : BaseUI {
 		currentItemAmount = thisItem.itemAmount;
 		currentItemDescription = thisItem.itemDescrption;
 		currentItemID = thisItem.itemID;
-		this.itemType = itemType;
+		this.itemType = thisItem.itemType;
 		UpdateItemDescription ();
 	}
 
@@ -142,42 +141,40 @@ public class ScreenShops : BaseUI {
 	}
 
 	public void InitShopDisplay(){
-		UpdateButtonDisplay();
+		UpdateButtonDisplay(true);
 		storeDescriptionText.text = shopDescription[(int)selectedStore];
 	}
 
 	public void OnClickShop(int shopIndex){
+		selectedStore = (ShopType)shopIndex;
 		parentShop.SetActive(false);
 		parentShopContent.SetActive(true);
 		parentShopContent.GetComponent<ScreenShopContent>().ShowUI(parentShopContent);
+		UpdateButtonDisplay (false);
 		UpdateItemDescription ();
 		UpdateCurrencyDisplay ();
-		StartCoroutine(WaitForAnim(shopIndex));
+		//StartCoroutine(WaitForAnim(shopIndex));
+		DisplayShopContent (shopIndex);
 	}
 
 	void DisplayShopContent(int shopIndex){
 		DisplayShopDescription(false);
-		selectedStore = (ShopType)shopIndex;
-		panelShopContents[shopIndex].SetActive(true);
-		for(int i=0;i<panelShopContents.Length;i++){
-			if(i == shopIndex){
-				panelShopContents[i].SetActive(true);
-				displayCurrencies[i].SetActive(true);
-			}else{
-				panelShopContents[i].SetActive(false);
-				displayCurrencies[i].SetActive(false);
-			}
+		if(selectedStore == ShopType.GemStore){
+			panelShopContents [0].SetActive (true);
+			panelShopContents [1].SetActive (false);
+		} else{
+			panelShopContents [1].SetActive (true);
+			panelShopContents [0].SetActive (false);
 		}
 	}
 
 	public void DisplayShopDescription(bool display){
-		buttonNext.SetActive(display);
-		buttonPrev.SetActive(display);
 		shopDescriptionBox.SetActive(display);
 		itemDescriptionBox.SetActive(!display);
 	}
 
 	public void ConfirmToBuyItem(){
+		Debug.Log (itemType);
 		if(itemType == ItemType.Coin){
 			if(PlayerData.Instance.PlayerGem >= currentItemPrice){
 				screenPopup.ShowPopup (PopupType.Confirmation, PopupEventType.AbleToBuyCoin);
@@ -186,9 +183,9 @@ public class ScreenShops : BaseUI {
 			}
 		} else if(itemType == ItemType.Furniture){
 			if(PlayerData.Instance.PlayerCoin >= currentItemPrice){
-				screenPopup.ShowPopup (PopupType.Confirmation, PopupEventType.AbleToBuyFurniture);
+				screenPopup.ShowPopup (PopupType.Confirmation, PopupEventType.ShopAbleToBuyFurniture);
 			} else{
-				screenPopup.ShowPopup (PopupType.Warning, PopupEventType.NotAbleToBuyFurniture);
+				screenPopup.ShowPopup (PopupType.Warning, PopupEventType.ShopNotAbleToBuyFurniture);
 			}
 		} else if(itemType == ItemType.Gem){
 			string productID = "";
@@ -207,46 +204,44 @@ public class ScreenShops : BaseUI {
 		}
 	}
 
-	public void OnClickNext(){
-		if(selectedStore == ShopType.GemStore){
-			shopScrollAnim.SetTrigger(triggerRightToUtilStore);
-			selectedStore = ShopType.UtilStore;
-		} else if(selectedStore == ShopType.UtilStore){
-			shopScrollAnim.SetTrigger(triggerRightToDecorStore);
+	public void OnClickNext ()
+	{
+		if (selectedStore == ShopType.GemStore) {
+			shopScrollAnim.SetBool (boolMoveRight, true);
 			selectedStore = ShopType.DecorStore;
 		}
-		UpdateButtonDisplay();
+		UpdateButtonDisplay(true);
 	}
 
-	public void OnClickPrev(){
-		if(selectedStore == ShopType.DecorStore){
-			shopScrollAnim.SetTrigger(triggerLeftToUtilStore);
-			selectedStore = ShopType.UtilStore;
-		} else if(selectedStore == ShopType.UtilStore){
-			shopScrollAnim.SetTrigger(triggerLeftToGemStore);
+	public void OnClickPrev ()
+	{
+		if (selectedStore == ShopType.DecorStore) {
+			shopScrollAnim.SetBool (boolMoveRight, false);
 			selectedStore = ShopType.GemStore;
 		}
-		UpdateButtonDisplay();
+		UpdateButtonDisplay(true);
 	}
 
 	public void OnClickBack(){
 		parentShopContent.SetActive(false);
 		parentShop.SetActive(true);
 		DisplayShopDescription(true);
-		UpdateButtonDisplay ();
+		UpdateButtonDisplay (true);
 	}
 
-	public void UpdateButtonDisplay ()
+	public void UpdateButtonDisplay (bool isShowing)
 	{
-		if (selectedStore == ShopType.GemStore) {
-			buttonNext.SetActive (true);
-			buttonPrev.SetActive (false);
-		} else if (selectedStore == ShopType.UtilStore){
-			buttonNext.SetActive (true);
-			buttonPrev.SetActive (true);
+		if (isShowing) {
+			if (selectedStore == ShopType.GemStore) {
+				buttonNext.SetActive (true);
+				buttonPrev.SetActive (false);
+			} else if (selectedStore == ShopType.DecorStore) {
+				buttonNext.SetActive (false);
+				buttonPrev.SetActive (true);
+			}
 		} else{
-			buttonNext.SetActive(false);
-			buttonPrev.SetActive(true);
+			buttonNext.SetActive (false);
+			buttonPrev.SetActive (false);
 		}
 	}
 

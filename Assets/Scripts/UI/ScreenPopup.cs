@@ -152,7 +152,7 @@ public class ScreenPopup : BaseUI {
 		} else if(eventType == PopupEventType.RestockSeeds || eventType == PopupEventType.RestockStall){
 			return "Do you want to refill?";
 		} else if(eventType == PopupEventType.ResetEmoji){
-			return "Do you want to reset your progress?";
+			return "Do you want to start over? You will lose all your progress";
 		} else if(eventType == PopupEventType.ReviveEmoji){
 			return "Do you want to revive " + PlayerData.Instance.EmojiName + " ? You will not lose your progress";
 		} else if(eventType == PopupEventType.IAPFail){

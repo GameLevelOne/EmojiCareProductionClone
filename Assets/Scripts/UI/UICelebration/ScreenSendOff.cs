@@ -53,6 +53,8 @@ public class ScreenSendOff : BaseUI {
 		int randCoin = Random.Range (1000, 5000);
 		int randGem = Random.Range (10, 50);
 		textRewardCoin.text = "x" + randCoin.ToString ();
-		textRewardGem.text = "x" + randCoin.ToString ();
+		textRewardGem.text = "x" + randGem.ToString ();
+		PlayerData.Instance.PlayerCoin += randCoin;
+		PlayerData.Instance.PlayerGem += randGem;
 	}
 }

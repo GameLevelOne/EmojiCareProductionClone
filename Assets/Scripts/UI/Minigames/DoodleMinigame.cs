@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class DoodleMinigame : BaseUI {
+	public Sprite[] randomPictures;
 	public GameObject doodleUI;
 	public RectTransform rectBoard;
 	public SpriteRenderer furnitureBoard;
@@ -22,7 +23,13 @@ public class DoodleMinigame : BaseUI {
 
 	public void OnClickBack(){
 		PlayerData.Instance.PlayerEmoji.playerInput.OnDoodleMinigameDone ();
-		StartCoroutine(TakeScreenshot());
+		//StartCoroutine(TakeScreenshot());
+		PlaceRandomPictures ();
+	}
+
+	public void PlaceRandomPictures(){
+		int temp = Random.Range (0, randomPictures.Length);
+		furnitureBoard.sprite = randomPictures [temp];
 	}
 
 	IEnumerator TakeScreenshot(){

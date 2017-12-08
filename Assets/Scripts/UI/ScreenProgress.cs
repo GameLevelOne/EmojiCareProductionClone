@@ -30,6 +30,7 @@ public class ScreenProgress : BaseUI {
 	float contentBoxMarginX = 100f;
 	float currentTotalProgress = 0f;
 	float sendOffPercentage = 0.8f;
+	//float sendOffPercentage = 0.03f;
 	bool canSendOff = false;
 	Emoji currentEmojiData;
 

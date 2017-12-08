@@ -8,6 +8,7 @@ public class SceneMainManager : MonoBehaviour {
 	public FloatingStatsManager floatingStats;
 	public EmojiStatsExpressionController statsExpressionController;
 	public GachaReward gachaReward;
+	public HotkeysAnimation hotkeys;
 	public Fader fader;
 
 	[Header("EWmoji Sleeping Event")]
@@ -22,7 +23,7 @@ public class SceneMainManager : MonoBehaviour {
 	#region initialization
 	void Start()
 	{
-		PlayerPrefs.DeleteAll();
+//		PlayerPrefs.DeleteAll();
 		PlayerData.Instance.PlayerFirstPlay = 1;
 
 		InitMain();
@@ -67,6 +68,7 @@ public class SceneMainManager : MonoBehaviour {
 		screenTutorial.Init();
 		gachaReward.Init ();
 		floatingStats.RegisterEvents ();
+		hotkeys.RegisterOnSleepEvent ();
 
 		if (PlayerData.Instance.TutorialFirstVisit == 0) {
 			PlayerData.Instance.TutorialFirstVisit = 1;
@@ -85,11 +87,7 @@ public class SceneMainManager : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
-	public void OnToggleDebug(bool debug)
-	{
-		print("debug = "+debug);
-		PlayerData.Instance.PlayerEmoji.SwitchDebugMode(debug);
-	}
+
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------	
 }

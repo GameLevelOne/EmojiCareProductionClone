@@ -20,6 +20,19 @@ public class HotkeysAnimation : MonoBehaviour {
 		hotkeyAnim = hotkeyPanel.GetComponent<Animator>();
 	}
 
+	public void RegisterOnSleepEvent(){
+		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent += OnEmojiSleepEvent;
+	}
+
+	void OnDisable(){
+		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent -= OnEmojiSleepEvent;
+	}
+
+	void OnEmojiSleepEvent (bool sleeping)
+	{
+		buttonHotkey.GetComponent<Button> ().interactable = !sleeping;
+	}
+
 	public void ShowHotkeys ()
 	{
 		buttonHotkey.SetActive(false);
@@ -28,7 +41,7 @@ public class HotkeysAnimation : MonoBehaviour {
 		if (AdmobManager.Instance) AdmobManager.Instance.HideBanner ();
 
 		int temp = PlayerData.Instance.EmojiAlbumData.Count;
-		if (temp > 1) {
+		if (temp >= 1) {
 			buttonAlbum.color = Color.white;
 		} else {
 			buttonAlbum.color = Color.gray;

@@ -24,14 +24,14 @@ public class UICoin : MonoBehaviour {
 			textCurrentCoin.gameObject.SetActive (true);
 			textCurrentGem.gameObject.SetActive (false);
 			currentCoin = PlayerData.Instance.PlayerCoin;
-			UpdateDisplay (currentCoin, currentPrice,isCoin);
+			UpdateDisplay (currentCoin, price,isCoin);
 		} else {
 			coinIcon.SetActive (false);
 			gemIcon.SetActive (true);
 			textCurrentCoin.gameObject.SetActive (false);
 			textCurrentGem.gameObject.SetActive (true);
 			currentGem = PlayerData.Instance.PlayerGem;
-			UpdateDisplay (currentGem, currentPrice,isCoin);
+			UpdateDisplay (currentGem, price,isCoin);
 		}
 		currentPrice = price;
 
@@ -46,16 +46,20 @@ public class UICoin : MonoBehaviour {
 	void UpdateDisplay(int currentCoin,int itemPrice,bool isCoin){
 		if(isCoin){
 			textCurrentCoin.text = currentCoin.ToString("N0");
+			if(currentCoin < itemPrice){
+				textCurrentCoin.color = Color.red;
+			} else{
+				textCurrentCoin.color = Color.black;
+			}
 		} else{
 			textCurrentGem.text = currentCoin.ToString("N0");
+			if(currentGem < itemPrice){
+				textCurrentGem.color = Color.red;
+			} else{
+				textCurrentGem.color = Color.black;
+			}
 		}
 		textItemPrice.text = "-"+itemPrice.ToString();
-
-		if(currentCoin < itemPrice){
-			textCurrentCoin.color = Color.red;
-		} else{
-			textCurrentCoin.color = Color.black;
-		}
 	}
 
 	public void CloseUI(bool isBought){
