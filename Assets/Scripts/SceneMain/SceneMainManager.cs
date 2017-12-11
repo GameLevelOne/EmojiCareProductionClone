@@ -23,9 +23,8 @@ public class SceneMainManager : MonoBehaviour {
 	#region initialization
 	void Start()
 	{
-		PlayerPrefs.DeleteAll();
+//		PlayerPrefs.DeleteAll();
 		PlayerData.Instance.PlayerFirstPlay = 1;
-
 		InitMain();
 	}
 
@@ -71,8 +70,6 @@ public class SceneMainManager : MonoBehaviour {
 		hotkeys.RegisterOnSleepEvent ();
 
 		if (PlayerData.Instance.TutorialFirstVisit == 0) {
-			PlayerData.Instance.TutorialFirstVisit = 1;
-
 			screenTutorial.ShowUI (screenTutorial.screenTutorialObj);
 		}
 		fader.FadeIn();

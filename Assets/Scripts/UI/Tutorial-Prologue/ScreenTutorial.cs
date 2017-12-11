@@ -66,6 +66,7 @@ public class ScreenTutorial : BaseUI {
 
 	public GameObject[] tutorialArrowPanels;
 
+	public ScreenPopup screenPopup;
 	public ProloguePopupName popupName;
 	public GameObject screenTutorialObj;
 	public Transform dialogBox;
@@ -152,6 +153,8 @@ public class ScreenTutorial : BaseUI {
 		if(!string.IsNullOrEmpty(PlayerData.Instance.EmojiName)){
 			popupName.CloseUI (popupName.gameObject);
 			OnClickNext ();
+		} else{
+			screenPopup.ShowPopup (PopupType.Warning, PopupEventType.EmptyName);
 		}
 	}
 
@@ -368,7 +371,7 @@ public class ScreenTutorial : BaseUI {
 			}
 
 			if(dialogCount == 5){
-				dialogText.text = "When cooked, bring them to " + emojiName + " for eat";
+				dialogText.text = "When cooked, bring it to " + emojiName + "to feed it";
 				loadCustomDialog = true;
 			}
 
