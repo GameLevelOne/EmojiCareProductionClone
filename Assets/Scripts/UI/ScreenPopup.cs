@@ -30,6 +30,7 @@ public enum PopupEventType{
 	AbleToBuyCoin,
 	NotAbleToBuyCoin,
 	IAPFail,
+	EmptyName
 }
 
 public class ScreenPopup : BaseUI {
@@ -157,6 +158,8 @@ public class ScreenPopup : BaseUI {
 			return "Do you want to revive " + PlayerData.Instance.EmojiName + " ? You will not lose your progress";
 		} else if(eventType == PopupEventType.IAPFail){
 			return tempMessage;
+		} else if(eventType == PopupEventType.EmptyName){
+			return "Emoji name cannot be empty";
 		}
 		else{
 			return "";

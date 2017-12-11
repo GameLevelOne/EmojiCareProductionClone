@@ -11,9 +11,10 @@ public class SceneMainManager : MonoBehaviour {
 	public HotkeysAnimation hotkeys;
 	public Fader fader;
 
-	[Header("EWmoji Sleeping Event")]
+	[Header("Emoji Sleeping Event")]
 	public RandomBedroomObjectController randomBedroomController;
 	public Bedroom bedroom;
+	public FloatingStatsManager floatingStatsManager;
 
 	//sementara
 	public GameObject[] emojiSamples;
@@ -23,9 +24,8 @@ public class SceneMainManager : MonoBehaviour {
 	#region initialization
 	void Start()
 	{
-		PlayerPrefs.DeleteAll();
+//		PlayerPrefs.DeleteAll();
 		PlayerData.Instance.PlayerFirstPlay = 1;
-
 		InitMain();
 	}
 
@@ -54,9 +54,12 @@ public class SceneMainManager : MonoBehaviour {
 			randomBedroomController.StartGeneratingObjects();
 		}
 		PlayerData.Instance.PlayerEmoji.InitEmojiStats();
-		statsExpressionController.Init();
 
-		if(AdmobManager.Instance) AdmobManager.Instance.ShowBanner();
+		if(PlayerData.Instance.PlayerEmoji.EmojiSleeping){
+			floatingStatsManager.OnEmojiSleepEvent(true);
+		}
+
+		statsExpressionController.Init();
 
 		if(PlayerPrefs.GetInt(PlayerPrefKeys.Game.HAS_INIT_INGREDIENT,0) == 0){
 			PlayerPrefs.SetInt(PlayerPrefKeys.Game.HAS_INIT_INGREDIENT,1);
@@ -71,10 +74,11 @@ public class SceneMainManager : MonoBehaviour {
 		hotkeys.RegisterOnSleepEvent ();
 
 		if (PlayerData.Instance.TutorialFirstVisit == 0) {
-			PlayerData.Instance.TutorialFirstVisit = 1;
-
 			screenTutorial.ShowUI (screenTutorial.screenTutorialObj);
 		}
+
+		if(AdmobManager.Instance) AdmobManager.Instance.ShowBanner();
+
 		fader.FadeIn();
 
 		SoundManager.Instance.PlayBGM(BGMList.BGMMain);

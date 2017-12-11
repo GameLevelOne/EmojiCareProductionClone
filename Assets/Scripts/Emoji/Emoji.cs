@@ -93,24 +93,27 @@ public class Emoji : MonoBehaviour {
 
 	public void InitEmojiStats()
 	{
-		print("INININININININIT");
 		hunger = 	new EmojiStats( PlayerPrefKeys.Emoji.HUNGER, 	emojiBaseData.hungerModifier, 	 emojiBaseData.maxStatValue, emojiBaseData.hungerStart );
 		hygiene = 	new EmojiStats( PlayerPrefKeys.Emoji.HYGENE, 	emojiBaseData.hygeneModifier, 	 emojiBaseData.maxStatValue, emojiBaseData.hygeneStart );
 		happiness = new EmojiStats( PlayerPrefKeys.Emoji.HAPPINESS, emojiBaseData.happinessModifier, emojiBaseData.maxStatValue, emojiBaseData.happinessStart );
 		stamina = 	new EmojiStats( PlayerPrefKeys.Emoji.STAMINA, 	EmojiSleeping == true ? 0.004f : emojiBaseData.staminaModifier, emojiBaseData.maxStatValue, emojiBaseData.staminaStart );
 		health = 	new EmojiStats( PlayerPrefKeys.Emoji.HEALTH, 	emojiBaseData.healthModifier, 	 emojiBaseData.maxStatValue, emojiBaseData.healthStart );
-
+		//Debug.Log ("stamina mod:" + stamina.emojiModifier);
 		int totalTicks = 0;
 		if(PlayerPrefs.HasKey(PlayerPrefKeys.Player.LAST_TIME_PLAYED)){
 			if(DateTime.Now.CompareTo(lastTimePlayed) > 0){
+				
 				totalTicks = GetTotalTicks(DateTime.Now - lastTimePlayed);
+				//Debug.Log ("total ticks:" + totalTicks);
 			}
 		}
-
+		//Debug.Log ("stamina before ticks:" + stamina.StatValue);
 		for(int i = 0;i<totalTicks;i++){ 
 			if(!emojiDead) TickStats();
 			else break;
 		}
+		//Debug.Log ("stamina after ticks:" + stamina.StatValue);
+
 
 		if(!emojiDead){ 
 			StartCoroutine(_TickingStats);
@@ -150,6 +153,7 @@ public class Emoji : MonoBehaviour {
 		hygiene.TickStats();
 		happiness.TickStats();
 		stamina.TickStats();
+		//Debug.Log ("staminaa:" + stamina.StatValue);
 		TickHealth();
 
 		if(OnUpdateStatsToExpression != null) 
@@ -267,6 +271,7 @@ public class Emoji : MonoBehaviour {
 
 		while(true){
 			yield return new WaitForSeconds(1f);
+			Debug.Log ("tickingg");
 			TickStats();
 		}
 	}
@@ -290,5 +295,6 @@ public class Emoji : MonoBehaviour {
 		isTickingStat = false;
 		StopCoroutine(_TickingStats);
 		lastTimePlayed = DateTime.Now;
+//		print(lastTimePlayed);
 	}
 }
