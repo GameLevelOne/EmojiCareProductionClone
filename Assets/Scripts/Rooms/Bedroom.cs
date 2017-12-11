@@ -36,7 +36,7 @@ public class Bedroom : BaseRoom {
 
 	void OnDestroy()
 	{
-		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent -= OnEmojiSleepEvent;
+		if(PlayerData.Instance.PlayerEmoji) PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent -= OnEmojiSleepEvent;
 	}
 
 	public void DimLight()

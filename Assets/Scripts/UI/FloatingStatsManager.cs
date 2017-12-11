@@ -23,7 +23,7 @@ public class FloatingStatsManager : MonoBehaviour {
 		PlayerData.Instance.PlayerEmoji.playerInput.OnEmojiWake -= OnEmojiWake;
 	}
 
-	void OnEmojiSleepEvent (bool sleeping)
+	public void OnEmojiSleepEvent (bool sleeping)
 	{
 		if (sleeping) {
 			barIsShowing = true;

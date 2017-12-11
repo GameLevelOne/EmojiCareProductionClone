@@ -170,6 +170,42 @@ public class EmojiExpression {
 //		Debug.Log(expression+", "+duration+", "+currentDuration);
 		//check for unlocked expression
 //		Debug.Log("Expression =  "+expression+", duration = "+duration+", current = "+currentDuration);
+//		Debug.Log(">CURRENT EXPRESSION = "+currentExpression);
+//		Debug.Log("EXPRESSION = "+expression);
+//		Debug.Log("CURRENT DURATION = "+currentDuration);
+//		Debug.Log(">>DURATION = "+duration);
+			
+		if(duration == -1f){ //sleep, bath, override other expressions
+//			Debug.Log("A");
+			UpdateExpressionProgress(expression);
+
+			SetEmojiAnim((int)expression);
+			currentExpression = expression;
+			currentDuration = duration;
+
+		}else if(currentDuration != -1f && duration > 0){ //non-static expression, have certain duration
+//			Debug.Log("B");
+			UpdateExpressionProgress(expression);
+
+			SetEmojiAnim((int)expression);
+			currentExpression = expression;
+			currentDuration = duration;
+			if(OnChangeExpression != null) OnChangeExpression();
+
+		}else if(currentDuration == 0 && duration == 0){//static expression, like stats expression
+//			Debug.Log("C");
+			UpdateExpressionProgress(expression);
+
+			SetEmojiAnim((int)expression);
+			currentExpression = expression;
+			currentDuration = duration;
+		}
+//		Debug.Log(">>>CURRENT DURATION = "+currentDuration);
+
+	}
+
+	void UpdateExpressionProgress(EmojiExpressionState expression)
+	{
 		if(currentExpression != expression){
 			if (IsNewExpression (expression) && expression != EmojiExpressionState.DEFAULT) {
 				EmojiExpressionData currentData = expressionDataInstances [(int)expression];
@@ -192,25 +228,7 @@ public class EmojiExpression {
 						OnNewExpression ((int)expression,false);
 					}
 				}
-
 			}
-		}
-
-		if(duration == -1f){ //sleep, bath, override other expressions
-			SetEmojiAnim((int)expression);
-			currentExpression = expression;
-			currentDuration = duration;
-
-		}else if(currentDuration != -1f && duration > 0){ //non-static expression, have certain duration
-			SetEmojiAnim((int)expression);
-			currentExpression = expression;
-			currentDuration = duration;
-			if(OnChangeExpression != null) OnChangeExpression();
-
-		}else if(currentDuration == 0 && duration == 0){//static expression, like stats expression
-			SetEmojiAnim((int)expression);
-			currentExpression = expression;
-			currentDuration = duration;
 		}
 	}
 
@@ -219,7 +237,7 @@ public class EmojiExpression {
 	/// </summary>
 	public void ResetExpressionDuration()
 	{
-//		Debug.Log("ResetDuration");
+		Debug.Log("ResetDuration");
 		currentDuration = 0f;
 	}
 	#endregion

@@ -25,7 +25,7 @@ public class BaseFurniture : MonoBehaviour {
 		}
 
 		prefKeyVariant = PlayerPrefKeys.Game.FURNITURE_VARIANT+gameObject.name;
-		print(prefKeyVariant);
+//		print(prefKeyVariant);
 		currentVariant = PlayerPrefs.GetInt(prefKeyVariant,0);
 
 		for(int i = 0;i<thisSprite.Length;i++) {

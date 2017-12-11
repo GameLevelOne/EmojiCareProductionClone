@@ -21,7 +21,7 @@ public class PopupStatsMeter : MonoBehaviour {
 		if(targetValue > -1){
 			StartCoroutine (AnimateMeter (currentValue,targetValue));
 		} else{
-			Debug.Log ("stay");
+//			Debug.Log ("stay");
 			barFill.fillAmount = currentValue;
 		}	
 	}

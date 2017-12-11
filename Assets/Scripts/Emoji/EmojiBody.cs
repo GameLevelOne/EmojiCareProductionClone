@@ -262,7 +262,7 @@ public class EmojiBody : MonoBehaviour {
 			emoji.emojiExpressions.currentDuration -= Time.deltaTime;
 			yield return null;
 		}
-		emoji.emojiExpressions.currentDuration = 0;
+		emoji.emojiExpressions.ResetExpressionDuration();
 	}
 
 	const string _ReduceBubbleEffect = "ReduceBubbleEffect";

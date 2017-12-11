@@ -12,7 +12,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 	public Emoji emoji;
 	public GameObject touchInputObject;
 
-	bool flagTapCooldown = false;
+	public bool flagTapCooldown = false;
 	public bool flagStrokeToHold = false;
 	public bool flagHold = false;
 	public bool flagStroke = false;
@@ -86,7 +86,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 	{
 		if(interactable){
 			if(!flagSleeping){
-				StopAllCoroutines();
+				StopCoroutine(_StartHold);
 				if ((!flagHold) && (!flagStroke)) {
 					Poke();
 				} else if (flagHold) {
@@ -100,7 +100,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 				flagStroke = false;
 				flagTouching = false;
 				flagStrokeToHold = false;
-
+				toyBumped = false;
 				emoji.thisRigidbody.velocity = Vector2.zero;
 				emoji.thisRigidbody.simulated = true;
 				emoji.body.thisCollider.enabled = true;
@@ -205,6 +205,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 			StartCoroutine(_TapCounterCooldown,animDelay);
 
 			if(tapCounter < 5){
+				StopCoroutine(_TapCooldown);
 				StartCoroutine(_TapCooldown);
 			}else{
 				StartCoroutine(_LockInteractions,10);
@@ -407,26 +408,35 @@ public class EmojiPlayerInput : MonoBehaviour {
 
 	public void Landing()
 	{
-		flagFalling = false;
-		if(!emoji.EmojiSleeping) emoji.emojiExpressions.ResetExpressionDuration();
+		if(flagFalling)	{
+			flagFalling = false;
+			if(!emoji.EmojiSleeping) emoji.emojiExpressions.ResetExpressionDuration();
+		}
 	}
 
 	public void OnToyBumped()
 	{
+		print("TOY BUMPED EMOJI!");
 		if(!toyBumped){
+			
 			toyBumpCounter++;
+			print("TOY BUMP COUNTER = "+toyBumpCounter);
 			if(toyBumpCounter < 6){
+				print("TOY BUMP COUNTER is less than 6, HAPPY");
 				emoji.emojiExpressions.SetExpression(EmojiExpressionState.HAPPY,toyBumpResponseCooldown);
 				emoji.happiness.ModStats(7f);
 				SoundManager.Instance.PlayVoice(VoiceList.Laugh);
 			}else if(toyBumpCounter >= 6 && toyBumpCounter < 9){
+				print("TOY BUMP COUNTER is between 6 and 8, BORED");
 				emoji.emojiExpressions.SetExpression(EmojiExpressionState.BORED,toyBumpResponseCooldown);
 				SoundManager.Instance.PlayVoice(VoiceList.Sigh);
 			}else if(toyBumpCounter >= 9 && toyBumpCounter < 14){
+				print("TOY BUMP COUNTER is between 9 and 13, ANNOYED");
 				emoji.emojiExpressions.SetExpression(EmojiExpressionState.ANNOYED,toyBumpResponseCooldown);
 				SoundManager.Instance.PlayVoice(VoiceList.Urrh);
 				emoji.happiness.ModStats(-3f);
 			}else{
+				print("TOY BUMP COUNTER is 14 and more, ANGRY");
 				emoji.emojiExpressions.SetExpression(EmojiExpressionState.ANGERED,toyBumpResponseCooldown);
 				SoundManager.Instance.PlayVoice(VoiceList.UghYuck);
 				emoji.happiness.ModStats(-7f);
@@ -588,7 +598,9 @@ public class EmojiPlayerInput : MonoBehaviour {
 	{
 		toyBumped = true;
 		yield return new WaitForSeconds(toyBumpResponseCooldown);
+
 		toyBumped = false;
+		print("TOY BUMPED IS NOW FALSE!");
 	}
 
 	const string _RetainToyBumpCounter = "RetainToyBumpCounter";
