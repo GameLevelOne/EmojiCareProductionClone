@@ -63,6 +63,10 @@ public class Bowl : MonoBehaviour {
 		if (Input.GetMouseButtonUp (0)) {
 			if (initialized) {
 				initialized = false;
+				Vector3 tempMousePos = new Vector3(Input.mousePosition.x,Input.mousePosition.y,19f);
+				Vector3 tempMouseWorldPos = Camera.main.ScreenToWorldPoint(tempMousePos);
+				transform.position = tempMouseWorldPos;
+				transform.localScale = Vector3.one;
 				if(ingredientObjects.Count <= 0){
 					gameObject.SetActive(false);
 				}else{
@@ -77,6 +81,7 @@ public class Bowl : MonoBehaviour {
 	const string _Shrink = "Shrink";
 	IEnumerator Shrink()
 	{
+		initialized = true;
 		float t = 0;
 		Vector3 currentScale = transform.localScale;
 		while (t < 1){
@@ -88,7 +93,10 @@ public class Bowl : MonoBehaviour {
 			t+= Time.deltaTime * 5;
 			yield return null;
 		}
-		initialized = true;
+		Vector3 tempMousePos = new Vector3(Input.mousePosition.x,Input.mousePosition.y,19f);
+		Vector3 tempMouseWorldPos = Camera.main.ScreenToWorldPoint(tempMousePos);
+		transform.position = tempMouseWorldPos;
+		transform.localScale = Vector3.one;
 	}
 
 	const string _MoveToTableAndFlip = "MoveToTableAndFlip";
