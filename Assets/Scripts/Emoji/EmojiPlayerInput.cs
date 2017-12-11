@@ -87,11 +87,12 @@ public class EmojiPlayerInput : MonoBehaviour {
 		if(interactable){
 			if(!flagSleeping){
 				StopCoroutine(_StartHold);
-				if ((!flagHold) && (!flagStroke)) {
+				if ((!flagHold) && (!flagStroke) && (!flagStrokeToHold)) {
 					Poke();
 				} else if (flagHold) {
 					Fall();
 				} else if(flagStrokeToHold){
+				//print("FLAGSTROKETOHOLDDDDDDDD");
 					Fall();
 				}else {
 					EndStroke();
@@ -551,6 +552,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 	IEnumerator StartHold()
 	{
 		flagStrokeToHold = true;
+//		Debug.Log ("STARTHOLDING");
 		emoji.triggerFall.thisCollider.enabled = true;
 		emoji.triggerFall.ClearColliderList();
 		emoji.body.thisCollider.enabled = false;

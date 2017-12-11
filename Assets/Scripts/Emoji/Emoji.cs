@@ -98,21 +98,21 @@ public class Emoji : MonoBehaviour {
 		happiness = new EmojiStats( PlayerPrefKeys.Emoji.HAPPINESS, emojiBaseData.happinessModifier, emojiBaseData.maxStatValue, emojiBaseData.happinessStart );
 		stamina = 	new EmojiStats( PlayerPrefKeys.Emoji.STAMINA, 	EmojiSleeping == true ? 0.004f : emojiBaseData.staminaModifier, emojiBaseData.maxStatValue, emojiBaseData.staminaStart );
 		health = 	new EmojiStats( PlayerPrefKeys.Emoji.HEALTH, 	emojiBaseData.healthModifier, 	 emojiBaseData.maxStatValue, emojiBaseData.healthStart );
-		Debug.Log ("stamina mod:" + stamina.emojiModifier);
+		//Debug.Log ("stamina mod:" + stamina.emojiModifier);
 		int totalTicks = 0;
 		if(PlayerPrefs.HasKey(PlayerPrefKeys.Player.LAST_TIME_PLAYED)){
 			if(DateTime.Now.CompareTo(lastTimePlayed) > 0){
 				
 				totalTicks = GetTotalTicks(DateTime.Now - lastTimePlayed);
-				Debug.Log ("total ticks:" + totalTicks);
+				//Debug.Log ("total ticks:" + totalTicks);
 			}
 		}
-		Debug.Log ("stamina before ticks:" + stamina.StatValue);
+		//Debug.Log ("stamina before ticks:" + stamina.StatValue);
 		for(int i = 0;i<totalTicks;i++){ 
 			if(!emojiDead) TickStats();
 			else break;
 		}
-		Debug.Log ("stamina after ticks:" + stamina.StatValue);
+		//Debug.Log ("stamina after ticks:" + stamina.StatValue);
 
 
 		if(!emojiDead){ 
@@ -153,7 +153,7 @@ public class Emoji : MonoBehaviour {
 		hygiene.TickStats();
 		happiness.TickStats();
 		stamina.TickStats();
-		Debug.Log ("staminaa:" + stamina.StatValue);
+		//Debug.Log ("staminaa:" + stamina.StatValue);
 		TickHealth();
 
 		if(OnUpdateStatsToExpression != null) 
