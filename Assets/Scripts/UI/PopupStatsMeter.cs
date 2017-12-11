@@ -12,42 +12,41 @@ public enum EmojiStatsState{
 }
 
 public class PopupStatsMeter : MonoBehaviour {
-
 	public Image barFill;
-	string triggerOpenNotif = "OpenNotif";
-	string triggerCloseNotif = "CloseNotif";
+	string boolShowNotif = "ShowNotif";
 
-	public void ShowUI(EmojiStatsState type,float currentValue,float targetValue,float maxValue){
-		GetComponent<Animator> ().SetTrigger (triggerOpenNotif);
-		StartCoroutine (AnimateMeter (currentValue,targetValue,maxValue));
+	public void ShowMeter(EmojiStatsState type,bool sleepOrBath,float currentValue,float targetValue,Sprite barSprite){
+		barFill.sprite = barSprite;
+		GetComponent<Animator> ().SetBool (boolShowNotif,true);
+		if(targetValue > -1){
+			StartCoroutine (AnimateMeter (currentValue,targetValue));
+		} else{
+			Debug.Log ("stay");
+			barFill.fillAmount = currentValue;
+		}	
 	}
 
-	public void ShowStaticMeter(float value){
-		GetComponent<Animator> ().SetTrigger (triggerOpenNotif);
-		barFill.fillAmount = value;
+	public void HideMeter(){
 		StartCoroutine (AutoClose ());
 	}
 
-	IEnumerator AnimateMeter(float currentValue,float targetValue,float maxValue){
+	IEnumerator AnimateMeter (float currentValue, float targetValue)
+	{
 		yield return new WaitForSeconds (1f);
 		float time = 0;
-		float startValue = currentValue / maxValue;
-		float endValue = targetValue / maxValue;
-		Debug.Log ("start:" + startValue);
-		Debug.Log ("end:" + endValue);
-		while(barFill.fillAmount < endValue){
-			barFill.fillAmount = Mathf.Lerp (startValue, endValue, time);
-			time += Time.deltaTime*2;
+		Debug.Log ("start:" + currentValue);
+		Debug.Log ("end:" + targetValue);
+		while (barFill.fillAmount < targetValue) {
+			barFill.fillAmount = Mathf.Lerp (currentValue, targetValue, time);
+			time += Time.deltaTime * 2;
 			yield return null;
 		}
+
 		StartCoroutine (AutoClose ());
 	}
 
 	IEnumerator AutoClose(){
-		yield return new WaitForSeconds (0.16f);
-		GetComponent<Animator> ().SetTrigger (triggerCloseNotif);
-		yield return new WaitForSeconds (0.16f);
-		print("ASKJDKASDJKLASJDKLASJKD");
-		gameObject.SetActive (false);
+		yield return new WaitForSeconds (0.3f);
+		GetComponent<Animator> ().SetBool (boolShowNotif,false);
 	}
 }

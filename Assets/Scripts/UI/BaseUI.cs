@@ -65,7 +65,7 @@ public class BaseUI : MonoBehaviour {
 	}
 
 	IEnumerator WaitForAnim(GameObject obj){
-		yield return new WaitForSeconds(0.16f);
+		yield return new WaitForSeconds(0.2f);
 		obj.SetActive(false);
 	}
 }

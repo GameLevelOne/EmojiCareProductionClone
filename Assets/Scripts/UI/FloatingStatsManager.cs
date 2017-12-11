@@ -3,38 +3,90 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class FloatingStatsManager : MonoBehaviour {
-	public GameObject[] statsMeterObj;
-
-	void OnDisable(){
-//		Emoji.OnShowFloatingStatsBar -= ShowMultipleMeters;
-//		EmojiStats.OnShowSingleStatBar -= ShowSingleMeter;
-	}
+	public PopupStatsMeter[] statsMeterObj;
+	public Sprite[] barSprites; //green,yellow,orange,red
+	bool barIsShowing = false;
 
 	public void RegisterEvents(){
 		Emoji.OnShowFloatingStatsBar += ShowMultipleMeters;
 		EmojiStats.OnShowSingleStatBar += ShowSingleMeter;
+		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent += OnEmojiSleepEvent;
+		PlayerData.Instance.PlayerEmoji.playerInput.OnEmojiWake += OnEmojiWake;
+		ShowerTrigger.OnEnterShower += OnEnterShower;
+		ShowerTrigger.OnExitShower += OnExitShower;
 	}
 
-	public void ShowSingleMeter(int type,float mod){
-		float currentValue = GetCurrentStatValue (type);
-		float targetValue = currentValue + mod;
-		float maxValue = PlayerData.Instance.PlayerEmoji.emojiBaseData.maxStatValue;
+	void OnDisable(){
+		Emoji.OnShowFloatingStatsBar -= ShowMultipleMeters;
+		EmojiStats.OnShowSingleStatBar -= ShowSingleMeter;
+		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent -= OnEmojiSleepEvent;
+		PlayerData.Instance.PlayerEmoji.playerInput.OnEmojiWake -= OnEmojiWake;
+	}
 
-		if(targetValue > maxValue){
-			targetValue = maxValue;
+	void OnEmojiSleepEvent (bool sleeping)
+	{
+		if (sleeping) {
+			barIsShowing = true;
+			StartCoroutine (UpdateMeterDisplay ((int)EmojiStatsState.Stamina, PlayerData.Instance.PlayerEmoji.stamina.StatValue));
+		}
+	}
+
+	void OnEmojiWake ()
+	{
+		Debug.Log ("WAKEUP");
+		barIsShowing = false;
+		//StopCoroutine ("UpdateMeterDisplay");
+		//statsMeterObj [(int)EmojiStatsState.Stamina].HideMeter ();
+	}
+
+	void OnEnterShower ()
+	{
+		barIsShowing = true;
+		StartCoroutine (UpdateMeterDisplay ((int)EmojiStatsState.Hygiene, PlayerData.Instance.PlayerEmoji.hygiene.StatValue));
+	}
+
+	void OnExitShower ()
+	{
+		Debug.Log ("FINISH BATHING");
+		barIsShowing = false;
+		//StopCoroutine ("UpdateMeterDisplay");
+		//statsMeterObj [(int)EmojiStatsState.Hygiene].HideMeter ();
+	}
+
+	public void ShowSingleMeter(int type,float mod,float startValue = 0f){
+		float currentValue = 0;
+		if(startValue==0){
+			currentValue = GetCurrentStatValue (type);
+		} else{
+			currentValue = startValue;
 		}
 
-		statsMeterObj [type].SetActive (true);
-		statsMeterObj[type].GetComponent<PopupStatsMeter>().ShowUI((EmojiStatsState)type,currentValue,targetValue,maxValue);
+		float maxValue = PlayerData.Instance.PlayerEmoji.emojiBaseData.maxStatValue;
+		float targetValue = currentValue + mod/maxValue;
+
+		if(targetValue > 1){
+			targetValue = 1;
+		}
+
+		statsMeterObj [type].gameObject.SetActive (true);
+		statsMeterObj[type].ShowMeter((EmojiStatsState)type,false,currentValue,targetValue,GetCurrentBarSprite(currentValue));
 	}
 
 	public void ShowStatsFromMagnifyingGlass(){
 		int counter = 0;
 		for(int i=0;i<5;i++){
-			statsMeterObj [i].SetActive (true);
-			statsMeterObj [i].transform.localPosition = new Vector3 (0, 400 - 100 * counter);
-			statsMeterObj [i].GetComponent<PopupStatsMeter> ().ShowStaticMeter (GetCurrentStatValue (i));
+			statsMeterObj [i].gameObject.SetActive (true);
+			statsMeterObj [i].transform.localPosition = new Vector3 (0, 452 - 100 * counter);
+			float value = GetCurrentStatValue (i);
+			statsMeterObj [i].ShowMeter((EmojiStatsState)i,false,GetCurrentStatValue(i),-1,GetCurrentBarSprite(value));
 			counter++;
+		}
+	}
+
+	public void HideStatsFromMagnifyingGlass(){
+		int counter = 0;
+		for (int i=0;i<5;i++){
+			statsMeterObj [i].HideMeter ();
 		}
 	}
 
@@ -42,12 +94,11 @@ public class FloatingStatsManager : MonoBehaviour {
 		int counter = 0;
 		for(int i=0;i<mod.Length;i++){
 			if(mod[i] != 0){
-				statsMeterObj [i].SetActive (true);
-				statsMeterObj [i].transform.localPosition = new Vector3 (0, 400 - 100 * counter);
+				statsMeterObj [i].transform.localPosition = new Vector3 (0, 452 - 100 * counter);
 				ShowSingleMeter (i, mod [i]);
 				counter++;
 			} else{
-				statsMeterObj [i].SetActive (false);
+				statsMeterObj [i].gameObject.SetActive (false);
 			}
 		}
 	}
@@ -55,16 +106,42 @@ public class FloatingStatsManager : MonoBehaviour {
 	float GetCurrentStatValue(int type){
 		Emoji emojiData = PlayerData.Instance.PlayerEmoji;
 		if (type == 0) {
-			return emojiData.hunger.StatValue;
+			return emojiData.hunger.StatValue/emojiData.hunger.MaxStatValue;
 		} else if (type == 1) {
-			return emojiData.hygiene.StatValue;
+			return emojiData.hygiene.StatValue/emojiData.hygiene.MaxStatValue;
 		} else if (type == 2) {
-			return emojiData.happiness.StatValue;
+			return emojiData.happiness.StatValue/emojiData.happiness.MaxStatValue;
 		} else if (type == 3) {
-			return emojiData.stamina.StatValue;
+			return emojiData.stamina.StatValue/emojiData.stamina.MaxStatValue;
 		} else if (type == 4) {
-			return emojiData.health.StatValue;
+			return emojiData.health.StatValue/emojiData.health.MaxStatValue;
 		} else
 			return 0;
+	}
+
+	Sprite GetCurrentBarSprite(float value){
+		if(value>=0.9f){
+			return barSprites [0];
+		} else if(value>=0.4f && value<0.9f){
+			return barSprites [1];
+		} else if(value>=0.2f && value<0.4f){
+			return barSprites [2];
+		} else{
+			return barSprites [3];
+		}
+	}
+
+	IEnumerator UpdateMeterDisplay (int type, float value)
+	{
+		while (barIsShowing) {
+			statsMeterObj [type].gameObject.SetActive (true);
+			statsMeterObj [type].ShowMeter ((EmojiStatsState)type, true, GetCurrentStatValue (type), -1, GetCurrentBarSprite (value));
+			yield return null;
+		}
+
+		if(!barIsShowing){
+			statsMeterObj [type].HideMeter ();
+			StopCoroutine ("UpdateMeterDisplay");
+		}
 	}
 }

@@ -10,6 +10,8 @@ public class HotkeysAnimation : MonoBehaviour {
 	public Image buttonEditRoom;
 	public RoomController roomController;
 
+	public Button[] hotkeyButtons;
+
 	Animator hotkeyAnim;
 	string boolOpenHotkeys = "ShowHotkeys";
 	//string triggerCloseHotkey = "CloseHotkeys";
@@ -18,46 +20,92 @@ public class HotkeysAnimation : MonoBehaviour {
 		hotkeyAnim = hotkeyPanel.GetComponent<Animator>();
 	}
 
+	public void RegisterOnSleepEvent(){
+		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent += OnEmojiSleepEvent;
+	}
+
+	void OnDisable(){
+		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent -= OnEmojiSleepEvent;
+	}
+
+	void OnEmojiSleepEvent (bool sleeping)
+	{
+		buttonHotkey.GetComponent<Button> ().interactable = !sleeping;
+	}
+
 	public void ShowHotkeys ()
 	{
-		buttonHotkey.SetActive (false);
-		if (AdmobManager.Instance)
-			AdmobManager.Instance.HideBanner ();
+		buttonHotkey.SetActive(false);
+		DisableHotkeyButtons();
+
+		if (AdmobManager.Instance) AdmobManager.Instance.HideBanner ();
 
 		int temp = PlayerData.Instance.EmojiAlbumData.Count;
-		if (temp > 1) {
+		if (temp >= 1) {
 			buttonAlbum.color = Color.white;
 		} else {
 			buttonAlbum.color = Color.gray;
 		}
 
-		if (roomController != null) {
-			if (roomController.currentRoom == RoomType.Garden) {
-				buttonEditRoom.color = Color.gray;
-				buttonEditRoom.GetComponent<Button> ().interactable = false;
-			} else {
-				buttonEditRoom.color = Color.white;
-				buttonEditRoom.GetComponent<Button> ().interactable = true;
-			}
-		}
-
-		hotkeyPanel.SetActive(true);
+//		if (roomController != null) {
+//			if (roomController.currentRoom == RoomType.Garden) {
+//				buttonEditRoom.color = Color.gray;
+//				buttonEditRoom.GetComponent<Button> ().interactable = false;
+//			} else {
+//				buttonEditRoom.color = Color.white;
+//				buttonEditRoom.GetComponent<Button> ().interactable = true;
+//			}
+//		}
+			
 		hotkeyAnim.SetBool(boolOpenHotkeys,true);
+		StartCoroutine(DelayEnableHotKeys());
 	}
 
-	public void CloseHotkeys(){
+	public void CloseHotkeys()
+	{
 		hotkeyAnim.SetBool(boolOpenHotkeys,false);
-		StartCoroutine(WaitForAnim(hotkeyPanel));
 	}
 
-	public void BackToGame(){
-		buttonHotkey.SetActive(true);
-		CloseHotkeys();
+	public void BackToGame()
+	{
+		hotkeyAnim.SetBool(boolOpenHotkeys,false);
 		if(AdmobManager.Instance) AdmobManager.Instance.ShowBanner();
+		StartCoroutine(DelayShowHotkeyButton());
 	}
 
-	IEnumerator WaitForAnim(GameObject obj){
-		yield return new WaitForSeconds(0.31f);
-		obj.SetActive(false);
+	IEnumerator DelayEnableHotKeys()
+	{
+		yield return new WaitForSeconds(8f/24f);
+		EnableHotKeyButtons();
+		ValidateRoomForButtonEditRoom();
+	}
+
+	IEnumerator DelayShowHotkeyButton()
+	{
+		yield return new WaitForSeconds(8f/24f);
+		buttonHotkey.SetActive(true);
+	}
+
+	void DisableHotkeyButtons()
+	{
+		foreach(Button b in hotkeyButtons) b.interactable = false;
+	}
+	void EnableHotKeyButtons()
+	{
+		
+		foreach(Button b in hotkeyButtons) b.interactable = true;
+	}
+
+	void ValidateRoomForButtonEditRoom()
+	{
+		
+		if(roomController.currentRoom == RoomType.Garden){
+			buttonEditRoom.GetComponent<Button>().interactable = false;
+			buttonEditRoom.color = Color.gray;
+		}else{
+			buttonEditRoom.GetComponent<Button>().interactable = true;
+			buttonEditRoom.color = Color.white;
+		}
+		print("BUTTON EDIT MODE DI ROOM "+roomController.currentRoom+" is"+buttonEditRoom.GetComponent<Button>().interactable);
 	}
 }

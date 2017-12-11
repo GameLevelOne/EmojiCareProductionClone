@@ -19,16 +19,21 @@ public enum PopupEventType{
 	AlbumLocked,
 	AbleToBuyFurniture,
 	NotAbleToBuyFurniture,
+	ShopAbleToBuyFurniture,
+	ShopNotAbleToBuyFurniture,
 	RestockStall,
 	RestockSeeds,
+	NotAbleToRestock,
 	ResetEmoji,
 	ReviveEmoji,
 	NotAbleToReviveEmoji,
 	AbleToBuyCoin,
-	NotAbleToBuyCoin
+	NotAbleToBuyCoin,
+	IAPFail,
 }
 
 public class ScreenPopup : BaseUI {
+	public UICoin uiCoin;
 	public GameObject popupObject;
 	public GameObject buttonGroupWarning;
 	public GameObject buttonGroupConfirmation;
@@ -40,6 +45,7 @@ public class ScreenPopup : BaseUI {
 
 	Sprite tempEmojiSprite;
 	string tempEmojiName;
+	string tempMessage;
 
 	bool emojiTransfer = false;
 
@@ -64,23 +70,25 @@ public class ScreenPopup : BaseUI {
 	public delegate void BuyFurniture();
 	public static event BuyFurniture OnBuyFurniture;
 
+	public delegate void CancelBuyFurniture();
+	public static event CancelBuyFurniture OnCancelBuyFurniture;
+
+	public delegate void ShopBuyFurniture();
+	public static event ShopBuyFurniture OnShopBuyFurniture;
+
 	public delegate void BuyCoin();
 	public static event BuyCoin OnBuyCoin;
 
-	public delegate void RefillStallWithAds();
-	public static event RefillStallWithAds OnRefillStallWithAds;
-
-	public delegate void RefillStallWithGems();
-	public static event RefillStallWithGems OnRefillStallWithGems;
 	#endregion
 
 	PopupEventType currentEventType;
 	PopupType currentPopupType;
 
-	public void ShowPopup(PopupType type,PopupEventType eventType,bool toShop=false,bool toTransfer=false,Sprite sprite = null,string emojiName = null){
+	public void ShowPopup(PopupType type,PopupEventType eventType,bool toShop=false,bool toTransfer=false,Sprite sprite = null,string emojiName = null,string message = null){
 		currentEventType = eventType;
 		currentPopupType = type;
 		emojiTransfer = toTransfer;
+		tempMessage = message;
 		popupText.text = SetPopupText(eventType);
 		if(type == PopupType.Warning){
 			buttonGroupWarning.SetActive(true);
@@ -92,15 +100,15 @@ public class ScreenPopup : BaseUI {
 			buttonGroupAdsAndGems.SetActive (false);
 			if(toShop){
 				//buttonShop.SetActive(true);
-				buttonTransfer.SetActive(false);
+				//buttonTransfer.SetActive(false);
 				buttonOk.SetActive(false);
 			} else if(toTransfer){
 				//buttonShop.SetActive(false);
-				buttonTransfer.SetActive(true);
+				//buttonTransfer.SetActive(true);
 				buttonOk.SetActive(false);
 			} else{
 				//buttonShop.SetActive(false);
-				buttonTransfer.SetActive(false);
+				//buttonTransfer.SetActive(false);
 				buttonOk.SetActive(true);
 			}
 		} else{
@@ -129,13 +137,13 @@ public class ScreenPopup : BaseUI {
 			return "Send off this emoji?";
 		} else if (eventType == PopupEventType.NotAbleToSendOff) {
 			return "Cannot send off yet";
-		} else if(eventType == PopupEventType.NotAbleToBuyEmoji || eventType == PopupEventType.NotAbleToReviveEmoji){
+		} else if(eventType == PopupEventType.NotAbleToBuyEmoji || eventType == PopupEventType.NotAbleToReviveEmoji || eventType == PopupEventType.NotAbleToRestock){
 			return "Not enough gems";
 		} else if(eventType == PopupEventType.AlbumLocked){
 			return "Finish your first emoji to unlock this menu";
-		} else if(eventType == PopupEventType.AbleToBuyFurniture){
+		} else if(eventType == PopupEventType.AbleToBuyFurniture || eventType == PopupEventType.ShopAbleToBuyFurniture){
 			return "Do you want to buy this furniture?";
-		} else if(eventType == PopupEventType.NotAbleToBuyFurniture){
+		} else if(eventType == PopupEventType.NotAbleToBuyFurniture || eventType == PopupEventType.ShopNotAbleToBuyFurniture){
 			return "Not enough coins";
 		} else if(eventType == PopupEventType.AbleToBuyCoin){
 			return "Are you sure?";
@@ -144,10 +152,12 @@ public class ScreenPopup : BaseUI {
 		} else if(eventType == PopupEventType.RestockSeeds || eventType == PopupEventType.RestockStall){
 			return "Do you want to refill?";
 		} else if(eventType == PopupEventType.ResetEmoji){
-			return "Do you want to reset your progress?";
+			return "Do you want to start over? You will lose all your progress";
 		} else if(eventType == PopupEventType.ReviveEmoji){
 			return "Do you want to revive " + PlayerData.Instance.EmojiName + " ? You will not lose your progress";
-		} 
+		} else if(eventType == PopupEventType.IAPFail){
+			return tempMessage;
+		}
 		else{
 			return "";
 		}
@@ -167,14 +177,18 @@ public class ScreenPopup : BaseUI {
 				Debug.Log("transfer");
 				OnTransferEmoji();
 			} else if(currentEventType == PopupEventType.AbleToBuyFurniture){
-				Debug.Log ("buy furniture");
+				Debug.Log ("buy furniture edit room");
 				OnBuyFurniture ();
+			} else if(currentEventType == PopupEventType.ShopAbleToBuyFurniture){
+				Debug.Log ("buy furniture shop");
+				OnShopBuyFurniture ();
 			} else if(currentEventType == PopupEventType.ResetEmoji){
 				Debug.Log ("reset emoji");
 				OnResetEmoji ();
 			} else if(currentEventType == PopupEventType.ReviveEmoji){
 				Debug.Log ("revive emoji");
 				if(PlayerData.Instance.PlayerGem>=reviveCost){
+					PlayerData.Instance.PlayerGem -= reviveCost;
 					OnReviveEmoji ();
 				} else{
 					ShowPopup (PopupType.Warning, PopupEventType.NotAbleToReviveEmoji);
@@ -191,22 +205,12 @@ public class ScreenPopup : BaseUI {
 	}
 
 	public void OnClickButtonCancel(){
+		if(currentEventType == PopupEventType.AbleToBuyFurniture){
+			OnCancelBuyFurniture ();
+		} else if(currentEventType == PopupEventType.RestockSeeds || currentEventType == PopupEventType.RestockStall){
+			uiCoin.CloseUI (false);
+		}
+
 		base.ClosePopup(this.gameObject);
 	}
-
-	public void RefillButtonWithAds ()
-	{
-		if (currentEventType == PopupEventType.RestockSeeds) {
-			AdmobManager.Instance.ShowRewardedVideo (AdEvents.RestockSeeds);
-		} else if(currentEventType == PopupEventType.RestockStall){
-			AdmobManager.Instance.ShowRewardedVideo (AdEvents.RestockStall);
-		}
-		base.ClosePopup (this.gameObject);
-	}
-
-	public void RefillButtonWithGems(){
-		OnRefillStallWithGems ();
-	}
-
-
 }

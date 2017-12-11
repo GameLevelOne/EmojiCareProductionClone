@@ -7,8 +7,11 @@ public class ScreenEmojiDead : BaseUI {
 	public ScreenAlbum screenAlbum;
 	public SceneLoader sceneLoader;
 	public ScreenPopup screenPopup;
+	public UICoin uiCoin;
 	public Fader fader;
 	public Image emojiIcon;
+
+	bool gemBoxIsShowing = false;
 
 	void OnEnable(){
 		Fader.OnFadeOutFinished += OnFadeOutFinished;
@@ -32,21 +35,37 @@ public class ScreenEmojiDead : BaseUI {
 		this.sceneLoader = sceneLoader;
 		//emojiIcon.sprite = sprite;
 
-		screenAlbum.AddEmojiRecord();
+//		screenAlbum.AddEmojiRecord();
 	}
 
 	void OnReviveEmoji ()
 	{
+		if(gemBoxIsShowing){
+			uiCoin.CloseUI (false);
+			gemBoxIsShowing = false;
+		}
+
 		ResetEmojiStats ();
+		PlayerData.Instance.PlayerEmoji.emojiExpressions.ResetExpressionDuration ();
+		base.CloseUI (this.gameObject);
 	}
 
 	void OnResetEmoji ()
 	{
+		if(gemBoxIsShowing){
+			uiCoin.CloseUI (false);
+			gemBoxIsShowing = false;
+		}
+
 		ResetEmojiStats ();
 		ResetExpressionProgress ();
+		PlayerData.Instance.PlayerEmoji.emojiExpressions.ResetExpressionDuration ();
+		base.CloseUI (this.gameObject);
 	}
 
 	public void OnClickRevive(){
+		uiCoin.ShowUI (100, false);
+		gemBoxIsShowing = true;
 		screenPopup.ShowPopup (PopupType.Confirmation, PopupEventType.ReviveEmoji);
 	}
 
@@ -60,11 +79,20 @@ public class ScreenEmojiDead : BaseUI {
 		PlayerData.Instance.PlayerEmoji.happiness.SetStats (PlayerData.Instance.PlayerEmoji.emojiBaseData.happinessStart);
 		PlayerData.Instance.PlayerEmoji.stamina.SetStats (PlayerData.Instance.PlayerEmoji.emojiBaseData.staminaStart);
 		PlayerData.Instance.PlayerEmoji.health.SetStats (PlayerData.Instance.PlayerEmoji.emojiBaseData.healthStart);
+		PlayerData.Instance.PlayerEmoji.emojiDead = false;
 	}
 
 	void ResetExpressionProgress(){
 		for(int i=0;i<PlayerData.Instance.PlayerEmoji.emojiExpressions.totalExpression;i++){
 			PlayerData.Instance.PlayerEmoji.emojiExpressions.expressionDataInstances [i].SetCurrentProgress (0);
 		}
+	}
+
+	public void TestEmojiDead(){
+		PlayerData.Instance.PlayerEmoji.hunger.SetStats (0);
+		PlayerData.Instance.PlayerEmoji.hygiene.SetStats (0);
+		PlayerData.Instance.PlayerEmoji.happiness.SetStats (0);
+		PlayerData.Instance.PlayerEmoji.stamina.SetStats (0);
+		PlayerData.Instance.PlayerEmoji.health.SetStats (0);
 	}
 }

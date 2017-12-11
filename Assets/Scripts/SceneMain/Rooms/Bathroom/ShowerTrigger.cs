@@ -9,6 +9,11 @@ public class ShowerTrigger : MonoBehaviour {
 	public Vector2 offset;
 	bool flagWatering = false;
 
+	public delegate void EnterShower();
+	public static event EnterShower OnEnterShower;
+	public delegate void ExitShower();
+	public static event ExitShower OnExitShower;
+
 	public void Init()
 	{
 		thisMovable.OnHoldEvent += OnHoldEvent;
@@ -30,6 +35,13 @@ public class ShowerTrigger : MonoBehaviour {
 		}
 	}
 
+	void OnTriggerEnter2D(Collider2D other){
+		if(other.tag == Tags.EMOJI_BODY){
+			if (OnEnterShower != null)
+				OnEnterShower ();
+		}
+	}
+
 	void OnTriggerStay2D(Collider2D other)
 	{
 		if(other.tag == Tags.EMOJI_BODY){
@@ -48,6 +60,8 @@ public class ShowerTrigger : MonoBehaviour {
 	{
 		if(other.tag == Tags.EMOJI_BODY){
 			shower.StopDecreasingEmojiFoamState();
+			if (OnExitShower != null)
+				OnExitShower ();
 		}
 	}
 

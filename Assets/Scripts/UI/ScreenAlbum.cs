@@ -21,27 +21,20 @@ public class ScreenAlbum : BaseUI {
 	int tileWidth = 1;
 	int tileHeight = 1;
 	int lastTileWidth = 1;
-	int currentRecordCount = 1;
+	int currentRecordCount = 0;
 
 	float boxSize = 150;
 	float contentBoxMarginX = 50;
 
 	void OnEnable(){
-		//PlayerData.Instance.PlayerEmoji.OnEmojiDead += OnEmojiDead;
 		AlbumTile.OnSelectEmoji += OnSelectEmoji;
 		ScreenPopup.OnSendOffEmoji += OnSendOffEmoji;
 	}
 
 	void OnDisable(){
-		//PlayerData.Instance.PlayerEmoji.OnEmojiDead -= OnEmojiDead;
 		AlbumTile.OnSelectEmoji -= OnSelectEmoji;
 		ScreenPopup.OnSendOffEmoji -= OnSendOffEmoji;
 	}
-
-//	void OnEmojiDead ()
-//	{
-//		AddEmojiRecord();
-//	}
 
 	void OnSelectEmoji (Sprite sprite,string time,float completionRate)
 	{
@@ -56,7 +49,7 @@ public class ScreenAlbum : BaseUI {
 
 	//TODO: create event
 	void OnEmojiTransfer(){
-		AddEmojiRecord();
+		//AddEmojiRecord();
 	}
 
 	public override void InitUI ()
@@ -66,9 +59,26 @@ public class ScreenAlbum : BaseUI {
 		tileHeight = Mathf.CeilToInt (tileCount / tileWidth);
 
 		int tempIdx = 0;
+		int counter = 0;
 		emojiContentBox.sizeDelta = new Vector2 (0, ((float)tileHeight * boxSize) + contentBoxMarginX);
 
-		//TODO: ADJUST TILE DISPLAY
+		currentRecordCount = PlayerPrefs.GetInt (PlayerPrefKeys.Player.EMOJI_RECORD_COUNT, 0);
+
+		if(currentRecordCount >= 0){
+			counter = currentRecordCount;
+			while(counter>0){
+				EmojiType emojiType = PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType;
+				string emojiEntryTime = System.DateTime.Now.ToString ();
+				float completionRate = PlayerData.Instance.PlayerEmoji.emojiExpressions.GetTotalExpressionProgress ();
+
+				PlayerData.Instance.EmojiAlbumData.Add(emojiType);
+				PlayerData.Instance.EmojiAlbumEntryTime.Add(emojiEntryTime);
+				PlayerData.Instance.EmojiCompletionRate.Add(completionRate);
+				counter--;
+			}
+		}
+
+
 		if(currentRecordCount <= 3){
 			tileHeight=1;
 			tileWidth=currentRecordCount;
@@ -96,6 +106,7 @@ public class ScreenAlbum : BaseUI {
 					} else {
 						obj.GetComponent<Button> ().interactable = false;
 					}
+
 					tempIdx++;
 				}
 			}
@@ -106,20 +117,29 @@ public class ScreenAlbum : BaseUI {
 	public void AddEmojiRecord(){
 		Debug.Log("add emoji record");
 		currentRecordCount++;
+		Debug.Log ("record count:" + currentRecordCount);
 		if(currentRecordCount > tileCount){
 			tileCount = currentRecordCount;
 		}
 
-		PlayerData.Instance.EmojiAlbumData.Add(PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType);
-		PlayerData.Instance.EmojiAlbumEntryTime.Add(System.DateTime.Now.ToString());
-		PlayerData.Instance.EmojiCompletionRate.Add(PlayerData.Instance.PlayerEmoji.emojiExpressions.GetTotalExpressionProgress());
+		EmojiType emojiType = PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType;
+		string emojiEntryTime = System.DateTime.Now.ToString ();
+		float completionRate = PlayerData.Instance.PlayerEmoji.emojiExpressions.GetTotalExpressionProgress ();
+
+		PlayerData.Instance.EmojiAlbumData.Add(emojiType);
+		PlayerData.Instance.EmojiAlbumEntryTime.Add(emojiEntryTime);
+		PlayerData.Instance.EmojiCompletionRate.Add(completionRate);
+
 		PlayerPrefs.SetInt(PlayerPrefKeys.Player.EMOJI_RECORD_COUNT,currentRecordCount);
+		PlayerPrefs.SetInt (PlayerPrefKeys.Album.EMOJI_TYPE+currentRecordCount.ToString(), (int)emojiType);
+		PlayerPrefs.SetString (PlayerPrefKeys.Album.ENTRY_TIME+currentRecordCount.ToString(),emojiEntryTime);
+		PlayerPrefs.SetFloat (PlayerPrefKeys.Album.COMPLETION_RATE+currentRecordCount.ToString(),completionRate);
 
 		//set emoji status
 	}
 
 	public void ShowAlbum(){
-		if(currentRecordCount > 1){
+		if(currentRecordCount >= 1){
 			ShowPanelInHotkey(this.gameObject);
 		} else{
 			screenPopup.ShowPopup(PopupType.Warning,PopupEventType.AlbumLocked,false,false);

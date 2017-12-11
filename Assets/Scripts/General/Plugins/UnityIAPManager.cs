@@ -1,20 +1,50 @@
 ﻿using UnityEngine;
+using System;
+using System.Collections;
 using UnityEngine.Purchasing;
 
-public class UnityIAPManager : IStoreListener {
-
+public class UnityIAPManager : MonoBehaviour,IStoreListener {
+	private static UnityIAPManager instance;
     private IStoreController controller;
     private IExtensionProvider extensions;
 
-	public UnityIAPManager () {
-        var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
-        builder.AddProduct("100_gold_coins", ProductType.Consumable, new IDs
-        {
-            {"100_gold_coins_google", GooglePlay.Name},
-            {"100_gold_coins_mac", MacAppStore.Name}
-        });
+    public static UnityIAPManager Instance{get{return instance;}}
 
+    public delegate void FinishBuyProduct(string productId);
+    public event FinishBuyProduct OnFinishBuyProduct;
+
+	public delegate void FailToBuyProduct (string productId);
+	public event FailToBuyProduct OnFailToBuyProduct;
+
+    void Awake(){
+    	if(instance != this && instance != null){
+			Destroy (this.gameObject);
+    	} else{
+			instance = this;
+    	}
+		DontDestroyOnLoad (this.gameObject);
+    }
+
+    void Start(){
+		InitUnityIAP ();
+    }
+
+	public void InitUnityIAP () {
+		//if it's already initialized
+		if(IsInitialized()){
+			return;
+		}
+
+        var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
+		builder.AddProduct (ShortCode.ProductIDs.id_Gem1, ProductType.Consumable);
+		builder.AddProduct (ShortCode.ProductIDs.id_Gem2, ProductType.Consumable);
+		builder.AddProduct (ShortCode.ProductIDs.id_Gem3, ProductType.Consumable);
+		builder.AddProduct (ShortCode.ProductIDs.id_Gem4, ProductType.Consumable);
         UnityPurchasing.Initialize (this, builder);
+    }
+
+    bool IsInitialized(){
+		return (controller != null && extensions != null);
     }
 
     /// <summary>
@@ -34,6 +64,30 @@ public class UnityIAPManager : IStoreListener {
     /// </summary>
     public void OnInitializeFailed (InitializationFailureReason error)
     {
+
+    }
+
+    public void BuyConsumable(string productID){
+		BuyProductID (productID);
+    }
+
+    void BuyProductID(string productID){
+    	if(IsInitialized()){
+			Product product = controller.products.WithID (productID);
+
+			if(product != null && product.availableToPurchase){
+				Debug.Log(string.Format("Purchasing product asychronously: '{0}'", product.definition.id));
+				controller.InitiatePurchase (product);
+			} else{
+				if (OnFailToBuyProduct != null)
+				OnFailToBuyProduct ("Purchase failed. Item is not found or not available to purchase");
+			}
+
+    	} else{
+    		//InitFailed
+			if (OnFailToBuyProduct != null)
+				OnFailToBuyProduct ("Initialization failed");
+    	}
     }
 
     /// <summary>
@@ -43,13 +97,39 @@ public class UnityIAPManager : IStoreListener {
     /// </summary>
     public PurchaseProcessingResult ProcessPurchase (PurchaseEventArgs e)
     {
+    	string purchasedProductID = "";
+		 if(string.Equals(e.purchasedProduct.definition.id,ShortCode.ProductIDs.id_Gem1,StringComparison.Ordinal)){
+			Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", e.purchasedProduct.definition.id));
+			purchasedProductID = ShortCode.ProductIDs.id_Gem1;
+		} else if(string.Equals(e.purchasedProduct.definition.id,ShortCode.ProductIDs.id_Gem2,StringComparison.Ordinal)){
+			Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", e.purchasedProduct.definition.id));
+			purchasedProductID = ShortCode.ProductIDs.id_Gem2;
+		} else if(string.Equals(e.purchasedProduct.definition.id,ShortCode.ProductIDs.id_Gem3,StringComparison.Ordinal)){
+			Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", e.purchasedProduct.definition.id));
+			purchasedProductID = ShortCode.ProductIDs.id_Gem3;
+		} else if(string.Equals(e.purchasedProduct.definition.id,ShortCode.ProductIDs.id_Gem4,StringComparison.Ordinal)){
+			Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", e.purchasedProduct.definition.id));
+			purchasedProductID = ShortCode.ProductIDs.id_Gem4;
+     	} 
+
+     	if(string.IsNullOrEmpty(purchasedProductID)){
+			Debug.Log(string.Format("ProcessPurchase: FAIL. Unrecognized product: '{0}'", e.purchasedProduct.definition.id));
+			if (OnFailToBuyProduct != null)
+				OnFailToBuyProduct ("Purchased failed. Unknown product");
+     	}
+     	else {
+			if (OnFinishBuyProduct != null)
+				OnFinishBuyProduct (purchasedProductID);
+     	}
+
         return PurchaseProcessingResult.Complete;
     }
 
     /// <summary>
     /// Called when a purchase fails.
     /// </summary>
-    public void OnPurchaseFailed (Product i, PurchaseFailureReason p)
+    public void OnPurchaseFailed (Product product, PurchaseFailureReason failureReason)
     {
+		Debug.Log(string.Format("OnPurchaseFailed: FAIL. Product: '{0}', PurchaseFailureReason: {1}", product.definition.storeSpecificId, failureReason));
     }
 }

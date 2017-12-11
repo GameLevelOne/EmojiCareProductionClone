@@ -134,7 +134,6 @@ public class ScreenStats : BaseUI {
 					} else {
 						obj.GetComponent<Image> ().sprite = arrowNeg;
 					}
-					StartCoroutine (ArrowsFX (obj.GetComponent<Image> ()));
 				} else {
 					arrowObj [i].SetActive (false);
 				}

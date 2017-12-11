@@ -10,8 +10,8 @@ public class PlayerData : MonoBehaviour {
 
 	public PlayerInventory inventory = new PlayerInventory();
 
-	int defaultCoin = 50000; //TODO: ADJUST THIS LATER
-	int defulatGem = 500; //TODO: ADJUST THIS LATER
+	int defaultCoin = 1000; //TODO: ADJUST THIS LATER
+	int defulatGem = 0; //TODO: ADJUST THIS LATER
 
 	public Transform emojiParentTransform;
 
@@ -59,7 +59,7 @@ public class PlayerData : MonoBehaviour {
 	}
 
 	public string EmojiName{
-		get{return PlayerPrefs.GetString (PlayerPrefKeys.Emoji.EMOJI_NAME, "Emoji");}
+		get{return PlayerPrefs.GetString (PlayerPrefKeys.Emoji.EMOJI_NAME, "");}
 		set{PlayerPrefs.SetString (PlayerPrefKeys.Emoji.EMOJI_NAME, value);}
 	}
 
@@ -191,8 +191,7 @@ public class PlayerData : MonoBehaviour {
 
 	public void InitPlayerEmoji(GameObject playerEmoji)
 	{
-		GameObject temp = (GameObject) Instantiate(playerEmoji);
-		temp.transform.SetParent(emojiParentTransform,true);
+		GameObject temp = (GameObject) Instantiate(playerEmoji,emojiParentTransform);
 
 		this.playerEmoji = temp.GetComponent<Emoji>();
 		this.playerEmoji.Init();

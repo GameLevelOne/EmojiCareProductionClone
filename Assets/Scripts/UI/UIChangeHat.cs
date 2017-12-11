@@ -17,10 +17,8 @@ public class UIChangeHat : MonoBehaviour {
 
 	void OnClickHatUIItem (string hatID, int price, bool isBought, GameObject hatObj)
 	{
-		if(currentHat !=null){
-			PlayerData.Instance.PlayerEmoji.body.RemoveHat ();
-			currentHat = hatObj;
-		}
+		currentHat = hatObj;
+		
 		PlayerData.Instance.PlayerEmoji.body.WearHat (hatID, hatObj);
 	}
 

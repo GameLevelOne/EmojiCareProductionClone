@@ -24,9 +24,9 @@ public class Seed : MonoBehaviour {
 
 	#region events
 	public delegate void DragSeed(int price);
-	public static event DragSeed OnDragSeed;
+	public event DragSeed OnDragSeed;
 	public delegate void EndDragSeed(bool isBought);
-	public static event EndDragSeed OnEndDragSeed;
+	public event EndDragSeed OnEndDragSeed;
 	#endregion
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -46,10 +46,7 @@ public class Seed : MonoBehaviour {
 				soilTarget.Add(other.gameObject);
 			}
 		}
-
 	}
-
-
 
 	public void OnTriggerExit2D(Collider2D other)
 	{
@@ -84,8 +81,9 @@ public class Seed : MonoBehaviour {
 			if(!soilTarget[0].GetComponent<GardenField>().hasPlant){
 				if(PlayerData.Instance.PlayerCoin >= price){
 					soilTarget[0].GetComponent<GardenField>().PlantSeed(type);
-					if(OnSeedPlanted != null) OnSeedPlanted(this);
 					if(OnEndDragSeed != null) OnEndDragSeed(true);
+					if(OnSeedPlanted != null) OnSeedPlanted(this);
+
 					Destroy(gameObject);
 					return;
 				}

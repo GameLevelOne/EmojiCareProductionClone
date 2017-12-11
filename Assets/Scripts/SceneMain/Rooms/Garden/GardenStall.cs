@@ -10,6 +10,8 @@ public class GardenStall : BaseFurniture {
 	public event StallSeedTick OnStallSeedTick;
 	#region attributes
 	[Header("Stall Attributes")]
+	public GardenStallTimer gardenStallTimer;
+	public UICoin uiCoin;
 	public List<GameObject> AvailableItems = new List<GameObject>();
 	public List<GameObject> AvailableSeeds = new List<GameObject>();
 
@@ -38,16 +40,20 @@ public class GardenStall : BaseFurniture {
 
 	void OnEnable(){
 		if(AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds += OnFinishWatchVideoAds;
+		GardenStallTimer.OnRefillStallWithGems += OnRefillStallWithGems;
 	}
 
 	void OnDisable(){
 		if(AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds -= OnFinishWatchVideoAds;
+		GardenStallTimer.OnRefillStallWithGems -= OnRefillStallWithGems;
 	}
 
 	public void Init()
 	{
 		if(!hasInit){
 			hasInit = true;
+
+			gardenStallTimer.Init();
 
 			if(!PlayerPrefs.HasKey(PlayerPrefKeys.Game.Garden.ITEM_RESTOCK_TIME)){
 				RestockItems();
@@ -152,6 +158,9 @@ public class GardenStall : BaseFurniture {
 		StallItem item = tempItem.GetComponent<StallItem>();
 		item.Init(itemIndex);
 		item.OnItemPicked += OnItemPicked;
+		item.OnDragStallItem += ShowUICoin;
+		item.OnEndDragStallItem += HideUICoin;
+
 
 		currentItems.Add(tempItem);
 		SetCurrentItemData(itemIndex,(int)item.type);
@@ -165,6 +174,9 @@ public class GardenStall : BaseFurniture {
 		Seed seed = tempSeed.GetComponent<Seed>();
 		seed.Init(seedIndex);
 		seed.OnSeedPlanted += OnSeedPlanted;
+		seed.OnDragSeed += ShowUICoin;
+		seed.OnEndDragSeed += HideUICoin;
+
 
 		currentSeeds.Add(tempSeed);
 		SetCurrentSeedData(seedIndex,(int)seed.type);
@@ -174,20 +186,22 @@ public class GardenStall : BaseFurniture {
 	void OnItemPicked(StallItem currentItem)
 	{
 		currentItem.OnItemPicked -= OnItemPicked;
+		currentItem.OnDragStallItem -= ShowUICoin;
+		currentItem.OnEndDragStallItem -= HideUICoin;
 
 		int index = currentItem.itemIndex;
 		SetCurrentItemData(currentItem.itemIndex,-1);
-		Destroy(currentItem.gameObject);
 		
 		currentItems[index] = null;
 	}
 	void OnSeedPlanted(Seed currentSeed)
 	{
 		currentSeed.OnSeedPlanted -= OnSeedPlanted;
+		currentSeed.OnDragSeed -= ShowUICoin;
+		currentSeed.OnEndDragSeed -= HideUICoin;
 
 		int index = currentSeed.seedIndex;
 		SetCurrentSeedData(currentSeed.seedIndex,-1);
-		Destroy(currentSeed.gameObject);
 
 		currentSeeds[index] = null;
 	}
@@ -198,6 +212,25 @@ public class GardenStall : BaseFurniture {
 		} else if(eventName == AdEvents.RestockSeeds){
 			RestockSeeds ();
 		}
+	}
+
+	void OnRefillStallWithGems (AdEvents eventName)
+	{
+		if(eventName == AdEvents.RestockStall){
+			RestockItems ();
+		} else if(eventName == AdEvents.RestockSeeds){
+			RestockSeeds ();
+		}
+	}
+
+	//coin panel
+	void ShowUICoin(int price)
+	{
+		uiCoin.ShowUI(price,true);
+	}
+	void HideUICoin(bool isBought)
+	{
+		uiCoin.CloseUI(isBought);
 	}
 
 	//save load seed

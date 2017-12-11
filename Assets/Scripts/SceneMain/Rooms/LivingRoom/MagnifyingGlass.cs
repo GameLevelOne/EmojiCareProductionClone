@@ -4,34 +4,38 @@ using UnityEngine;
 public class MagnifyingGlass : TriggerableFurniture {
 	#region attributes
 	[Header("MagnifyingGlass Attributes")]
+	public MovableFurniture thisMovable;
 	public FloatingStatsManager popupStats;
+	
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
-	
+	void Start()
+	{
+		thisMovable.OnItemReleased += HideStatsPopup;
+	}
+
+	void OnDestroy()
+	{
+		thisMovable.OnItemReleased -= HideStatsPopup;
+	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
-	protected override void OnTriggerEnter2D (Collider2D other)
-	{
-		base.OnTriggerEnter2D (other);
-		if(holding && other.tag == Tags.EMOJI_BODY){
-				//show stats popup
-			popupStats.ShowStatsFromMagnifyingGlass();
-		}
-	}
 
-	void OnTriggerExit2D(Collider2D other)
-	{
-		if(other.tag == Tags.EMOJI_BODY){
-				//hide stats popup
-
-		}
-	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
-	
+	public void ShowStatsPopup()
+	{
+//		Debug.Log ("scan");
+		popupStats.ShowStatsFromMagnifyingGlass();
+	}
+	public void HideStatsPopup()
+	{
+//		Debug.Log ("scan end");
+		popupStats.HideStatsFromMagnifyingGlass ();
+	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------	
 }

@@ -9,17 +9,30 @@ public class BaseFurniture : MonoBehaviour {
 	public bool flagEditMode = false;
 	public GameObject editButton;
 	public int currentVariant = 0;
+
+	protected string prefKeyVariant;
 	#endregion
 //------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
 	public virtual void InitVariant()
 	{
-//		print(gameObject.name);
+		variant[0].SetBought(gameObject.name,0);
+
+		if(variant.Length>1){
+			for(int i=1;i<variant.Length;i++){
+				variant[i].bought = variant [i].GetBoughtData (gameObject.name, i);
+			}
+		}
+
+		prefKeyVariant = PlayerPrefKeys.Game.FURNITURE_VARIANT+gameObject.name;
+		print(prefKeyVariant);
+		currentVariant = PlayerPrefs.GetInt(prefKeyVariant,0);
+
 		for(int i = 0;i<thisSprite.Length;i++) {
-			
 			thisSprite[i].sprite = variant[currentVariant].sprite[i];
 		}
 		SetEditButton (false);
+
 	}
 	#endregion
 //------------------------------------------------------------------------------------------------------------------------------------------------
@@ -34,6 +47,22 @@ public class BaseFurniture : MonoBehaviour {
 	}
 	public void OnClickFurniture(){
 		Debug.Log ("clicked");
+	}
+
+	public void OnVariantBought(int variantIndex)
+	{
+		variant[variantIndex].SetBought(gameObject.name,variantIndex);
+		PlayerPrefs.SetInt(prefKeyVariant,variantIndex);
+		print (gameObject.name + " OnVariantBought " + PlayerPrefs.GetInt (prefKeyVariant));
+		currentVariant = variantIndex;
+		SetCurrentVariant();
+	}
+
+	public virtual void SetCurrentVariant()
+	{
+		for(int i = 0;i<thisSprite.Length;i++) {
+			thisSprite[i].sprite = variant[currentVariant].sprite[i];
+		}
 	}
 
 	//TEMP

@@ -12,10 +12,17 @@ public class Bedroom : BaseRoom {
 	Color brightColor = new Color(0,0,0,0);
 	Color dimmedColor = new Color(0,0,0,0.5f);
 
-	public void Init()
+	public override void InitRoom ()
 	{
+		base.InitRoom ();
+
 		RegisterDarkLightEvent();
 		randomBedroomObjectController.Init();
+	}
+
+	public void Init()
+	{
+		
 	}
 
 	void RegisterDarkLightEvent()
@@ -32,15 +39,21 @@ public class Bedroom : BaseRoom {
 		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent -= OnEmojiSleepEvent;
 	}
 
+	public void DimLight()
+	{
+		StartCoroutine(fadeLight(brightColor,dimmedColor));
+	}
+
 	void OnEmojiSleepEvent (bool sleeping)
 	{
 		if(sleeping){
-			StartCoroutine(fadeLight(brightColor,dimmedColor));
+			DimLight();
 		}
 	}
 
 	public void OnEmojiWake()
 	{
+		print("BEDROOM TURN ON LIGHT ");
 		StartCoroutine(fadeLight(dimmedColor,brightColor));
 	}
 

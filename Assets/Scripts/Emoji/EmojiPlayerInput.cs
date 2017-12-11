@@ -13,6 +13,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 	public GameObject touchInputObject;
 
 	bool flagTapCooldown = false;
+	public bool flagStrokeToHold = false;
 	public bool flagHold = false;
 	public bool flagStroke = false;
 	public bool flagTouching = false;
@@ -62,6 +63,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 	float touchX;
 	float prevHoldFactor = 0f;
 	float prevXPos = 0f;
+	float startSleepStamina = 0f;
 
 	int shakeCounter = 0;
 	bool shakeExpressionRetain = false;
@@ -74,6 +76,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 			if(!flagSleeping){
 				flagHold = false;
 				flagStroke = false;
+				flagStrokeToHold = false;
 				flagTouching = true;
 			}
 		}
@@ -83,16 +86,26 @@ public class EmojiPlayerInput : MonoBehaviour {
 	{
 		if(interactable){
 			if(!flagSleeping){
+				StopAllCoroutines();
 				if ((!flagHold) && (!flagStroke)) {
 					Poke();
 				} else if (flagHold) {
 					Fall();
-				} else {
+				} else if(flagStrokeToHold){
+					Fall();
+				}else {
 					EndStroke();
 				}
 				flagHold = false;
 				flagStroke = false;
 				flagTouching = false;
+				flagStrokeToHold = false;
+
+				emoji.thisRigidbody.velocity = Vector2.zero;
+				emoji.thisRigidbody.simulated = true;
+				emoji.body.thisCollider.enabled = true;
+//				print("COLLIDER = "+emoji.body.thisCollider.enabled+", RIGIDBODY = "+emoji.thisRigidbody.simulated);
+//				print("POINTER UP JING");
 			}else{
 				Wake();
 			}
@@ -440,6 +453,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 	public void OnBlocksMinigameDone()
 	{
 		if(!blocksRetaining){
+			//PlayerData.Instance.PlayerEmoji.gameObject.SetActive (true);
 			emoji.emojiExpressions.SetExpression (EmojiExpressionState.HAPPY, 2f);
 			emoji.happiness.ModStats(happinessModOnBlocks);
 			StartCoroutine(_RetainBlocksMinigameCooldown);
@@ -458,17 +472,21 @@ public class EmojiPlayerInput : MonoBehaviour {
 	public void OnDanceMatMinigameDone()
 	{
 		if(!danceMatRetaining){
+			Debug.Log ("ondancematdone");
 			emoji.emojiExpressions.SetExpression (EmojiExpressionState.HAPPY, 2f);
 			emoji.happiness.ModStats(happinessModOnDanceMat);
 			StartCoroutine(_RetainDanceMatMinigameCooldown);
 		}	
 	}
 
-	public void Sleep()
+	public void Sleep ()
 	{
-		if(!flagSleeping){
+		if (!flagSleeping) {
 			flagSleeping = true;
-			if(emoji.stamina != null) emoji.stamina.statsModifier = 0.004f;
+			if (emoji.stamina != null) {
+				startSleepStamina = emoji.stamina.StatValue;
+				emoji.stamina.statsModifier = 0.004f;
+			}
 			emoji.emojiExpressions.SetExpression(EmojiExpressionState.SLEEP,-1);
 		}
 	}
@@ -522,6 +540,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 	const string _StartHold = "StartHold";
 	IEnumerator StartHold()
 	{
+		flagStrokeToHold = true;
 		emoji.triggerFall.thisCollider.enabled = true;
 		emoji.triggerFall.ClearColliderList();
 		emoji.body.thisCollider.enabled = false;
@@ -531,7 +550,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 		emoji.emojiExpressions.SetExpression(EmojiExpressionState.HOLD,-1);
 
 		Vector3 currentPos = transform.position;
-
+//		print("START HOLD WOI AAAAAAAA");
 		float t = 0;
 		while(t < 1f){
 			
@@ -539,10 +558,11 @@ public class EmojiPlayerInput : MonoBehaviour {
 			t+= Time.deltaTime*5;
 			yield return null;
 		}
+//		print("START HOLD WOI BBBBBBBB");
 		transform.position = touchTargetPosition;
 		prevMoveVector = new Vector2(touchTargetPosition.x,touchTargetPosition.y);
 		flagHold = true;
-
+		flagStrokeToHold = false;
 	}
 
 	const string _Falling = "Falling";

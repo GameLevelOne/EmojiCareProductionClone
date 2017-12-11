@@ -12,134 +12,131 @@ public enum AnimState{
 }
 
 public class GachaReward : BaseUI {
+	[Header("Gacha Attribute")]
 	public Button touchArea;
-	public Text gachaCountTextInButton;
+	public Text textGachaCount;
 	public Text rewardAmount;
+	public Text textGachaCountInScreen;
 	public Image rewardIcon;
 	public Animator gachaAnim;
 	public GameObject screenGacha;
 	public GameObject buttonGacha;
+	public GameObject shiningImage;
+	public GameObject buttonBack;
 
 	public Sprite iconCoin;
 	public Sprite iconGem;
 	public Sprite[] iconIngredients;
 
+	public int gachaCount = 0;
+
+	[Header("Chances (1 = 100%)")]
+	[Range(0,1)] public float rateCoin = 0.7f;
+	[Range(0,1)] public float rateGem = 0.05f;
+	[Range(0,1)] public float rateIngredients = 0.22f;
+	[Range(0,1)] public float rateCostume = 0f;
+
+	[Header("Reward Value Range")]
+	public int minGem = 1;
+	public int maxGem = 3;
+	public int minCoin = 10;
+	public int maxCoin = 100;
+
 	List<HatType> unlockedHats = new List<HatType> ();
-
-	float rateCoin = 0f;
-	float rateGem = 0f;
-	float rateIngredients = 0f;
-	float rateCostume = 0f;
-
-	int gachaCount = 0;
-	int minGem = 0;
-	int maxGem = 0;
-	int minCoin = 0;
-	int maxCoin = 0;
 
 	AnimState currentAnimState = AnimState.CloseGacha;
 
-	//TEMP
-	string gachaPrefKey = "GachaCount";
-
+	//constants
+	const string gachaPrefKey = "GachaCount";
+	const string gachaAnimParameter = "OpenGacha";
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+	#region initializations
 	void Start(){
 		Init ();
+		//GetGachaReward();
+		//GetGachaReward();
 	}
 
-	//INIT TEMP DATA
+	void OnDisable(){
+		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent -= OnEmojiSleepEvent;
+	}
+
 	public void Init(){
-		SetGachaRates (0.7f, 0.05f, 0.22f, 0f);
-		SetMinMaxCoinGem (10, 100, 1, 3);
+		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent += OnEmojiSleepEvent;
 		gachaCount = PlayerPrefs.GetInt (gachaPrefKey, 0);
-		gachaCountTextInButton.text = gachaCount.ToString ();
+		textGachaCount.text = gachaCount.ToString ();
+		if(gachaCount <= 0) buttonGacha.SetActive(false);
 	}
-
-	public void OpenGacha(){
-		//TODO: add animations later
-		Debug.Log ("GachaCount: " + gachaCount);
-		if(gachaCount>0){
-			gachaCount--;
-			StartGacha ();
-		}
-	}
-
-	public void TapGachaPack(){
-		if(currentAnimState == AnimState.CloseGacha){
-			//opening
-			currentAnimState = AnimState.OpenGacha;
-			gachaCount--;
-			PlayerPrefs.SetInt (gachaPrefKey, gachaCount);
-			gachaCountTextInButton.text = gachaCount.ToString ();
-			StartGacha ();
-			StartCoroutine (WaitForAnim (AnimState.OpenGacha.ToString ()));
-		} else if(currentAnimState == AnimState.OpenGacha){
-			//closing
-			currentAnimState = AnimState.CloseGacha;
-			if(gachaCount>0){
-				StartCoroutine (WaitForAnim (AnimState.CloseGacha.ToString ()));
-			} else{
-				base.CloseUI (screenGacha);
-			}
-		}
-	}
-
+	#endregion
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+	#region mechanics
+	//button gacha
 	public void OpenScreenGacha ()
 	{
 		if (gachaCount > 0) {
 			base.ShowUI (screenGacha);
+			gachaAnim.SetBool (gachaAnimParameter, false);
+			textGachaCountInScreen.gameObject.SetActive(true);
+			textGachaCountInScreen.text = gachaCount.ToString();
 			buttonGacha.SetActive (false);
 		}
 	}
 
-	IEnumerator WaitForAnim(string animBool){
-		gachaAnim.SetBool (animBool, true);
-		touchArea.interactable = false;
-		yield return new WaitForSeconds (0.35f);
-		gachaAnim.SetBool (animBool, false);
-		touchArea.interactable = true;
+	public void CloseScreenGacha()
+	{
+		currentAnimState = AnimState.CloseGacha;
+		base.CloseUI(screenGacha);
+
+		if(gachaCount > 0){
+			buttonGacha.SetActive (true);
+		}
 	}
 
-	void SimulateGacha()
-	{
-		int coin = 0;
-		int gem = 0;
-		int ingr = 0;
-		int hat = 0;
-		for(int i=0;i<100;i++){
-			if (Random.value >= 0f && Random.value < rateGem) {
-				gem++;
-			} else if (Random.value >= rateGem && Random.value < (rateGem + rateCostume)) {
-				hat++;
-			} else if (Random.value >= (rateGem + rateCostume) && Random.value < (rateGem + rateCostume + rateIngredients)) {
-				ingr++;
-			} else {
-				coin++;
+	//button gacha screen
+	public void TapGachaPack(){
+		if(currentAnimState == AnimState.CloseGacha){
+			currentAnimState = AnimState.OpenGacha;
+
+			gachaCount--;
+			PlayerPrefs.SetInt (gachaPrefKey, gachaCount);
+			textGachaCount.text = gachaCount.ToString ();
+			if(gachaCount <= 0){
+				textGachaCountInScreen.gameObject.SetActive(false);
+			}else{
+				textGachaCountInScreen.gameObject.SetActive(true);
+				textGachaCountInScreen.text = gachaCount.ToString();
+			}
+
+
+			gachaAnim.SetBool (gachaAnimParameter, true);
+			StartGacha ();
+		}else if(currentAnimState == AnimState.OpenGacha){
+			currentAnimState = AnimState.CloseGacha;
+			if(gachaCount > 0){
+				gachaAnim.SetBool (gachaAnimParameter, false);
+			}else{
+				base.CloseUI(screenGacha);
 			}
 		}
-		Debug.Log ("total coin: " + coin.ToString ());
-		Debug.Log ("total gem: " + gem.ToString ());
-		Debug.Log ("total ingredients: " + ingr.ToString ());
-		Debug.Log ("total hat: " + hat.ToString ());
-		Debug.Log ("rate coin: " + ((float)coin / 100).ToString());
-		Debug.Log ("rate gem: " + ((float)gem / 100).ToString ());
-		Debug.Log ("rate ingredients: " + ((float)ingr / 100).ToString ());
-		Debug.Log ("rate hat: " + ((float)hat / 100).ToString ());
+
+
+		//StartCoroutine (WaitForAnim (AnimState.OpenGacha.ToString ()));
+
+//		if(currentAnimState == AnimState.CloseGacha){
+//			//opening
+//
+//		} else if(currentAnimState == AnimState.OpenGacha){
+//			//closing
+//			currentAnimState = AnimState.CloseGacha;
+//			if(gachaCount>0){
+//				StartCoroutine (WaitForAnim (AnimState.CloseGacha.ToString ()));
+//			} else{
+//				base.CloseUI (screenGacha);
+//			}
+//		}
 	}
 
-	public void SetGachaRates(float rateCoin,float rateGem,float rateIngredients,float rateCostume){
-		this.rateCoin = rateCoin;
-		this.rateGem = rateGem;
-		this.rateIngredients = rateIngredients;
-		this.rateCostume = rateCostume;
-	}
-
-	public void SetMinMaxCoinGem(int minCoin,int maxCoin,int minGem,int maxGem){
-		this.minCoin = minCoin;
-		this.maxCoin = maxCoin;
-		this.minGem = minGem;
-		this.maxGem = maxGem;
-	}
-
+	//GACHA MECHANICS
 	public void StartGacha (){
 		RewardType type = RewardType.Coin;
 		if (Random.value >= 0f && Random.value < rateGem) {
@@ -152,11 +149,6 @@ public class GachaReward : BaseUI {
 			type = RewardType.Coin;
 		}
 		ProcessReward (type);
-	}
-
-	public void GetGachaReward(){
-		gachaCount++; 
-		gachaCountTextInButton.text = gachaCount.ToString ();
 	}
 
 	void ProcessReward(RewardType type){
@@ -185,19 +177,15 @@ public class GachaReward : BaseUI {
 	}
 
 	void UpdateRewardDisplay(RewardType type,IngredientType ingredientType = IngredientType.COUNT,int amount=1){
-		if(amount == 1){
-			rewardAmount.gameObject.SetActive (false);
-		} else{
-			rewardAmount.gameObject.SetActive (true);
-			rewardAmount.text = "x" + amount.ToString ();
-		}
-
 		if(type == RewardType.Coin){
 			rewardIcon.sprite = iconCoin;
+			rewardAmount.text = "x" + amount.ToString();
 		} else if(type == RewardType.Gem){
 			rewardIcon.sprite = iconGem;
+			rewardAmount.text = "x" + amount.ToString();
 		} else if(type == RewardType.Ingredients){
 			rewardIcon.sprite = iconIngredients [(int)ingredientType];
+			rewardAmount.text = "1 " + ingredientType.ToString();
 		} 
 	}
 
@@ -218,4 +206,58 @@ public class GachaReward : BaseUI {
 		}
 	}
 
+	void OnEmojiSleepEvent(bool isSleeping){
+		buttonGacha.GetComponent<Button> ().interactable = !isSleeping;
+	}
+	#endregion
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+	#region public modules
+	//this is called when 1 emoji expression progress reach 100%
+	public void GetGachaReward(){
+		gachaCount++; 
+		PlayerPrefs.SetInt(gachaPrefKey,gachaCount);
+		textGachaCount.text = gachaCount.ToString ();
+
+		if(gachaCount > 0) buttonGacha.SetActive(true);
+	}
+
+	#endregion
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+	#region coroutines
+	IEnumerator WaitForAnim(string animBool){
+		gachaAnim.SetBool (animBool, true);
+
+		yield return new WaitForSeconds (0.35f);
+		gachaAnim.SetBool (animBool, false);
+
+	}
+	#endregion
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+	//unused
+//	void SimulateGacha()
+//	{
+//		int coin = 0;
+//		int gem = 0;
+//		int ingr = 0;
+//		int hat = 0;
+//		for(int i=0;i<100;i++){
+//			if (Random.value >= 0f && Random.value < rateGem) {
+//				gem++;
+//			} else if (Random.value >= rateGem && Random.value < (rateGem + rateCostume)) {
+//				hat++;
+//			} else if (Random.value >= (rateGem + rateCostume) && Random.value < (rateGem + rateCostume + rateIngredients)) {
+//				ingr++;
+//			} else {
+//				coin++;
+//			}
+//		}
+//		Debug.Log ("total coin: " + coin.ToString ());
+//		Debug.Log ("total gem: " + gem.ToString ());
+//		Debug.Log ("total ingredients: " + ingr.ToString ());
+//		Debug.Log ("total hat: " + hat.ToString ());
+//		Debug.Log ("rate coin: " + ((float)coin / 100).ToString());
+//		Debug.Log ("rate gem: " + ((float)gem / 100).ToString ());
+//		Debug.Log ("rate ingredients: " + ((float)ingr / 100).ToString ());
+//		Debug.Log ("rate hat: " + ((float)hat / 100).ToString ());
+//	}
 }

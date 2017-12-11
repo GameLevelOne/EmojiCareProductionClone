@@ -11,6 +11,8 @@ public class Shower : TriggerableFurniture {
 
 	[Header("Do Not Modify")]
 	bool flagDecreasingEmojiFoamState = false;
+	float currentHygieneStat = 0f;
+	float hygieneMod = 0f;
 
 	public override void InitVariant ()
 	{
@@ -20,7 +22,7 @@ public class Shower : TriggerableFurniture {
 
 	public void ModEmojiHygiene()
 	{
-		float hygieneMod = hygieneModifier + ((PlayerData.Instance.PlayerEmoji.body.foamState / 10f) * hygieneModifier);
+		hygieneMod = hygieneModifier + ((PlayerData.Instance.PlayerEmoji.body.foamState / 10f) * hygieneModifier);
 		PlayerData.Instance.PlayerEmoji.hygiene.statsModifier = hygieneMod;
 		if(!flagDecreasingEmojiFoamState){
 			flagDecreasingEmojiFoamState = true;
@@ -28,20 +30,20 @@ public class Shower : TriggerableFurniture {
 		}
 	}
 
-	public void StopDecreasingEmojiFoamState()
+	public void StopDecreasingEmojiFoamState ()
 	{
-		StopCoroutine(_StartDecreasingEmojiFoamState);
+		StopCoroutine (_StartDecreasingEmojiFoamState);
 
 		PlayerData.Instance.PlayerEmoji.ResetEmojiStatsModifier();
 		PlayerData.Instance.PlayerEmoji.emojiExpressions.ResetExpressionDuration();
 
 		flagDecreasingEmojiFoamState = false;
-
 	}
 
 	const string _StartDecreasingEmojiFoamState = "StartDecreasingEmojiFoamState";
 	IEnumerator StartDecreasingEmojiFoamState()
 	{
+		currentHygieneStat = PlayerData.Instance.PlayerEmoji.hygiene.StatValue;
 		if(PlayerData.Instance.PlayerEmoji != null && PlayerData.Instance.PlayerEmoji.body.foamState > 0f){
 			while(PlayerData.Instance.PlayerEmoji.body.foamState > 0f){
 				yield return null;

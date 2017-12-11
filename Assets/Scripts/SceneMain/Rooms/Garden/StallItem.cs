@@ -20,13 +20,14 @@ public class StallItem : MonoBehaviour {
 	public bool inStall = true;
 	Vector3 startPos;
 	bool isBought = false;
+	Basket basket;
 	#endregion
 
 	#region events
 	public delegate void DragStallItem(int price);
-	public static event DragStallItem OnDragStallItem;
+	public event DragStallItem OnDragStallItem;
 	public delegate void EndDragStallItem(bool isBought);
-	public static event EndDragStallItem OnEndDragStallItem;
+	public event EndDragStallItem OnEndDragStallItem;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
@@ -43,6 +44,7 @@ public class StallItem : MonoBehaviour {
 	{
 		if (!inStall) {
 			if (other.tag == Tags.BASKET) {
+				basket = other.transform.parent.GetComponent<Basket>();
 				CheckPlayerCoin();
 			}
 		}
@@ -52,11 +54,11 @@ public class StallItem : MonoBehaviour {
 	{
 		if(PlayerData.Instance.PlayerCoin>=price){
 			StopAllCoroutines();
-
-			if (OnItemPicked != null) OnItemPicked (this);
 			if(OnEndDragStallItem != null) OnEndDragStallItem (true);
+			if (OnItemPicked != null) OnItemPicked (this);
+
 			PlayerData.Instance.inventory.ModIngredientValue (type, 1);
-	
+			basket.Animate();
 			Destroy (this.gameObject);
 		}else{
 			if(OnEndDragStallItem != null) OnEndDragStallItem (false);

@@ -14,7 +14,7 @@ public class EmojiStats {
 
 	}
 
-	public delegate void ShowSingleStatBar (int type, float mod);
+	public delegate void ShowSingleStatBar (int type, float mod,float startValue);
 	public static event ShowSingleStatBar OnShowSingleStatBar;
 	[Header("StatAttribute")]
 	string prefKey;
@@ -71,7 +71,7 @@ public class EmojiStats {
 		StatValue += (mod * DebugModStats);
 		AdjustValue();
 		if(OnShowSingleStatBar != null){
-			OnShowSingleStatBar ((int)EmojiStatsState.Happiness, mod); //TOOD: adjust type?
+			OnShowSingleStatBar ((int)EmojiStatsState.Happiness, mod,0); //TODO: adjust type?
 		}
 	}
 

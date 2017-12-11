@@ -29,7 +29,7 @@ public class ScreenEmojiTransfer : BaseUI {
 		this.sceneLoader = sceneLoader;
 		emojiIcon.sprite = sprite;
 
-		screenAlbum.AddEmojiRecord();
+		//screenAlbum.AddEmojiRecord();
 	}
 
 	public void OnClickContinue(){

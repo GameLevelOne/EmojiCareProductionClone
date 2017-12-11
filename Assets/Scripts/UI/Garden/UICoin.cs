@@ -5,17 +5,36 @@ using UnityEngine.UI;
 
 public class UICoin : MonoBehaviour {
 	public Text textCurrentCoin;
+	public Text textCurrentGem;
 	public Text textItemPrice;
+	public GameObject coinIcon;
+	public GameObject gemIcon;
 
 	string boolOpenBox = "coinBoxOpen";
 	int currentCoin=0;
+	int currentGem=0;
 	int currentPrice=0;
 	bool isBought = false;
 
-	public void ShowUI(int price){
-		currentCoin = PlayerData.Instance.PlayerCoin;
+	public void ShowUI (int price, bool isCoin)
+	{
+		if (isCoin) {
+			coinIcon.SetActive (true);
+			gemIcon.SetActive (false);
+			textCurrentCoin.gameObject.SetActive (true);
+			textCurrentGem.gameObject.SetActive (false);
+			currentCoin = PlayerData.Instance.PlayerCoin;
+			UpdateDisplay (currentCoin, price,isCoin);
+		} else {
+			coinIcon.SetActive (false);
+			gemIcon.SetActive (true);
+			textCurrentCoin.gameObject.SetActive (false);
+			textCurrentGem.gameObject.SetActive (true);
+			currentGem = PlayerData.Instance.PlayerGem;
+			UpdateDisplay (currentGem, price,isCoin);
+		}
 		currentPrice = price;
-		UpdateDisplay (currentCoin, currentPrice);
+
 		GetComponent<Animator> ().SetBool (boolOpenBox,true);
 	}
 
@@ -24,29 +43,35 @@ public class UICoin : MonoBehaviour {
 		yield return new WaitForSeconds(0.16f);
 	}
 
-	void UpdateDisplay(int currentCoin,int itemPrice){
-		textCurrentCoin.text = currentCoin.ToString();
-		textItemPrice.text = itemPrice.ToString();
-
-		if(currentCoin < itemPrice){
-			textCurrentCoin.color = Color.red;
+	void UpdateDisplay(int currentCoin,int itemPrice,bool isCoin){
+		if(isCoin){
+			textCurrentCoin.text = currentCoin.ToString("N0");
+			if(currentCoin < itemPrice){
+				textCurrentCoin.color = Color.red;
+			} else{
+				textCurrentCoin.color = Color.black;
+			}
 		} else{
-			textCurrentCoin.color = Color.black;
+			textCurrentGem.text = currentCoin.ToString("N0");
+			if(currentGem < itemPrice){
+				textCurrentGem.color = Color.red;
+			} else{
+				textCurrentGem.color = Color.black;
+			}
 		}
+		textItemPrice.text = "-"+itemPrice.ToString();
 	}
 
 	public void CloseUI(bool isBought){
-		Debug.Log ("close ui");
+//		Debug.Log ("close ui");
 		if(isBought){
-			Debug.Log ("bought");
+//			Debug.Log ("bought");
 			PlayerData.Instance.PlayerCoin -= currentPrice;
 			currentCoin -= currentPrice;
-			//StartCoroutine (AnimateCoin ());
-			textCurrentCoin.text = currentCoin.ToString ();
-			StartCoroutine (AutoCloseUI ());
+			StartCoroutine (AnimateCoin ());
 		} else{
-			Debug.Log ("back");
-			StartCoroutine (AutoCloseUI ());
+//			Debug.Log ("back");
+			GetComponent<Animator> ().SetBool (boolOpenBox,false);
 		}
 	}
 
@@ -60,7 +85,7 @@ public class UICoin : MonoBehaviour {
 			textCurrentCoin.text = current.ToString ();
 			yield return null;
 		}
-
-		StartCoroutine (AutoCloseUI ());
+		textCurrentCoin.text = currentCoin.ToString ();
+		GetComponent<Animator> ().SetBool (boolOpenBox,false);
 	}
 }

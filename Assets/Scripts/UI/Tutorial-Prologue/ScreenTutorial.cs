@@ -43,6 +43,8 @@ public enum TutorialArrowType{
 }
 
 public class ScreenTutorial : BaseUI {
+	public Vector3[] dialogBoxPositions; //default,bathroom,kitchen
+
 	public string[] firstVisit;
 	public string[] idleLivingRoom;
 	public string[] firstBedroom;
@@ -66,6 +68,7 @@ public class ScreenTutorial : BaseUI {
 
 	public ProloguePopupName popupName;
 	public GameObject screenTutorialObj;
+	public Transform dialogBox;
 	public Text dialogText;
 
 	List<TutorialType> statsTutorialPanels = new List<TutorialType> ();
@@ -144,9 +147,12 @@ public class ScreenTutorial : BaseUI {
 		popupName.ShowUI(popupName.gameObject);
 	}
 
-	public void ClosePopup(){
-		popupName.CloseUI (popupName.gameObject);
-		OnClickNext ();
+	public void ClosePopup ()
+	{
+		if(!string.IsNullOrEmpty(PlayerData.Instance.EmojiName)){
+			popupName.CloseUI (popupName.gameObject);
+			OnClickNext ();
+		}
 	}
 
 	public void ShowFirstDialog(TutorialType type){
@@ -158,37 +164,54 @@ public class ScreenTutorial : BaseUI {
 
 		if(type == TutorialType.IdleLivingRoom){
 			dialogText.text = idleLivingRoom [0];
+			dialogBox.localPosition = dialogBoxPositions [0];
 		} else if(type == TutorialType.FirstBathroom){
+			dialogBox.localPosition = dialogBoxPositions [1];
 			dialogText.text = "If "+emojiName+" gets dirty, give it a good bath.";
 		} else if(type == TutorialType.FirstBedroom){
+			dialogBox.localPosition = dialogBoxPositions [0];
 			dialogText.text = "Sometimes "+emojiName+" will get tired";
 		} else if(type == TutorialType.FirstEditRoomUI){
+			dialogBox.localPosition = dialogBoxPositions [0];
 			dialogText.text = firstEditRoomsUI [0];
 		} else if(type == TutorialType.FirstGarden){
+			dialogBox.localPosition = dialogBoxPositions [0];
 			dialogText.text = firstGarden [0];
 		} else if(type == TutorialType.FirstKitchen){
+			dialogBox.localPosition = dialogBoxPositions [2];
 			dialogText.text = "Don't forget to feed "+emojiName;
 		} else if(type == TutorialType.FirstPlayroom){
+			dialogBox.localPosition = dialogBoxPositions [0];
 			dialogText.text = firstPlayroom [0];
 		} else if(type == TutorialType.FirstProgressUI){
+			dialogBox.localPosition = dialogBoxPositions [0];
 			dialogText.text = "Here you can see the growth of "+emojiName;
 		} else if(type == TutorialType.TriggerFirstDead){
+			dialogBox.localPosition = dialogBoxPositions [0];
 			dialogText.text = triggerFirstDead [0];
 		} else if(type == TutorialType.TriggerFirstExpressionFull){
+			dialogBox.localPosition = dialogBoxPositions [0];
 			dialogText.text = triggerFirstExpressionFull [0];
 		} else if(type == TutorialType.TriggerHappinessRed){
+			dialogBox.localPosition = dialogBoxPositions [0];
 			dialogText.text = "Looks like "+emojiName+" is having a bad mood!";
 		} else if(type == TutorialType.TriggerHealthOrange){
+			dialogBox.localPosition = dialogBoxPositions [0];
 			dialogText.text = emojiName+" is sick!";
 		} else if(type == TutorialType.TriggerHealthRed){
+			dialogBox.localPosition = dialogBoxPositions [0];
 			dialogText.text = emojiName+" is near death, what did you do??!";
 		} else if(type == TutorialType.TriggerHungerRed){
+			dialogBox.localPosition = dialogBoxPositions [0];
 			dialogText.text = emojiName +" is starving!";
 		} else if(type == TutorialType.TriggerHygieneRed){
+			dialogBox.localPosition = dialogBoxPositions [0];
 			dialogText.text = emojiName +" is very dirty!";
 		} else if(type == TutorialType.TriggerStaminaRed){
+			dialogBox.localPosition = dialogBoxPositions [0];
 			dialogText.text = emojiName+" is exhausted!";
 		} else if(type == TutorialType.TriggerStaminaRed){
+			dialogBox.localPosition = dialogBoxPositions [0];
 			dialogText.text = triggerStaminaRed [0];
 		}
 		currentTutorial = type;
@@ -436,6 +459,8 @@ public class ScreenTutorial : BaseUI {
 
 	public void TriggerRoomChange(){
 		roomChange = true;
+		PlayerData.Instance.TutorialIdleLivingRoom = 1;
+		StopWaitCoroutine ();
 	}
 
 	void ShowArrows ()
@@ -488,14 +513,17 @@ public class ScreenTutorial : BaseUI {
 		}
 	}
 
+	public void StopWaitCoroutine(){
+		StopCoroutine ("WaitForRoomChange");
+	}
+
 	IEnumerator WaitForRoomChange(){
 		Debug.Log ("START WAITING");
 		yield return new WaitForSeconds (10f);
 		if (!roomChange) {
+			PlayerData.Instance.TutorialIdleLivingRoom = 1;
 			currentTutorial = TutorialType.IdleLivingRoom;
 			ShowFirstDialog (currentTutorial);
-		}else{
-			PlayerData.Instance.TutorialIdleLivingRoom = 1;
 		}
 	}
 

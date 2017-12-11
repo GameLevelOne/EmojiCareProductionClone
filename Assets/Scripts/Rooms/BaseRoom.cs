@@ -23,7 +23,7 @@ public class BaseRoom : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
-	public void InitRoom()
+	public virtual void InitRoom()
 	{
 		if(furnitures.Length == 0) return;
 
@@ -93,7 +93,6 @@ public class BaseRoom : MonoBehaviour {
 			}
 
 			foreach(MovableFurniture f in movableFurnitures) f.flagEditMode = true;
-
 		}else{
 			//exit edit mode
 			foreach(BaseFurniture f in furnitures) f.ExitEditmode();

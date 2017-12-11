@@ -8,7 +8,12 @@ public class SceneMainManager : MonoBehaviour {
 	public FloatingStatsManager floatingStats;
 	public EmojiStatsExpressionController statsExpressionController;
 	public GachaReward gachaReward;
+	public HotkeysAnimation hotkeys;
 	public Fader fader;
+
+	[Header("EWmoji Sleeping Event")]
+	public RandomBedroomObjectController randomBedroomController;
+	public Bedroom bedroom;
 
 	//sementara
 	public GameObject[] emojiSamples;
@@ -18,7 +23,7 @@ public class SceneMainManager : MonoBehaviour {
 	#region initialization
 	void Start()
 	{
-//		PlayerPrefs.DeleteAll();
+		PlayerPrefs.DeleteAll();
 		PlayerData.Instance.PlayerFirstPlay = 1;
 
 		InitMain();
@@ -45,6 +50,8 @@ public class SceneMainManager : MonoBehaviour {
 			PlayerData.Instance.PlayerEmoji.transform.position = new Vector3(0,0.0025f,-2f);
 			PlayerData.Instance.PlayerEmoji.emojiExpressions.SetExpression(EmojiExpressionState.SLEEP,-1);
 			PlayerData.Instance.PlayerEmoji.body.DoSleep();
+			bedroom.DimLight();
+			randomBedroomController.StartGeneratingObjects();
 		}
 		PlayerData.Instance.PlayerEmoji.InitEmojiStats();
 		statsExpressionController.Init();
@@ -59,8 +66,9 @@ public class SceneMainManager : MonoBehaviour {
 		}
 
 		screenTutorial.Init();
-//		gachaReward.Init ();
-//		floatingStats.RegisterEvents ();
+		gachaReward.Init ();
+		floatingStats.RegisterEvents ();
+		hotkeys.RegisterOnSleepEvent ();
 
 		if (PlayerData.Instance.TutorialFirstVisit == 0) {
 			PlayerData.Instance.TutorialFirstVisit = 1;
@@ -79,11 +87,7 @@ public class SceneMainManager : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
-	public void OnToggleDebug(bool debug)
-	{
-		print("debug = "+debug);
-		PlayerData.Instance.PlayerEmoji.SwitchDebugMode(debug);
-	}
+
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------	
 }

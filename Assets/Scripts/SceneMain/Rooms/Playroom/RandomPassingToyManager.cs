@@ -38,6 +38,7 @@ public class RandomPassingToyManager : MonoBehaviour {
 
 	public void Stop()
 	{
+		print("STOP STOP STOP");
 		StopCoroutine(_CycleToys);
 		if(tempToyObject){ 
 			Destroy(tempToyObject);

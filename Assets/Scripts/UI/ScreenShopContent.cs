@@ -7,7 +7,7 @@ public class ScreenShopContent : BaseUI {
 	public GameObject parentShopChoice;
 
 	public void CloseShopContent(){
-		screenShop.UpdateButtonDisplay();
+		screenShop.UpdateButtonDisplay(true);
 		screenShop.DisplayShopDescription(true);
 		base.ShowUI(parentShopChoice);
 		base.CloseUI(this.gameObject);
