@@ -278,7 +278,8 @@ public class RoomController : MonoBehaviour {
 		switch(currentRoom)
 		{
 		case RoomType.Garden: 		
-			rooms[(int)currentRoom].GetComponent<Garden>().Init(); 
+			rooms[(int)currentRoom].GetComponent<Garden>().Init();
+
 			break;
 		case RoomType.Playroom: 	rooms[(int)currentRoom].GetComponent<Playroom>().Init(); break;
 		case RoomType.LivingRoom: 	rooms[(int)currentRoom].GetComponent<LivingRoom>().Init(); break;
@@ -295,10 +296,14 @@ public class RoomController : MonoBehaviour {
 
 		if(currentRoom == RoomType.Garden){
 			gardenMiscItemsManager.Init ();
+			CropHolder.Instance.ShowCrops();
 		} else{
 			gardenMiscItemsManager.Hide ();
+			CropHolder.Instance.HideCrops();
 		}
 
+
+		//SNAPPING
 		while(t <= 1){
 			t += Time.fixedDeltaTime * snapSpeed;
 			transform.position = Vector3.Lerp(startPos, endPos, Mathf.SmoothStep(0, 1, t));

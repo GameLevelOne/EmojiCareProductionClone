@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class Crop : MonoBehaviour {
 	#region attributes
+	public delegate void CropDestroyed(GameObject selfObject);
+	public event CropDestroyed OnCropDestroyed;
+
 	public Rigidbody2D thisRigidbody;
 	public Collider2D thisCollider;
 	public SpriteRenderer thisSprite;
@@ -10,10 +13,10 @@ public class Crop : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
-//	void Start()
-//	{
-//		thisRigidbody.AddForce(new Vector2(0,10000f));
-//	}
+	void Start()
+	{
+		CropHolder.Instance.AddCrop(gameObject);
+	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
@@ -22,6 +25,9 @@ public class Crop : MonoBehaviour {
 		if(other.tag == Tags.BASKET){
 			PlayerData.Instance.inventory.ModIngredientValue(type,1);
 			other.transform.parent.GetComponent<Basket>().Animate();
+			if(OnCropDestroyed != null){
+				OnCropDestroyed(gameObject);
+			}
 			Destroy(gameObject);
 		}
 	}
