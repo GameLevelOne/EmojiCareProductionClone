@@ -160,7 +160,7 @@ public class RoomController : MonoBehaviour {
 				
 				if(flagTouchRoom){
 					float currentXTouch = getWorldPositionFromTouchInput().x;
-					if(Mathf.Abs(currentXTouch - beginXTouch) > 0.1f){
+					if(Mathf.Abs(currentXTouch - beginXTouch) > 0.3f){
 						flagTouchRoom = false;
 						flagDragging = true;
 					}

@@ -50,7 +50,7 @@ public class Toy : MovableFurniture {
 			thisCollider.enabled = true;
 			thisSprite.sortingLayerName = SortingLayers.MOVABLE_FURNITURE;
 			Vector2 forceDirection = new Vector3(deltaPos.x * force, deltaPos.y * force);
-			print("Force = "+forceDirection);
+//			print("Force = "+forceDirection);
 			thisRigidbody.AddForce(forceDirection);
 			StartCoroutine(ChangeDragState());
 		}

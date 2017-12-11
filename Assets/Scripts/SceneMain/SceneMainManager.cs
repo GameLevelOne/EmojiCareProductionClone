@@ -11,9 +11,10 @@ public class SceneMainManager : MonoBehaviour {
 	public HotkeysAnimation hotkeys;
 	public Fader fader;
 
-	[Header("EWmoji Sleeping Event")]
+	[Header("Emoji Sleeping Event")]
 	public RandomBedroomObjectController randomBedroomController;
 	public Bedroom bedroom;
+	public FloatingStatsManager floatingStatsManager;
 
 	//sementara
 	public GameObject[] emojiSamples;
@@ -51,6 +52,7 @@ public class SceneMainManager : MonoBehaviour {
 			PlayerData.Instance.PlayerEmoji.body.DoSleep();
 			bedroom.DimLight();
 			randomBedroomController.StartGeneratingObjects();
+			floatingStatsManager.OnEmojiSleepEvent(true);
 		}
 		PlayerData.Instance.PlayerEmoji.InitEmojiStats();
 		statsExpressionController.Init();
