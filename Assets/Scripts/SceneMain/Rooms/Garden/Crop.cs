@@ -29,7 +29,10 @@ public class Crop : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D other)
 	{
 		if(other.gameObject.tag == Tags.CROP){
-			Physics2D.IgnoreCollision(thisCollider,other.collider);
+			Physics2D.IgnoreCollision(thisCollider,other.gameObject.GetComponent<Crop>().thisCollider,true);
+		}
+		if(other.gameObject.tag == Tags.EMOJI_BODY){
+			Physics2D.IgnoreCollision(thisCollider,other.gameObject.GetComponent<EmojiBody>().thisCollider,true);
 		}
 	}
 
