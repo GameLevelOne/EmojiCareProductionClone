@@ -26,8 +26,10 @@ public class FloatingStatsManager : MonoBehaviour {
 	public void OnEmojiSleepEvent (bool sleeping)
 	{
 		if (sleeping) {
+			Debug.Log ("sleeping");
 			barIsShowing = true;
-			StartCoroutine (UpdateMeterDisplay ((int)EmojiStatsState.Stamina, PlayerData.Instance.PlayerEmoji.stamina.StatValue));
+			statsMeterObj [(int)EmojiStatsState.Stamina].gameObject.SetActive (true);
+			StartCoroutine(UpdateMeterDisplay ((int)EmojiStatsState.Stamina));
 		}
 	}
 
@@ -41,8 +43,10 @@ public class FloatingStatsManager : MonoBehaviour {
 
 	void OnEnterShower ()
 	{
+		Debug.Log ("bathing");
 		barIsShowing = true;
-		StartCoroutine (UpdateMeterDisplay ((int)EmojiStatsState.Hygiene, PlayerData.Instance.PlayerEmoji.hygiene.StatValue));
+		statsMeterObj [(int)EmojiStatsState.Hygiene].gameObject.SetActive (true);
+		StartCoroutine(UpdateMeterDisplay ((int)EmojiStatsState.Hygiene));
 	}
 
 	void OnExitShower ()
@@ -131,11 +135,10 @@ public class FloatingStatsManager : MonoBehaviour {
 		}
 	}
 
-	IEnumerator UpdateMeterDisplay (int type, float value)
-	{
-		while (barIsShowing) {
-			statsMeterObj [type].gameObject.SetActive (true);
-			statsMeterObj [type].ShowMeter ((EmojiStatsState)type, true, GetCurrentStatValue (type), -1, GetCurrentBarSprite (value));
+	IEnumerator UpdateMeterDisplay(int type){
+		while(barIsShowing){
+			float value = GetCurrentStatValue (type);
+			statsMeterObj [type].ShowMeter ((EmojiStatsState)type, true,value, -1, GetCurrentBarSprite (value));
 			yield return null;
 		}
 
@@ -144,4 +147,5 @@ public class FloatingStatsManager : MonoBehaviour {
 			StopCoroutine ("UpdateMeterDisplay");
 		}
 	}
+
 }

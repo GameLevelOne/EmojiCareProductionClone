@@ -52,12 +52,14 @@ public class SceneMainManager : MonoBehaviour {
 			PlayerData.Instance.PlayerEmoji.body.DoSleep();
 			bedroom.DimLight();
 			randomBedroomController.StartGeneratingObjects();
-			floatingStatsManager.OnEmojiSleepEvent(true);
 		}
 		PlayerData.Instance.PlayerEmoji.InitEmojiStats();
-		statsExpressionController.Init();
 
-		if(AdmobManager.Instance) AdmobManager.Instance.ShowBanner();
+		if(PlayerData.Instance.PlayerEmoji.EmojiSleeping){
+			floatingStatsManager.OnEmojiSleepEvent(true);
+		}
+
+		statsExpressionController.Init();
 
 		if(PlayerPrefs.GetInt(PlayerPrefKeys.Game.HAS_INIT_INGREDIENT,0) == 0){
 			PlayerPrefs.SetInt(PlayerPrefKeys.Game.HAS_INIT_INGREDIENT,1);
@@ -74,6 +76,9 @@ public class SceneMainManager : MonoBehaviour {
 		if (PlayerData.Instance.TutorialFirstVisit == 0) {
 			screenTutorial.ShowUI (screenTutorial.screenTutorialObj);
 		}
+
+		if(AdmobManager.Instance) AdmobManager.Instance.ShowBanner();
+
 		fader.FadeIn();
 
 		SoundManager.Instance.PlayBGM(BGMList.BGMMain);
