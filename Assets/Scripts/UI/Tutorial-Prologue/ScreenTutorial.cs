@@ -459,6 +459,8 @@ public class ScreenTutorial : BaseUI {
 
 	public void TriggerRoomChange(){
 		roomChange = true;
+		PlayerData.Instance.TutorialIdleLivingRoom = 1;
+		StopWaitCoroutine ();
 	}
 
 	void ShowArrows ()
@@ -511,14 +513,17 @@ public class ScreenTutorial : BaseUI {
 		}
 	}
 
+	public void StopWaitCoroutine(){
+		StopCoroutine ("WaitForRoomChange");
+	}
+
 	IEnumerator WaitForRoomChange(){
 		Debug.Log ("START WAITING");
 		yield return new WaitForSeconds (10f);
 		if (!roomChange) {
+			PlayerData.Instance.TutorialIdleLivingRoom = 1;
 			currentTutorial = TutorialType.IdleLivingRoom;
 			ShowFirstDialog (currentTutorial);
-		}else{
-			PlayerData.Instance.TutorialIdleLivingRoom = 1;
 		}
 	}
 

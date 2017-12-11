@@ -247,15 +247,17 @@ public class RoomController : MonoBehaviour {
 		thisCollider.enabled = editMode;
 	}
 
-	public void GoToRoom(RoomType destination)
+	public void GoToRoom (RoomType destination)
 	{		
-		if(destination == currentRoom) return;
+		if (destination == currentRoom)
+			return;
 
 		Vector3 startPos = transform.position;
-		Vector3 endpos = new Vector3((roomWidth*(int)destination*-1f),0f,0f);
+		Vector3 endpos = new Vector3 ((roomWidth * (int)destination * -1f), 0f, 0f);
 
-		if(PlayerData.Instance.TutorialIdleLivingRoom == 0)
+		if (PlayerData.Instance.TutorialIdleLivingRoom == 0) {
 			screenTutorial.TriggerRoomChange ();
+		}
 
 		StartCoroutine(SmoothSnap(startPos,endpos));
 	}

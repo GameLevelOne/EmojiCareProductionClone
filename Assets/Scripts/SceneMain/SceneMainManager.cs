@@ -23,7 +23,7 @@ public class SceneMainManager : MonoBehaviour {
 	#region initialization
 	void Start()
 	{
-//		PlayerPrefs.DeleteAll();
+		PlayerPrefs.DeleteAll();
 		PlayerData.Instance.PlayerFirstPlay = 1;
 
 		InitMain();
