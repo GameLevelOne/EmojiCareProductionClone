@@ -14,6 +14,7 @@ public class ScreenAlbum : BaseUI {
 
 	public EmojiIcons emojiIcons;
 	public Sprite lockedEmoji;
+	public bool openedFromAlbumObj = false;
 
 	List<EmojiType> emojiData = new List<EmojiType>();
 
@@ -144,5 +145,14 @@ public class ScreenAlbum : BaseUI {
 		} else{
 			screenPopup.ShowPopup(PopupType.Warning,PopupEventType.AlbumLocked,false,false);
 		}
+	}
+
+	public void OnClickBack(){
+		if(openedFromAlbumObj){
+			base.CloseUI (this.gameObject);
+		} else{
+			base.ClosePanelInHotkey (this.gameObject);
+		}
+		openedFromAlbumObj = false;
 	}
 }

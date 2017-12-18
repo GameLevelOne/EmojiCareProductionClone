@@ -55,6 +55,7 @@ public class UICelebrationManager : MonoBehaviour {
 
 		if(isNewExpression && PlayerData.Instance.TutorialFirstNewExpression == 0){
 			screenTutorial.ShowFirstDialog (TutorialType.firstNewExpression);
+			PlayerData.Instance.TutorialFirstNewExpression = 1;
 		}
 
 		StartCoroutine(WaitForNewExpression(expressionStateIndex,isNewExpression));

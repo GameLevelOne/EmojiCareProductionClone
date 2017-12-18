@@ -116,7 +116,8 @@ public class Emoji : MonoBehaviour {
 
 
 		if(!emojiDead){ 
-			StartCoroutine(_TickingStats);
+			isTickingStat = true;
+//			StartCoroutine(_TickingStats);
 		}
 	}
 
@@ -143,7 +144,8 @@ public class Emoji : MonoBehaviour {
 			if(emojiDead) break;
 			TickStats();
 		}
-		if(!emojiDead)	StartCoroutine(_TickingStats);
+//		if(!emojiDead)	StartCoroutine(_TickingStats);
+		if (!emojiDead) isTickingStat = true;
 	}
 
 	void TickStats()
@@ -261,6 +263,21 @@ public class Emoji : MonoBehaviour {
 		health.Debug = debug;
 
 	}
+
+	Vector3 tempLastEmojiPos;
+	public void HideEmojiWhenEditMode()
+	{
+		thisRigidbody.simulated = false;
+		body.thisCollider.enabled = false;
+		tempLastEmojiPos = transform.position;
+		transform.position = new Vector3 (0f, 20f, -1f);
+	}
+	public void ReturnEmojiFromEditMode()
+	{
+		transform.position = tempLastEmojiPos;
+		body.thisCollider.enabled = true;
+		thisRigidbody.simulated = true;
+	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region coroutines
@@ -277,12 +294,22 @@ public class Emoji : MonoBehaviour {
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
-
+	float t = 0;
+	void Update()
+	{
+		if(isTickingStat){
+			t += Time.deltaTime;
+			if(t >= 1f){
+				t = 0f;
+				TickStats ();
+			}
+		}
+	}
 	void OnApplicationPause(bool isPaused)
 	{
 		if(isPaused){ 
 			isTickingStat = false;
-			StopCoroutine(_TickingStats);
+//			StopCoroutine(_TickingStats);
 			timeOnPause = DateTime.Now;
 		}
 		else{
@@ -293,7 +320,7 @@ public class Emoji : MonoBehaviour {
 	void OnApplicationQuit()
 	{
 		isTickingStat = false;
-		StopCoroutine(_TickingStats);
+//		StopCoroutine(_TickingStats);
 		lastTimePlayed = DateTime.Now;
 //		print(lastTimePlayed);
 	}

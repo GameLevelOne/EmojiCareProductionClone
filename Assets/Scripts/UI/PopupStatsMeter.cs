@@ -36,10 +36,18 @@ public class PopupStatsMeter : MonoBehaviour {
 		float time = 0;
 		Debug.Log ("start:" + currentValue);
 		Debug.Log ("end:" + targetValue);
-		while (barFill.fillAmount < targetValue) {
-			barFill.fillAmount = Mathf.Lerp (currentValue, targetValue, time);
-			time += Time.deltaTime * 2;
-			yield return null;
+		if (targetValue >= currentValue) {
+			while (barFill.fillAmount < targetValue) {
+				barFill.fillAmount = Mathf.Lerp (currentValue, targetValue, time);
+				time += Time.deltaTime * 2;
+				yield return null;
+			}
+		} else{
+			while (barFill.fillAmount > targetValue) {
+				barFill.fillAmount = Mathf.Lerp (currentValue, targetValue, time);
+				time += Time.deltaTime * 2;
+				yield return null;
+			}
 		}
 
 		StartCoroutine (AutoClose ());

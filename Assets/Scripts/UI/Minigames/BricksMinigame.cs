@@ -35,12 +35,14 @@ public class BricksMinigame : BaseUI {
 	}
 
 	void EnableRoomToys(bool isShowing){
+		
 		PlayerData.Instance.PlayerEmoji.transform.localPosition = new Vector3 (-1.6f, 0.6f, -2f);
 		PlayerData.Instance.PlayerEmoji.thisRigidbody.simulated = true;
 		PlayerData.Instance.PlayerEmoji.body.thisCollider.enabled = true;
 		foreach(Toy obj in toysObj){
 			obj.gameObject.SetActive (isShowing);
 		}
+
 		PlayerData.Instance.PlayerEmoji.playerInput.OnBlocksMinigameDone ();
 	}
 }

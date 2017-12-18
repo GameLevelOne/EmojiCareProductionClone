@@ -22,6 +22,10 @@ public class UIChangeHat : MonoBehaviour {
 		PlayerData.Instance.PlayerEmoji.body.WearHat (hatID, hatObj);
 	}
 
+	public void RemoveCurrentHat(){
+		PlayerData.Instance.PlayerEmoji.body.RemoveHat ();
+	}
+
 	public void ShowHatUI(){
 		animator.SetBool (UIHatAnimTrigger, true);
 	}

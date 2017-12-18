@@ -451,7 +451,7 @@ public class ScreenTutorial : BaseUI {
 		if (dialogCount < (currentDialog.Length - 1)) {
 			dialogCount++;
 		} else {
-			currentPref = 1;
+//			currentPref = 1;
 			base.CloseUI (screenTutorialObj);
 			Debug.Log (statsTutorialPanels.Count);
 			if (isStatsTutorial) {

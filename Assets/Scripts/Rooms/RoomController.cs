@@ -230,10 +230,11 @@ public class RoomController : MonoBehaviour {
 	{
 		if(flagEditRoom){
 			interactable = false;
-			PlayerData.Instance.PlayerEmoji.gameObject.SetActive(false);
+			PlayerData.Instance.PlayerEmoji.HideEmojiWhenEditMode ();
 		}else{
 			interactable = true;
-			PlayerData.Instance.PlayerEmoji.gameObject.SetActive(true);
+			PlayerData.Instance.PlayerEmoji.ReturnEmojiFromEditMode();
+
 		}
 	}
 

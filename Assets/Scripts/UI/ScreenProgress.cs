@@ -23,6 +23,8 @@ public class ScreenProgress : BaseUI {
 
 	public Sprite lockedExpression;
 
+	public bool openedFromEnvelope = false;
+
 	int expressionTotalCount;
 	int tileWidth = 4;
 	int tileHeight = 15;
@@ -108,6 +110,16 @@ public class ScreenProgress : BaseUI {
 			screenPopup.ShowPopup(PopupType.Warning,PopupEventType.NotAbleToSendOff,false,false);
 		}
 	} 
+
+	public void OnClickBack(){
+		if(openedFromEnvelope){
+			
+			base.CloseUI (this.gameObject);
+		} else{
+			base.ClosePanelInHotkey (this.gameObject);
+		}
+		openedFromEnvelope = false;
+	}
 
 	void OnEnable(){
 		ProgressTile.OnSelectExpression += OnSelectExpression;

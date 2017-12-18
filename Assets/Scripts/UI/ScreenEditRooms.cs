@@ -179,12 +179,14 @@ public class ScreenEditRooms : BaseUI {
 	{
 		Debug.Log ("used:" + currentUsedVariant);
 		Debug.Log ("current:" + currentVariant);
+
 		if (currentItem != null) {
 			if (currentUsedVariant != currentItem.currentVariant) {
 				currentItem.currentVariant = currentUsedVariant;
 			}
 			currentItem.SetCurrentVariant ();
 		}
+
 	}
 
 	IEnumerator CheckAdBanner(){

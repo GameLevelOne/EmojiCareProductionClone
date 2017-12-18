@@ -14,6 +14,7 @@ public class Album : ActionableFurniture {
 	#region mechanics
 	public override void PointerClick ()
 	{
+		UIAlbum.openedFromAlbumObj = true;
 		//open album ui
 		if(!flagEditMode) UIAlbum.ShowUI(UIAlbum.gameObject);
 	} 

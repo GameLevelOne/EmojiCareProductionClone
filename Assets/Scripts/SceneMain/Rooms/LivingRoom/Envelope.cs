@@ -14,6 +14,7 @@ public class Envelope : ActionableFurniture {
 	#region mechanics
 	public override void PointerClick ()
 	{
+		UIProgress.openedFromEnvelope = true;
 		if(!flagEditMode) UIProgress.ShowUI(UIProgress.gameObject);
 	}
 	#endregion

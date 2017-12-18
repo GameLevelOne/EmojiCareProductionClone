@@ -383,6 +383,25 @@ public class EmojiPlayerInput : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
+	public void ResetFlags()
+	{
+		flagStroke = false;
+		flagHold = false;
+		flagFalling = false;
+		flagStrokeToHold = false;
+		flagTapCooldown = false;
+		flagTouching = false;
+		isRetaining = false;
+		danceMatRetaining = false;
+		doodleRetaining = false;
+		danceMatRetaining = false;
+		shakeExpressionRetain = false;
+		dizzySound = false;
+		barfSound = false;
+
+		interactable = true;
+	}
+
 	public void Eat()
 	{
 		emoji.emojiExpressions.SetExpression(EmojiExpressionState.EATING,eatDuration);
