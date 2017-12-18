@@ -51,7 +51,12 @@ public class UICelebrationManager : MonoBehaviour {
 		if(expr.unlockedExpressions.Count >= expr.totalExpression){
 			if(PlayerData.Instance.TutorialFirstExpressionFull == 0)
 				screenTutorial.ShowFirstDialog (TutorialType.TriggerFirstExpressionFull);
+		} 
+
+		if(isNewExpression && PlayerData.Instance.TutorialFirstNewExpression == 0){
+			screenTutorial.ShowFirstDialog (TutorialType.firstNewExpression);
 		}
+
 		StartCoroutine(WaitForNewExpression(expressionStateIndex,isNewExpression));
 	}
 

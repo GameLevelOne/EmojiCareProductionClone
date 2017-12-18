@@ -180,6 +180,11 @@ public class PlayerData : MonoBehaviour {
 		set{PlayerPrefs.SetInt (PlayerPrefKeys.Tutorial.FIRST_EMOJI_DEAD, value);}
 	}
 
+	public int TutorialFirstNewExpression{
+		get{return PlayerPrefs.GetInt (PlayerPrefKeys.Tutorial.FIRST_NEW_EXPRESSION, 0);}
+		set{PlayerPrefs.SetInt (PlayerPrefKeys.Tutorial.FIRST_NEW_EXPRESSION,value);}
+	}
+
 	void Awake()
 	{
 		if(instance != null && instance != this) Destroy(this.gameObject);

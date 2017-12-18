@@ -107,6 +107,7 @@ public static class PlayerPrefKeys {
 		public const string FIRST_HEALTH_RED = "Tutorial/FirstHealthRed";
 		public const string FIRST_HEALTH_ORANGE = "Tutorial/FirstHealthOrange";
 		public const string FIRST_EXPRESSION_FULL = "Tutorial/FirstExpressionFull";
+		public const string FIRST_NEW_EXPRESSION = "Tutorial/FirstNewExpression";
 		public const string FIRST_EMOJI_DEAD = "Tutorial/FirstEmojiDead";
 	}
 

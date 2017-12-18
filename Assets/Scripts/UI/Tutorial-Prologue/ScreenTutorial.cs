@@ -13,6 +13,7 @@ public enum TutorialType{
 	FirstGarden,
 	FirstProgressUI,
 	FirstEditRoomUI,
+	firstNewExpression,
 	TriggerHungerRed,
 	TriggerHygieneRed,
 	TriggerHappinessRed,
@@ -54,7 +55,7 @@ public class ScreenTutorial : BaseUI {
 	public string[] firstGarden;
 	public string[] firstProgressUI;
 	public string[] firstEditRoomsUI;
-
+	public string[] firstNewExpression;
 	public string[] triggerHungerRed;
 	public string[] triggerHygieneRed;
 	public string[] triggerHappinessRed;
@@ -216,6 +217,9 @@ public class ScreenTutorial : BaseUI {
 		} else if(type == TutorialType.TriggerStaminaRed){
 			dialogBox.localPosition = dialogBoxPositions [0];
 			dialogText.text = triggerStaminaRed [0];
+		} else if(type == TutorialType.firstNewExpression){
+			dialogBox.localPosition = dialogBoxPositions [2];
+			dialogText.text = firstNewExpression [0];
 		}
 		currentTutorial = type;
 		base.ShowUI (screenTutorialObj);
@@ -436,6 +440,8 @@ public class ScreenTutorial : BaseUI {
 
 			if(!loadCustomDialog)
 				dialogText.text = triggerFirstExpressionFull [dialogCount];
+		} else if(currentTutorial == TutorialType.firstNewExpression){
+			LoadDialogs (firstNewExpression, PlayerData.Instance.TutorialFirstNewExpression, false);
 		}
 		ShowArrows ();
 	}
@@ -445,7 +451,7 @@ public class ScreenTutorial : BaseUI {
 		if (dialogCount < (currentDialog.Length - 1)) {
 			dialogCount++;
 		} else {
-			//currentPref = 1;
+			currentPref = 1;
 			base.CloseUI (screenTutorialObj);
 			Debug.Log (statsTutorialPanels.Count);
 			if (isStatsTutorial) {
@@ -507,6 +513,10 @@ public class ScreenTutorial : BaseUI {
 			currentActiveArrow = 14;
 		} else if (currentTutorial == TutorialType.FirstProgressUI && dialogCount == 3) {
 			currentActiveArrow = 15;
+		} else if(currentTutorial == TutorialType.firstNewExpression && (dialogCount == 1 || dialogCount == 2)) {
+			currentActiveArrow = 16;
+		} else if(currentTutorial == TutorialType.firstNewExpression && dialogCount == 3){
+			currentActiveArrow = 17;
 		} else {
 			currentActiveArrow = -1;
 		}
