@@ -4,12 +4,13 @@ This Google Mobile Ads plugin library manifest will get merged with your
 application's manifest, adding the necessary activity and permissions
 required for displaying ads.
 -->
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.admob.demo" android:versionName="1.0" android:versionCode="1">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.GameLevelOne.EmojiCare" android:versionName="1.0" android:versionCode="1">
   <!-- Google Mobile Ads Permissions -->
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
   <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
   <uses-permission android:name="android.permission.READ_PHONE_STATE" />
   <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.CAMERA" />
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -21,6 +22,7 @@ required for displaying ads.
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
+        <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
       </intent-filter>
     </activity>
     <activity android:name="com.facebook.unity.FBUnityLoginActivity" android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen" android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
@@ -33,5 +35,16 @@ required for displaying ads.
     <activity android:name="com.facebook.unity.AppInviteDialogActivity" />
     <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="fb113286536035026" />
     <provider android:name="com.facebook.FacebookContentProvider" android:authorities="com.facebook.app.FacebookContentProvider113286536035026" android:exported="true" />
-  </application>
+
+    <provider
+          android:name="android.support.v4.content.FileProvider"
+          android:authorities="com.GameLevelOne.EmojiCare.provider"
+          android:exported="false"
+          android:grantUriPermissions="true">
+      <meta-data
+          android:name="android.support.FILE_PROVIDER_PATHS"
+          android:resource="@xml/provider_paths"/>
+    </provider>
+
+    </application>
 </manifest>

@@ -24,6 +24,9 @@ public class PlayerData : MonoBehaviour {
 	List<string> emojiAlbumEntryTime = new List<string>();
 	List<float> emojiCompletionRate = new List<float>();
 
+	[Header("mau ga mau :(")]
+	public HatUIItem[] hatItems;
+
 	public Emoji PlayerEmoji{
 		get{return playerEmoji;}
 	}

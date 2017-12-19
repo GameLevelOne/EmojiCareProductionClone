@@ -88,6 +88,7 @@ public class Emoji : MonoBehaviour {
 			hasInit = true;
 			InitEmojiExpression();
 			body.RemoveHat ();
+//			InitEmojiHat ();
 		}
 	}
 
@@ -127,6 +128,25 @@ public class Emoji : MonoBehaviour {
 		emojiGrowth.UpdateGrowth(emojiExpressions.GetTotalExpressionProgress());
 		emojiExpressions.SetExpression(EmojiExpressionState.DEFAULT,0);
 
+	}
+
+	void InitEmojiHat()
+	{
+		string id = PlayerData.Instance.inventory.GetCurrentHat ();
+
+		if (id == string.Empty) return;
+		else{
+			GameObject tempHatObject = null;
+			foreach(HatUIItem item in PlayerData.Instance.hatItems){
+				if(item.hatSO.ID == id){
+					tempHatObject = item.hatSO.hatObject;
+					break;
+				}
+			}
+
+			if (tempHatObject == null) return;
+			else body.WearHat (id, tempHatObject);
+		}
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
