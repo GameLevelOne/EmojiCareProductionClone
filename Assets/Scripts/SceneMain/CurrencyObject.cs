@@ -27,9 +27,11 @@ public class CurrencyObject : MonoBehaviour {
 		switch(type){
 		case CurrencyType.Coin: 
 			//add 10 coin
+			uiCoin.ShowUI (10, true, false, true);
 			break;
 		case CurrencyType.Gem: 
 			//add 1 gem
+			uiCoin.ShowUI (1, false, false, true);
 			break;
 		}
 		StartCoroutine(Destroying());
@@ -50,6 +52,7 @@ public class CurrencyObject : MonoBehaviour {
 
 	IEnumerator Destroying()
 	{
+		
 		thisRigidBody.simulated = false;
 		thisCollider.enabled = false;
 
@@ -63,6 +66,7 @@ public class CurrencyObject : MonoBehaviour {
 			yield return null;
 
 			if(transform.localPosition == endPos){ 
+				
 				StopAllCoroutines();
 				Destroy(gameObject);
 			}
