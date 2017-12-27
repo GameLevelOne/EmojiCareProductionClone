@@ -7,11 +7,12 @@ public class GardenField : MonoBehaviour {
 	public delegate void TimerTick(TimeSpan duration);
 	public event TimerTick OnTimerTick;
 	#region attributes
-	[Header("GardenFiemd Attributes")]
+	[Header("GardenField Attributes")]
 	public Soil soil;
 	public List<Transform> fieldLocations = new List<Transform>();
 	public SpriteRenderer[] wetSoil;
 	public FieldPost post;
+	public GameObject[] lockedSign;
 
 	[Header("Custom Attributes")]
 	public int fieldIndex;
@@ -72,11 +73,28 @@ public class GardenField : MonoBehaviour {
 				}
 			}
 		}
+
+		foreach(GameObject g in lockedSign){
+			g.SetActive(!isUnlocked());
+		}
+
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
-	
+	public bool isUnlocked()
+	{
+		int tempValue = 0;
+		if(fieldIndex == 0){
+			tempValue = PlayerData.Instance.GardenField0;
+		}else if(fieldIndex == 1){
+			tempValue = PlayerData.Instance.GardenField1;
+		}else if(fieldIndex == 2){
+			tempValue = PlayerData.Instance.GardenField2;
+		}
+
+		return tempValue == 1 ? true : false;
+	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
@@ -102,24 +120,26 @@ public class GardenField : MonoBehaviour {
 
 	public void PlantSeed(IngredientType type)
 	{
-		if(!hasPlant){
-			GameObject plantToInstantiate = soil.GetPlant(type);
-			for(int i = 0;i<fieldLocations.Count;i++){
-				GameObject tempPlant = Instantiate(plantToInstantiate,fieldLocations[i]) as GameObject;
-				tempPlant.transform.localPosition = Vector3.zero;
-				currentPlants[i] = tempPlant;
+		if(isUnlocked()){
+			if(!hasPlant){
+				GameObject plantToInstantiate = soil.GetPlant(type);
+				for(int i = 0;i<fieldLocations.Count;i++){
+					GameObject tempPlant = Instantiate(plantToInstantiate,fieldLocations[i]) as GameObject;
+					tempPlant.transform.localPosition = Vector3.zero;
+					currentPlants[i] = tempPlant;
 
-				Plant plant = tempPlant.GetComponent<Plant>();
-				plant.Init(i);
-				plant.OnPlantDestroyed += OnPlantDestroyed;
+					Plant plant = tempPlant.GetComponent<Plant>();
+					plant.Init(i);
+					plant.OnPlantDestroyed += OnPlantDestroyed;
+				}
+
+				plantHarvestTime = DateTime.Now.Add(TimeSpan.FromMinutes(currentPlants[0].GetComponent<Plant>().plantSO.GrowTime));
+				PlayerPrefs.SetInt(prefKeySeedType,(int)type);
+				PlayerPrefs.SetString(prefKeyHarvestTime,plantHarvestTime.ToString());
+				hasPlant = true;
+				post.Show();
+				StartCoroutine(StartPlantGrowing());
 			}
-
-			plantHarvestTime = DateTime.Now.Add(TimeSpan.FromMinutes(currentPlants[0].GetComponent<Plant>().plantSO.GrowTime));
-			PlayerPrefs.SetInt(prefKeySeedType,(int)type);
-			PlayerPrefs.SetString(prefKeyHarvestTime,plantHarvestTime.ToString());
-			hasPlant = true;
-			post.Show();
-			StartCoroutine(StartPlantGrowing());
 		}
 	}
 
