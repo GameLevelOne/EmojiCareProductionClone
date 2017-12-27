@@ -44,7 +44,7 @@ public class GardenStallTimer : MonoBehaviour {
 	//button module
 	public void ShowPopupRefillStall (int eventID)
 	{
-		uiCoin.ShowUI (100, false);
+		uiCoin.ShowUI (100, false,true,false);
 		if (eventID == 1) {
 			currentEvent = AdEvents.RestockSeeds;
 			screenPopup.ShowPopup (PopupType.AdsOrGems,PopupEventType.RestockSeeds);
