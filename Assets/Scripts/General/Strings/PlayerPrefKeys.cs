@@ -45,6 +45,25 @@ public static class PlayerPrefKeys {
 			public const string HAT = "Player/Inventory/Hat/";
 			public const string CURRENT_HAT = "Player/Inventory/CurrentHat";
 		}
+
+		public static class Progress{
+			public const string MINIGAME_PAINTING = "Player/Progress/MiniGamePainting";
+			public const string MINIGAME_DANCEMAT = "Player/Progress/MiniGameDanceMat";
+			public const string MINIGAME_BLOCKS = "Player/Progress/MiniGameBlocks";
+
+			//caesar salad, ramen, burger, skewer, grilled fish, pizza, sundubu, chicken & fries, Bacon baked potato, steak
+			public const string RECIPE_CAESARSALAD = "Player/Progress/RecipeCaesarSalad";
+			public const string RECIPE_RAMEN = "Player/Progress/RecipeRamen";
+			public const string RECIPE_BURGER = "Player/Progress/RecipeBurger";
+			public const string RECIPE_SKEWER = "Player/Progress/RecipeSkewer";
+			public const string RECIPE_GRILLEDFISH = "Player/Progress/RecipeGrilledFish";
+			public const string RECIPE_PIZZA = "Player/Progress/RecipePizza";
+			public const string RECIPE_SUNDUBU = "Player/Progress/RecipeSundubu";
+			public const string RECIPE_CHICKENANDFRIES = "Player/Progress/RecipeChickenAndFries";
+			public const string RECIPE_BACONBAKEDPOTATO = "Player/Progress/RecipeBaconBakedPotato";
+			public const string RECIPE_STEAK = "Player/Progress/RecipeSteak";
+		}
+		public const string RANDOM_COINGEM_COOLDOWN = "Player/RandomCoinGemCooldown";
 	}
 
 	public static class Game

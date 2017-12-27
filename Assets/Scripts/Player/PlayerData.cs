@@ -188,6 +188,82 @@ public class PlayerData : MonoBehaviour {
 		set{PlayerPrefs.SetInt (PlayerPrefKeys.Tutorial.FIRST_NEW_EXPRESSION,value);}
 	}
 
+	public DateTime RandomCoinAndGemCooldown{
+		get{
+			string temp = PlayerPrefs.GetString(PlayerPrefKeys.Player.RANDOM_COINGEM_COOLDOWN);
+			return DateTime.Parse(temp);
+		}
+		set{PlayerPrefs.SetString(PlayerPrefKeys.Player.RANDOM_COINGEM_COOLDOWN,value.ToString());}
+	}
+
+	public class Progress{
+		public int MiniGamePainting{
+			get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.Progress.MINIGAME_PAINTING,0);}
+			set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.MINIGAME_PAINTING,value);}
+		}
+
+		public int MiniGameBlocks{
+			get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.Progress.MINIGAME_BLOCKS,0);}
+			set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.MINIGAME_BLOCKS,value);}
+		}
+
+		public int MiniGameDanceMat{
+			get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.Progress.MINIGAME_DANCEMAT,0);}
+			set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.MINIGAME_DANCEMAT,value);}
+		}
+
+		//caesar salad, ramen, burger, skewer, grilled fish, pizza, sundubu, chicken & fries, Bacon baked potato, steak
+		public int RecipeCaesarSalad{
+			get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.Progress.RECIPE_CAESARSALAD,0);}
+			set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.RECIPE_CAESARSALAD,value);}
+		}
+
+		public int RecipeRamen{
+			get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.Progress.RECIPE_RAMEN,0);}
+			set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.RECIPE_RAMEN,value);}
+		}
+
+		public int RecipeBurger{
+			get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.Progress.RECIPE_BURGER,0);}
+			set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.RECIPE_BURGER,value);}
+		}
+
+		public int RecipeSkewer{
+			get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.Progress.RECIPE_SKEWER,0);}
+			set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.RECIPE_SKEWER,value);}
+		}
+
+		public int RecipeGrilledFish{
+			get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.Progress.RECIPE_GRILLEDFISH,0);}
+			set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.RECIPE_GRILLEDFISH,value);}
+		}
+
+		public int RecipePizza{
+			get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.Progress.RECIPE_PIZZA,0);}
+			set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.RECIPE_PIZZA,value);}
+		}
+
+		public int RecipeSundubu{
+			get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.Progress.RECIPE_SUNDUBU,0);}
+			set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.RECIPE_SUNDUBU,value);}
+		}
+
+		public int RecipeChickenAndFries{
+			get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.Progress.RECIPE_CHICKENANDFRIES,0);}
+			set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.RECIPE_CHICKENANDFRIES,value);}
+		}
+
+		public int RecipeBaconBakedPotato{
+			get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.Progress.RECIPE_BACONBAKEDPOTATO,0);}
+			set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.RECIPE_BACONBAKEDPOTATO,value);}
+		}
+
+		public int RecipeSteak{
+			get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.Progress.RECIPE_STEAK,0);}
+			set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.RECIPE_STEAK,value);}
+		}
+	}
+
 	void Awake()
 	{
 		if(instance != null && instance != this) Destroy(this.gameObject);
