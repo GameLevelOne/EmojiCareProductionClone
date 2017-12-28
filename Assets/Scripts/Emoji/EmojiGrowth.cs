@@ -7,6 +7,7 @@ public class EmojiGrowth : MonoBehaviour {
 
 	#region attributes
 	public Emoji emoji;
+	public GameObject babyEmojiObject;
 	public float scaleSmall = 0.8f;
 	public float scaleMedium = 0.6f;
 	public float scaleLarge = 1f;
