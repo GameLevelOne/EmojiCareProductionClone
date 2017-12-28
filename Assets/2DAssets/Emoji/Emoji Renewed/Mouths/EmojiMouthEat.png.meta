@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 3294bac9d7c59a54d80861a3206ad67e
-timeCreated: 1512042001
+timeCreated: 1514455277
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName: {}
@@ -87,6 +87,6 @@ TextureImporter:
     sprites: []
     outline: []
   spritePackingTag: 
-  userData: 99092786148061
+  userData: 99251340615938
   assetBundleName: 
   assetBundleVariant: 
