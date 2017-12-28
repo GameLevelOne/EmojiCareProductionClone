@@ -226,7 +226,7 @@ public class GardenStall : BaseFurniture {
 	//coin panel
 	void ShowUICoin(int price)
 	{
-		uiCoin.ShowUI(price,true);
+		uiCoin.ShowUI(price,true,true,false);
 	}
 	void HideUICoin(bool isBought)
 	{

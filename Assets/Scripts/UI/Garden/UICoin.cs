@@ -11,35 +11,63 @@ public class UICoin : MonoBehaviour {
 	public GameObject gemIcon;
 
 	string boolOpenBox = "coinBoxOpen";
+	string boolShowPrice = "showPrice";
 	int currentCoin=0;
 	int currentGem=0;
 	int currentPrice=0;
 	bool isBought = false;
+	bool priceIsShown = false;
 
-	public void ShowUI (int price, bool isCoin)
+	/// <summary>
+	/// <para>Shows the UICoin. </para>
+	/// <para>p1 = price / coins to get </para>
+	/// <para>p2 = coin or gem </para>
+	/// <para>p3 = show price text or not </para>
+	/// <para>p4 = addition or subtraction</para>
+	/// </summary>
+	public void ShowUI (int coinAmount, bool isCoin, bool showPrice, bool addition)
 	{
+		Debug.Log ("show coin box");
+		GetComponent<Animator> ().SetBool (boolOpenBox,true);
+		Debug.Log (GetComponent<Animator> ());
 		if (isCoin) {
 			coinIcon.SetActive (true);
 			gemIcon.SetActive (false);
 			textCurrentCoin.gameObject.SetActive (true);
 			textCurrentGem.gameObject.SetActive (false);
 			currentCoin = PlayerData.Instance.PlayerCoin;
-			UpdateDisplay (currentCoin, price,isCoin);
+			if (addition) {
+				StartCoroutine (AnimateCoin (currentCoin, (currentCoin + coinAmount)));
+			} else {
+				UpdateDisplay (currentCoin, coinAmount, isCoin);
+			}
 		} else {
 			coinIcon.SetActive (false);
 			gemIcon.SetActive (true);
 			textCurrentCoin.gameObject.SetActive (false);
 			textCurrentGem.gameObject.SetActive (true);
 			currentGem = PlayerData.Instance.PlayerGem;
-			UpdateDisplay (currentGem, price,isCoin);
+			if(addition){
+				currentGem++;
+				PlayerData.Instance.PlayerGem = currentGem;
+				StartCoroutine (AutoCloseUI ());
+			}
+			UpdateDisplay (currentGem, coinAmount,isCoin);
 		}
-		currentPrice = price;
+		currentPrice = coinAmount;
 
-		GetComponent<Animator> ().SetBool (boolOpenBox,true);
+		priceIsShown = showPrice;
+		if(showPrice){
+			textItemPrice.transform.parent.GetComponent<Animator> ().SetBool (boolShowPrice, true);
+		}
 	}
 
 	IEnumerator AutoCloseUI(){
+		yield return new WaitForSeconds (1);
 		GetComponent<Animator> ().SetBool (boolOpenBox,false);
+		if(priceIsShown){
+			textItemPrice.transform.parent.GetComponent<Animator> ().SetBool (boolShowPrice, false);
+		}
 		yield return new WaitForSeconds(0.16f);
 	}
 
@@ -63,29 +91,30 @@ public class UICoin : MonoBehaviour {
 	}
 
 	public void CloseUI(bool isBought){
-//		Debug.Log ("close ui");
+		Debug.Log ("close ui");
 		if(isBought){
 //			Debug.Log ("bought");
-			PlayerData.Instance.PlayerCoin -= currentPrice;
-			currentCoin -= currentPrice;
-			StartCoroutine (AnimateCoin ());
+			StartCoroutine (AnimateCoin (currentCoin,(currentCoin-currentPrice)));
 		} else{
 //			Debug.Log ("back");
 			GetComponent<Animator> ().SetBool (boolOpenBox,false);
 		}
 	}
 
-	IEnumerator AnimateCoin ()
+	IEnumerator AnimateCoin (int current,int target)
 	{
-		int current = currentCoin;
-		int target = currentCoin - currentPrice;
+		float timer = 0;
 
-		while (current > target) {
-			current = (int)Mathf.Lerp (current, target, Time.time);
-			textCurrentCoin.text = current.ToString ();
+		while (timer<1) {
+			current = (int)Mathf.Lerp (current, target, timer);
+			textCurrentCoin.text = current.ToString ("N0");
+			timer += Time.deltaTime;
 			yield return null;
 		}
-		textCurrentCoin.text = currentCoin.ToString ();
+		timer = 0;
+		currentCoin = current;
+		PlayerData.Instance.PlayerCoin = currentCoin;
+		textCurrentCoin.text = currentCoin.ToString ("N0");
 		GetComponent<Animator> ().SetBool (boolOpenBox,false);
 	}
 }

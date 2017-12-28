@@ -47,6 +47,10 @@ public static class PlayerPrefKeys {
 		}
 
 		public static class Progress{
+			public const string GARDENFIELD0 = "Player/Progress/GardenField0";
+			public const string GARDENFIELD1 = "Player/Progress/GardenField1";
+			public const string GARDENFIELD2 = "Player/Progress/GardenField2";
+
 			public const string MINIGAME_PAINTING = "Player/Progress/MiniGamePainting";
 			public const string MINIGAME_DANCEMAT = "Player/Progress/MiniGameDanceMat";
 			public const string MINIGAME_BLOCKS = "Player/Progress/MiniGameBlocks";

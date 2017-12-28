@@ -78,14 +78,16 @@ public class Seed : MonoBehaviour {
 
 		flagHold = false;
 		if(soilTarget.Count > 0){
-			if(!soilTarget[0].GetComponent<GardenField>().hasPlant){
-				if(PlayerData.Instance.PlayerCoin >= price){
-					soilTarget[0].GetComponent<GardenField>().PlantSeed(type);
-					if(OnEndDragSeed != null) OnEndDragSeed(true);
-					if(OnSeedPlanted != null) OnSeedPlanted(this);
+			if(soilTarget[0].GetComponent<GardenField>().isUnlocked()){
+				if(!soilTarget[0].GetComponent<GardenField>().hasPlant){
+					if(PlayerData.Instance.PlayerCoin >= price){
+						soilTarget[0].GetComponent<GardenField>().PlantSeed(type);
+						if(OnEndDragSeed != null) OnEndDragSeed(true);
+						if(OnSeedPlanted != null) OnSeedPlanted(this);
 
-					Destroy(gameObject);
-					return;
+						Destroy(gameObject);
+						return;
+					}
 				}
 			}
 		}

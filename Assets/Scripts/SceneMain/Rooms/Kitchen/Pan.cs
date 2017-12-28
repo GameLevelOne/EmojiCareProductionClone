@@ -112,25 +112,27 @@ public class Pan : BaseFurniture {
 		//for every recipes
 		for(int i = 0;i<cookBook.recipes.Length;i++){
 
-			//if total ingredients amount match the recipe's ingredient amount
-			if(ingredients.Count == cookBook.recipes[i].ingredients.Count){
+//			if(isUnlocked(i)){ <<<<<<< YANG INI
+				//if total ingredients amount match the recipe's ingredient amount
+				if(ingredients.Count == cookBook.recipes[i].ingredients.Count){
 
-				//match every ingredient in pan with recipe, correct value will add if match
-				for(int j = 0;j < ingredients.Count;j++){
-					foreach(IngredientType t in cookBook.recipes[i].ingredients){
-						print("Ingredient "+ingredients[j].GetComponent<Ingredient>().type+" compare to "+t);
-						if(ingredients[j].GetComponent<Ingredient>().type == t) correct++;
+					//match every ingredient in pan with recipe, correct value will add if match
+					for(int j = 0;j < ingredients.Count;j++){
+						foreach(IngredientType t in cookBook.recipes[i].ingredients){
+							print("Ingredient "+ingredients[j].GetComponent<Ingredient>().type+" compare to "+t);
+							if(ingredients[j].GetComponent<Ingredient>().type == t) correct++;
+						}
 					}
-				}
 
 
-				if(correct == cookBook.recipes[i].ingredients.Count) {
-					foodIndex = i;
-					break;
+					if(correct == cookBook.recipes[i].ingredients.Count) {
+						foodIndex = i;
+						break;
+					}
+					else correct = 0;
 				}
-				else correct = 0;
 			}
-		}
+//		} <<<<<<<<<<<YANG INI
 
 
 		if(foodIndex == -1) {
@@ -140,6 +142,27 @@ public class Pan : BaseFurniture {
 		print("Cooking "+cookBook.recipes[foodIndex].foodObject.name+" for "+cookBook.recipes[foodIndex].cookDuration+" seconds.");
 		foodToCook = cookBook.recipes[foodIndex];
 		StartCoroutine(Cook());
+	}
+
+	/// <summary>
+	/// Is the recipe unlocked?
+	/// </summary>
+	bool isUnlocked(int index){
+		bool temp = false;
+		switch(index){
+		case 0: temp = PlayerData.Instance.RecipeSteak == 1 ? true : false; break;
+		case 1: temp = PlayerData.Instance.RecipeCaesarSalad == 1 ? true : false; break;
+		case 2: temp = PlayerData.Instance.RecipeRamen == 1 ? true : false; break;
+		case 3: temp = PlayerData.Instance.RecipePizza == 1 ? true : false; break;
+		case 4: temp = PlayerData.Instance.RecipeSundubu == 1 ? true : false; break;
+		case 5: temp = PlayerData.Instance.RecipeBurger == 1 ? true : false; break;
+		case 6: temp = PlayerData.Instance.RecipeGrilledFish == 1 ? true : false; break;
+		case 7: temp = PlayerData.Instance.RecipeChickenAndFries == 1 ? true : false; break;
+		case 8: temp = PlayerData.Instance.RecipeBaconBakedPotato == 1 ? true : false; break;
+		case 9: temp = PlayerData.Instance.RecipeSkewer == 1 ? true : false; break;
+		}
+
+		return temp;
 	}
 
 	//event triggers

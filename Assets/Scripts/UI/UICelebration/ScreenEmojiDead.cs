@@ -64,7 +64,7 @@ public class ScreenEmojiDead : BaseUI {
 	}
 
 	public void OnClickRevive(){
-		uiCoin.ShowUI (100, false);
+		uiCoin.ShowUI (100, false,true,false);
 		gemBoxIsShowing = true;
 		screenPopup.ShowPopup (PopupType.Confirmation, PopupEventType.ReviveEmoji);
 	}
