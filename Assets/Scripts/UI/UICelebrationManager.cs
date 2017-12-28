@@ -6,7 +6,6 @@ public class UICelebrationManager : MonoBehaviour {
 	public ScreenTutorial screenTutorial;
 	public ScreenNewEmoji screenNewEmoji;
 	public GachaReward gachaReward;
-	public NotificationNewExpression notificationNewExpression;
 	public NotificationNewExpression notificationExpressionProgress;
 	public ScreenSendOff screenSendOff;
 	public ScreenEmojiDead screenEmojiDead;
