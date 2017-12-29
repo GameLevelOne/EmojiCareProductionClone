@@ -11,13 +11,14 @@ public static class PlayerPrefKeys {
 		public const string HEALTH = "Emoji/Health";
 		public const string CURRENT_SCALE = "Emoji/CurrentScale";
 
-		public const string UNLOCKED_EXPRESSIONS = "Emoji/UnlockedExpressions";
+		public const string UNLOCKED_EXPRESSIONS = "Emoji/UnlockedExpressions/";
 
 		public const string EMOJI_NAME = "Emoji/EmojiName";
 
 		public const string EMOJI_SLEEPING = "Emoji/Sleeping";
 
 		public const string EMOJI_EXPRESSION_PROGRESS = "Emoji/ExpressionProgress/";
+		public const string EMOJI_EXPRESSION_STATUS = "Emoji/ExpressionStatus/";
 	}
 
 	public static class Player

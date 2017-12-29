@@ -166,10 +166,11 @@ public class ScreenTutorial : BaseUI {
 			tutorialArrowPanels [lastActiveArrow].SetActive (false);
 		}
 
-		if(type == TutorialType.IdleLivingRoom){
+		/*if(type == TutorialType.IdleLivingRoom){
 			dialogText.text = idleLivingRoom [0];
 			dialogBox.localPosition = dialogBoxPositions [0];
-		} else if(type == TutorialType.FirstBathroom){
+		} else */
+		if(type == TutorialType.FirstBathroom){
 			dialogBox.localPosition = dialogBoxPositions [1];
 			dialogText.text = "If "+emojiName+" gets dirty, give it a good bath.";
 		} else if(type == TutorialType.FirstBedroom){

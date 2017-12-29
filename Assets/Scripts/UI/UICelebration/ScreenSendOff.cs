@@ -57,4 +57,11 @@ public class ScreenSendOff : BaseUI {
 		PlayerData.Instance.PlayerCoin += randCoin;
 		PlayerData.Instance.PlayerGem += randGem;
 	}
+
+	void CheckEmojiExpressionStatus(){
+		Emoji emoji = PlayerData.Instance.PlayerEmoji;
+		for(int i=0;i<emoji.emojiExpressions.totalExpression;i++){
+			
+		}
+	}
 }

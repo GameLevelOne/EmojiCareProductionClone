@@ -138,14 +138,16 @@ public class EmojiExpression {
 			if(i != unlockedExpressions.Count-1) data += ",";
 		}
 		data += "]}";
-		PlayerPrefs.SetString(PlayerPrefKeys.Emoji.UNLOCKED_EXPRESSIONS,data);
+		PlayerPrefs.SetString(PlayerPrefKeys.Emoji.UNLOCKED_EXPRESSIONS+PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType.ToString(),data);
 	}
 
 	public void LoadEmojiExpression()
 	{
+		EmojiType emojiType = PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType;
 		//load from json	
-		if(PlayerPrefs.HasKey(PlayerPrefKeys.Emoji.UNLOCKED_EXPRESSIONS)){
-			string data = PlayerPrefs.GetString(PlayerPrefKeys.Emoji.UNLOCKED_EXPRESSIONS);
+		if(PlayerPrefs.HasKey(PlayerPrefKeys.Emoji.UNLOCKED_EXPRESSIONS+emojiType.ToString())){
+			string data = PlayerPrefs.GetString(PlayerPrefKeys.Emoji.UNLOCKED_EXPRESSIONS+emojiType.ToString());
+			Debug.Log (data);
 			JSONNode node = JSON.Parse(data);
 			for(int i = 0;i< node[RESOURCE_DATA].Count;i++){
 				unlockedExpressions.Add((EmojiExpressionState)node[RESOURCE_DATA][i].AsInt);
@@ -154,8 +156,8 @@ public class EmojiExpression {
 		totalExpression = 60;
 		expressionDataInstances = new EmojiExpressionData[60];
 		for(int i=0;i<expressionDataInstances.Length;i++){
-			expressionDataInstances [i] = new EmojiExpressionData (i,
-			PlayerData.Instance.PlayerEmoji.emojiBaseData.expressionNewProgress[i]);
+			expressionDataInstances [i] = new EmojiExpressionData (i,emojiType,
+			PlayerData.Instance.PlayerEmoji.emojiBaseData.expressionNewProgress[i]); //unlock conditions
 		}
 	}
 
@@ -214,6 +216,9 @@ public class EmojiExpression {
 				if(currentData.GetCurrentProgress() == currentData.GetTotalProgress()){
 					//new expression
 					unlockedExpressions.Add (expression);
+					PlayerPrefs.SetInt (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_STATUS +
+					PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType.ToString () +
+					expression.ToString (), (int)ExpressionStatus.Unlocked);
 					SaveEmojiExpression ();
 
 					if (OnNewExpression != null) {
@@ -224,9 +229,9 @@ public class EmojiExpression {
 				}
 				else{
 					//notif expression progress
-					if (OnNewExpression != null) {
-						OnNewExpression ((int)expression,false);
-					}
+//					if (OnNewExpression != null) {
+//						OnNewExpression ((int)expression,false);
+//					}
 				}
 			}
 		}

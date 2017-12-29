@@ -6,25 +6,27 @@ using UnityEngine;
 public class EmojiExpressionData {
 	[Header("EmojiExpressionData Attributes. VIEW ONLY")]
 	EmojiExpressionState expressionState;
+	EmojiType emojiType;
 	public int expressionCurrentProgress=0;
 	public int expressionTotalProgress=0; //temp
 
-	public EmojiExpressionData (int expressionState, int totalProgress)
+	public EmojiExpressionData (int expressionState, EmojiType emojiType, int totalProgress)
 	{
 		this.expressionState = (EmojiExpressionState)expressionState;
+		this.emojiType = emojiType;
 		this.expressionTotalProgress = totalProgress;
 
 		if (expressionState == 0) {
-			expressionCurrentProgress = PlayerPrefs.GetInt (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_PROGRESS + this.expressionState.ToString (), 1);
+			expressionCurrentProgress = PlayerPrefs.GetInt (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_PROGRESS + emojiType.ToString()+this.expressionState.ToString (), 1);
 		} else {
-			expressionCurrentProgress = PlayerPrefs.GetInt (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_PROGRESS + this.expressionState.ToString (), 0);
+			expressionCurrentProgress = PlayerPrefs.GetInt (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_PROGRESS + emojiType.ToString()+this.expressionState.ToString (), 0);
 		}
 	}
 
 	public void SetCurrentProgress(int value){
 		expressionCurrentProgress = value;
 
-		PlayerPrefs.SetInt (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_PROGRESS + expressionState.ToString (), expressionCurrentProgress);
+		PlayerPrefs.SetInt (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_PROGRESS + emojiType.ToString()+expressionState.ToString (), expressionCurrentProgress);
 		PlayerPrefs.Save ();
 	}
 
@@ -34,7 +36,7 @@ public class EmojiExpressionData {
 		else
 			expressionCurrentProgress = expressionTotalProgress;
 
-		PlayerPrefs.SetInt (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_PROGRESS + expressionState.ToString (), expressionCurrentProgress);
+		PlayerPrefs.SetInt (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_PROGRESS + emojiType.ToString()+expressionState.ToString (), expressionCurrentProgress);
 		PlayerPrefs.Save ();
 	}
 
