@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using SimpleJSON;
 
@@ -23,6 +24,11 @@ public class SceneMainManager : MonoBehaviour {
 	//sementara
 	public GameObject[] emojiSamples;
 
+	//growth
+	const float tresholdLow = 0.3f;
+	const float tresholdMed = 0.7f;
+	const float tresholdHigh = 1f;
+
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
@@ -40,6 +46,35 @@ public class SceneMainManager : MonoBehaviour {
 
 	void InitMain()
 	{
+		
+		int totalExpression = 60;
+
+
+		//load expression data
+		EmojiType emojiType = PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType;
+		//load from json	
+		if(PlayerPrefs.HasKey(PlayerPrefKeys.Emoji.UNLOCKED_EXPRESSIONS+emojiType.ToString())){
+			string data = PlayerPrefs.GetString(PlayerPrefKeys.Emoji.UNLOCKED_EXPRESSIONS+emojiType.ToString());
+			Debug.Log (data);
+			JSONNode node = JSON.Parse(data);
+
+
+			PlayerData.Instance.emojiParentTransform = roomController.rooms[(int)roomController.currentRoom].transform;
+
+			float progress = (float)(node["EmojiUnlockedExpressions"].Count / totalExpression);
+			if(progress < 0.3f){
+				//baby
+				PlayerData.Instance.InitPlayerBabyEmoji(emojiSamples[PlayerData.Instance.PlayerEmojiType]);
+			}else if(progress >= 0.3f && progress <  0.7f){
+				//juvenille
+				PlayerData.Instance.InitPlayerBabyEmoji(emojiSamples[PlayerData.Instance.PlayerEmojiType]);
+			}else{
+				//adult
+
+				PlayerData.Instance.InitPlayerEmoji(emojiSamples[PlayerData.Instance.PlayerEmojiType]);
+			}
+		}
+
 
 
 		PlayerData.Instance.emojiParentTransform = roomController.rooms[(int)roomController.currentRoom].transform;

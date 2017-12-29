@@ -13,6 +13,8 @@ public class PlayerData : MonoBehaviour {
 	int defaultCoin = 1000; //TODO: ADJUST THIS LATER
 	int defulatGem = 0; //TODO: ADJUST THIS LATER
 
+	public GameObject babyEmoji;
+
 	public Transform emojiParentTransform;
 
 	Emoji playerEmoji;
@@ -291,6 +293,15 @@ public class PlayerData : MonoBehaviour {
 		GameObject temp = (GameObject) Instantiate(playerEmoji,emojiParentTransform);
 
 		this.playerEmoji = temp.GetComponent<Emoji>();
+		this.playerEmoji.Init();
+	}
+
+	public void InitPlayerBabyEmoji(GameObject adultObject)
+	{
+		GameObject temp = (GameObject) Instantiate (babyEmoji,emojiParentTransform);
+
+		this.playerEmoji = temp.GetComponent<Emoji>();
+		this.playerEmoji.GetComponent<BabyEmoji>().emojiAdultObject = adultObject;
 		this.playerEmoji.Init();
 	}
 }
