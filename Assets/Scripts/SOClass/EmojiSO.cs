@@ -6,10 +6,10 @@ public enum EmojiType{
 	Spookiji,
 	Chocoji,
 
-	Gumiji,
 	Toothiji,
 	Nanaji,
 	Boneji,
+	Gumiji,
 	Moeji,
 	Takoji
 }
