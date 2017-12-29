@@ -81,7 +81,7 @@ public class RoomController : MonoBehaviour {
 		
 	public void OnDestroy()
 	{
-		UnregisterLockRoomEvent();
+		UnregisterEmojiEvents();
 		pan.OnCookingDone -= OnCookingDone;
 	}
 
