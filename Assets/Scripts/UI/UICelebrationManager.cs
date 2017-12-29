@@ -10,6 +10,7 @@ public class UICelebrationManager : MonoBehaviour {
 	public ScreenSendOff screenSendOff;
 	public ScreenEmojiDead screenEmojiDead;
 	public ScreenEmojiTransfer screenEmojiTransfer;
+	public PopupEmojiGrowth popupEmojiGrowth;
 
 	public Transform canvasParent;
 	public ExpressionIcons expressionIcons;

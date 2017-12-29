@@ -68,6 +68,11 @@ public class PlayerData : MonoBehaviour {
 		set{PlayerPrefs.SetString (PlayerPrefKeys.Emoji.EMOJI_NAME, value);}
 	}
 
+	public int PlayerSendOffCount{
+		get{return PlayerPrefs.GetInt (PlayerPrefKeys.Player.SEND_OFF_COUNT, 0);}
+		set{PlayerPrefs.SetInt (PlayerPrefKeys.Player.SEND_OFF_COUNT, value);}
+	}
+
 	public List<EmojiType> EmojiAlbumData{
 		get{return emojiAlbumData;}
 	}

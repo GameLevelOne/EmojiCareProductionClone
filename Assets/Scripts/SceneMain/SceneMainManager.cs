@@ -46,8 +46,6 @@ public class SceneMainManager : MonoBehaviour {
 
 	void InitMain()
 	{
-		
-
 		//VALIDATE TOTAL PROGRESS
 		int totalExpression = 60;
 		//load expression data
