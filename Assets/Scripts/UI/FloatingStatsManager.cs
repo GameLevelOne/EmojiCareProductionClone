@@ -6,10 +6,14 @@ public class FloatingStatsManager : MonoBehaviour {
 	public PopupStatsMeter[] statsMeterObj;
 	public Sprite[] barSprites; //green,yellow,orange,red
 	bool barIsShowing = false;
+	bool hasInit = false;
 
 	public void Init(){
-		ShowerTrigger.OnEnterShower += OnEnterShower;
-		ShowerTrigger.OnExitShower += OnExitShower;
+		if(!hasInit){
+			hasInit = true;
+			ShowerTrigger.OnEnterShower += OnEnterShower;
+			ShowerTrigger.OnExitShower += OnExitShower;
+		}
 	}
 
 	public void RegisterEmojiEvents()

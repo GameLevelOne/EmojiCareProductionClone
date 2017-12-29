@@ -39,15 +39,12 @@ public class EmojiGrowth : MonoBehaviour {
 	public void UpdateGrowth(float progress)
 	{
 		float newScaleValue = GetScaleValue(progress);
-		if(newScaleValue == scaleLarge){
-			Destroy(emoji.gameObject);
-//			PlayerData.Instance.InitPlayerEmoji()
-		}
-		if(newScaleValue >= currentScale){
+		if(emoji.transform.localScale.x != scaleLarge && newScaleValue == scaleLarge){
+			emoji.GetComponent<BabyEmoji>().GrowToAdult();
+		}else if(newScaleValue >= currentScale){
 			currentScale = newScaleValue;
-			transform.localScale = new Vector3(currentScale,currentScale,1f);
+			emoji.GetComponent<BabyEmoji>().GrowToJuvenille();
 		}
-
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------

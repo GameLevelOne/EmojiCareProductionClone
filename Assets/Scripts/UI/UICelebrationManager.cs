@@ -17,14 +17,19 @@ public class UICelebrationManager : MonoBehaviour {
 	public ParticlePlayer particlePlayer;
 	public GameObject buttonGacha;
 
+	bool hasInit = false;
+
 	List<NotificationNewExpression> notificationObj = new List<NotificationNewExpression>();
 	bool isShowingNotif = false;
 
 	public void Init()
 	{
-		ScreenPopup.OnCelebrationNewEmoji += OnCelebrationNewEmoji;
-		ScreenPopup.OnSendOffEmoji += OnSendOffEmoji;
-		ScreenPopup.OnTransferEmoji += OnTransferEmoji;
+		if(!hasInit){
+			hasInit = true;
+			ScreenPopup.OnCelebrationNewEmoji += OnCelebrationNewEmoji;
+			ScreenPopup.OnSendOffEmoji += OnSendOffEmoji;
+			ScreenPopup.OnTransferEmoji += OnTransferEmoji;
+		}
 	}
 
 	public void RegisterEmojiEvents()

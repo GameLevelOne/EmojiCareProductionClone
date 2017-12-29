@@ -46,10 +46,8 @@ public class SceneMainManager : MonoBehaviour {
 
 	void InitMain()
 	{
-		
+		//VALIDATE TOTAL PROGRESS
 		int totalExpression = 60;
-
-
 		//load expression data
 		EmojiType emojiType = PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType;
 		//load from json	
@@ -57,7 +55,6 @@ public class SceneMainManager : MonoBehaviour {
 			string data = PlayerPrefs.GetString(PlayerPrefKeys.Emoji.UNLOCKED_EXPRESSIONS+emojiType.ToString());
 			Debug.Log (data);
 			JSONNode node = JSON.Parse(data);
-
 
 			PlayerData.Instance.emojiParentTransform = roomController.rooms[(int)roomController.currentRoom].transform;
 
@@ -70,15 +67,16 @@ public class SceneMainManager : MonoBehaviour {
 				PlayerData.Instance.InitPlayerBabyEmoji(EmojiAgeType.Juvenille, emojiSamples[PlayerData.Instance.PlayerEmojiType]);
 			}else{
 				//adult
-
 				PlayerData.Instance.InitPlayerEmoji(emojiSamples[PlayerData.Instance.PlayerEmojiType]);
 			}
+		}else{
+			//baby
+			PlayerData.Instance.InitPlayerBabyEmoji(EmojiAgeType.Baby, emojiSamples[PlayerData.Instance.PlayerEmojiType]);
 		}
+		PlayerData.Instance.PlayerEmoji.OnEmojiInitiated += OnEmojiInitiated;
+		PlayerData.Instance.PlayerEmoji.Init();
 
-
-
-		PlayerData.Instance.emojiParentTransform = roomController.rooms[(int)roomController.currentRoom].transform;
-		PlayerData.Instance.InitPlayerEmoji(emojiSamples[PlayerData.Instance.PlayerEmojiType]);
+//		PlayerData.Instance.InitPlayerEmoji(emojiSamples[PlayerData.Instance.PlayerEmojiType]);
 
 		if(PlayerData.Instance.PlayerEmoji.EmojiSleeping){
 			roomController.currentRoom = RoomType.Bedroom;
@@ -108,23 +106,11 @@ public class SceneMainManager : MonoBehaviour {
 		}
 
 		statsExpressionController.Init();
-
 		roomController.Init();
+
 		gachaReward.Init ();
-
-
 		celebrationManager.Init();
 		floatingStats.Init ();
-
-		screenTutorial.RegisterEmojiEvents();
-		statsExpressionController.RegisterEmojiEvents();
-		celebrationManager.RegisterEmojiEvents();
-		roomController.RegisterEmojiEvents();
-		floatingStats.RegisterEmojiEvents();
-		gachaReward.RegisterEmojiEvents();
-		hotkeys.RegisterEmojiEvents();
-		bedroom.RegisterEmojiEvents();
-		randomBedroomController.RegisterEmojiEvents();
 
 		if (PlayerData.Instance.TutorialFirstVisit == 0) {
 			screenTutorial.ShowUI (screenTutorial.screenTutorialObj);
@@ -136,7 +122,51 @@ public class SceneMainManager : MonoBehaviour {
 
 		SoundManager.Instance.PlayBGM(BGMList.BGMMain);
 
+		OnEmojiInitiated();
+
 		PlayerData.Instance.PlayerEmoji.OnEmojiDestroyed += OnEmojiDestroyed;
+	}
+
+	public void EmojiGrowToAdult()
+	{
+		PlayerData.Instance.PlayerEmoji.OnEmojiInitiated += OnEmojiInitiated;
+		PlayerData.Instance.PlayerEmoji.Init();
+
+		if(PlayerData.Instance.PlayerEmoji.EmojiSleeping){
+			roomController.currentRoom = RoomType.Bedroom;
+			roomController.transform.position = new Vector3(-32f,0f,0f);
+			foreach(BaseRoom r in roomController.rooms) if(r != null) r.OnRoomChanged(roomController.currentRoom);
+
+			PlayerData.Instance.PlayerEmoji.transform.parent = roomController.rooms[(int)roomController.currentRoom].transform;
+			PlayerData.Instance.PlayerEmoji.transform.position = new Vector3(0,0.0025f,-2f);
+			PlayerData.Instance.PlayerEmoji.emojiExpressions.SetExpression(EmojiExpressionState.SLEEP,-1);
+			PlayerData.Instance.PlayerEmoji.body.DoSleep();
+			bedroom.DimLight();
+			randomBedroomController.StartGeneratingObjects();
+		}
+		PlayerData.Instance.PlayerEmoji.InitEmojiStats();
+
+		if(PlayerData.Instance.PlayerEmoji.EmojiSleeping){
+			floatingStatsManager.OnEmojiSleepEvent(true);
+		}
+	}
+
+	void OnEmojiInitiated()
+	{
+		PlayerData.Instance.PlayerEmoji.OnEmojiInitiated -= OnEmojiInitiated;
+
+		PlayerData.Instance.PlayerEmoji.body.previousRoom = (int)roomController.currentRoom;
+		PlayerData.Instance.PlayerEmoji.body.currentRoom = (int)roomController.currentRoom;
+
+		screenTutorial.RegisterEmojiEvents();
+		statsExpressionController.RegisterEmojiEvents();
+		celebrationManager.RegisterEmojiEvents();
+		roomController.RegisterEmojiEvents();
+		floatingStats.RegisterEmojiEvents();
+		gachaReward.RegisterEmojiEvents();
+		hotkeys.RegisterEmojiEvents();
+		bedroom.RegisterEmojiEvents();
+		randomBedroomController.RegisterEmojiEvents();
 	}
 
 	void OnEmojiDestroyed ()

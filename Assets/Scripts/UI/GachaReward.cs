@@ -52,7 +52,7 @@ public class GachaReward : BaseUI {
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initializations
 	void Start(){
-		Init ();
+//		Init ();
 		//GetGachaReward();
 		//GetGachaReward();
 	}
@@ -62,6 +62,7 @@ public class GachaReward : BaseUI {
 	}
 
 	public void Init(){
+
 		gachaCount = PlayerPrefs.GetInt (gachaPrefKey, 0);
 		textGachaCount.text = gachaCount.ToString ();
 		if(gachaCount <= 0) buttonGacha.SetActive(false);

@@ -16,12 +16,18 @@ public class EmojiStatsExpressionController : MonoBehaviour {
 	public EmojiExpressionState[] mediumState;
 	public EmojiExpressionState[] highState;
 	Emoji emoji;
+
+	bool hasInit = false;
 	#endregion
 	//-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
 	public void Init()
 	{
-		emoji = PlayerData.Instance.PlayerEmoji;
+		if(!hasInit){
+			hasInit = true;
+			emoji = PlayerData.Instance.PlayerEmoji;
+		}
+
 	}
 
 	public void RegisterEmojiEvents()

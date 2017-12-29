@@ -24,8 +24,9 @@ public class Emoji : MonoBehaviour {
 	public event CheckStatsTutorial OnCheckStatsTutorial;
 	public static event ShowFloatingStatsBar OnShowFloatingStatsBar;
 
-	public delegate void EmojiDestroyed();
-	public event EmojiDestroyed OnEmojiDestroyed;
+	public delegate void EmojiRegisterEvent();
+	public event EmojiRegisterEvent OnEmojiInitiated;
+	public event EmojiRegisterEvent OnEmojiDestroyed;
 
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -89,7 +90,8 @@ public class Emoji : MonoBehaviour {
 			hasInit = true;
 			InitEmojiExpression();
 			body.RemoveHat ();
-			
+
+			if(OnEmojiInitiated != null) OnEmojiInitiated();
 		}
 	}
 
@@ -131,10 +133,10 @@ public class Emoji : MonoBehaviour {
 		}
 	}
 
-	protected void InitEmojiExpression()
+	protected virtual void InitEmojiExpression()
 	{
 		emojiExpressions.Init();
-		emojiGrowth.UpdateGrowth(emojiExpressions.GetTotalExpressionProgress());
+
 		emojiExpressions.SetExpression(EmojiExpressionState.DEFAULT,0);
 	}
 

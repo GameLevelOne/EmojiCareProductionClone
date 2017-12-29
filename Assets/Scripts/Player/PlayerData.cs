@@ -293,7 +293,7 @@ public class PlayerData : MonoBehaviour {
 		GameObject temp = (GameObject) Instantiate(playerEmoji,emojiParentTransform);
 
 		this.playerEmoji = temp.GetComponent<Emoji>();
-		this.playerEmoji.Init();
+//		this.playerEmoji.Init();
 		this.playerEmoji.SetBodyCurrentScale(new Vector3(0.8f,0.8f,1));
 	}
 
@@ -303,7 +303,7 @@ public class PlayerData : MonoBehaviour {
 
 		this.playerEmoji = temp.GetComponent<Emoji>();
 		this.playerEmoji.GetComponent<BabyEmoji>().emojiAdultObject = adultObject;
-		this.playerEmoji.Init();
+//		this.playerEmoji.Init();
 
 		if(type == EmojiAgeType.Baby){
 			this.playerEmoji.SetBodyCurrentScale(new Vector3(0.5f,0.5f,1));
