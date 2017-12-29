@@ -18,6 +18,8 @@ public class EmojiExpressionData {
 
 		if (expressionState == 0) {
 			expressionCurrentProgress = PlayerPrefs.GetInt (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_PROGRESS + emojiType.ToString()+this.expressionState.ToString (), 1);
+			PlayerPrefs.SetFloat (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_PROGRESSRATIO +emojiType.ToString () +this.expressionState.ToString (), 1);
+			PlayerPrefs.SetInt (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_STATUS +emojiType.ToString () +this.expressionState.ToString (), (int)ExpressionStatus.Unlocked);
 		} else {
 			expressionCurrentProgress = PlayerPrefs.GetInt (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_PROGRESS + emojiType.ToString()+this.expressionState.ToString (), 0);
 		}
@@ -27,7 +29,6 @@ public class EmojiExpressionData {
 		expressionCurrentProgress = value;
 
 		PlayerPrefs.SetInt (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_PROGRESS + emojiType.ToString()+expressionState.ToString (), expressionCurrentProgress);
-		PlayerPrefs.Save ();
 	}
 
 	public void AddToCurrentProgress(int mod){
@@ -37,20 +38,15 @@ public class EmojiExpressionData {
 			expressionCurrentProgress = expressionTotalProgress;
 
 		PlayerPrefs.SetInt (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_PROGRESS + emojiType.ToString()+expressionState.ToString (), expressionCurrentProgress);
-		PlayerPrefs.Save ();
+
 	}
 
-	public int GetCurrentProgress(){
-//		Debug.Log ("currentprogress:" + expressionCurrentProgress);
-		return expressionCurrentProgress;
-	}
+	public float GetProgressRatio(EmojiType emojiType){
+		float ratio = (float)expressionCurrentProgress / (float)expressionTotalProgress;
 
-	public int GetTotalProgress(){
-//		Debug.Log ("totalprogress:" + expressionTotalProgress);
-		return expressionTotalProgress;
-	}
+		PlayerPrefs.SetFloat (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_PROGRESSRATIO + emojiType.ToString () + expressionState.ToString (),
+			ratio);
 
-	public float GetProgressRatio(){
-		return ((float)expressionCurrentProgress / (float)expressionTotalProgress);
+		return ratio;
 	}
 }

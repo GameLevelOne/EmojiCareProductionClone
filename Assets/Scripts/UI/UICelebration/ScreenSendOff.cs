@@ -39,6 +39,7 @@ public class ScreenSendOff : BaseUI {
 		GenerateReward ();
 		CheckEmojiExpressionStatus ();
 		screenAlbum.AddEmojiRecord();
+		PlayerData.Instance.PlayerSendOffCount++;
 	}
 
 	public void OnClickContinue(){

@@ -19,6 +19,7 @@ public static class PlayerPrefKeys {
 
 		public const string EMOJI_EXPRESSION_PROGRESS = "Emoji/ExpressionProgress/";
 		public const string EMOJI_EXPRESSION_STATUS = "Emoji/ExpressionStatus/";
+		public const string EMOJI_EXPRESSION_PROGRESSRATIO = "Emoji/ExpressionProgressRatio/";
 	}
 
 	public static class Player
@@ -39,6 +40,8 @@ public static class PlayerPrefKeys {
 		public const string EMOJI_RECORD_COUNT = "Player/EmojiRecordCount";
 
 		public const string FIRST_PLAY = "Player/FirstPlay";
+
+		public const string SEND_OFF_COUNT = "Player/SendOffCount";
 
 		public static class Inventory
 		{

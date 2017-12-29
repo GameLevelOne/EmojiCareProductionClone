@@ -116,7 +116,7 @@ public class EmojiExpression {
 	{
 		int counter = 0;
 		foreach(EmojiExpressionData data in expressionDataInstances){
-			if(data.GetProgressRatio() == 1){
+			if(data.GetProgressRatio(PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType) == 1){
 				counter++;
 			}
 		}
@@ -147,7 +147,6 @@ public class EmojiExpression {
 		//load from json	
 		if(PlayerPrefs.HasKey(PlayerPrefKeys.Emoji.UNLOCKED_EXPRESSIONS+emojiType.ToString())){
 			string data = PlayerPrefs.GetString(PlayerPrefKeys.Emoji.UNLOCKED_EXPRESSIONS+emojiType.ToString());
-			Debug.Log (data);
 			JSONNode node = JSON.Parse(data);
 			for(int i = 0;i< node[RESOURCE_DATA].Count;i++){
 				unlockedExpressions.Add((EmojiExpressionState)node[RESOURCE_DATA][i].AsInt);
@@ -155,6 +154,7 @@ public class EmojiExpression {
 		}
 		totalExpression = 60;
 		expressionDataInstances = new EmojiExpressionData[60];
+
 		for(int i=0;i<expressionDataInstances.Length;i++){
 			expressionDataInstances [i] = new EmojiExpressionData (i,emojiType,
 			PlayerData.Instance.PlayerEmoji.emojiBaseData.expressionNewProgress[i]); //unlock conditions
@@ -213,7 +213,7 @@ public class EmojiExpression {
 				EmojiExpressionData currentData = expressionDataInstances [(int)expression];
 				currentData.AddToCurrentProgress (1);
 
-				if(currentData.GetCurrentProgress() == currentData.GetTotalProgress()){
+				if(currentData.GetProgressRatio(PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType) >= 1f){
 					//new expression
 					unlockedExpressions.Add (expression);
 					PlayerPrefs.SetInt (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_STATUS +

@@ -25,8 +25,7 @@ public class NotificationNewExpression : MonoBehaviour {
 		EmojiType currentEmoji = PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType;
 		EmojiExpression emojiExpression = PlayerData.Instance.PlayerEmoji.emojiExpressions;
 		EmojiExpressionData currentData = emojiExpression.expressionDataInstances [expression];
-		int expressionCurrentProgress = currentData.GetCurrentProgress ();
-		int expressionTotalProgress = currentData.GetTotalProgress ();
+
 		particles = particlePlayer;
 		this.isNewExpression = isNewExpression;
 
@@ -37,7 +36,7 @@ public class NotificationNewExpression : MonoBehaviour {
 //		progressText.text = expressionCurrentProgress.ToString () + "/" + expressionTotalProgress.ToString ();
 
 		if(isNewExpression)
-			ShowNotification (expressionCurrentProgress,expressionTotalProgress);
+			ShowNotification ();
 	}
 
 	public void OnClickContinue(){
@@ -61,7 +60,7 @@ public class NotificationNewExpression : MonoBehaviour {
 //		continueButton.onClick.AddListener( () => OnClickContinue());
 	}
 
-	void ShowNotification (float currentProgress, float totalProgress)
+	void ShowNotification ()
 	{
 		gameObject.SetActive (true);
 		GetComponent<Animator> ().SetBool (boolShowNotif,true);

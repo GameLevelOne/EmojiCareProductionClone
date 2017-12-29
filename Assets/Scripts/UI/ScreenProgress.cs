@@ -66,6 +66,8 @@ public class ScreenProgress : BaseUI {
 				GameObject obj = Instantiate (emojiTypeObj, emojiScrollView, false) as GameObject;
 				obj.transform.localPosition = new Vector3 (0 + 600 * (availableEmoji.IndexOf (type)), 0, 0);
 				obj.GetComponent<Button>().onClick.AddListener(delegate{OnClickEmoji(type);});
+				obj.transform.GetChild (0).GetComponent<Image> ().sprite = emojiIcons.GetEmojiIcon (type);
+				obj.transform.GetChild (1).GetComponent<Text> ().text = type.ToString ();
 			}
 		}
 	}
@@ -93,15 +95,15 @@ public class ScreenProgress : BaseUI {
 				obj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-200+j*125,880-i*125);
 				obj.GetComponent<ProgressTile>().exprType = (EmojiExpressionState)exprTileIdx;
 				obj.name = "Expr"+exprTileIdx.ToString();
-				//condition = expressionIcons.GetExpressionUnlockCondition(currentEmojiData.emojiBaseData.emojiType,exprTileIdx);
 				name = expressionIcons.GetExpressionName(currentEmojiType,exprTileIdx);
 				Sprite sprite = expressionIcons.GetExpressionIcon(currentEmojiType,exprTileIdx);
-				float fillAmount = PlayerData.Instance.PlayerEmoji.emojiExpressions.expressionDataInstances [exprTileIdx].GetProgressRatio ();
 
-				//get expression status
+				float fillAmount = PlayerPrefs.GetFloat (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_PROGRESSRATIO +
+					currentEmojiType.ToString () + ((EmojiExpressionState)exprTileIdx).ToString(), 0);
+
 				ExpressionStatus status = 
-					(ExpressionStatus)PlayerPrefs.GetInt (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_PROGRESS +
-					PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType.ToString () + ((EmojiExpressionState)exprTileIdx).ToString(), 0);
+					(ExpressionStatus)PlayerPrefs.GetInt (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_STATUS +
+					currentEmojiType.ToString () + ((EmojiExpressionState)exprTileIdx).ToString(), 0);
 
 				obj.GetComponent<ProgressTile>().InitTile(sprite,name,condition,fillAmount,status);
 
