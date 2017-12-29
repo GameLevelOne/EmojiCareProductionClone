@@ -89,7 +89,15 @@ public class Emoji : MonoBehaviour {
 			hasInit = true;
 			InitEmojiExpression();
 			body.RemoveHat ();
+			
 		}
+	}
+
+	public void SetBodyCurrentScale(Vector3 scaling)
+	{
+		transform.localScale = scaling;
+		body.emojiCurrentScale = scaling;
+		body.emojiCurrentMirroredScale = new Vector3(scaling.x * -1f,scaling.y,scaling.z);
 	}
 
 	//called after checking whether emoji was left sleeping or not

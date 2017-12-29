@@ -74,10 +74,15 @@ public class GardenField : MonoBehaviour {
 			}
 		}
 
+		InitPlayerProgressToGardenField();
+
+	}
+
+	public void InitPlayerProgressToGardenField()
+	{
 		foreach(GameObject g in lockedSign){
 			g.SetActive(!isUnlocked());
 		}
-
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------

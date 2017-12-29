@@ -11,9 +11,9 @@ public class EmojiGrowth : MonoBehaviour {
 
 	#region attributes
 	public Emoji emoji;
-	public float scaleSmall = 0.8f;
-	public float scaleMedium = 0.6f;
-	public float scaleLarge = 1f;
+	public float scaleSmall = 0.5f;
+	public float scaleMedium = 0.65f;
+	public float scaleLarge = 0.8f;
 
 	const float tresholdLow = 0.3f;
 	const float tresholdMed = 0.7f;
@@ -38,11 +38,15 @@ public class EmojiGrowth : MonoBehaviour {
 
 	public void UpdateGrowth(float progress)
 	{
-//		float newScaleValue = GetScaleValue(progress);
-//		if(newScaleValue >= currentScale){
-//			currentScale = newScaleValue;
-//			transform.localScale = new Vector3(currentScale,currentScale,1f);
-//		}
+		float newScaleValue = GetScaleValue(progress);
+		if(newScaleValue == scaleLarge){
+			Destroy(emoji.gameObject);
+//			PlayerData.Instance.InitPlayerEmoji()
+		}
+		if(newScaleValue >= currentScale){
+			currentScale = newScaleValue;
+			transform.localScale = new Vector3(currentScale,currentScale,1f);
+		}
 
 	}
 	#endregion
@@ -52,16 +56,16 @@ public class EmojiGrowth : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
-//	float GetScaleValue(float progress)
-//	{
-//		if(progress < tresholdLow){
-//			return scaleSmall;
-//		}else if(progress < tresholdMed){
-//			return scaleMedium;
-//		}else{
-//			return scaleLarge;
-//		}
-//	}
+	float GetScaleValue(float progress)
+	{
+		if(progress < tresholdLow){
+			return scaleSmall;
+		}else if(progress < tresholdMed){
+			return scaleMedium;
+		}else{
+			return scaleLarge;
+		}
+	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------	
 }
