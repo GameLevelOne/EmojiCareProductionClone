@@ -50,6 +50,9 @@ public class EmojiBody : MonoBehaviour {
 
 	[Header("Do Not Modify")]
 	public GameObject hatObject;
+
+	public Vector3 emojiCurrentScale;
+	public Vector3 emojiCurrentMirroredScale;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization

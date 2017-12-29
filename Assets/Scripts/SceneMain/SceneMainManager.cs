@@ -39,8 +39,6 @@ public class SceneMainManager : MonoBehaviour {
 		PlayerData.Instance.emojiParentTransform = roomController.rooms[(int)roomController.currentRoom].transform;
 		PlayerData.Instance.InitPlayerEmoji(emojiSamples[PlayerData.Instance.PlayerEmojiType]);
 
-		roomController.Init();
-
 		if(PlayerData.Instance.PlayerEmoji.EmojiSleeping){
 			roomController.currentRoom = RoomType.Bedroom;
 			roomController.transform.position = new Vector3(-32f,0f,0f);
@@ -67,6 +65,8 @@ public class SceneMainManager : MonoBehaviour {
 				PlayerData.Instance.inventory.SetIngredientValue((IngredientType)i,2);
 			}
 		}
+
+		roomController.Init();
 
 		screenTutorial.Init();
 		gachaReward.Init ();
