@@ -103,7 +103,7 @@ public class ScreenProgress : BaseUI {
 					(ExpressionStatus)PlayerPrefs.GetInt (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_PROGRESS +
 					PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType.ToString () + ((EmojiExpressionState)exprTileIdx).ToString(), 0);
 
-				obj.GetComponent<ProgressTile>().InitTile(sprite,name,condition,fillAmount,status,status);
+				obj.GetComponent<ProgressTile>().InitTile(sprite,name,condition,fillAmount,status);
 
 				if(unlockedExprIdx < exprList.Count){
 					if((int)exprList[unlockedExprIdx] == exprTileIdx){
