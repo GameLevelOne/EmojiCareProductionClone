@@ -37,5 +37,4 @@ public class EmojiSO : ScriptableObject {
 	[Header("TEMPDATA")]
 	public bool isUnlocked = false;
 	public int price;
-
 }

@@ -41,8 +41,6 @@ public class EmojiBody : MonoBehaviour {
 	public bool flagSleep = false;
 	public bool flagAfterChangingRoom = false;
 
-
-
 	[Header("BubbleEffect")]
 	public Animator bubbleEffectAnim;
 	public Animator kinclongAnim;
@@ -50,6 +48,9 @@ public class EmojiBody : MonoBehaviour {
 
 	[Header("Do Not Modify")]
 	public GameObject hatObject;
+
+	public Vector3 emojiCurrentScale;
+	public Vector3 emojiCurrentMirroredScale;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
@@ -57,7 +58,7 @@ public class EmojiBody : MonoBehaviour {
 	{
 		emoji.emojiExpressions.OnChangeExpression += OnChangeExpression;
 	}
-		
+
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region animation event
@@ -70,7 +71,7 @@ public class EmojiBody : MonoBehaviour {
 		emoji.emojiExpressions.ResetExpressionDuration();
 		emoji.emojiExpressions.SetExpression(EmojiExpressionState.DEFAULT,0);
 
-		emoji.transform.localScale = emoji.emojiGrowth.GetScale();
+		emoji.transform.localScale = emojiCurrentScale;
 
 	}
 
@@ -246,7 +247,7 @@ public class EmojiBody : MonoBehaviour {
 
 			}else if(currentRoom < previousRoom){
 				Vector3 emojiScale = emoji.emojiGrowth.GetScale();
-				emoji.transform.localScale = new Vector3(-1f * emojiScale.x, emojiScale.y, emojiScale.z);
+				emoji.transform.localScale = emojiCurrentMirroredScale;
 				PlayerData.Instance.PlayerEmoji.emojiExpressions.ResetExpressionDuration();
 				emoji.emojiExpressions.SetExpression(EmojiExpressionState.CHANGE_ROOM,-1f);
 				if(OnEmojiBouncingToCurrentRoom != null) OnEmojiBouncingToCurrentRoom();

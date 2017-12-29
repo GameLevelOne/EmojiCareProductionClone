@@ -7,36 +7,29 @@ public class Bedroom : BaseRoom {
 	public SpriteRenderer darkLight;
 	public float fadeSpeed = 3f;
 
-	bool hasRegisterDarkLightEvent = false;
-
 	Color brightColor = new Color(0,0,0,0);
 	Color dimmedColor = new Color(0,0,0,0.5f);
-
-	public override void InitRoom ()
-	{
-		base.InitRoom ();
-
-		RegisterDarkLightEvent();
-		randomBedroomObjectController.Init();
-	}
 
 	public void Init()
 	{
 		
 	}
 
-	void RegisterDarkLightEvent()
+	public void RegisterEmojiEvents()
 	{
-		if(!hasRegisterDarkLightEvent){
-			hasRegisterDarkLightEvent = true;
-			PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent += OnEmojiSleepEvent;
-			PlayerData.Instance.PlayerEmoji.playerInput.OnEmojiWake += OnEmojiWake;
-		}
+		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent += OnEmojiSleepEvent;
+		PlayerData.Instance.PlayerEmoji.playerInput.OnEmojiWake += OnEmojiWake;
+	}
+
+	public void UnregisterEmojiEvents()
+	{
+		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent -= OnEmojiSleepEvent;
+		PlayerData.Instance.PlayerEmoji.playerInput.OnEmojiWake -= OnEmojiWake;
 	}
 
 	void OnDestroy()
 	{
-		if(PlayerData.Instance.PlayerEmoji) PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent -= OnEmojiSleepEvent;
+		UnregisterEmojiEvents();
 	}
 
 	public void DimLight()

@@ -14,17 +14,19 @@ public enum EmojiStatss{
 public class Emoji : MonoBehaviour {
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region delegate events
-	public delegate void EmojiTickStats();
 	public delegate void EmojiDead();
 	public delegate void UpdateStatsToExpression(float hunger, float hygiene, float happiness, float stamina, float health);
 	public delegate void CheckStatsTutorial(float hunger, float hygiene, float happiness, float stamina, float health);
 	public delegate void ShowFloatingStatsBar(float[] mod);
 
-	public event EmojiTickStats OnEmojiTickStats;
 	public static event EmojiDead OnEmojiDead;
 	public event UpdateStatsToExpression OnUpdateStatsToExpression;
 	public event CheckStatsTutorial OnCheckStatsTutorial;
 	public static event ShowFloatingStatsBar OnShowFloatingStatsBar;
+
+	public delegate void EmojiRegisterEvent();
+	public event EmojiRegisterEvent OnEmojiInitiated;
+	public event EmojiRegisterEvent OnEmojiDestroyed;
 
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -49,7 +51,7 @@ public class Emoji : MonoBehaviour {
 		set{PlayerPrefs.SetString(PlayerPrefKeys.Player.LAST_TIME_PLAYED,value.ToString());}
 	}
 
-	DateTime timeOnPause{
+	protected DateTime timeOnPause{
 		get{return DateTime.Parse(PlayerPrefs.GetString(PlayerPrefKeys.Player.TIME_ON_PAUSE));}
 		set{PlayerPrefs.SetString(PlayerPrefKeys.Player.TIME_ON_PAUSE,value.ToString());}
 	}
@@ -66,19 +68,19 @@ public class Emoji : MonoBehaviour {
 	public const float statsTresholdLow = 0.2f;
 	public float[] healthTick = new float[]{0.0001f,0.0003f,0.0006f,0.0012f};
 
-	bool isTickingStat = false;
-	bool hasInit = false;
+	protected bool isTickingStat = false;
+	protected 	bool hasInit = false;
 	public bool emojiDead = false;
 
 	//interactions
-	bool flagHold = false;
-	bool flagStroke = false;
+	protected bool flagHold = false;
+	protected bool flagStroke = false;
 
-	bool isDoubleTap = false;
-	int doubleTapCounter = 0;
+	protected bool isDoubleTap = false;
+	protected int doubleTapCounter = 0;
 
-	int shakeCounter = 0;
-	float prevX = 0;
+	protected int shakeCounter = 0;
+	protected float prevX = 0;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
@@ -88,10 +90,19 @@ public class Emoji : MonoBehaviour {
 			hasInit = true;
 			InitEmojiExpression();
 			body.RemoveHat ();
-//			InitEmojiHat ();
+
+			if(OnEmojiInitiated != null) OnEmojiInitiated();
 		}
 	}
 
+	public void SetBodyCurrentScale(Vector3 scaling)
+	{
+		transform.localScale = scaling;
+		body.emojiCurrentScale = scaling;
+		body.emojiCurrentMirroredScale = new Vector3(scaling.x * -1f,scaling.y,scaling.z);
+	}
+
+	//called after checking whether emoji was left sleeping or not
 	public void InitEmojiStats()
 	{
 		hunger = 	new EmojiStats( PlayerPrefKeys.Emoji.HUNGER, 	emojiBaseData.hungerModifier, 	 emojiBaseData.maxStatValue, emojiBaseData.hungerStart );
@@ -122,15 +133,14 @@ public class Emoji : MonoBehaviour {
 		}
 	}
 
-	void InitEmojiExpression()
+	protected virtual void InitEmojiExpression()
 	{
 		emojiExpressions.Init();
-		emojiGrowth.UpdateGrowth(emojiExpressions.GetTotalExpressionProgress());
-		emojiExpressions.SetExpression(EmojiExpressionState.DEFAULT,0);
 
+		emojiExpressions.SetExpression(EmojiExpressionState.DEFAULT,0);
 	}
 
-	void InitEmojiHat()
+	protected void InitEmojiHat()
 	{
 		string id = PlayerData.Instance.inventory.GetCurrentHat ();
 
@@ -151,7 +161,7 @@ public class Emoji : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanic
-	void ResumeTickingStats()
+	protected void ResumeTickingStats()
 	{
 		int totalTicks = 0;
 		if(PlayerPrefs.HasKey(PlayerPrefKeys.Player.TIME_ON_PAUSE)){
@@ -168,7 +178,7 @@ public class Emoji : MonoBehaviour {
 		if (!emojiDead) isTickingStat = true;
 	}
 
-	void TickStats()
+	protected void TickStats()
 	{
 //		print("TICK!");
 		hunger.TickStats();
@@ -186,18 +196,9 @@ public class Emoji : MonoBehaviour {
 				stamina.StatValue	/ stamina.MaxStatValue,
 				health.StatValue	/ health.MaxStatValue
 			);
-
-//		if(OnCheckStatsTutorial != null) 
-//			OnCheckStatsTutorial(
-//				hunger.StatValue	/ hunger.MaxStatValue,
-//				hygiene.StatValue	/ hygiene.MaxStatValue,
-//				happiness.StatValue	/ happiness.MaxStatValue,
-//				stamina.StatValue	/ stamina.MaxStatValue,
-//				health.StatValue	/ health.MaxStatValue
-//			);
 	}
 
-	void TickHealth()
+	protected void TickHealth()
 	{
 		if(!playerInput.barfSound){
 			float hungerValue = hunger.StatValue/hunger.MaxStatValue;
@@ -238,7 +239,7 @@ public class Emoji : MonoBehaviour {
 		
 	}
 
-	int GetTotalTicks(TimeSpan duration)
+	protected int GetTotalTicks(TimeSpan duration)
 	{
 		int dayToSec = duration.Days * 24 * 60 * 60;
 		int hourToSec = duration.Hours * 60 * 60;
@@ -281,10 +282,9 @@ public class Emoji : MonoBehaviour {
 		happiness.Debug = debug;
 		stamina.Debug = debug;
 		health.Debug = debug;
-
 	}
 
-	Vector3 tempLastEmojiPos;
+	protected Vector3 tempLastEmojiPos;
 	public void HideEmojiWhenEditMode()
 	{
 		thisRigidbody.simulated = false;
@@ -301,8 +301,8 @@ public class Emoji : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region coroutines
-	const string _TickingStats = "StartTickingStats";
-	IEnumerator StartTickingStats()
+	protected const string _TickingStats = "StartTickingStats";
+	protected IEnumerator StartTickingStats()
 	{
 		isTickingStat = true;
 
@@ -314,8 +314,8 @@ public class Emoji : MonoBehaviour {
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
-	float t = 0;
-	void Update()
+	protected float t = 0;
+	protected void Update()
 	{
 		if(isTickingStat){
 			t += Time.deltaTime;
@@ -325,7 +325,7 @@ public class Emoji : MonoBehaviour {
 			}
 		}
 	}
-	void OnApplicationPause(bool isPaused)
+	protected void OnApplicationPause(bool isPaused)
 	{
 		if(isPaused){ 
 			isTickingStat = false;
@@ -337,11 +337,16 @@ public class Emoji : MonoBehaviour {
 		}
 	}
 
-	void OnApplicationQuit()
+	protected void OnApplicationQuit()
 	{
 		isTickingStat = false;
 //		StopCoroutine(_TickingStats);
 		lastTimePlayed = DateTime.Now;
 //		print(lastTimePlayed);
+	}
+
+	protected void OnDestroy()
+	{
+		if(OnEmojiDestroyed != null) OnEmojiDestroyed();
 	}
 }

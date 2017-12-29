@@ -33,55 +33,66 @@ public class RoomController : MonoBehaviour {
 
 	[Header("Do Not Modify")]
 	public bool interactable = true;
+
+	bool hasInit = false;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initializations
 	public void Init()
 	{
-		thisCollider = GetComponent<BoxCollider2D>();
+		if(!hasInit){
+			hasInit = true;
 
-		transform.position = new Vector3(-16f,0f,0f);
-		currentRoom = RoomType.LivingRoom;
+			thisCollider = GetComponent<BoxCollider2D>();
 
-		PlayerData.Instance.PlayerEmoji.body.currentRoom = (int)currentRoom;
-		PlayerData.Instance.PlayerEmoji.body.previousRoom = (int)currentRoom;
+			transform.position = new Vector3(-16f,0f,0f);
+			currentRoom = RoomType.LivingRoom;
 
-		foreach(BaseRoom r in rooms) if(r != null){
-			r.InitRoom();
-			r.OnRoomChanged(currentRoom);
+//			PlayerData.Instance.PlayerEmoji.body.currentRoom = (int)currentRoom;
+//			PlayerData.Instance.PlayerEmoji.body.previousRoom = (int)currentRoom;
+
+			foreach(BaseRoom r in rooms) if(r != null){
+					r.InitRoom();
+					r.OnRoomChanged(currentRoom);
+				}
+			print("ALBUM DATA = "+PlayerData.Instance.EmojiAlbumData.Count);
+			if(PlayerData.Instance.EmojiAlbumData.Count <= 0) Album.SetActive(false);
+
+			AdjustTouchAreaSize();
+			pan.OnCookingDone += OnCookingDone;
+			stall.Init();
+			soil.Init();
 		}
-		print("ALBUM DATA = "+PlayerData.Instance.EmojiAlbumData.Count);
-		if(PlayerData.Instance.EmojiAlbumData.Count <= 0) Album.SetActive(false);
-
-		AdjustTouchAreaSize();
-		RegisterLockRoomEvent();
-		stall.Init();
-		soil.Init();
-
 	}
 
-	void RegisterLockRoomEvent()
+	public void RegisterEmojiEvents()
 	{
 		PlayerData.Instance.PlayerEmoji.body.OnEmojiBouncingToCurrentRoom += OnEmojiBouncingToCurrentRoom;
 		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent += OnEmojiSleepEvent;
 		PlayerData.Instance.PlayerEmoji.playerInput.OnEmojiPouting += OnEmojiPouting;
 		PlayerData.Instance.PlayerEmoji.body.OnEmojiEatEvent += OnEmojiEatEvent;
-		pan.OnCookingDone += OnCookingDone;
+
 	}
 
-
-	void OnEmojiSleepEvent (bool sleeping)
-	{
-		interactable = !sleeping;
-	}
-		
-	public void OnDestroy()
+	public void UnregisterEmojiEvents()
 	{
 		PlayerData.Instance.PlayerEmoji.body.OnEmojiBouncingToCurrentRoom -= OnEmojiBouncingToCurrentRoom;
 		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent -= OnEmojiSleepEvent;
 		PlayerData.Instance.PlayerEmoji.playerInput.OnEmojiPouting -= OnEmojiPouting;
 		PlayerData.Instance.PlayerEmoji.body.OnEmojiEatEvent -= OnEmojiEatEvent;
+	}
+
+
+		
+	public void OnDestroy()
+	{
+		UnregisterEmojiEvents();
 		pan.OnCookingDone -= OnCookingDone;
+	}
+
+	void OnEmojiSleepEvent (bool sleeping)
+	{
+		interactable = !sleeping;
 	}
 
 	void OnEmojiEatEvent (float lockDuration)

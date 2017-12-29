@@ -20,12 +20,18 @@ public class HotkeysAnimation : MonoBehaviour {
 		hotkeyAnim = hotkeyPanel.GetComponent<Animator>();
 	}
 
-	public void RegisterOnSleepEvent(){
+	public void RegisterEmojiEvents()
+	{
 		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent += OnEmojiSleepEvent;
 	}
 
-	void OnDisable(){
+	public void UnregisterEmojiEvents()
+	{
 		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent -= OnEmojiSleepEvent;
+	}
+
+	void OnDestroy(){
+		UnregisterEmojiEvents();
 	}
 
 	void OnEmojiSleepEvent (bool sleeping)

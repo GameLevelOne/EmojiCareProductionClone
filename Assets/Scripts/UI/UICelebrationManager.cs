@@ -17,24 +17,37 @@ public class UICelebrationManager : MonoBehaviour {
 	public ParticlePlayer particlePlayer;
 	public GameObject buttonGacha;
 
+	bool hasInit = false;
+
 	List<NotificationNewExpression> notificationObj = new List<NotificationNewExpression>();
 	bool isShowingNotif = false;
 
-	void OnEnable(){
-		Debug.Log("celebration events");
-		ScreenPopup.OnCelebrationNewEmoji += OnCelebrationNewEmoji;
-		ScreenPopup.OnSendOffEmoji += OnSendOffEmoji;
-		ScreenPopup.OnTransferEmoji += OnTransferEmoji;
+	public void Init()
+	{
+		if(!hasInit){
+			hasInit = true;
+			ScreenPopup.OnCelebrationNewEmoji += OnCelebrationNewEmoji;
+			ScreenPopup.OnSendOffEmoji += OnSendOffEmoji;
+			ScreenPopup.OnTransferEmoji += OnTransferEmoji;
+		}
+	}
+
+	public void RegisterEmojiEvents()
+	{
 		EmojiExpression.OnNewExpression += OnNewExpression;
 		Emoji.OnEmojiDead += OnEmojiDead;
 	}
+	public void UnregisterEmojiEvents()
+	{
+		EmojiExpression.OnNewExpression -= OnNewExpression;
+		Emoji.OnEmojiDead -= OnEmojiDead;
+	}
 
-	void OnDisable(){
+	void OnDestroy(){
 		ScreenPopup.OnCelebrationNewEmoji -= OnCelebrationNewEmoji;
 		ScreenPopup.OnSendOffEmoji -= OnSendOffEmoji;
 		ScreenPopup.OnTransferEmoji -= OnTransferEmoji;
-		EmojiExpression.OnNewExpression -= OnNewExpression;
-		Emoji.OnEmojiDead -= OnEmojiDead;
+		UnregisterEmojiEvents();
 	}
 
 	void OnCelebrationNewEmoji (Sprite sprite,string emojiName)

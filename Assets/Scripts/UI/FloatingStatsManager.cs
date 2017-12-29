@@ -6,21 +6,37 @@ public class FloatingStatsManager : MonoBehaviour {
 	public PopupStatsMeter[] statsMeterObj;
 	public Sprite[] barSprites; //green,yellow,orange,red
 	bool barIsShowing = false;
+	bool hasInit = false;
 
-	public void RegisterEvents(){
+	public void Init(){
+		if(!hasInit){
+			hasInit = true;
+			ShowerTrigger.OnEnterShower += OnEnterShower;
+			ShowerTrigger.OnExitShower += OnExitShower;
+		}
+	}
+
+	public void RegisterEmojiEvents()
+	{
 		Emoji.OnShowFloatingStatsBar += ShowMultipleMeters;
 		EmojiStats.OnShowSingleStatBar += ShowSingleMeter;
 		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent += OnEmojiSleepEvent;
 		PlayerData.Instance.PlayerEmoji.playerInput.OnEmojiWake += OnEmojiWake;
-		ShowerTrigger.OnEnterShower += OnEnterShower;
-		ShowerTrigger.OnExitShower += OnExitShower;
 	}
 
-	void OnDisable(){
+	public void UnregisterEmojiEvents()
+	{
 		Emoji.OnShowFloatingStatsBar -= ShowMultipleMeters;
 		EmojiStats.OnShowSingleStatBar -= ShowSingleMeter;
 		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent -= OnEmojiSleepEvent;
 		PlayerData.Instance.PlayerEmoji.playerInput.OnEmojiWake -= OnEmojiWake;
+	}
+
+	void OnDestroy(){
+		UnregisterEmojiEvents();
+
+		ShowerTrigger.OnEnterShower -= OnEnterShower;
+		ShowerTrigger.OnExitShower -= OnExitShower;
 	}
 
 	public void OnEmojiSleepEvent (bool sleeping)
