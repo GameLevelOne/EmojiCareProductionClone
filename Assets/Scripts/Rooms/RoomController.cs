@@ -54,34 +54,40 @@ public class RoomController : MonoBehaviour {
 		if(PlayerData.Instance.EmojiAlbumData.Count <= 0) Album.SetActive(false);
 
 		AdjustTouchAreaSize();
-		RegisterLockRoomEvent();
+		pan.OnCookingDone += OnCookingDone;
 		stall.Init();
 		soil.Init();
 
 	}
 
-	void RegisterLockRoomEvent()
+	public void RegisterEmojiEvents()
 	{
 		PlayerData.Instance.PlayerEmoji.body.OnEmojiBouncingToCurrentRoom += OnEmojiBouncingToCurrentRoom;
 		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent += OnEmojiSleepEvent;
 		PlayerData.Instance.PlayerEmoji.playerInput.OnEmojiPouting += OnEmojiPouting;
 		PlayerData.Instance.PlayerEmoji.body.OnEmojiEatEvent += OnEmojiEatEvent;
-		pan.OnCookingDone += OnCookingDone;
+
 	}
 
-
-	void OnEmojiSleepEvent (bool sleeping)
-	{
-		interactable = !sleeping;
-	}
-		
-	public void OnDestroy()
+	public void UnregisterEmojiEvents()
 	{
 		PlayerData.Instance.PlayerEmoji.body.OnEmojiBouncingToCurrentRoom -= OnEmojiBouncingToCurrentRoom;
 		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent -= OnEmojiSleepEvent;
 		PlayerData.Instance.PlayerEmoji.playerInput.OnEmojiPouting -= OnEmojiPouting;
 		PlayerData.Instance.PlayerEmoji.body.OnEmojiEatEvent -= OnEmojiEatEvent;
+	}
+
+
+		
+	public void OnDestroy()
+	{
+		UnregisterLockRoomEvent();
 		pan.OnCookingDone -= OnCookingDone;
+	}
+
+	void OnEmojiSleepEvent (bool sleeping)
+	{
+		interactable = !sleeping;
 	}
 
 	void OnEmojiEatEvent (float lockDuration)

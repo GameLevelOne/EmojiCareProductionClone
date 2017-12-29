@@ -11,16 +11,23 @@ public class RandomBedroomObjectController : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
-	public void Init()
+	public void RegisterEmojiEvents()
 	{
-		if(!hasInit){
-			hasInit = true;
-			PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent += OnSleepEvent;
-			PlayerData.Instance.PlayerEmoji.playerInput.OnEmojiWake += OnEmojiWake;
-		}
+		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent += OnSleepEvent;
+		PlayerData.Instance.PlayerEmoji.playerInput.OnEmojiWake += OnEmojiWake;
+		
 	}
 
+	public void UnregisterEmojiEvents()
+	{
+		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent -= OnSleepEvent;
+		PlayerData.Instance.PlayerEmoji.playerInput.OnEmojiWake -= OnEmojiWake;
+	}
 
+	void OnDestroy()
+	{
+		UnregisterEmojiEvents();
+	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics

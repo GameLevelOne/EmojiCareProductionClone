@@ -41,8 +41,6 @@ public class EmojiBody : MonoBehaviour {
 	public bool flagSleep = false;
 	public bool flagAfterChangingRoom = false;
 
-
-
 	[Header("BubbleEffect")]
 	public Animator bubbleEffectAnim;
 	public Animator kinclongAnim;

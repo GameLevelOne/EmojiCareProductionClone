@@ -57,15 +57,24 @@ public class GachaReward : BaseUI {
 		//GetGachaReward();
 	}
 
-	void OnDisable(){
-		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent -= OnEmojiSleepEvent;
+	void OnDestroy(){
+		UnregisterEmojiEvents();
 	}
 
 	public void Init(){
-		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent += OnEmojiSleepEvent;
 		gachaCount = PlayerPrefs.GetInt (gachaPrefKey, 0);
 		textGachaCount.text = gachaCount.ToString ();
 		if(gachaCount <= 0) buttonGacha.SetActive(false);
+	}
+
+	public void RegisterEmojiEvents()
+	{
+		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent -= OnEmojiSleepEvent;
+	}
+
+	public void UnregisterEmojiEvents()
+	{
+		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent -= OnEmojiSleepEvent;
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------

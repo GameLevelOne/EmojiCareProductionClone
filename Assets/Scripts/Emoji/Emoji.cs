@@ -14,17 +14,18 @@ public enum EmojiStatss{
 public class Emoji : MonoBehaviour {
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region delegate events
-	public delegate void EmojiTickStats();
 	public delegate void EmojiDead();
 	public delegate void UpdateStatsToExpression(float hunger, float hygiene, float happiness, float stamina, float health);
 	public delegate void CheckStatsTutorial(float hunger, float hygiene, float happiness, float stamina, float health);
 	public delegate void ShowFloatingStatsBar(float[] mod);
 
-	public event EmojiTickStats OnEmojiTickStats;
 	public static event EmojiDead OnEmojiDead;
 	public event UpdateStatsToExpression OnUpdateStatsToExpression;
 	public event CheckStatsTutorial OnCheckStatsTutorial;
 	public static event ShowFloatingStatsBar OnShowFloatingStatsBar;
+
+	public delegate void EmojiDestroyed();
+	public event EmojiDestroyed OnEmojiDestroyed;
 
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -185,15 +186,6 @@ public class Emoji : MonoBehaviour {
 				stamina.StatValue	/ stamina.MaxStatValue,
 				health.StatValue	/ health.MaxStatValue
 			);
-
-//		if(OnCheckStatsTutorial != null) 
-//			OnCheckStatsTutorial(
-//				hunger.StatValue	/ hunger.MaxStatValue,
-//				hygiene.StatValue	/ hygiene.MaxStatValue,
-//				happiness.StatValue	/ happiness.MaxStatValue,
-//				stamina.StatValue	/ stamina.MaxStatValue,
-//				health.StatValue	/ health.MaxStatValue
-//			);
 	}
 
 	protected void TickHealth()
@@ -280,7 +272,6 @@ public class Emoji : MonoBehaviour {
 		happiness.Debug = debug;
 		stamina.Debug = debug;
 		health.Debug = debug;
-
 	}
 
 	protected Vector3 tempLastEmojiPos;
@@ -342,5 +333,10 @@ public class Emoji : MonoBehaviour {
 //		StopCoroutine(_TickingStats);
 		lastTimePlayed = DateTime.Now;
 //		print(lastTimePlayed);
+	}
+
+	protected void OnDestroy()
+	{
+		if(OnEmojiDestroyed != null) OnEmojiDestroyed();
 	}
 }

@@ -84,23 +84,26 @@ public class ScreenTutorial : BaseUI {
 
 	bool roomChange = false;
 
-	void Awake(){
+//	void Awake(){
 //		PlayerPrefs.DeleteAll ();
-	}
+//	}
 
 	void Start(){
 		dialogText.text = firstVisit [0];
 	}
 
-	public void Init()
+	public void RegisterEmojiEvents()
 	{
-		Emoji emoji = PlayerData.Instance.PlayerEmoji;
-		emoji.OnCheckStatsTutorial += CheckStatsTutorial;
+		PlayerData.Instance.PlayerEmoji.OnCheckStatsTutorial += CheckStatsTutorial;
 	}
 
-	void OnDisable(){
-		Emoji emoji = PlayerData.Instance.PlayerEmoji;
-		emoji.OnCheckStatsTutorial -= CheckStatsTutorial;
+	public void UnregisterEmojiEvents()
+	{
+		PlayerData.Instance.PlayerEmoji.OnCheckStatsTutorial -= CheckStatsTutorial;
+	}
+
+	void OnDestroy(){
+		UnregisterEmojiEvents();
 	}
 
 	public void CheckStatsTutorial (float hunger, float hygiene, float happiness, float stamina, float health)

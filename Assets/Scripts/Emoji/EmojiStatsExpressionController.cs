@@ -22,12 +22,21 @@ public class EmojiStatsExpressionController : MonoBehaviour {
 	public void Init()
 	{
 		emoji = PlayerData.Instance.PlayerEmoji;
-		emoji.OnUpdateStatsToExpression += OnEmojiUpdateStats;
+	}
+
+	public void RegisterEmojiEvents()
+	{
+		PlayerData.Instance.PlayerEmoji.OnUpdateStatsToExpression += OnEmojiUpdateStats;
+	}
+
+	public void UnregisterEmojiEvents()
+	{
+		PlayerData.Instance.PlayerEmoji.OnUpdateStatsToExpression -= OnEmojiUpdateStats;
 	}
 
 	void OnDestroy()
 	{
-		emoji.OnUpdateStatsToExpression -= OnEmojiUpdateStats;
+		UnregisterEmojiEvents();
 	}
 	#endregion
 	//-------------------------------------------------------------------------------------------------------------------------------------------------

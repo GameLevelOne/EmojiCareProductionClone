@@ -1,19 +1,23 @@
 ﻿using System.Collections;
 using UnityEngine;
+using SimpleJSON;
 
 public class SceneMainManager : MonoBehaviour {
 	#region attributes
+	[Header("Attributes")]
 	public RoomController roomController;
+	public Fader fader;
+
+	[Header("Event Attributes")]
 	public ScreenTutorial screenTutorial;
 	public FloatingStatsManager floatingStats;
 	public EmojiStatsExpressionController statsExpressionController;
+	public UICelebrationManager celebrationManager;
 	public GachaReward gachaReward;
 	public HotkeysAnimation hotkeys;
-	public Fader fader;
-
-	[Header("Emoji Sleeping Event")]
 	public RandomBedroomObjectController randomBedroomController;
 	public Bedroom bedroom;
+	public RandomBedroomObjectController randomBedroomObjectController;
 	public FloatingStatsManager floatingStatsManager;
 
 	//sementara
@@ -36,6 +40,8 @@ public class SceneMainManager : MonoBehaviour {
 
 	void InitMain()
 	{
+
+
 		PlayerData.Instance.emojiParentTransform = roomController.rooms[(int)roomController.currentRoom].transform;
 		PlayerData.Instance.InitPlayerEmoji(emojiSamples[PlayerData.Instance.PlayerEmojiType]);
 
@@ -57,7 +63,7 @@ public class SceneMainManager : MonoBehaviour {
 			floatingStatsManager.OnEmojiSleepEvent(true);
 		}
 
-		statsExpressionController.Init();
+
 
 		if(PlayerPrefs.GetInt(PlayerPrefKeys.Game.HAS_INIT_INGREDIENT,0) == 0){
 			PlayerPrefs.SetInt(PlayerPrefKeys.Game.HAS_INIT_INGREDIENT,1);
@@ -66,12 +72,24 @@ public class SceneMainManager : MonoBehaviour {
 			}
 		}
 
-		roomController.Init();
+		statsExpressionController.Init();
 
-		screenTutorial.Init();
+		roomController.Init();
 		gachaReward.Init ();
-		floatingStats.RegisterEvents ();
-		hotkeys.RegisterOnSleepEvent ();
+
+
+		celebrationManager.Init();
+		floatingStats.Init ();
+
+		screenTutorial.RegisterEmojiEvents();
+		statsExpressionController.RegisterEmojiEvents();
+		celebrationManager.RegisterEmojiEvents();
+		roomController.RegisterEmojiEvents();
+		floatingStats.RegisterEmojiEvents();
+		gachaReward.RegisterEmojiEvents();
+		hotkeys.RegisterEmojiEvents();
+		bedroom.RegisterEmojiEvents();
+		randomBedroomController.RegisterEmojiEvents();
 
 		if (PlayerData.Instance.TutorialFirstVisit == 0) {
 			screenTutorial.ShowUI (screenTutorial.screenTutorialObj);
@@ -82,6 +100,23 @@ public class SceneMainManager : MonoBehaviour {
 		fader.FadeIn();
 
 		SoundManager.Instance.PlayBGM(BGMList.BGMMain);
+
+		PlayerData.Instance.PlayerEmoji.OnEmojiDestroyed += OnEmojiDestroyed;
+	}
+
+	void OnEmojiDestroyed ()
+	{
+		PlayerData.Instance.PlayerEmoji.OnEmojiDestroyed -= OnEmojiDestroyed;
+
+		screenTutorial.UnregisterEmojiEvents();
+		statsExpressionController.UnregisterEmojiEvents();
+		celebrationManager.UnregisterEmojiEvents();
+		roomController.UnregisterEmojiEvents();
+		floatingStats.UnregisterEmojiEvents();
+		gachaReward.UnregisterEmojiEvents();
+		hotkeys.UnregisterEmojiEvents();
+		bedroom.UnregisterEmojiEvents();
+		randomBedroomController.UnregisterEmojiEvents();
 	}
 
 	#endregion
