@@ -9,6 +9,9 @@ public class ScreenProgress : BaseUI {
 	public ExpressionIcons expressionIcons;
 	public EmojiIcons emojiIcons;
 
+	public GameObject UIExpressionProgress;
+	public Transform emojiScrollView;
+	public GameObject emojiTypeObj;
 	public GameObject buttonSend;
 	public Image totalProgressBarFill;
 	public Image indivProgressBarFill;
@@ -38,11 +41,40 @@ public class ScreenProgress : BaseUI {
 
 	public override void InitUI ()
 	{
+		List<EmojiType> availableEmoji = new List<EmojiType> ();
+		int recordCount = PlayerPrefs.GetInt (PlayerPrefKeys.Player.EMOJI_RECORD_COUNT, 0);
+		bool newType = true;
+
+		for (int i = 0; i <= recordCount; i++) {
+			EmojiType type = (EmojiType)PlayerPrefs.GetInt (PlayerPrefKeys.Album.EMOJI_TYPE,0);
+
+			if(i == 0){
+				availableEmoji.Add (type);
+			} else {
+				foreach (EmojiType a in availableEmoji) {
+					if (type == a) {
+						newType = false;
+						break;
+					}
+				}
+			}
+
+			if(newType){
+				if(i>0){
+					availableEmoji.Add (type);
+				}
+				GameObject obj = Instantiate (emojiTypeObj, emojiScrollView, false) as GameObject;
+				obj.transform.localPosition = new Vector3 (0 + 600 * (availableEmoji.IndexOf (type)), 0, 0);
+				obj.GetComponent<Button>().onClick.AddListener(delegate{OnClickEmoji(type);});
+			}
+		}
+	}
+
+	public void InitExpressionUI (EmojiType currentEmojiType)
+	{
 		if(PlayerData.Instance.TutorialFirstProgressUI == 0){
 			screenTutorial.ShowFirstDialog (TutorialType.FirstProgressUI);
 		}
-
-		Debug.Log("progress");
 
 		int exprTileIdx = 0;
 		int unlockedExprIdx = 0;
@@ -52,13 +84,7 @@ public class ScreenProgress : BaseUI {
 		List<EmojiExpressionState> exprList = currentEmojiData.emojiExpressions.unlockedExpressions;
 
 		SortList(exprList);
-
-		//for testing
-//		exprList.Add(FaceExpression.Default);
-//		exprList.Add(FaceExpression.Cry);
-//		exprList.Add(FaceExpression.Fidget);
-//		exprList.Add(FaceExpression.Amused);
-
+	
 		contentBox.sizeDelta = new Vector2(0,((float)tileHeight*expressionBoxWidth)+contentBoxMarginX);
 
 		for(int i=0;i<tileHeight;i++){
@@ -68,18 +94,22 @@ public class ScreenProgress : BaseUI {
 				obj.GetComponent<ProgressTile>().exprType = (EmojiExpressionState)exprTileIdx;
 				obj.name = "Expr"+exprTileIdx.ToString();
 				//condition = expressionIcons.GetExpressionUnlockCondition(currentEmojiData.emojiBaseData.emojiType,exprTileIdx);
-				name = expressionIcons.GetExpressionName(currentEmojiData.emojiBaseData.emojiType,exprTileIdx);
-				Sprite sprite = expressionIcons.GetExpressionIcon(currentEmojiData.emojiBaseData.emojiType,exprTileIdx);
+				name = expressionIcons.GetExpressionName(currentEmojiType,exprTileIdx);
+				Sprite sprite = expressionIcons.GetExpressionIcon(currentEmojiType,exprTileIdx);
 				float fillAmount = PlayerData.Instance.PlayerEmoji.emojiExpressions.expressionDataInstances [exprTileIdx].GetProgressRatio ();
 
-				obj.GetComponent<ProgressTile>().InitTile(sprite,name,condition,fillAmount);
+				//get expression status
+				ExpressionStatus status = 
+					(ExpressionStatus)PlayerPrefs.GetInt (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_PROGRESS +
+					PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType.ToString () + ((EmojiExpressionState)exprTileIdx).ToString(), 0);
+
+				obj.GetComponent<ProgressTile>().InitTile(sprite,name,condition,fillAmount,status);
 
 				if(unlockedExprIdx < exprList.Count){
 					if((int)exprList[unlockedExprIdx] == exprTileIdx){
 						unlockedExprIdx++;
 					}
 				}
-
 				exprTileIdx++;
 			}
 		}
@@ -113,7 +143,6 @@ public class ScreenProgress : BaseUI {
 
 	public void OnClickBack(){
 		if(openedFromEnvelope){
-			
 			base.CloseUI (this.gameObject);
 		} else{
 			base.ClosePanelInHotkey (this.gameObject);
@@ -129,11 +158,13 @@ public class ScreenProgress : BaseUI {
 		ProgressTile.OnSelectExpression -= OnSelectExpression;
 	}
 
-	void OnSelectExpression (Sprite item, string expressionName,string condition,bool isLocked,float progress)
+	void OnSelectExpression (Sprite item, string expressionName, string condition, bool isLocked, float progress)
 	{
-		expressionIcon.sprite = item;
-		expressionNameText.text = expressionName;
-		indivProgressBarFill.fillAmount = progress;
+		if (isLocked) {
+			expressionIcon.sprite = item;
+			expressionNameText.text = expressionName;
+			indivProgressBarFill.fillAmount = progress;
+		}
 	}
 
 	void SortList(List<EmojiExpressionState> list){
@@ -147,5 +178,10 @@ public class ScreenProgress : BaseUI {
 				}
 			}
 		}
+	}
+
+	public void OnClickEmoji(EmojiType typeIdx){
+		base.ShowPanelInHotkey (UIExpressionProgress);
+		InitExpressionUI (typeIdx);
 	}
 }

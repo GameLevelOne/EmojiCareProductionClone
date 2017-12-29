@@ -85,6 +85,8 @@ public class ScreenEmojiDead : BaseUI {
 	void ResetExpressionProgress(){
 		for(int i=0;i<PlayerData.Instance.PlayerEmoji.emojiExpressions.totalExpression;i++){
 			PlayerData.Instance.PlayerEmoji.emojiExpressions.expressionDataInstances [i].SetCurrentProgress (0);
+			PlayerPrefs.SetInt (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_STATUS +
+			PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType.ToString (), 0);
 		}
 	}
 

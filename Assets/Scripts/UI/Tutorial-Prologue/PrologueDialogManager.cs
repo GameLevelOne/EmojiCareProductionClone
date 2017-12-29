@@ -96,4 +96,16 @@ public class PrologueDialogManager : MonoBehaviour {
 		OnClickNext();
 		TogglePanelYesNo(false);
 	}
+
+	public void OnClickSkip(){
+		popupName.ShowUI (popupName.gameObject);
+	}
+
+	public void OnClickOkPopup(){
+		fader.FadeOut ();
+	}
+
+	public void OnClickCancelPopup(){
+		popupName.CloseUI (popupName.gameObject);
+	}
 }
