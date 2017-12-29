@@ -54,13 +54,18 @@ public class EmojiBody : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
-	void Awake()
+	public void RegisterChangeExpressionEvent()
 	{
 		emoji.emojiExpressions.OnChangeExpression += OnChangeExpression;
 	}
 
+	void OnDestroy()
+	{
+		emoji.emojiExpressions.OnChangeExpression -= OnChangeExpression;
+	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
+
 	#region animation event
 	public void Reset()
 	{
@@ -246,7 +251,7 @@ public class EmojiBody : MonoBehaviour {
 				if(OnEmojiBouncingToCurrentRoom != null) OnEmojiBouncingToCurrentRoom();
 
 			}else if(currentRoom < previousRoom){
-				Vector3 emojiScale = emoji.emojiGrowth.GetScale();
+				
 				emoji.transform.localScale = emojiCurrentMirroredScale;
 				PlayerData.Instance.PlayerEmoji.emojiExpressions.ResetExpressionDuration();
 				emoji.emojiExpressions.SetExpression(EmojiExpressionState.CHANGE_ROOM,-1f);

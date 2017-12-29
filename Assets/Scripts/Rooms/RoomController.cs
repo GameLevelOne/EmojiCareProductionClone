@@ -86,7 +86,7 @@ public class RoomController : MonoBehaviour {
 		
 	public void OnDestroy()
 	{
-		UnregisterEmojiEvents();
+		if(PlayerData.Instance.PlayerEmoji) UnregisterEmojiEvents();
 		pan.OnCookingDone -= OnCookingDone;
 	}
 
