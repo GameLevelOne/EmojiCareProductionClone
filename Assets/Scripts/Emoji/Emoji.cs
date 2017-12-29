@@ -136,7 +136,7 @@ public class Emoji : MonoBehaviour {
 	protected virtual void InitEmojiExpression()
 	{
 		emojiExpressions.Init();
-
+		body.RegisterChangeExpressionEvent();
 		emojiExpressions.SetExpression(EmojiExpressionState.DEFAULT,0);
 	}
 

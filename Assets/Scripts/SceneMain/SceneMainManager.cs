@@ -46,32 +46,36 @@ public class SceneMainManager : MonoBehaviour {
 
 	void InitMain()
 	{
+		
+
 		//VALIDATE TOTAL PROGRESS
 		int totalExpression = 60;
 		//load expression data
-		EmojiType emojiType = PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType;
+		EmojiType emojiType = PlayerData.Instance.PlayerEmoji != null ? PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType : (EmojiType) 0;
 		//load from json	
 		if(PlayerPrefs.HasKey(PlayerPrefKeys.Emoji.UNLOCKED_EXPRESSIONS+emojiType.ToString())){
 			string data = PlayerPrefs.GetString(PlayerPrefKeys.Emoji.UNLOCKED_EXPRESSIONS+emojiType.ToString());
 			Debug.Log (data);
 			JSONNode node = JSON.Parse(data);
 
-			PlayerData.Instance.emojiParentTransform = roomController.rooms[(int)roomController.currentRoom].transform;
+
 
 			float progress = (float)(node["EmojiUnlockedExpressions"].Count / totalExpression);
 			if(progress < 0.3f){
 				//baby
-				PlayerData.Instance.InitPlayerBabyEmoji(EmojiAgeType.Baby, emojiSamples[PlayerData.Instance.PlayerEmojiType]);
+				PlayerData.Instance.InitPlayerBabyEmoji(EmojiAgeType.Baby, emojiSamples[PlayerData.Instance.PlayerEmojiType], emojiSamples[PlayerData.Instance.PlayerEmojiType].GetComponent<Emoji>().emojiBaseData);
+				PlayerData.Instance.PlayerEmoji.GetComponent<BabyEmoji>().sceneManager = this;
 			}else if(progress >= 0.3f && progress <  0.7f){
 				//juvenille
-				PlayerData.Instance.InitPlayerBabyEmoji(EmojiAgeType.Juvenille, emojiSamples[PlayerData.Instance.PlayerEmojiType]);
+				PlayerData.Instance.InitPlayerBabyEmoji(EmojiAgeType.Juvenille, emojiSamples[PlayerData.Instance.PlayerEmojiType], emojiSamples[PlayerData.Instance.PlayerEmojiType].GetComponent<Emoji>().emojiBaseData);
+				PlayerData.Instance.PlayerEmoji.GetComponent<BabyEmoji>().sceneManager = this;
 			}else{
 				//adult
 				PlayerData.Instance.InitPlayerEmoji(emojiSamples[PlayerData.Instance.PlayerEmojiType]);
 			}
 		}else{
 			//baby
-			PlayerData.Instance.InitPlayerBabyEmoji(EmojiAgeType.Baby, emojiSamples[PlayerData.Instance.PlayerEmojiType]);
+			PlayerData.Instance.InitPlayerBabyEmoji(EmojiAgeType.Baby, emojiSamples[PlayerData.Instance.PlayerEmojiType], emojiSamples[PlayerData.Instance.PlayerEmojiType].GetComponent<Emoji>().emojiBaseData);
 		}
 		PlayerData.Instance.PlayerEmoji.OnEmojiInitiated += OnEmojiInitiated;
 		PlayerData.Instance.PlayerEmoji.Init();
@@ -96,8 +100,6 @@ public class SceneMainManager : MonoBehaviour {
 			floatingStatsManager.OnEmojiSleepEvent(true);
 		}
 
-
-
 		if(PlayerPrefs.GetInt(PlayerPrefKeys.Game.HAS_INIT_INGREDIENT,0) == 0){
 			PlayerPrefs.SetInt(PlayerPrefKeys.Game.HAS_INIT_INGREDIENT,1);
 			for(int i = 0;i<(int)IngredientType.COUNT;i++){
@@ -106,7 +108,10 @@ public class SceneMainManager : MonoBehaviour {
 		}
 
 		statsExpressionController.Init();
+
 		roomController.Init();
+		PlayerData.Instance.emojiParentTransform = roomController.rooms[(int)roomController.currentRoom].transform;
+		PlayerData.Instance.PlayerEmoji.transform.SetParent(PlayerData.Instance.emojiParentTransform,true);
 
 		gachaReward.Init ();
 		celebrationManager.Init();
@@ -143,12 +148,15 @@ public class SceneMainManager : MonoBehaviour {
 			PlayerData.Instance.PlayerEmoji.body.DoSleep();
 			bedroom.DimLight();
 			randomBedroomController.StartGeneratingObjects();
+
 		}
 		PlayerData.Instance.PlayerEmoji.InitEmojiStats();
 
 		if(PlayerData.Instance.PlayerEmoji.EmojiSleeping){
 			floatingStatsManager.OnEmojiSleepEvent(true);
 		}
+
+		PlayerData.Instance.PlayerEmoji.transform.SetParent(PlayerData.Instance.emojiParentTransform,true);
 	}
 
 	void OnEmojiInitiated()
@@ -183,7 +191,6 @@ public class SceneMainManager : MonoBehaviour {
 		bedroom.UnregisterEmojiEvents();
 		randomBedroomController.UnregisterEmojiEvents();
 	}
-
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics

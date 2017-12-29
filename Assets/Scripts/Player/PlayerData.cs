@@ -297,11 +297,12 @@ public class PlayerData : MonoBehaviour {
 		this.playerEmoji.SetBodyCurrentScale(new Vector3(0.8f,0.8f,1));
 	}
 
-	public void InitPlayerBabyEmoji(EmojiAgeType type, GameObject adultObject)
+	public void InitPlayerBabyEmoji(EmojiAgeType type, GameObject adultObject, EmojiSO soData)
 	{
 		GameObject temp = (GameObject) Instantiate (babyEmoji,emojiParentTransform);
 
 		this.playerEmoji = temp.GetComponent<Emoji>();
+		this.playerEmoji.emojiBaseData = soData;
 		this.playerEmoji.GetComponent<BabyEmoji>().emojiAdultObject = adultObject;
 //		this.playerEmoji.Init();
 
@@ -310,5 +311,12 @@ public class PlayerData : MonoBehaviour {
 		}else if(type == EmojiAgeType.Juvenille){
 			this.playerEmoji.SetBodyCurrentScale(new Vector3(0.6f,0.65f,1));
 		}
+	}
+
+	[Header("Do Not Modify")]
+	public GameObject babyEmojiObjToDestroy;
+	public void DestroyBaby()
+	{
+		Destroy(babyEmojiObjToDestroy);
 	}
 }

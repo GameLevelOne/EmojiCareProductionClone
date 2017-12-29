@@ -42,7 +42,7 @@ public class EmojiStatsExpressionController : MonoBehaviour {
 
 	void OnDestroy()
 	{
-		UnregisterEmojiEvents();
+		if(PlayerData.Instance.PlayerEmoji) UnregisterEmojiEvents();
 	}
 	#endregion
 	//-------------------------------------------------------------------------------------------------------------------------------------------------

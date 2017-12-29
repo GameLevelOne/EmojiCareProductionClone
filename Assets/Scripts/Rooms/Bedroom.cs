@@ -29,7 +29,7 @@ public class Bedroom : BaseRoom {
 
 	void OnDestroy()
 	{
-		UnregisterEmojiEvents();
+		if(PlayerData.Instance.PlayerEmoji) UnregisterEmojiEvents();
 	}
 
 	public void DimLight()

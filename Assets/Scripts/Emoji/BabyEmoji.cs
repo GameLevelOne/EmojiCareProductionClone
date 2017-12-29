@@ -15,8 +15,9 @@ public class BabyEmoji : Emoji {
 	public void GrowToAdult()
 	{
 		//MODULE HERE
-		Destroy(gameObject);
+		PlayerData.Instance.babyEmojiObjToDestroy = this.gameObject;
 		PlayerData.Instance.InitPlayerEmoji(emojiAdultObject);
 		sceneManager.EmojiGrowToAdult();
+		PlayerData.Instance.DestroyBaby();
 	}
 }

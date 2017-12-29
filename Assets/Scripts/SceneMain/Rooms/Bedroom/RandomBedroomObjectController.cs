@@ -26,7 +26,7 @@ public class RandomBedroomObjectController : MonoBehaviour {
 
 	void OnDestroy()
 	{
-		UnregisterEmojiEvents();
+		if(PlayerData.Instance.PlayerEmoji) UnregisterEmojiEvents();
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
