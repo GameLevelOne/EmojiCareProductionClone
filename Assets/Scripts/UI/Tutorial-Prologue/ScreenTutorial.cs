@@ -316,40 +316,42 @@ public class ScreenTutorial : BaseUI {
 		}
 	}
 
-	public void OnClickNext(){
+	public void OnClickNext ()
+	{
 		bool loadCustomDialog = false;
 		string emojiName = PlayerData.Instance.EmojiName;
 
-		if(currentTutorial == TutorialType.FirstVisit){
-			if(dialogCount < (firstVisit.Length-1)){
+		if (currentTutorial == TutorialType.FirstVisit) {
+			if (dialogCount < (firstVisit.Length - 1)) {
 				dialogCount++;
-			} else{
+			} else {
 				base.CloseUI (screenTutorialObj);
 				PlayerData.Instance.TutorialFirstVisit = 1;
-				StartCoroutine (WaitForRoomChange ());
+				PlayerData.Instance.TutorialIdleLivingRoom = 1;
 			}
 
-			if(dialogCount == 1){
+			if (dialogCount == 1) {
 				ShowPopup ();
-			} else if(dialogCount==2){
+			} else if (dialogCount == 2) {
 				dialogText.text = emojiName + firstVisit [dialogCount];
 				loadCustomDialog = true;
-			} else if(dialogCount == 3){
+			} else if (dialogCount == 3) {
 				dialogText.text = firstVisit [dialogCount] + emojiName;
 				loadCustomDialog = true;
-			} else if(dialogCount == 4){
-				dialogText.text = "You can caress and hold "+emojiName+" with your finger.";
+			} else if (dialogCount == 4) {
+				dialogText.text = "You can caress and hold " + emojiName + " with your finger.";
 				loadCustomDialog = true;
-			} else if(dialogCount == 5){
-				dialogText.text = "If you raise "+emojiName+" with care, it will have many various expressions! ";
+			} else if (dialogCount == 5) {
+				dialogText.text = "If you raise " + emojiName + " with care, it will have many various expressions! ";
 				loadCustomDialog = true;
 			}
 			if (!loadCustomDialog) {
 				dialogText.text = firstVisit [dialogCount];
 			}
-		} else if(currentTutorial == TutorialType.IdleLivingRoom){
-			LoadDialogs (idleLivingRoom, PlayerData.Instance.TutorialIdleLivingRoom,false);
-
+//		} else if(currentTutorial == TutorialType.IdleLivingRoom){
+//			LoadDialogs (idleLivingRoom, PlayerData.Instance.TutorialIdleLivingRoom,false);
+//
+//		} 
 		} else if(currentTutorial == TutorialType.FirstBedroom){
 			LoadDialogs (firstBedroom, PlayerData.Instance.TutorialFirstBedroom,false);
 

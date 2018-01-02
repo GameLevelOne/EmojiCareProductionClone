@@ -162,7 +162,7 @@ public class ScreenProgress : BaseUI {
 
 	void OnSelectExpression (Sprite item, string expressionName, string condition, bool isLocked, float progress)
 	{
-		if (isLocked) {
+		if (!isLocked) {
 			expressionIcon.sprite = item;
 			expressionNameText.text = expressionName;
 			indivProgressBarFill.fillAmount = progress;
