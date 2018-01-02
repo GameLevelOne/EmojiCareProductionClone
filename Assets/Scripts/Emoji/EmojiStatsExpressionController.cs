@@ -15,7 +15,7 @@ public class EmojiStatsExpressionController : MonoBehaviour {
 	public EmojiExpressionState[] lowState;
 	public EmojiExpressionState[] mediumState;
 	public EmojiExpressionState[] highState;
-	Emoji emoji;
+	[SerializeField] Emoji emoji;
 
 	bool hasInit = false;
 	#endregion
@@ -23,21 +23,18 @@ public class EmojiStatsExpressionController : MonoBehaviour {
 	#region initialization
 	public void Init()
 	{
-		if(!hasInit){
-			hasInit = true;
-			emoji = PlayerData.Instance.PlayerEmoji;
-		}
-
+		emoji = PlayerData.Instance.PlayerEmoji;
 	}
 
 	public void RegisterEmojiEvents()
 	{
-		PlayerData.Instance.PlayerEmoji.OnUpdateStatsToExpression += OnEmojiUpdateStats;
+		print("REGISTERED");
+		emoji.OnUpdateStatsToExpression += OnEmojiUpdateStats;
 	}
 
 	public void UnregisterEmojiEvents()
 	{
-		PlayerData.Instance.PlayerEmoji.OnUpdateStatsToExpression -= OnEmojiUpdateStats;
+		emoji.OnUpdateStatsToExpression -= OnEmojiUpdateStats;
 	}
 
 	void OnDestroy()
@@ -49,7 +46,7 @@ public class EmojiStatsExpressionController : MonoBehaviour {
 	#region mechanics
 	void OnEmojiUpdateStats (float hungerValue, float hygieneValue, float happinessValue, float staminaValue, float healthValue)
 	{
-//		print("EH");
+		print("EH");
 		float[] stats = new float[]{hungerValue,hygieneValue,happinessValue,staminaValue,healthValue};
 		float tempLowestValue = Mathf.Min(stats);
 		if(tempLowestValue < statsTresholdMed){

@@ -39,11 +39,16 @@ public class EmojiGrowth : MonoBehaviour {
 	public void UpdateGrowth(float progress)
 	{
 		float newScaleValue = GetScaleValue(progress);
+		print("Current Scale = "+emoji.transform.localScale.x);
+		print("New Scale = "+newScaleValue);
 		if(emoji.transform.localScale.x != scaleLarge && newScaleValue == scaleLarge){
+			print("Emoji Grow to Adult!");
 			emoji.GetComponent<BabyEmoji>().GrowToAdult();
-		}else if(newScaleValue >= currentScale){
+		}else if(newScaleValue > currentScale){
+			print("Emoji Grow to Teenager!");
 			currentScale = newScaleValue;
 			emoji.GetComponent<BabyEmoji>().GrowToJuvenille();
+
 		}
 	}
 	#endregion
@@ -55,9 +60,10 @@ public class EmojiGrowth : MonoBehaviour {
 	#region public modules
 	float GetScaleValue(float progress)
 	{
+		print("Progress = "+progress);
 		if(progress < tresholdLow){
 			return scaleSmall;
-		}else if(progress < tresholdMed){
+		}else if(progress >= tresholdLow && progress < tresholdMed){
 			return scaleMedium;
 		}else{
 			return scaleLarge;

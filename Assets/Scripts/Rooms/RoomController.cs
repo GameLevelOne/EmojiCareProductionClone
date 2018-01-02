@@ -323,7 +323,7 @@ public class RoomController : MonoBehaviour {
 		}
 
 		transform.position = endPos;
-		print("T E R P A N G G I L");
+//		print("T E R P A N G G I L");
 		snapping = false;
 
 		PlayerData.Instance.PlayerEmoji.transform.parent = rooms[(int)currentRoom].transform;

@@ -314,7 +314,7 @@ public class PlayerData : MonoBehaviour {
 		if(type == EmojiAgeType.Baby){
 			this.playerEmoji.SetBodyCurrentScale(new Vector3(0.5f,0.5f,1));
 		}else if(type == EmojiAgeType.Juvenille){
-			this.playerEmoji.SetBodyCurrentScale(new Vector3(0.6f,0.65f,1));
+			this.playerEmoji.SetBodyCurrentScale(new Vector3(0.65f,0.65f,1));
 		}
 	}
 

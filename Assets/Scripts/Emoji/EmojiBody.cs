@@ -244,8 +244,10 @@ public class EmojiBody : MonoBehaviour {
 		currentRoom = currRoom;
 		yield return new WaitForSeconds(0.5f);
 		if(previousRoom != -1){
+//			print("PINDAH");
+
 			if(currentRoom > previousRoom){
-				
+
 				PlayerData.Instance.PlayerEmoji.emojiExpressions.ResetExpressionDuration();
 				emoji.emojiExpressions.SetExpression(EmojiExpressionState.CHANGE_ROOM,-1f);
 				if(OnEmojiBouncingToCurrentRoom != null) OnEmojiBouncingToCurrentRoom();

@@ -47,7 +47,7 @@ public class SceneMainManager : MonoBehaviour {
 	void InitMain()
 	{
 		//VALIDATE TOTAL PROGRESS
-		int totalExpression = 60;
+		int totalExpression = 48;
 		//load expression data
 		EmojiType emojiType = PlayerData.Instance.PlayerEmoji != null ? PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType : (EmojiType) 0;
 		//load from json	
@@ -58,7 +58,8 @@ public class SceneMainManager : MonoBehaviour {
 
 
 
-			float progress = (float)(node["EmojiUnlockedExpressions"].Count / totalExpression);
+			float progress = ((float) node["EmojiUnlockedExpressions"].Count / (float) totalExpression);
+			print("PROGRESS = "+progress);
 			if(progress < 0.3f){
 				//baby
 				PlayerData.Instance.InitPlayerBabyEmoji(EmojiAgeType.Baby, emojiSamples[PlayerData.Instance.PlayerEmojiType], emojiSamples[PlayerData.Instance.PlayerEmojiType].GetComponent<Emoji>().emojiBaseData);
@@ -74,10 +75,11 @@ public class SceneMainManager : MonoBehaviour {
 		}else{
 			//baby
 			PlayerData.Instance.InitPlayerBabyEmoji(EmojiAgeType.Baby, emojiSamples[PlayerData.Instance.PlayerEmojiType], emojiSamples[PlayerData.Instance.PlayerEmojiType].GetComponent<Emoji>().emojiBaseData);
+			PlayerData.Instance.PlayerEmoji.GetComponent<BabyEmoji>().sceneManager = this;
 		}
 		PlayerData.Instance.PlayerEmoji.OnEmojiInitiated += OnEmojiInitiated;
 		PlayerData.Instance.PlayerEmoji.Init();
-
+//		print("INITZSZS");
 //		PlayerData.Instance.InitPlayerEmoji(emojiSamples[PlayerData.Instance.PlayerEmojiType]);
 
 		if(PlayerData.Instance.PlayerEmoji.EmojiSleeping){
@@ -93,6 +95,7 @@ public class SceneMainManager : MonoBehaviour {
 			randomBedroomController.StartGeneratingObjects();
 		}
 		PlayerData.Instance.PlayerEmoji.InitEmojiStats();
+//		print("INITSTAT");
 
 		if(PlayerData.Instance.PlayerEmoji.EmojiSleeping){
 			floatingStatsManager.OnEmojiSleepEvent(true);
@@ -106,6 +109,7 @@ public class SceneMainManager : MonoBehaviour {
 		}
 
 		statsExpressionController.Init();
+		statsExpressionController.RegisterEmojiEvents();
 
 		roomController.Init();
 		PlayerData.Instance.emojiParentTransform = roomController.rooms[(int)roomController.currentRoom].transform;
@@ -125,15 +129,28 @@ public class SceneMainManager : MonoBehaviour {
 
 		SoundManager.Instance.PlayBGM(BGMList.BGMMain);
 
-		OnEmojiInitiated();
+		//OnEmojiInitiated();
 
-		PlayerData.Instance.PlayerEmoji.OnEmojiDestroyed += OnEmojiDestroyed;
+		//PlayerData.Instance.PlayerEmoji.OnEmojiDestroyed += OnEmojiDestroyed;
 	}
 
 	public void EmojiGrowToAdult()
 	{
+		
+		GameObject tempAdultObject = PlayerData.Instance.PlayerEmoji.GetComponent<BabyEmoji>().emojiAdultObject;
+		PlayerData.Instance.babyEmojiObjToDestroy = PlayerData.Instance.PlayerEmoji.gameObject;
+
+		print("destroying baby");
+		OnEmojiDestroyed();
+		Destroy(PlayerData.Instance.babyEmojiObjToDestroy);
+
+		print("instantiating adult");
+		PlayerData.Instance.InitPlayerEmoji(tempAdultObject);
+
+		//init new adult
 		PlayerData.Instance.PlayerEmoji.OnEmojiInitiated += OnEmojiInitiated;
 		PlayerData.Instance.PlayerEmoji.Init();
+
 
 		if(PlayerData.Instance.PlayerEmoji.EmojiSleeping){
 			roomController.currentRoom = RoomType.Bedroom;
@@ -147,6 +164,8 @@ public class SceneMainManager : MonoBehaviour {
 			bedroom.DimLight();
 			randomBedroomController.StartGeneratingObjects();
 
+		}else{
+			PlayerData.Instance.PlayerEmoji.transform.SetParent(roomController.rooms[(int)roomController.currentRoom].transform,false);
 		}
 		PlayerData.Instance.PlayerEmoji.InitEmojiStats();
 
@@ -155,17 +174,21 @@ public class SceneMainManager : MonoBehaviour {
 		}
 
 		PlayerData.Instance.PlayerEmoji.transform.SetParent(PlayerData.Instance.emojiParentTransform,true);
+
+		statsExpressionController.Init();
+		statsExpressionController.RegisterEmojiEvents();
 	}
 
 	void OnEmojiInitiated()
 	{
+		print("ASDL:ASKDLKASLDKALSDKASDKLSAKDLSAKDLSAKDLSAKDLSAKDLASKD");
 		PlayerData.Instance.PlayerEmoji.OnEmojiInitiated -= OnEmojiInitiated;
 
 		PlayerData.Instance.PlayerEmoji.body.previousRoom = (int)roomController.currentRoom;
 		PlayerData.Instance.PlayerEmoji.body.currentRoom = (int)roomController.currentRoom;
 
 		screenTutorial.RegisterEmojiEvents();
-		statsExpressionController.RegisterEmojiEvents();
+
 		celebrationManager.RegisterEmojiEvents();
 		roomController.RegisterEmojiEvents();
 		floatingStats.RegisterEmojiEvents();
@@ -177,6 +200,7 @@ public class SceneMainManager : MonoBehaviour {
 
 	void OnEmojiDestroyed ()
 	{
+		print("EMOJI IS HILANG FFFF");
 		PlayerData.Instance.PlayerEmoji.OnEmojiDestroyed -= OnEmojiDestroyed;
 
 		screenTutorial.UnregisterEmojiEvents();
@@ -188,6 +212,7 @@ public class SceneMainManager : MonoBehaviour {
 		hotkeys.UnregisterEmojiEvents();
 		bedroom.UnregisterEmojiEvents();
 		randomBedroomController.UnregisterEmojiEvents();
+
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------

@@ -68,7 +68,7 @@ public class Emoji : MonoBehaviour {
 	public const float statsTresholdLow = 0.2f;
 	public float[] healthTick = new float[]{0.0001f,0.0003f,0.0006f,0.0012f};
 
-	protected bool isTickingStat = false;
+	public bool isTickingStat = false;
 	protected 	bool hasInit = false;
 	public bool emojiDead = false;
 
@@ -180,7 +180,7 @@ public class Emoji : MonoBehaviour {
 
 	protected void TickStats()
 	{
-//		print("TICK!");
+		print("TICK!");
 		hunger.TickStats();
 		hygiene.TickStats();
 		happiness.TickStats();
@@ -188,7 +188,9 @@ public class Emoji : MonoBehaviour {
 		//Debug.Log ("staminaa:" + stamina.StatValue);
 		TickHealth();
 
-		if(OnUpdateStatsToExpression != null) 
+		print("EVENT REGISTERED?"+(OnUpdateStatsToExpression != null));
+		if(OnUpdateStatsToExpression != null){
+			print("EVENT TICK!");
 			OnUpdateStatsToExpression(
 				hunger.StatValue	/ hunger.MaxStatValue,
 				hygiene.StatValue	/ hygiene.MaxStatValue,
@@ -196,6 +198,8 @@ public class Emoji : MonoBehaviour {
 				stamina.StatValue	/ stamina.MaxStatValue,
 				health.StatValue	/ health.MaxStatValue
 			);
+		} 
+			
 	}
 
 	protected void TickHealth()
@@ -301,17 +305,17 @@ public class Emoji : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region coroutines
-	protected const string _TickingStats = "StartTickingStats";
-	protected IEnumerator StartTickingStats()
-	{
-		isTickingStat = true;
-
-		while(true){
-			yield return new WaitForSeconds(1f);
-			Debug.Log ("tickingg");
-			TickStats();
-		}
-	}
+//	protected const string _TickingStats = "StartTickingStats";
+//	protected IEnumerator StartTickingStats()
+//	{
+//		isTickingStat = true;
+//
+//		while(true){
+//			yield return new WaitForSeconds(1f);
+//			Debug.Log ("tickingg");
+//			TickStats();
+//		}
+//	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	protected float t = 0;
@@ -321,6 +325,7 @@ public class Emoji : MonoBehaviour {
 			t += Time.deltaTime;
 			if(t >= 1f){
 				t = 0f;
+
 				TickStats ();
 			}
 		}

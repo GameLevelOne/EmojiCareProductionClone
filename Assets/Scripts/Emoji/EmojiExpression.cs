@@ -81,7 +81,7 @@ public class EmojiExpression {
 	public Animator bodyAnim;
 	public Animator faceAnim;
 	public Animator effectAnim;
-	public int totalExpression = 60;
+	public int totalExpression = 40;
 	public bool isExpressing = false;
 	public EmojiExpressionData[] expressionDataInstances;
 	[Header("DON'T MODIFY THIS")]
@@ -121,6 +121,7 @@ public class EmojiExpression {
 			}
 		}
 
+		Debug.Log((float) System.Math.Round((double)counter / totalExpression,4));
 		return (float) System.Math.Round((double)counter / totalExpression,4);
 	}
 
@@ -152,7 +153,7 @@ public class EmojiExpression {
 				unlockedExpressions.Add((EmojiExpressionState)node[RESOURCE_DATA][i].AsInt);
 			}
 		}
-		totalExpression = 60;
+
 		expressionDataInstances = new EmojiExpressionData[60];
 
 		for(int i=0;i<expressionDataInstances.Length;i++){
@@ -223,9 +224,8 @@ public class EmojiExpression {
 
 					if (OnNewExpression != null) {
 						OnNewExpression ((int)expression,true);
-
-						PlayerData.Instance.PlayerEmoji.emojiGrowth.UpdateGrowth(GetTotalExpressionProgress());
 					}	
+					PlayerData.Instance.PlayerEmoji.emojiGrowth.UpdateGrowth(GetTotalExpressionProgress());
 				}
 				else{
 					//notif expression progress

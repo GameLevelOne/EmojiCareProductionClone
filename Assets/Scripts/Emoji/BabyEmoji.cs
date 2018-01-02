@@ -6,9 +6,10 @@ public class BabyEmoji : Emoji {
 	[Header("Baby Emoji Attributes")]
 	public GameObject emojiAdultObject;
 	public SceneMainManager sceneManager;
+
 	public void GrowToJuvenille()
 	{
-		sceneManager.celebrationManager.popupEmojiGrowth.SetDisplay (false);
+		//sceneManager.celebrationManager.popupEmojiGrowth.SetDisplay (false);
 		Vector3 scaleMedium = new Vector3(emojiGrowth.scaleMedium,emojiGrowth.scaleMedium,1f);
 		SetBodyCurrentScale(scaleMedium);
 		PlayerData.Instance.GardenField1 = 1;
@@ -18,10 +19,7 @@ public class BabyEmoji : Emoji {
 	public void GrowToAdult()
 	{
 		//MODULE HERE
-		sceneManager.celebrationManager.popupEmojiGrowth.SetDisplay (true);
-		PlayerData.Instance.babyEmojiObjToDestroy = this.gameObject;
-		PlayerData.Instance.InitPlayerEmoji(emojiAdultObject);
+        //sceneManager.celebrationManager.popupEmojiGrowth.SetDisplay (true);
 		sceneManager.EmojiGrowToAdult();
-		PlayerData.Instance.DestroyBaby();
 	}
 }
