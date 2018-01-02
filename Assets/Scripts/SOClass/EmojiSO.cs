@@ -11,7 +11,9 @@ public enum EmojiType{
 	Boneji,
 	Gumiji,
 	Moeji,
-	Takoji
+	Takoji,
+
+	COUNT
 }
 
 [CreateAssetMenu(fileName = "Emoji_",menuName = "SOData/Emoji",order = 1)]

@@ -26,7 +26,7 @@ public class ScreenSendOff : BaseUI {
 	{
 		Fader.OnFadeOutFinished -= OnFadeOutFinished;
 		sceneLoader.gameObject.SetActive(true);
-		sceneLoader.NextScene = "SceneSelection";
+		sceneLoader.NextScene = "SceneSelection_New";
 	}
 
 	public void ShowUI(Sprite sprite,string emojiName,GameObject obj){
@@ -37,6 +37,7 @@ public class ScreenSendOff : BaseUI {
 		expressionProgress.text =  
 		(PlayerData.Instance.PlayerEmoji.emojiExpressions.GetTotalExpressionProgress()*100).ToString()+"%";
 		GenerateReward ();
+		ResetExpressionProgress ();
 		CheckEmojiExpressionStatus ();
 		screenAlbum.AddEmojiRecord();
 		PlayerData.Instance.PlayerSendOffCount++;
@@ -68,6 +69,12 @@ public class ScreenSendOff : BaseUI {
 				temp = 2;
 			}
 			PlayerPrefs.SetInt (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_STATUS + emoji.emojiBaseData.emojiType.ToString (), temp);
+		}
+	}
+
+	void ResetExpressionProgress(){
+		for(int i=0;i<PlayerData.Instance.PlayerEmoji.emojiExpressions.totalExpression;i++){
+			PlayerData.Instance.PlayerEmoji.emojiExpressions.expressionDataInstances [i].SetCurrentProgress (0);
 		}
 	}
 }
