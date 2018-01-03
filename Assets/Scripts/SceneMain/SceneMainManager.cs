@@ -34,7 +34,7 @@ public class SceneMainManager : MonoBehaviour {
 	#region initialization
 	void Start()
 	{
-//		PlayerPrefs.DeleteAll();
+		PlayerPrefs.DeleteAll();
 		PlayerData.Instance.PlayerFirstPlay = 1;
 		InitMain();
 	}
@@ -55,8 +55,6 @@ public class SceneMainManager : MonoBehaviour {
 			string data = PlayerPrefs.GetString(PlayerPrefKeys.Emoji.UNLOCKED_EXPRESSIONS+emojiType.ToString());
 			Debug.Log (data);
 			JSONNode node = JSON.Parse(data);
-
-
 
 			float progress = ((float) node["EmojiUnlockedExpressions"].Count / (float) totalExpression);
 			print("PROGRESS = "+progress);

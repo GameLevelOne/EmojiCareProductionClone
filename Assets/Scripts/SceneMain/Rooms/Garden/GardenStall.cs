@@ -8,6 +8,10 @@ public class GardenStall : BaseFurniture {
 	public event StallItemTick OnStallItemTick;
 	public delegate void StallSeedTick (TimeSpan duration);
 	public event StallSeedTick OnStallSeedTick;
+
+	enum IngredientItems{ Cheese, Chicken, Egg, Fish, Flour, Meat }
+	enum IngredientSeeds{ Cabbage, Carrot, Mushroom, Tomato, Potato}
+
 	#region attributes
 	[Header("Stall Attributes")]
 	public GardenStallTimer gardenStallTimer;
@@ -127,8 +131,7 @@ public class GardenStall : BaseFurniture {
 			else InstantiateSeed(i);
 		}
 	}
-
-
+		
 	public void RestockItems()
 	{
 		foreach(GameObject g in currentItems){ if(g != null) Destroy(g); }
@@ -151,7 +154,11 @@ public class GardenStall : BaseFurniture {
 	//core mechanic
 	void InstantiateItem(int itemIndex)
 	{
-		int rnd = UnityEngine.Random.Range(0,AvailableItems.Count);
+//		int rnd = -1;
+//		do{
+//			rnd = UnityEngine.Random.Range(0,AvailableItems.Count);
+//		}while(ValidateRandomizedIngredientItem(rnd) == false);
+		int rnd = RandomizeIngredientItem();
 		GameObject tempItem = Instantiate(AvailableItems[rnd],stallItemParent[itemIndex]);
 		tempItem.transform.localPosition = new Vector3(0f,0f,-1f);
 
@@ -165,9 +172,41 @@ public class GardenStall : BaseFurniture {
 		currentItems.Add(tempItem);
 		SetCurrentItemData(itemIndex,(int)item.type);
 	}
+
+	int RandomizeIngredientItem()
+	{
+		List<int> tempRandomItem = new List<int>();
+
+		for(int i = 0;i<AvailableItems.Count;i++){
+			IngredientItems temp = (IngredientItems)i;
+
+			int itemData = -1;
+
+			switch(temp){
+			case IngredientItems.Cheese: itemData = PlayerData.Instance.IngredientCheese; break;
+			case IngredientItems.Chicken: itemData = PlayerData.Instance.IngredientChicken; break;
+			case IngredientItems.Egg: itemData = PlayerData.Instance.IngredientEgg; break;
+			case IngredientItems.Fish: itemData = PlayerData.Instance.IngredientFish; break;
+			case IngredientItems.Flour: itemData = PlayerData.Instance.IngredientFlour; break;
+			case IngredientItems.Meat: itemData = PlayerData.Instance.IngredientMeat; break;
+			}
+
+			if(itemData == 1){
+				tempRandomItem.Add(i);
+			}
+		}
+
+		int randomResult = UnityEngine.Random.Range(0,tempRandomItem.Count);
+		return tempRandomItem[randomResult];
+	}
+
 	void InstantiateSeed(int seedIndex)
 	{
-		int rnd = UnityEngine.Random.Range(0,AvailableSeeds.Count);
+//		int rnd = -1;
+//		do{
+//			rnd = UnityEngine.Random.Range(0,AvailableSeeds.Count);
+//		}while(ValidateRandomizedIngredientSeed(rnd) == false);
+		int rnd = RandomizeIngridientSeed();
 		GameObject tempSeed = Instantiate(AvailableSeeds[rnd],stallSeedParent[seedIndex]);
 		tempSeed.transform.localPosition = new Vector3(0f,0f,-1f);
 
@@ -180,6 +219,31 @@ public class GardenStall : BaseFurniture {
 
 		currentSeeds.Add(tempSeed);
 		SetCurrentSeedData(seedIndex,(int)seed.type);
+	}
+
+	int RandomizeIngridientSeed()
+	{
+		List<int> tempRandomSeed = new List<int>();
+
+		for(int i = 0;i<AvailableSeeds.Count;i++){
+			IngredientSeeds temp = (IngredientSeeds)i;
+			string tempPrefKey = string.Empty;
+			int seedData = -1;
+			switch(temp){
+			case IngredientSeeds.Cabbage: seedData = PlayerData.Instance.IngredientCabbage; break;
+			case IngredientSeeds.Carrot: seedData = PlayerData.Instance.IngredientCarrot; break;
+			case IngredientSeeds.Mushroom: seedData = PlayerData.Instance.IngredientMushroom; break;
+			case IngredientSeeds.Potato: seedData = PlayerData.Instance.IngredientPotato; break;
+			case IngredientSeeds.Tomato: seedData = PlayerData.Instance.IngredientTomato; break;
+			}
+			
+			if(seedData == 1){
+				tempRandomSeed.Add(i);
+			}
+		}
+
+		int randomResult = UnityEngine.Random.Range(0,tempRandomSeed.Count);
+		return tempRandomSeed[randomResult];
 	}
 
 	//delegate events

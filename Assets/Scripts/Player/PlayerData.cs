@@ -285,6 +285,62 @@ public class PlayerData : MonoBehaviour {
 		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.RECIPE_STEAK,value);}
 	}
 
+	//ingredients
+	public int IngredientCabbage{
+		get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.Progress.INGREDIENT_CABBAGE,1);}
+		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.INGREDIENT_CABBAGE,value);}
+	}
+
+	public int IngredientCarrot{
+		get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.Progress.INGREDIENT_CARROT,1);}
+		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.INGREDIENT_CARROT,value);}
+	}
+
+	public int IngredientCheese{
+		get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.Progress.INGREDIENT_CHEESE,0);}
+		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.INGREDIENT_CHEESE,value);}
+	}
+
+	public int IngredientChicken{
+		get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.Progress.INGREDIENT_CHICKEN,1);}
+		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.INGREDIENT_CHICKEN,value);}
+	}
+
+	public int IngredientEgg{
+		get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.Progress.INGREDIENT_EGG,0);}
+		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.INGREDIENT_EGG,value);}
+	}
+
+	public int IngredientFish{
+		get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.Progress.INGREDIENT_FISH,0);}
+		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.INGREDIENT_FISH,value);}
+	}
+
+	public int IngredientFlour{
+		get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.Progress.INGREDIENT_FLOUR,0);}
+		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.INGREDIENT_FLOUR,value);}
+	}
+
+	public int IngredientMeat{
+		get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.Progress.INGREDIENT_MEAT,0);}
+		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.INGREDIENT_MEAT,value);}
+	}
+
+	public int IngredientMushroom{
+		get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.Progress.INGREDIENT_MUSHROOM,0);}
+		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.INGREDIENT_MUSHROOM,value);}
+	}
+
+	public int IngredientPotato{
+		get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.Progress.INGREDIENT_POTATO,0);}
+		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.INGREDIENT_POTATO,value);}
+	}
+
+	public int IngredientTomato{
+		get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.Progress.INGREDIENT_TOMATO,1);}
+		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.INGREDIENT_TOMATO,value);}
+	}
+
 	//location
 	public int LocationGarden{
 		get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.Progress.LOCATION_GARDEN,0);}

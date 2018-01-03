@@ -71,6 +71,19 @@ public static class PlayerPrefKeys {
 			public const string RECIPE_BACONBAKEDPOTATO = "Player/Progress/RecipeBaconBakedPotato";
 			public const string RECIPE_STEAK = "Player/Progress/RecipeSteak";
 		
+			public const string INGREDIENT_CABBAGE = "Player/Progress/IngredientCabbage";
+			public const string INGREDIENT_CARROT = "Player/Progress/IngredientCarrot";
+			public const string INGREDIENT_CHEESE = "Player/Progress/IngredientCheese";
+			public const string INGREDIENT_CHICKEN = "Player/Progress/IngredientChicken";
+			public const string INGREDIENT_EGG = "Player/Progress/IngredientEgg";
+			public const string INGREDIENT_FISH = "Player/Progress/IngredientFish";
+			public const string INGREDIENT_FLOUR = "Player/Progress/IngredientFlour";
+			public const string INGREDIENT_MEAT = "Player/Progress/IngredientMeat";
+			public const string INGREDIENT_MUSHROOM = "Player/Progress/IngredientMushroom";
+			public const string INGREDIENT_POTATO = "Player/Progress/IngredientPotato";
+			public const string INGREDIENT_TOMATO = "Player/Progress/IngredientTomato";
+
+
 			public const string LOCATION_GARDEN = "Player/Progress/LocationGarden";
 			public const string LOCATION_PLAYROOM = "Player/Progress/LocationPlayroom";
 			public const string LOCATION_LIVINGROOM = "Player/Progress/LocationLivingroom";
