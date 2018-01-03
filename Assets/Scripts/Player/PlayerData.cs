@@ -203,7 +203,7 @@ public class PlayerData : MonoBehaviour {
 		set{PlayerPrefs.SetString(PlayerPrefKeys.Player.RANDOM_COINGEM_COOLDOWN,value.ToString());}
 	}
 
-
+	//garden
 	public int GardenField0{
 		get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.Progress.GARDENFIELD0,1);}
 		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.GARDENFIELD0,value);}
@@ -217,6 +217,7 @@ public class PlayerData : MonoBehaviour {
 		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.GARDENFIELD2,value);}
 	}
 
+	//minigame
 	public int MiniGamePainting{
 		get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.Progress.MINIGAME_PAINTING,0);}
 		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.MINIGAME_PAINTING,value);}
@@ -232,6 +233,7 @@ public class PlayerData : MonoBehaviour {
 		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.MINIGAME_DANCEMAT,value);}
 	}
 
+	//recipes
 	//caesar salad, ramen, burger, skewer, grilled fish, pizza, sundubu, chicken & fries, Bacon baked potato, steak
 	public int RecipeCaesarSalad{
 		get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.Progress.RECIPE_CAESARSALAD,1);}
@@ -283,6 +285,36 @@ public class PlayerData : MonoBehaviour {
 		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.RECIPE_STEAK,value);}
 	}
 
+	//location
+	public int LocationGarden{
+		get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.Progress.LOCATION_GARDEN,0);}
+		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.LOCATION_GARDEN,value);}
+	}
+
+	public int LocationPlayroom{
+		get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.Progress.LOCATION_PLAYROOM,0);}
+		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.LOCATION_PLAYROOM,value);}
+	}
+
+	public int LocationLivingroom{
+		get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.Progress.LOCATION_LIVINGROOM,1);}
+		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.LOCATION_LIVINGROOM,value);}
+	}
+
+	public int LocationKitchen{
+		get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.Progress.LOCATION_KITCHEN,0);}
+		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.LOCATION_KITCHEN,value);}
+	}
+
+	public int LocationBedroom{
+		get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.Progress.LOCATION_BEDROOM,0);}
+		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.LOCATION_BEDROOM,value);}
+	}
+
+	public int LocationBathroom{
+		get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.Progress.LOCATION_BATHROOM,0);}
+		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.LOCATION_BATHROOM,value);}
+	}
 
 	void Awake()
 	{

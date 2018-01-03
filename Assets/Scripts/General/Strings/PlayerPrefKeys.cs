@@ -70,6 +70,13 @@ public static class PlayerPrefKeys {
 			public const string RECIPE_CHICKENANDFRIES = "Player/Progress/RecipeChickenAndFries";
 			public const string RECIPE_BACONBAKEDPOTATO = "Player/Progress/RecipeBaconBakedPotato";
 			public const string RECIPE_STEAK = "Player/Progress/RecipeSteak";
+		
+			public const string LOCATION_GARDEN = "Player/Progress/LocationGarden";
+			public const string LOCATION_PLAYROOM = "Player/Progress/LocationPlayroom";
+			public const string LOCATION_LIVINGROOM = "Player/Progress/LocationLivingroom";
+			public const string LOCATION_KITCHEN = "Player/Progress/LocationKitchen";
+			public const string LOCATION_BEDROOM = "Player/Progress/LocationBedroom";
+			public const string LOCATION_BATHROOM = "Player/Progress/LocationBathroom";
 		}
 		public const string RANDOM_COINGEM_COOLDOWN = "Player/RandomCoinGemCooldown";
 	}
