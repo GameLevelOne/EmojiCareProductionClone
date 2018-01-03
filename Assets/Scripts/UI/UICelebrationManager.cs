@@ -135,7 +135,7 @@ public class UICelebrationManager : MonoBehaviour {
 				isShowingNotif = true;
 				//yield return new WaitForSeconds (2);
 				notificationObj [0].gameObject.SetActive (true);
-				notificationObj [0].ShowUI (expressionStateIndex, expressionIcons, particlePlayer,isNewExpression);
+				notificationObj [0].ShowPopup (expressionStateIndex, expressionIcons, particlePlayer,isNewExpression);
 				yield return new WaitForSeconds (2);
 
 				notificationObj.RemoveAt (0);
