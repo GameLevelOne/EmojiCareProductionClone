@@ -316,6 +316,12 @@ public class PlayerData : MonoBehaviour {
 		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.LOCATION_BATHROOM,value);}
 	}
 
+	//shop
+	public int Shop{
+		get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.Progress.SHOP,0);}
+		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.SHOP,value);}
+	}
+
 	void Awake()
 	{
 		if(instance != null && instance != this) Destroy(this.gameObject);

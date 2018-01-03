@@ -77,6 +77,8 @@ public static class PlayerPrefKeys {
 			public const string LOCATION_KITCHEN = "Player/Progress/LocationKitchen";
 			public const string LOCATION_BEDROOM = "Player/Progress/LocationBedroom";
 			public const string LOCATION_BATHROOM = "Player/Progress/LocationBathroom";
+
+			public const string SHOP = "Player/Progress/Shop";
 		}
 		public const string RANDOM_COINGEM_COOLDOWN = "Player/RandomCoinGemCooldown";
 	}
