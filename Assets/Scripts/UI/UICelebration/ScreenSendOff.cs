@@ -41,6 +41,10 @@ public class ScreenSendOff : BaseUI {
 		CheckEmojiExpressionStatus ();
 		screenAlbum.AddEmojiRecord();
 		PlayerData.Instance.PlayerSendOffCount++;
+
+		if(PlayerData.Instance.PlayerSendOffCount == 2){
+			PlayerData.Instance.Shop = 1;
+		}
 	}
 
 	public void OnClickContinue(){

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class NotificationNewExpression : MonoBehaviour {
+public class NotificationNewExpression : BaseUI {
 	public Transform parentFrame;
 	Image expressionImage;
 	Image progressBar;
@@ -19,9 +19,8 @@ public class NotificationNewExpression : MonoBehaviour {
 
 	string boolShowNotif = "ShowNotif";
 
-	public void ShowUI (int expression, ExpressionIcons expressionIcons, ParticlePlayer particlePlayer, bool isNewExpression)
+	public void ShowPopup (int expression, ExpressionIcons expressionIcons, ParticlePlayer particlePlayer, bool isNewExpression)
 	{
-		
 		EmojiType currentEmoji = PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType;
 		EmojiExpression emojiExpression = PlayerData.Instance.PlayerEmoji.emojiExpressions;
 		EmojiExpressionData currentData = emojiExpression.expressionDataInstances [expression];
@@ -40,9 +39,10 @@ public class NotificationNewExpression : MonoBehaviour {
 	}
 
 	public void OnClickContinue(){
-		particles.StopParticles();
-		//StopCoroutine("AutoCloseNotif");
-		StartCoroutine(WaitForAnim());
+		particles.StopParticleFireworks();
+		particles.StopParticleConfettiAndStarBoom ();
+		base.CloseUI (gameObject);
+		Destroy (gameObject);
 	}
 
 	public void AddNotifToList(GameObject obj){
@@ -63,21 +63,23 @@ public class NotificationNewExpression : MonoBehaviour {
 	void ShowNotification ()
 	{
 		gameObject.SetActive (true);
-		GetComponent<Animator> ().SetBool (boolShowNotif,true);
+		//GetComponent<Animator> ().SetBool (boolShowNotif,true);
 		float time = 2 + (notificationObj.Count - 1);
 
 //		progressBarFill = parentFrame.GetChild (5).GetComponent<Image> ();
 //		progressBarFill.fillAmount = (currentProgress - 1) / totalProgress;
 //		StartCoroutine (AnimateProgressBar (currentProgress, totalProgress));
-
+		particles.ShowParticleFireworks ();
 		particles.ShowParticleConfetti();
 
-		StartCoroutine (AutoCloseNotif ());
+		base.ShowUI (gameObject);
+		//StartCoroutine (AutoCloseNotif ());
 	}
 
 	IEnumerator WaitForAnim(){
-		GetComponent<Animator>().SetBool(boolShowNotif,false);
-		particles.StopParticles();
+		//GetComponent<Animator>().SetBool(boolShowNotif,false);
+		particles.StopParticleFireworks();
+		particles.StopParticleConfettiAndStarBoom ();
 		yield return new WaitForSeconds(40f/60f);
 
 		Destroy(gameObject);

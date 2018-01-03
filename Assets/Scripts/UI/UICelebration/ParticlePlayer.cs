@@ -8,7 +8,7 @@ public class ParticlePlayer : MonoBehaviour {
 	public ParticleSystem particleConfetti;
 	public ParticleSystem particleBoom;
 
-	public void ShowParticles(){
+	public void ShowParticleFireworks(){
 		particlesLeft.Clear();
 		particlesRight.Clear();
 
@@ -16,7 +16,7 @@ public class ParticlePlayer : MonoBehaviour {
 		particlesRight.Play();
 	}
 
-	public void StopParticles(){
+	public void StopParticleFireworks(){
 		particlesLeft.Stop();
 		particlesRight.Stop();
 	}
