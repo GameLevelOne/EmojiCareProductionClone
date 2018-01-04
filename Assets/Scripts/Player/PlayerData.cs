@@ -29,6 +29,8 @@ public class PlayerData : MonoBehaviour {
 	[Header("mau ga mau :(")]
 	public HatUIItem[] hatItems;
 
+	public bool flagDeviceCamera = false;
+
 	public Emoji PlayerEmoji{
 		get{return playerEmoji;}
 	}

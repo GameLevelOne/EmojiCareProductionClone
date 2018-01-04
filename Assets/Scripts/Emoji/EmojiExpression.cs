@@ -182,7 +182,7 @@ public class EmojiExpression {
 			
 		if(duration == -1f){ //sleep, bath, override other expressions
 //			Debug.Log("A");
-			UpdateExpressionProgress(expression);
+			if(!PlayerData.Instance.flagDeviceCamera) UpdateExpressionProgress(expression);
 
 			SetEmojiAnim((int)expression);
 			currentExpression = expression;
@@ -190,7 +190,7 @@ public class EmojiExpression {
 
 		}else if(currentDuration != -1f && duration > 0){ //non-static expression, have certain duration
 //			Debug.Log("B");
-			UpdateExpressionProgress(expression);
+			if(!PlayerData.Instance.flagDeviceCamera) UpdateExpressionProgress(expression);
 
 			SetEmojiAnim((int)expression);
 			currentExpression = expression;
@@ -199,7 +199,7 @@ public class EmojiExpression {
 
 		}else if(currentDuration == 0 && duration == 0){//static expression, like stats expression
 //			Debug.Log("C");
-			UpdateExpressionProgress(expression);
+			if(!PlayerData.Instance.flagDeviceCamera) UpdateExpressionProgress(expression);
 
 			SetEmojiAnim((int)expression);
 			currentExpression = expression;

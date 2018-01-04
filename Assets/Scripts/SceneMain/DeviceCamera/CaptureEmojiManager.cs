@@ -88,6 +88,8 @@ public class CaptureEmojiManager : MonoBehaviour {
 		ShowCameraButtons (false);
 		buttonHotkey.SetActive (true);
 		roomController.interactable = true;
+
+		PlayerData.Instance.flagDeviceCamera = false;
 	}
 
 	public void CaptureScreenshot()
