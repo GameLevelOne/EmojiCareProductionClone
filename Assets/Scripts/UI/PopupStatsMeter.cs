@@ -18,7 +18,7 @@ public class PopupStatsMeter : MonoBehaviour {
 	public void ShowMeter(EmojiStatsState type,bool sleepOrBath,float currentValue,float targetValue,Sprite barSprite){
 		barFill.sprite = barSprite;
 		GetComponent<Animator> ().SetBool (boolShowNotif,true);
-		if(targetValue > -1){
+		if(targetValue > -1000){
 			StartCoroutine (AnimateMeter (currentValue,targetValue));
 		} else{
 //			Debug.Log ("stay");

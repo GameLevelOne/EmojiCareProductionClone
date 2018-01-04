@@ -13,6 +13,7 @@ public class LivingroomCamera : ActionableFurniture {
 
 	void GoToCaptureScreen()
 	{
+		PlayerData.Instance.flagDeviceCamera = true;
 		captureEmojiManager.Init ();
 	}
 

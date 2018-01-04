@@ -8,14 +8,22 @@ public class PopupEmojiGrowth : BaseUI {
 	public Text growthText;
 	public Image emojiIcon;
 
-	public void SetDisplay(bool isAdult){
-		if(isAdult){
+	public void SetDisplay(EmojiAgeType type){
+		if(type == EmojiAgeType.Adult){
 			growthText.text = PlayerData.Instance.EmojiName +" has grown into Adult!";
-		} else{
+			emojiIcon.sprite = emojiIcons.GetEmojiIcon (PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType);
+		} else if(type == EmojiAgeType.Juvenille){
 			growthText.text = PlayerData.Instance.EmojiName +" has grown into Teen!";
+			emojiIcon.sprite = emojiIcons.GetBabyEmojiIcon(PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType);
 		}
 
-		emojiIcon.sprite = emojiIcons.GetEmojiIcon (PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType);
+
 		ShowUI (gameObject);
+	}
+
+	public void OnClickOK(){
+		//emoji growth
+		PlayerData.Instance.PlayerEmoji.emojiGrowth.OnClosePopup ();
+		CloseUI (gameObject);
 	}
 }

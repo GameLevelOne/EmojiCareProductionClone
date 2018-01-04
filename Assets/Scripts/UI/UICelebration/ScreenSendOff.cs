@@ -66,7 +66,7 @@ public class ScreenSendOff : BaseUI {
 
 	void CheckEmojiExpressionStatus(){
 		Emoji emoji = PlayerData.Instance.PlayerEmoji;
-		for(int i=0;i<emoji.emojiExpressions.totalExpression;i++){
+		for(int i=0;i<emoji.emojiExpressions.totalExpressionAvailable;i++){
 			int temp = PlayerPrefs.GetInt (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_STATUS + emoji.emojiBaseData.emojiType.ToString (), 0);
 
 			if(temp == 1){
@@ -77,8 +77,9 @@ public class ScreenSendOff : BaseUI {
 	}
 
 	void ResetExpressionProgress(){
-		for(int i=0;i<PlayerData.Instance.PlayerEmoji.emojiExpressions.totalExpression;i++){
-			PlayerData.Instance.PlayerEmoji.emojiExpressions.expressionDataInstances [i].SetCurrentProgress (0);
+		EmojiExpression expr = PlayerData.Instance.PlayerEmoji.emojiExpressions;
+		for(int i=0;i<expr.totalExpressionAvailable;i++){
+			expr.expressionDataInstances [i].SetCurrentProgress (0);
 		}
 	}
 }

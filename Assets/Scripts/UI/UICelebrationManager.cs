@@ -46,6 +46,7 @@ public class UICelebrationManager : MonoBehaviour {
 	{
 		EmojiExpression.OnNewExpression -= OnNewExpression;
 		Emoji.OnEmojiDead -= OnEmojiDead;
+		PlayerData.Instance.PlayerEmoji.emojiGrowth.OnNewGrowth -= OnEmojiGrow;
 	}
 
 	void OnDestroy(){
@@ -65,7 +66,7 @@ public class UICelebrationManager : MonoBehaviour {
 	{
 		Debug.Log("new expression");
 		EmojiExpression expr = PlayerData.Instance.PlayerEmoji.emojiExpressions;
-		if(expr.unlockedExpressions.Count >= expr.totalExpression){
+		if(expr.GetTotalExpressionProgress() >= expr.sendOffProgressThreshold){
 			if(PlayerData.Instance.TutorialFirstExpressionFull == 0)
 				screenTutorial.ShowFirstDialog (TutorialType.TriggerFirstExpressionFull);
 		} 
@@ -80,7 +81,7 @@ public class UICelebrationManager : MonoBehaviour {
 
 	void OnEmojiGrow (EmojiAgeType type)
 	{
-		
+		popupEmojiGrowth.SetDisplay (type);
 	}
 
 	void OnSendOffEmoji (Sprite sprite, string emojiName)

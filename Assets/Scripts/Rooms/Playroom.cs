@@ -14,7 +14,7 @@ public class Playroom : BaseRoom {
 	{
 		randomPassingToyManager.Cycle();
 
-//		InitMiniGames();
+		InitMiniGames();
 	}
 
 	void InitMiniGames()

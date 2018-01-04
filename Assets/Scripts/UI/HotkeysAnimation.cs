@@ -113,7 +113,6 @@ public class HotkeysAnimation : MonoBehaviour {
 
 	void ValidateRoomForButtonEditRoom()
 	{
-		
 		if(roomController.currentRoom == RoomType.Garden){
 			buttonEditRoom.GetComponent<Button>().interactable = false;
 			buttonEditRoom.color = Color.gray;

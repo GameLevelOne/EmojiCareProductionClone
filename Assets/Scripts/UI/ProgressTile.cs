@@ -11,7 +11,7 @@ public enum ExpressionStatus{
 
 public class ProgressTile : MonoBehaviour {
 	public delegate void SelectExpression(Sprite item,string name,string condition,bool isLocked,float progress);
-	public static event SelectExpression OnSelectExpression;
+	public event SelectExpression OnSelectExpression;
 
 	public EmojiExpressionState exprType;
 	public Image expressionIcon;
