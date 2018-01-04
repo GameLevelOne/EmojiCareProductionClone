@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class UICelebrationManager : MonoBehaviour {
+
 	public ScreenTutorial screenTutorial;
 	public ScreenNewEmoji screenNewEmoji;
 	public GachaReward gachaReward;
@@ -37,7 +38,10 @@ public class UICelebrationManager : MonoBehaviour {
 	{
 		EmojiExpression.OnNewExpression += OnNewExpression;
 		Emoji.OnEmojiDead += OnEmojiDead;
+		PlayerData.Instance.PlayerEmoji.emojiGrowth.OnNewGrowth += OnEmojiGrow;
 	}
+
+
 	public void UnregisterEmojiEvents()
 	{
 		EmojiExpression.OnNewExpression -= OnNewExpression;
@@ -72,6 +76,11 @@ public class UICelebrationManager : MonoBehaviour {
 		}
 
 		StartCoroutine(WaitForNewExpression(expressionStateIndex,isNewExpression));
+	}
+
+	void OnEmojiGrow (EmojiAgeType type)
+	{
+		
 	}
 
 	void OnSendOffEmoji (Sprite sprite, string emojiName)

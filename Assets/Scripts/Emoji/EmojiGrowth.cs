@@ -56,7 +56,7 @@ public class EmojiGrowth : MonoBehaviour {
 		//NewGrowth(newScaleValue);
 	}
 
-	void OnClosePopup() {
+	public void OnClosePopup() {
 		DoGrow(newScaleValue);
 	}
 
