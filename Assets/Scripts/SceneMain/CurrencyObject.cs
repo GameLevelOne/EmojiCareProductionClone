@@ -19,6 +19,7 @@ public class CurrencyObject : MonoBehaviour {
 	{
 		//make jump (add force)
 		thisRigidBody.AddForce(new Vector2(UnityEngine.Random.Range(-1*sideForce, sideForce),upForce));
+		StartCoroutine(AutoCollect());
 	}
 
 	void AddPlayerCurrency()
