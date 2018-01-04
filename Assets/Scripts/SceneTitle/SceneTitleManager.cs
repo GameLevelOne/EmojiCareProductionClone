@@ -48,12 +48,6 @@ public class SceneTitleManager : MonoBehaviour {
 	public void TapToStart ()
 	{
 		fader.FadeOut();
-
-//		if(PlayerData.Instance.FirstPlay){
-//			nextScene = "ScenePrologue";
-//		} else {
-//			nextScene = "SceneSelection";
-//		}
 	}
 
 	public void DownloadEmojiObject()

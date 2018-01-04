@@ -81,7 +81,9 @@ public class EmojiExpression {
 	public Animator bodyAnim;
 	public Animator faceAnim;
 	public Animator effectAnim;
-	public int totalExpression = 40;
+	public int totalExpressionAvailable = 60;
+	public int totalExpressionForSendOff = 48;
+	public float sendOffProgressThreshold = 0.8f;
 	public bool isExpressing = false;
 	public EmojiExpressionData[] expressionDataInstances;
 	[Header("DON'T MODIFY THIS")]
@@ -121,8 +123,8 @@ public class EmojiExpression {
 			}
 		}
 
-		Debug.Log((float) System.Math.Round((double)counter / totalExpression,4));
-		return (float) System.Math.Round((double)counter / totalExpression,4);
+		Debug.Log((float) System.Math.Round((double)counter / totalExpressionForSendOff,4));
+		return (float) System.Math.Round((double)counter / totalExpressionForSendOff,4);
 	}
 
 
@@ -154,7 +156,7 @@ public class EmojiExpression {
 			}
 		}
 
-		expressionDataInstances = new EmojiExpressionData[60];
+		expressionDataInstances = new EmojiExpressionData[totalExpressionAvailable];
 
 		for(int i=0;i<expressionDataInstances.Length;i++){
 			expressionDataInstances [i] = new EmojiExpressionData (i,emojiType,

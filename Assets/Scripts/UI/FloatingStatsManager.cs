@@ -86,6 +86,8 @@ public class FloatingStatsManager : MonoBehaviour {
 
 		if(targetValue > 1){
 			targetValue = 1;
+		} else if(targetValue < 0){
+			targetValue = 0;
 		}
 
 		statsMeterObj [type].gameObject.SetActive (true);
@@ -98,7 +100,7 @@ public class FloatingStatsManager : MonoBehaviour {
 			statsMeterObj [i].gameObject.SetActive (true);
 			statsMeterObj [i].transform.localPosition = new Vector3 (0, 452 - 100 * counter);
 			float value = GetCurrentStatValue (i);
-			statsMeterObj [i].ShowMeter((EmojiStatsState)i,false,GetCurrentStatValue(i),-1,GetCurrentBarSprite(value));
+			statsMeterObj [i].ShowMeter((EmojiStatsState)i,false,GetCurrentStatValue(i),-1000,GetCurrentBarSprite(value));
 			counter++;
 		}
 	}

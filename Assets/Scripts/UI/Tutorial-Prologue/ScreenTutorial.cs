@@ -397,7 +397,7 @@ public class ScreenTutorial : BaseUI {
 			int maxCount = 0;
 			EmojiExpression expr = PlayerData.Instance.PlayerEmoji.emojiExpressions;
 
-			if(expr.unlockedExpressions.Count >= expr.totalExpression){
+			if(expr.GetTotalExpressionProgress()>=expr.sendOffProgressThreshold){
 				maxCount = firstProgressUI.Length;
 			} else{
 				maxCount = 4;
