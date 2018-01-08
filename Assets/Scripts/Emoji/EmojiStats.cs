@@ -54,6 +54,10 @@ public class EmojiStats {
 		get{return Debug ? 5f : 1f;}
 	}
 
+	public float StatsRatio{
+		get{ return (StatValue / maxStatValue); }
+	}
+
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules

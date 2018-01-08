@@ -84,10 +84,6 @@ public class ScreenTutorial : BaseUI {
 
 	bool roomChange = false;
 
-//	void Awake(){
-//		PlayerPrefs.DeleteAll ();
-//	}
-
 	void Start(){
 		dialogText.text = firstVisit [0];
 	}
