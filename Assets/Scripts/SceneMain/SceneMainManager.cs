@@ -117,9 +117,9 @@ public class SceneMainManager : MonoBehaviour {
 		celebrationManager.Init();
 		floatingStats.Init ();
 
-		if (PlayerData.Instance.TutorialFirstVisit == 0) {
-			screenTutorial.ShowUI (screenTutorial.screenTutorialObj);
-		}
+//		if (PlayerData.Instance.TutorialFirstVisit == 0) {
+//			screenTutorial.ShowUI (screenTutorial.screenTutorialObj);
+//		}
 
 		if(AdmobManager.Instance) AdmobManager.Instance.ShowBanner();
 
@@ -185,7 +185,7 @@ public class SceneMainManager : MonoBehaviour {
 		PlayerData.Instance.PlayerEmoji.body.previousRoom = (int)roomController.currentRoom;
 		PlayerData.Instance.PlayerEmoji.body.currentRoom = (int)roomController.currentRoom;
 
-		screenTutorial.RegisterEmojiEvents();
+		//screenTutorial.RegisterEmojiEvents();
 
 		celebrationManager.RegisterEmojiEvents();
 		roomController.RegisterEmojiEvents();

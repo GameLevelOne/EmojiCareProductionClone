@@ -41,10 +41,10 @@ public class ScreenEditRooms : BaseUI {
 //			roomController.rooms [currentRoom].furnitures [i].EnterEditmode ();
 //		}
 
-		if(PlayerData.Instance.TutorialFirstEditRoom == 0){
-			screenTutorial.ShowFirstDialog (TutorialType.FirstEditRoomUI);
-			PlayerData.Instance.TutorialFirstEditRoom = 1;
-		}
+//		if(PlayerData.Instance.TutorialFirstEditRoom == 0){
+//			screenTutorial.ShowFirstDialog (TutorialType.FirstEditRoomUI);
+//			PlayerData.Instance.TutorialFirstEditRoom = 1;
+//		}
 		isShowingUI = true;
 	}
 

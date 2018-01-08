@@ -103,7 +103,7 @@ public class ScreenTutorial : BaseUI {
 	}
 
 	void OnDestroy(){
-		UnregisterEmojiEvents();
+		//UnregisterEmojiEvents();
 	}
 
 	public void CheckStatsTutorial (float hunger, float hygiene, float happiness, float stamina, float health)

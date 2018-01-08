@@ -92,9 +92,9 @@ public class ScreenProgress : BaseUI {
 
 	public void InitExpressionUI (EmojiType currentEmojiType)
 	{
-		if(PlayerData.Instance.TutorialFirstProgressUI == 0){
-			screenTutorial.ShowFirstDialog (TutorialType.FirstProgressUI);
-		}
+//		if(PlayerData.Instance.TutorialFirstProgressUI == 0){
+//			screenTutorial.ShowFirstDialog (TutorialType.FirstProgressUI);
+//		}
 
 		int exprTileIdx = 0;
 		int unlockedExprIdx = 0;
