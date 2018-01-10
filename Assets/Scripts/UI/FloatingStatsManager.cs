@@ -134,7 +134,7 @@ public class FloatingStatsManager : MonoBehaviour {
 		} else if (type == 2) {
 			return emojiData.happiness.StatValue/emojiData.happiness.MaxStatValue;
 		} else if (type == 3) {
-			return emojiData.stamina.StatValue/emojiData.stamina.MaxStatValue;
+			return emojiData.stamina.StatsRatio;
 		} else if (type == 4) {
 			return emojiData.health.StatValue/emojiData.health.MaxStatValue;
 		} else
@@ -156,7 +156,7 @@ public class FloatingStatsManager : MonoBehaviour {
 	IEnumerator UpdateMeterDisplay(int type){
 		while(barIsShowing){
 			float value = GetCurrentStatValue (type);
-			statsMeterObj [type].ShowMeter ((EmojiStatsState)type, true,value, -1, GetCurrentBarSprite (value));
+			statsMeterObj [type].ShowMeter ((EmojiStatsState)type, true,value, -1000, GetCurrentBarSprite (value));
 			yield return null;
 		}
 

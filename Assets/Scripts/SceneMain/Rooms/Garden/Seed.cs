@@ -27,6 +27,8 @@ public class Seed : MonoBehaviour {
 	public event DragSeed OnDragSeed;
 	public delegate void EndDragSeed(bool isBought);
 	public event EndDragSeed OnEndDragSeed;
+	public delegate void TutorialSeedPlanted();
+	public static event TutorialSeedPlanted OnTutorialSeedPlanted;
 	#endregion
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -84,6 +86,11 @@ public class Seed : MonoBehaviour {
 						soilTarget[0].GetComponent<GardenField>().PlantSeed(type);
 						if(OnEndDragSeed != null) OnEndDragSeed(true);
 						if(OnSeedPlanted != null) OnSeedPlanted(this);
+
+						if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == ShortCode.SCENE_GUIDED_TUTORIAL){
+							if (OnTutorialSeedPlanted != null)
+								OnTutorialSeedPlanted ();
+						}
 
 						Destroy(gameObject);
 						return;

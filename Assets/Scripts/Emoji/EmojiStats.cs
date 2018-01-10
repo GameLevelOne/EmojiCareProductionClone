@@ -75,7 +75,7 @@ public class EmojiStats {
 		StatValue += (mod * DebugModStats);
 		AdjustValue();
 		if(OnShowSingleStatBar != null){
-			OnShowSingleStatBar ((int)EmojiStatsState.Happiness, mod,0); //TODO: adjust type?
+			OnShowSingleStatBar ((int)EmojiStatsState.Happiness, mod,0f); //TODO: adjust type?
 		}
 	}
 

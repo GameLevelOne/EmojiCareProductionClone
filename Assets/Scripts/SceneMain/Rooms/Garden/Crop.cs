@@ -5,12 +5,15 @@ public class Crop : MonoBehaviour {
 	#region attributes
 	public delegate void CropDestroyed(GameObject selfObject);
 	public event CropDestroyed OnCropDestroyed;
+	public delegate void StallItemHarvested();
+	public static event StallItemHarvested OnStallItemHarvested;
 
 	public Rigidbody2D thisRigidbody;
 	public Collider2D thisCollider;
 	public SpriteRenderer thisSprite;
 	public IngredientType type;
 	#endregion
+
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
 	void Start()
@@ -28,6 +31,12 @@ public class Crop : MonoBehaviour {
 			if(OnCropDestroyed != null){
 				OnCropDestroyed(gameObject);
 			}
+
+			if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == ShortCode.SCENE_GUIDED_TUTORIAL){
+				if (OnStallItemHarvested != null)
+					OnStallItemHarvested ();
+			}
+
 			Destroy(gameObject);
 		}
 	}

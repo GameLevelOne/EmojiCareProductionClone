@@ -2,12 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum GuidedTutorialIndex{
-	Start = 0,
-	Kitchen = 3,
-	Bedroom = 21
-}
-
 public class GuidedTutorialManager : MonoBehaviour {
 
 	[Header("Attributes")]
@@ -65,7 +59,7 @@ public class GuidedTutorialManager : MonoBehaviour {
 		//unlock kitchen
 		PlayerData.Instance.LocationKitchen = 1;
 
-		guidedTutorialStork.RegisterBowlEvent ();
+		guidedTutorialStork.RegisterEvents ();
 		guidedTutorialStork.ShowFirstDialog ((int)GuidedTutorialIndex.Start);
 		//manipulate expresssion data (UNLOCK ALL until 99% to send off)
 

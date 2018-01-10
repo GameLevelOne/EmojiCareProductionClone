@@ -28,6 +28,10 @@ public class Emoji : MonoBehaviour {
 	public event EmojiRegisterEvent OnEmojiInitiated;
 	public event EmojiRegisterEvent OnEmojiDestroyed;
 
+	//guided tutorial
+	public delegate void EmojiHygieneCheck(float ratio);
+	public event EmojiHygieneCheck OnEmojiHygieneCheck;
+
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region attribute
@@ -184,6 +188,9 @@ public class Emoji : MonoBehaviour {
 		//print("TICK!");
 		hunger.TickStats();
 		hygiene.TickStats();
+		if (OnEmojiHygieneCheck != null)
+			OnEmojiHygieneCheck (hygiene.StatsRatio);
+
 		happiness.TickStats();
 		stamina.TickStats();
 		//Debug.Log ("staminaa:" + stamina.StatValue);

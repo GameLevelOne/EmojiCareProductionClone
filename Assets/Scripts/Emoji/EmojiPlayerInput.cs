@@ -515,7 +515,11 @@ public class EmojiPlayerInput : MonoBehaviour {
 			flagSleeping = true;
 			if (emoji.stamina != null) {
 				startSleepStamina = emoji.stamina.StatValue;
-				emoji.stamina.statsModifier = 0.004f;
+				if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == ShortCode.SCENE_GUIDED_TUTORIAL){
+					emoji.stamina.statsModifier = 10f;
+				} else{
+					emoji.stamina.statsModifier = 0.004f;
+				}
 			}
 			emoji.emojiExpressions.SetExpression(EmojiExpressionState.SLEEP,-1);
 		}

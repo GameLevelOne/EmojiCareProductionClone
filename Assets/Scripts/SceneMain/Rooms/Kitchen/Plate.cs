@@ -88,8 +88,12 @@ public class Plate : BaseFurniture {
 
 		foodObject.transform.SetParent(furnitureTransform);
 
-		FoodsOnPlate.Remove(foodObject);
-		AdjustFoodStacks();
+		if(FoodsOnPlate.Count == 1){
+			FoodsOnPlate.Clear ();
+		} else{
+			FoodsOnPlate.Remove(foodObject);
+			AdjustFoodStacks();
+		}
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -133,7 +137,7 @@ public class Plate : BaseFurniture {
 	{
 		if(FoodsOnPlate.Count > 0){
 			for(int i = 0;i<FoodsOnPlate.Count;i++){
-				if(FoodsOnPlate != null && FoodsOnPlate[i].GetComponent<Food>().onPlate){
+				if(FoodsOnPlate.Count != 0 && FoodsOnPlate[i].GetComponent<Food>().onPlate){
 					FoodsOnPlate[i].transform.localPosition = new Vector3(0,(i * nextY)+startY);
 				}
 			}

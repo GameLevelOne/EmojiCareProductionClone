@@ -26,6 +26,9 @@ public class EmojiBody : MonoBehaviour {
 	public event EmojiSleepEvent OnEmojiSleepEvent;
 	public event EmojiEatEvent OnEmojiEatEvent;
 
+	public delegate void EmojiApplySponge(float value);
+	public event EmojiApplySponge OnEmojiApplySponge;
+
 	#region attributes
 	[Header("Emoji Body Attributes")]
 	public Animator thisAnim;
@@ -199,6 +202,11 @@ public class EmojiBody : MonoBehaviour {
 		print("FOAM STATE = "+foamState);
 		bubbleEffectAnim.SetFloat(AnimatorParameters.Floats.FOAM_STATE,foamState);
 		bubbleEffect.SetBubbleAlpha(foamState/10f);
+
+		if(foamState >= 10f){
+			if (OnEmojiApplySponge != null)
+				OnEmojiApplySponge (foamState);
+		}
 	}
 
 	public void EmojiKinclong()

@@ -6,6 +6,8 @@ using System;
 public class GardenField : MonoBehaviour {
 	public delegate void TimerTick(TimeSpan duration);
 	public event TimerTick OnTimerTick;
+	public delegate void PlantWatered();
+	public event PlantWatered OnPlantWatered;
 	#region attributes
 	[Header("GardenField Attributes")]
 	public Soil soil;
@@ -155,7 +157,16 @@ public class GardenField : MonoBehaviour {
 			DateTime nextWaterTime = DateTime.Now.Add(TimeSpan.FromMinutes(waterCooldownTime));
 			PlayerPrefs.SetString(prefKeyWaterCooldownTime,nextWaterTime.ToString());
 
-			DateTime newPlantHarvestTime = plantHarvestTime.Subtract(TimeSpan.FromMinutes(harvestTimeCut));
+			DateTime newPlantHarvestTime = new DateTime ();
+			if (UnityEngine.SceneManagement.SceneManager.GetActiveScene ().name == ShortCode.SCENE_GUIDED_TUTORIAL) {
+				newPlantHarvestTime = DateTime.Now.Add (TimeSpan.FromSeconds (5));
+				if (OnPlantWatered != null)
+					OnPlantWatered();
+			} else{
+				newPlantHarvestTime = plantHarvestTime.Subtract(TimeSpan.FromMinutes(harvestTimeCut));
+			}
+
+
 			PlayerPrefs.SetString(prefKeyHarvestTime,newPlantHarvestTime.ToString());
 			print("New harvest time: "+newPlantHarvestTime);
 

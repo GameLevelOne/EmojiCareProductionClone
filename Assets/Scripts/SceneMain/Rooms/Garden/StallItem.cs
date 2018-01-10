@@ -4,6 +4,8 @@ using UnityEngine;
 public class StallItem : MonoBehaviour {
 	public delegate void GoodHarvested(StallItem item);
 	public event GoodHarvested OnItemPicked;
+	public delegate void TutorialItemDragged();
+	public static event TutorialItemDragged OnTutorialItemDragged;
 	#region attributes
 	[Header("Reference")]
 	public Rigidbody2D thisRigidBody;
@@ -109,5 +111,10 @@ public class StallItem : MonoBehaviour {
 		thisSprite.sortingLayerName = SortingLayers.MOVABLE_FURNITURE;
 		inStall = true;
 		if(OnEndDragStallItem != null) OnEndDragStallItem (false);
+
+		if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == ShortCode.SCENE_GUIDED_TUTORIAL){
+			if (OnTutorialItemDragged != null)
+				OnTutorialItemDragged ();
+		}
 	}
 }

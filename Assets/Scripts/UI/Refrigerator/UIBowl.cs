@@ -10,7 +10,7 @@ public class UIBowl : MonoBehaviour {
 	public List<GameObject> ingredientObjects = new List<GameObject>();
 
 	public delegate void TutorialBowlFull();
-	public static event TutorialBowlFull OnTutorialBowlFull;
+	public event TutorialBowlFull OnTutorialBowlFull;
 
 	public void AddObject(GameObject ingredientObject)
 	{

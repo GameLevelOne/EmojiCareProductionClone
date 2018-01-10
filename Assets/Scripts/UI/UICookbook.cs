@@ -54,13 +54,13 @@ public class UICookbook : BaseUI {
 	void ValidateRecipeAvailablility()
 	{
 		//TEST DATA
-		PlayerData.Instance.RecipeRamen = 1;
-		PlayerData.Instance.RecipeBurger = 1;
-		PlayerData.Instance.RecipeGrilledFish = 1;
-		PlayerData.Instance.RecipePizza = 1;
-		PlayerData.Instance.RecipeSundubu = 1;
-		PlayerData.Instance.RecipeChickenAndFries = 1;
-		PlayerData.Instance.RecipeBaconBakedPotato = 1;
+//		PlayerData.Instance.RecipeRamen = 1;
+//		PlayerData.Instance.RecipeBurger = 1;
+//		PlayerData.Instance.RecipeGrilledFish = 1;
+//		PlayerData.Instance.RecipePizza = 1;
+//		PlayerData.Instance.RecipeSundubu = 1;
+//		PlayerData.Instance.RecipeChickenAndFries = 1;
+//		PlayerData.Instance.RecipeBaconBakedPotato = 1;
 
 //		Recipes[0].SetActive(PlayerData.Instance.RecipeCaesarSalad == 1 ? true : false);
 //		Recipes[1].SetActive(PlayerData.Instance.RecipeRamen == 1 ? true : false);

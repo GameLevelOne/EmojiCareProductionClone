@@ -56,26 +56,38 @@ public class GardenStall : BaseFurniture {
 	{
 		if(!hasInit){
 			hasInit = true;
-
-			gardenStallTimer.Init();
-
-			if(!PlayerPrefs.HasKey(PlayerPrefKeys.Game.Garden.ITEM_RESTOCK_TIME)){
-				RestockItems();
-				RestockSeeds();
-			
-				itemRestockDuration = TimeSpan.FromMinutes(itemRestockTime);
-				seedRestockDuration = TimeSpan.FromMinutes(seedRestockTime);
-				DateTime itemNextRestockTime = DateTime.Now.Add(itemRestockDuration);
-				DateTime seedNextRestockTime = DateTime.Now.Add(seedRestockDuration);
-				PlayerPrefs.SetString(PlayerPrefKeys.Game.Garden.ITEM_RESTOCK_TIME,itemNextRestockTime.ToString());
-				PlayerPrefs.SetString(PlayerPrefKeys.Game.Garden.SEED_RESTOCK_TIME,seedNextRestockTime.ToString());
+			if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == ShortCode.SCENE_GUIDED_TUTORIAL){
+				InitOnSceneGuidedTutorial ();
+				gardenStallTimer.gameObject.SetActive (false);
 			}else{
-				ValidateItemRestocking();
-				ValidateSeedRestocking();
+				gardenStallTimer.Init();
+
+				if(!PlayerPrefs.HasKey(PlayerPrefKeys.Game.Garden.ITEM_RESTOCK_TIME)){
+					RestockItems();
+					RestockSeeds();
+				
+					itemRestockDuration = TimeSpan.FromMinutes(itemRestockTime);
+					seedRestockDuration = TimeSpan.FromMinutes(seedRestockTime);
+					DateTime itemNextRestockTime = DateTime.Now.Add(itemRestockDuration);
+					DateTime seedNextRestockTime = DateTime.Now.Add(seedRestockDuration);
+					PlayerPrefs.SetString(PlayerPrefKeys.Game.Garden.ITEM_RESTOCK_TIME,itemNextRestockTime.ToString());
+					PlayerPrefs.SetString(PlayerPrefKeys.Game.Garden.SEED_RESTOCK_TIME,seedNextRestockTime.ToString());
+				}else{
+					ValidateItemRestocking();
+					ValidateSeedRestocking();
+				}
+				StartCoroutine(_RunItemRestockTime);
+				StartCoroutine(_RunSeedRestockTime);
 			}
-			StartCoroutine(_RunItemRestockTime);
-			StartCoroutine(_RunSeedRestockTime);
 		}
+	}
+
+	void InitOnSceneGuidedTutorial()
+	{
+		InstantiateItem (0, 1);
+		InstantiateSeed (0, 0);
+		InstantiateSeed (1, 1);
+		InstantiateSeed (2, 3);
 	}
 
 	void ValidateItemRestocking()
@@ -173,6 +185,27 @@ public class GardenStall : BaseFurniture {
 		SetCurrentItemData(itemIndex,(int)item.type);
 	}
 
+	void InstantiateItem(int itemIndex, int itemIngredientIndex)
+	{
+//		int rnd = -1;
+//		do{
+//			rnd = UnityEngine.Random.Range(0,AvailableItems.Count);
+//		}while(ValidateRandomizedIngredientItem(rnd) == false);
+//		int rnd = RandomizeIngredientItem();
+		GameObject tempItem = Instantiate(AvailableItems[itemIngredientIndex],stallItemParent[itemIndex]);
+		tempItem.transform.localPosition = new Vector3(0f,0f,-1f);
+
+		StallItem item = tempItem.GetComponent<StallItem>();
+		item.Init(itemIndex);
+		item.OnItemPicked += OnItemPicked;
+		item.OnDragStallItem += ShowUICoin;
+		item.OnEndDragStallItem += HideUICoin;
+
+
+		currentItems.Add(tempItem);
+		SetCurrentItemData(itemIndex,(int)item.type);
+	}
+
 	int RandomizeIngredientItem()
 	{
 		List<int> tempRandomItem = new List<int>();
@@ -208,6 +241,27 @@ public class GardenStall : BaseFurniture {
 //		}while(ValidateRandomizedIngredientSeed(rnd) == false);
 		int rnd = RandomizeIngridientSeed();
 		GameObject tempSeed = Instantiate(AvailableSeeds[rnd],stallSeedParent[seedIndex]);
+		tempSeed.transform.localPosition = new Vector3(0f,0f,-1f);
+
+		Seed seed = tempSeed.GetComponent<Seed>();
+		seed.Init(seedIndex);
+		seed.OnSeedPlanted += OnSeedPlanted;
+		seed.OnDragSeed += ShowUICoin;
+		seed.OnEndDragSeed += HideUICoin;
+
+
+		currentSeeds.Add(tempSeed);
+		SetCurrentSeedData(seedIndex,(int)seed.type);
+	}
+
+	void InstantiateSeed(int seedIndex, int seedIngredientIndex)
+	{
+//		int rnd = -1;
+//		do{
+//			rnd = UnityEngine.Random.Range(0,AvailableSeeds.Count);
+//		}while(ValidateRandomizedIngredientSeed(rnd) == false);
+//		int rnd = RandomizeIngridientSeed();
+		GameObject tempSeed = Instantiate(AvailableSeeds[seedIngredientIndex],stallSeedParent[seedIndex]);
 		tempSeed.transform.localPosition = new Vector3(0f,0f,-1f);
 
 		Seed seed = tempSeed.GetComponent<Seed>();

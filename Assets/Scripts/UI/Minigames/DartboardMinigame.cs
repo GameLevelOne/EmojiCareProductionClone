@@ -11,6 +11,10 @@ public class DartboardMinigame : BaseUI {
 	string boolShoot = "Shoot";
 	string boolReset = "Reset";
 	Vector3 stopPosition;
+	int shotCount=0;
+
+	public delegate void DartThirdShot();
+	public event DartThirdShot OnDartThirdShot;
 
 	void OnEnable(){
 		dartAnim = dartMark.GetComponent<Animator>();
@@ -32,7 +36,14 @@ public class DartboardMinigame : BaseUI {
 				dartAnim.SetBool (boolShoot, true);
 				dartAnim.SetBool (boolReset, false);
 			}
-			StartCoroutine (ResetDart ());
+			shotCount++;
+			if(!(shotCount == 3 && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == ShortCode.SCENE_GUIDED_TUTORIAL)){
+				StartCoroutine (ResetDart ());
+			} else{
+				buttonBack.SetActive (true);
+				if (OnDartThirdShot != null)
+				OnDartThirdShot ();
+			}
 		}
 	}
 
