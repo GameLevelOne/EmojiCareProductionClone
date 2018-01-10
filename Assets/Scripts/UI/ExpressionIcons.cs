@@ -5,13 +5,31 @@ using UnityEngine.UI;
 
 public class ExpressionIcons : MonoBehaviour {
 
-	public Sprite[] emojiExpressionIcons = new Sprite[60];
-	public Sprite[] gumijiExpressionIcons = new Sprite[60];
-	public string[] emojiExpressionUnlockCondition = new string[60];
+	public Sprite[] emojiExpressionIcons;
+	public Sprite[] emojiCamoExpressionIcons;
+	public Sprite[] emojiAstronautExpressionIcons;
+	public Sprite[] emojiButterflyExpressionIcons;
+	public Sprite[] emojiDogExpressionIcons;
+	public Sprite[] emojiSlothExpressionIcons;
+	public Sprite[] emojiTomatoExpressionIcons;
+	public Sprite[] gumijiExpressionIcons;
+	public string[] emojiExpressionUnlockCondition;
 
 	public Sprite GetExpressionIcon(EmojiType emojiType, int expression){
 		if(emojiType == EmojiType.Emoji){
 			return emojiExpressionIcons[expression];
+		} else if(emojiType == EmojiType.EmojiCamo){
+			return emojiCamoExpressionIcons[expression];
+		} else if(emojiType == EmojiType.EmojiAstronaut){
+			return emojiAstronautExpressionIcons[expression];
+		} else if(emojiType == EmojiType.EmojiButterfly){
+			return emojiButterflyExpressionIcons[expression];
+		} else if(emojiType == EmojiType.EmojiDog){
+			return emojiDogExpressionIcons[expression];
+		} else if(emojiType == EmojiType.EmojiSloth){
+			return emojiSlothExpressionIcons[expression];
+		} else if(emojiType == EmojiType.EmojiTomato){
+			return emojiTomatoExpressionIcons[expression];
 		} else if(emojiType == EmojiType.Gumiji){
 			return gumijiExpressionIcons[expression];
 		}

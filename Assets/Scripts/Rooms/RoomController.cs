@@ -329,8 +329,8 @@ public class RoomController : MonoBehaviour {
 		PlayerData.Instance.PlayerEmoji.transform.parent = rooms[(int)currentRoom].transform;
 		PlayerData.Instance.PlayerEmoji.body.BounceToCurrentRoom((int)currentRoom);
 
-		if(currentRoom != RoomType.LivingRoom)
-			screenTutorial.CheckRoomPlayerPrefs (currentRoom);
+//		if(currentRoom != RoomType.LivingRoom)
+//			screenTutorial.CheckRoomPlayerPrefs (currentRoom);
 
 		yield return null;
 	}

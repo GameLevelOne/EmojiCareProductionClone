@@ -29,7 +29,8 @@ public class UICoin : MonoBehaviour {
 	{
 		Debug.Log ("show coin box");
 		GetComponent<Animator> ().SetBool (boolOpenBox,true);
-		Debug.Log (GetComponent<Animator> ());
+		priceIsShown = showPrice;
+
 		if (isCoin) {
 			coinIcon.SetActive (true);
 			gemIcon.SetActive (false);
@@ -55,11 +56,16 @@ public class UICoin : MonoBehaviour {
 			UpdateDisplay (currentGem, coinAmount,isCoin);
 		}
 		currentPrice = coinAmount;
-
-		priceIsShown = showPrice;
-		if(showPrice){
-			textItemPrice.transform.parent.GetComponent<Animator> ().SetBool (boolShowPrice, true);
+		if(priceIsShown){
+			Debug.Log ("showprice");
+			Debug.Log (textItemPrice.transform.parent.GetComponent<Animator> ());
+			StartCoroutine (ShowPrice ());
 		}
+	}
+
+	IEnumerator ShowPrice(){
+		yield return new WaitForSeconds (0.1f);
+		textItemPrice.transform.parent.GetComponent<Animator> ().SetBool (boolShowPrice, true);
 	}
 
 	IEnumerator AutoCloseUI(){
@@ -98,6 +104,9 @@ public class UICoin : MonoBehaviour {
 		} else{
 //			Debug.Log ("back");
 			GetComponent<Animator> ().SetBool (boolOpenBox,false);
+			if(priceIsShown){
+				textItemPrice.transform.parent.GetComponent<Animator> ().SetBool (boolShowPrice, false);
+			}
 		}
 	}
 
@@ -116,5 +125,8 @@ public class UICoin : MonoBehaviour {
 		PlayerData.Instance.PlayerCoin = currentCoin;
 		textCurrentCoin.text = currentCoin.ToString ("N0");
 		GetComponent<Animator> ().SetBool (boolOpenBox,false);
+		if(priceIsShown){
+			textItemPrice.transform.parent.GetComponent<Animator> ().SetBool (boolShowPrice, false);
+		}
 	}
 }

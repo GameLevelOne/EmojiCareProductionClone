@@ -2,6 +2,13 @@
 
 public enum EmojiType{
 	Emoji,
+	EmojiCamo,
+	EmojiAstronaut,
+	EmojiButterfly,
+	EmojiDog,
+	EmojiSloth,
+	EmojiTomato,
+	Gumiji,
 	Watermeji,
 	Spookiji,
 	Chocoji,
@@ -9,7 +16,7 @@ public enum EmojiType{
 	Toothiji,
 	Nanaji,
 	Boneji,
-	Gumiji,
+
 	Moeji,
 	Takoji,
 

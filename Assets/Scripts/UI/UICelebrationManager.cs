@@ -67,14 +67,14 @@ public class UICelebrationManager : MonoBehaviour {
 		Debug.Log("new expression");
 		EmojiExpression expr = PlayerData.Instance.PlayerEmoji.emojiExpressions;
 		if(expr.GetTotalExpressionProgress() >= expr.sendOffProgressThreshold){
-			if(PlayerData.Instance.TutorialFirstExpressionFull == 0)
-				screenTutorial.ShowFirstDialog (TutorialType.TriggerFirstExpressionFull);
+//			if(PlayerData.Instance.TutorialFirstExpressionFull == 0)
+//				screenTutorial.ShowFirstDialog (TutorialType.TriggerFirstExpressionFull);
 		} 
 
-		if(isNewExpression && PlayerData.Instance.TutorialFirstNewExpression == 0){
-			screenTutorial.ShowFirstDialog (TutorialType.firstNewExpression);
-			PlayerData.Instance.TutorialFirstNewExpression = 1;
-		}
+//		if(isNewExpression && PlayerData.Instance.TutorialFirstNewExpression == 0){
+//			screenTutorial.ShowFirstDialog (TutorialType.firstNewExpression);
+//			PlayerData.Instance.TutorialFirstNewExpression = 1;
+//		}
 
 		StartCoroutine(WaitForNewExpression(expressionStateIndex,isNewExpression));
 	}

@@ -84,10 +84,6 @@ public class ScreenTutorial : BaseUI {
 
 	bool roomChange = false;
 
-//	void Awake(){
-//		PlayerPrefs.DeleteAll ();
-//	}
-
 	void Start(){
 		dialogText.text = firstVisit [0];
 	}
@@ -103,7 +99,7 @@ public class ScreenTutorial : BaseUI {
 	}
 
 	void OnDestroy(){
-		UnregisterEmojiEvents();
+		//UnregisterEmojiEvents();
 	}
 
 	public void CheckStatsTutorial (float hunger, float hygiene, float happiness, float stamina, float health)
