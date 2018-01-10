@@ -244,7 +244,7 @@ public class EmojiBody : MonoBehaviour {
 		currentRoom = currRoom;
 		yield return new WaitForSeconds(0.5f);
 		if(previousRoom != -1){
-//			print("PINDAH");
+			print("PINDAH");
 
 			if(currentRoom > previousRoom){
 

@@ -9,9 +9,19 @@ public class UIBowl : MonoBehaviour {
 	[Header("Content")]
 	public List<GameObject> ingredientObjects = new List<GameObject>();
 
+	public delegate void TutorialBowlFull();
+	public static event TutorialBowlFull OnTutorialBowlFull;
+
 	public void AddObject(GameObject ingredientObject)
 	{
 		ingredientObjects.Add(ingredientObject);
+
+		if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == ShortCode.SCENE_GUIDED_TUTORIAL){
+			if(ingredientObjects.Count == 4){
+				if (OnTutorialBowlFull != null)
+					OnTutorialBowlFull ();
+			}
+		}
 	}
 
 	public void RemoveObject(GameObject ingrediendObject)

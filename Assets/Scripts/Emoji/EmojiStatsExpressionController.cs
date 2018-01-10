@@ -46,7 +46,7 @@ public class EmojiStatsExpressionController : MonoBehaviour {
 	#region mechanics
 	void OnEmojiUpdateStats (float hungerValue, float hygieneValue, float happinessValue, float staminaValue, float healthValue)
 	{
-		print("EH");
+		//print("EH");
 		float[] stats = new float[]{hungerValue,hygieneValue,happinessValue,staminaValue,healthValue};
 		float tempLowestValue = Mathf.Min(stats);
 		if(tempLowestValue < statsTresholdMed){

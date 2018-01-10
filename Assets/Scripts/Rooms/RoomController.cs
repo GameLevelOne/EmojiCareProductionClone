@@ -23,6 +23,9 @@ public class RoomController : MonoBehaviour {
 
 	public ScreenTutorial screenTutorial;
 
+	//TEMP
+	public GuidedTutorialStork guidedTutorial;
+
 	int roomTotal = 0;
 	float distance = 0;
 	float xOnBeginDrag;
@@ -267,70 +270,88 @@ public class RoomController : MonoBehaviour {
 		Vector3 startPos = transform.position;
 		Vector3 endpos = new Vector3 ((roomWidth * (int)destination * -1f), 0f, 0f);
 
-		if (PlayerData.Instance.TutorialIdleLivingRoom == 0) {
-			screenTutorial.TriggerRoomChange ();
-		}
+//		if (PlayerData.Instance.TutorialIdleLivingRoom == 0) {
+//			screenTutorial.TriggerRoomChange ();
+//		}
 
 		StartCoroutine(SmoothSnap(startPos,endpos));
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region coroutines
-	IEnumerator SmoothSnap(Vector3 startPos, Vector3 endPos)
+	IEnumerator SmoothSnap (Vector3 startPos, Vector3 endPos)
 	{
 		snapping = true;
 		float t = 0;
-		RoomType temp = GetCurrentRoom(endPos.x);
+		RoomType temp = GetCurrentRoom (endPos.x);
 
-		if(currentRoom != temp){
-			currentRoom = GetCurrentRoom(endPos.x);
-			foreach(BaseRoom r in rooms) if(r != null) r.OnRoomChanged(currentRoom);
+		if (currentRoom != temp) {
+			currentRoom = GetCurrentRoom (endPos.x);
+			foreach (BaseRoom r in rooms)
+				if (r != null)
+					r.OnRoomChanged (currentRoom);
 		}
 
-		switch(currentRoom)
-		{
+		switch (currentRoom) {
 		case RoomType.Garden: 		
-			rooms[(int)currentRoom].GetComponent<Garden>().Init();
+			rooms [(int)currentRoom].GetComponent<Garden> ().Init ();
 
 			break;
-		case RoomType.Playroom: 	rooms[(int)currentRoom].GetComponent<Playroom>().Init(); break;
-		case RoomType.LivingRoom: 	rooms[(int)currentRoom].GetComponent<LivingRoom>().Init(); break;
-		case RoomType.Kitchen: 		rooms[(int)currentRoom].GetComponent<Kitchen>().Init(); break;
-		case RoomType.Bedroom: 		rooms[(int)currentRoom].GetComponent<Bedroom>().Init(); break;
-		case RoomType.Bathroom: 	rooms[(int)currentRoom].GetComponent<Bathroom>().Init(); break;
+		case RoomType.Playroom:
+			rooms [(int)currentRoom].GetComponent<Playroom> ().Init ();
+			break;
+		case RoomType.LivingRoom:
+			rooms [(int)currentRoom].GetComponent<LivingRoom> ().Init ();
+			break;
+		case RoomType.Kitchen:
+			rooms [(int)currentRoom].GetComponent<Kitchen> ().Init ();
+			break;
+		case RoomType.Bedroom:
+			rooms [(int)currentRoom].GetComponent<Bedroom> ().Init ();
+			break;
+		case RoomType.Bathroom:
+			rooms [(int)currentRoom].GetComponent<Bathroom> ().Init ();
+			break;
 		}
 
-		PlayerData.Instance.PlayerEmoji.body.CheckRoomForBubbleMechanic(currentRoom);
+		PlayerData.Instance.PlayerEmoji.body.CheckRoomForBubbleMechanic (currentRoom);
 
 		//SEMENTARA
 //		if(currentRoom != RoomType.Playroom) danceMat.SetActive(false);
 //		else danceMat.SetActive(true);
 
-		if(currentRoom == RoomType.Garden){
+		if (currentRoom == RoomType.Garden) {
 			gardenMiscItemsManager.Init ();
-			CropHolder.Instance.ShowCrops();
-		} else{
+			CropHolder.Instance.ShowCrops ();
+		} else {
 			gardenMiscItemsManager.Hide ();
-			CropHolder.Instance.HideCrops();
+			CropHolder.Instance.HideCrops ();
 		}
 
 
 		//SNAPPING
-		while(t <= 1){
+		while (t <= 1) {
 			t += Time.fixedDeltaTime * snapSpeed;
-			transform.position = Vector3.Lerp(startPos, endPos, Mathf.SmoothStep(0, 1, t));
+			transform.position = Vector3.Lerp (startPos, endPos, Mathf.SmoothStep (0, 1, t));
 			yield return null;
 		}
 
 		transform.position = endPos;
-//		print("T E R P A N G G I L");
+
 		snapping = false;
 
-		PlayerData.Instance.PlayerEmoji.transform.parent = rooms[(int)currentRoom].transform;
-		PlayerData.Instance.PlayerEmoji.body.BounceToCurrentRoom((int)currentRoom);
+		PlayerData.Instance.PlayerEmoji.transform.parent = rooms [(int)currentRoom].transform;
+		print("T E R P A N G G I L");
+		PlayerData.Instance.PlayerEmoji.body.BounceToCurrentRoom ((int)currentRoom);
 
 //		if(currentRoom != RoomType.LivingRoom)
 //			screenTutorial.CheckRoomPlayerPrefs (currentRoom);
+
+		if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == ShortCode.SCENE_GUIDED_TUTORIAL) {
+			if(currentRoom == RoomType.Kitchen){
+				guidedTutorial.ShowFirstDialog ((int)GuidedTutorialIndex.Kitchen);
+			}
+		}
 
 		yield return null;
 	}

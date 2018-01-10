@@ -17,6 +17,9 @@ public class Bowl : MonoBehaviour {
 	Vector3 flipPos = new Vector3(-0.25f,1.5f,-1f);
 	Vector3 flipRotation = new Vector3(0f,0f,-100f);
 
+	public delegate void BowlOutsideFridge();
+	public static event BowlOutsideFridge OnBowlOutsideFridge;
+
 	public void  Init(GameObject[] ingredients)
 	{
 		transform.position = startPos;
@@ -70,6 +73,12 @@ public class Bowl : MonoBehaviour {
 				if(ingredientObjects.Count <= 0){
 					gameObject.SetActive(false);
 				}else{
+					if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == ShortCode.SCENE_GUIDED_TUTORIAL){
+						if(ingredientObjects.Count == 4){
+							if (OnBowlOutsideFridge != null)
+								OnBowlOutsideFridge ();
+						}
+					}
 					StartCoroutine(_MoveToTableAndFlip);
 				}
 			}else{
@@ -133,6 +142,7 @@ public class Bowl : MonoBehaviour {
 
 		yield return new WaitForSeconds(0.6f);
 		ingredientObjects.Clear();
+
 		gameObject.SetActive(false);
 	}
 }

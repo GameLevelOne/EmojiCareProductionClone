@@ -86,6 +86,7 @@ public class Emoji : MonoBehaviour {
 	#region initialization
 	public void Init()
 	{
+		print ("emoji Init");
 		if(!hasInit){
 			hasInit = true;
 			InitEmojiExpression();
@@ -180,7 +181,7 @@ public class Emoji : MonoBehaviour {
 
 	protected void TickStats()
 	{
-		print("TICK!");
+		//print("TICK!");
 		hunger.TickStats();
 		hygiene.TickStats();
 		happiness.TickStats();
@@ -188,9 +189,9 @@ public class Emoji : MonoBehaviour {
 		//Debug.Log ("staminaa:" + stamina.StatValue);
 		TickHealth();
 
-		print("EVENT REGISTERED?"+(OnUpdateStatsToExpression != null));
+		//print("EVENT REGISTERED?"+(OnUpdateStatsToExpression != null));
 		if(OnUpdateStatsToExpression != null){
-			print("EVENT TICK!");
+			//print("EVENT TICK!");
 			OnUpdateStatsToExpression(
 				hunger.StatValue	/ hunger.MaxStatValue,
 				hygiene.StatValue	/ hygiene.MaxStatValue,

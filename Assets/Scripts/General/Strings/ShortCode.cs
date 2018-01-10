@@ -21,4 +21,6 @@ public static class ShortCode {
 		public const string id_Gem3 = "emojicare.gem3";
 		public const string id_Gem4 = "emojicare.gem4";
 	}
+
+	public const string SCENE_GUIDED_TUTORIAL = "SceneGuidedTutorial";
 }

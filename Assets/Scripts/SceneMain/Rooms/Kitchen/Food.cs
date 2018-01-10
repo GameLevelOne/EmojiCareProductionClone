@@ -4,6 +4,8 @@ using UnityEngine;
 public class Food : TriggerableFurniture {
 	public delegate void FoodPicked(GameObject obj);
 	public event FoodPicked OnFoodPicked;
+	public delegate void FoodEaten();
+	public static event FoodEaten OnFoodEaten;
 	#region attributes
 	[Header("Food Attribute")]
 	public float[] foodFactor;
@@ -75,6 +77,7 @@ public class Food : TriggerableFurniture {
 		}else{ //eat
 			emoji.ModAllStats(foodFactor);
 			emoji.playerInput.Eat();
+			if (OnFoodEaten != null) OnFoodEaten ();
 			if(OnFoodPicked != null) OnFoodPicked(gameObject);
 			Destroy(this.gameObject);
 		}

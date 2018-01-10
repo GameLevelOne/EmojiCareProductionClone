@@ -14,6 +14,8 @@ public enum PanState{
 public class Pan : BaseFurniture {
 	public delegate void CookingDone();
 	public event CookingDone OnCookingDone;
+	public delegate void CookingStart();
+	public event CookingStart OnCookingStart;
 	#region attributes
 	[Header("Pan Attributes")]
 	public List<GameObject> ingredients = new List<GameObject>();
@@ -141,6 +143,12 @@ public class Pan : BaseFurniture {
 		}
 		print("Cooking "+cookBook.recipes[foodIndex].foodObject.name+" for "+cookBook.recipes[foodIndex].cookDuration+" seconds.");
 		foodToCook = cookBook.recipes[foodIndex];
+
+		if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == ShortCode.SCENE_GUIDED_TUTORIAL){
+			if (OnCookingStart != null)
+				OnCookingStart ();
+		}
+
 		StartCoroutine(Cook());
 	}
 

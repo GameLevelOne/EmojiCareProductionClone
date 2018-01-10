@@ -222,7 +222,7 @@ public class ScreenTutorial : BaseUI {
 			dialogText.text = firstNewExpression [0];
 		}
 		currentTutorial = type;
-		base.ShowUI (screenTutorialObj);
+		ShowUI (screenTutorialObj);
 	}
 
 	public void CheckStatsPlayerPrefs(TutorialType type){
