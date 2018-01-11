@@ -133,13 +133,17 @@ public class Plate : BaseFurniture {
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------	
-	void LateUpdate()
+	void LateUpdate ()
 	{
-		if(FoodsOnPlate.Count > 0){
-			for(int i = 0;i<FoodsOnPlate.Count;i++){
-				if(FoodsOnPlate.Count != 0 && FoodsOnPlate[i].GetComponent<Food>().onPlate){
-					FoodsOnPlate[i].transform.localPosition = new Vector3(0,(i * nextY)+startY);
+		if (FoodsOnPlate.Count > 0) {
+			for (int i = 0; i < FoodsOnPlate.Count; i++) {
+
+				if (FoodsOnPlate [i] != null && FoodsOnPlate [i].GetComponent<Food> ().onPlate) {
+					FoodsOnPlate [i].transform.localPosition = new Vector3 (0, (i * nextY) + startY);
+				} else if (FoodsOnPlate [i] == null) {
+					FoodsOnPlate.RemoveAt (i);
 				}
+					
 			}
 		}
 	}

@@ -160,9 +160,7 @@ public class RoomController : MonoBehaviour {
 				float x = getWorldPositionFromTouchInput().x;
 				distance = transform.localPosition.x - x;
 
-				if(currentRoom == RoomType.Playroom){
-					randomPassingToyManager.Stop();
-				}
+
 			}
 		}
 	}
@@ -287,6 +285,7 @@ public class RoomController : MonoBehaviour {
 
 		if (currentRoom != temp) {
 			currentRoom = GetCurrentRoom (endPos.x);
+			if(currentRoom != RoomType.Playroom) randomPassingToyManager.Stop();
 			foreach (BaseRoom r in rooms)
 				if (r != null)
 					r.OnRoomChanged (currentRoom);

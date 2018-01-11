@@ -34,6 +34,7 @@ public class GuidedTutorialStork : BaseUI {
 		StallItem.OnTutorialItemDragged -= OnTutorialItemDragged;
 		Seed.OnTutorialSeedPlanted -= OnTutorialSeedPlanted;
 		WateringCan.OnUsedWateringCan -= OnUsedWateringCan;
+		Crop.OnStallItemHarvested -= OnStallItemHarvested;
 	}
 
 	public void RegisterEvents(){
@@ -76,12 +77,11 @@ public class GuidedTutorialStork : BaseUI {
 
 	void OnStallItemHarvested ()
 	{
-		Crop.OnStallItemHarvested -= OnStallItemHarvested;
 		cropCount++;
 
-		if(cropCount==1){
+		if(cropCount==3){
 			ShowFirstDialog (54);
-		} else if(cropCount==3){
+		} else if(cropCount==9){
 			ShowFirstDialog (55);
 		}
 	}
@@ -112,6 +112,7 @@ public class GuidedTutorialStork : BaseUI {
 
 	void OnEmojiFirstWakeEvent(){
 		PlayerData.Instance.PlayerEmoji.playerInput.OnEmojiWake -= OnEmojiFirstWakeEvent;
+		PlayerData.Instance.PlayerEmoji.hygiene.SetStats (0.19f * PlayerData.Instance.PlayerEmoji.hygiene.MaxStatValue);
 		ShowFirstDialog (24);
 	}
 

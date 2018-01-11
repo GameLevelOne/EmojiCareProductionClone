@@ -199,7 +199,7 @@ public class EmojiBody : MonoBehaviour {
 		foamState += value;
 		if(foamState > 10f) foamState = 10f;
 		else if(foamState < 0) foamState = 0;
-		print("FOAM STATE = "+foamState);
+//		print("FOAM STATE = "+foamState);
 		bubbleEffectAnim.SetFloat(AnimatorParameters.Floats.FOAM_STATE,foamState);
 		bubbleEffect.SetBubbleAlpha(foamState/10f);
 
@@ -286,7 +286,7 @@ public class EmojiBody : MonoBehaviour {
 	{
 		while(foamState > 0f){
 			ModEmojiFoamedValue((Time.fixedDeltaTime * 0.2f) * -1f);
-			print(foamState);
+//			print(foamState);
 			yield return null;
 		}
 		foamState = 0f;

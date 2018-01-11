@@ -38,23 +38,27 @@ public class PopupStatsMeter : MonoBehaviour {
 		Debug.Log ("end:" + targetValue);
 		if (targetValue >= currentValue) {
 			while (barFill.fillAmount < targetValue) {
+				Debug.Log ("move+");
 				barFill.fillAmount = Mathf.Lerp (currentValue, targetValue, time);
 				time += Time.deltaTime * 2;
 				yield return null;
 			}
 		} else{
 			while (barFill.fillAmount > targetValue) {
+				Debug.Log ("move-");
 				barFill.fillAmount = Mathf.Lerp (currentValue, targetValue, time);
 				time += Time.deltaTime * 2;
 				yield return null;
 			}
 		}
-
+		Debug.Log ("calling autoclose");
 		StartCoroutine (AutoClose ());
 	}
 
 	IEnumerator AutoClose(){
+		Debug.Log ("wait autoclose");
 		yield return new WaitForSeconds (0.3f);
+		Debug.Log ("autoclose");
 		GetComponent<Animator> ().SetBool (boolShowNotif,false);
 	}
 }

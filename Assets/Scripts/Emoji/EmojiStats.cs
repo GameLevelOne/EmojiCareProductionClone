@@ -22,6 +22,8 @@ public class EmojiStats {
 	public float emojiModifier;
 	float roomModifier = 0f;
 	public bool Debug = false;
+	public float currentValue;
+
 	/// <summary>
 	/// for PanelStatsManager, GET.
 	/// </summary>
@@ -29,6 +31,7 @@ public class EmojiStats {
 		get{return PlayerPrefs.GetFloat(prefKey);}
 		set{PlayerPrefs.SetFloat(prefKey,value);}
 	}
+
 
 	public float MaxStatValue{
 		get{return maxStatValue;}
@@ -61,6 +64,10 @@ public class EmojiStats {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
+	void Update(){
+		currentValue = StatValue;
+	}
+
 	public void TickStats()
 	{
 		StatValue += (emojiModifier + roomModifier) * DebugTickStats;
