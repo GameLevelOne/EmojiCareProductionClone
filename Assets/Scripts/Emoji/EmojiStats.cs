@@ -70,6 +70,7 @@ public class EmojiStats {
 
 	public void TickStats()
 	{
+		
 		StatValue += (emojiModifier + roomModifier) * DebugTickStats;
 		AdjustValue();
 	}

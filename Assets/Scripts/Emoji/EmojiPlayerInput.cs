@@ -336,7 +336,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 					emoji.health.statsModifier = -3f;
 
 				}else{
-					emoji.ResetEmojiStatsModifier();
+					if(!flagSleeping) emoji.ResetEmojiStatsModifier();
 				}
 			}
 		}
@@ -543,7 +543,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 	{
 		yield return new WaitForSeconds(cooldown);
 		tapCounter = 0;
-		emoji.ResetEmojiStatsModifier();
+		if(!flagSleeping) emoji.ResetEmojiStatsModifier();
 	}
 
 	const string _RetainMoveSpeed = "RetainMoveSpeed";
@@ -561,7 +561,7 @@ public class EmojiPlayerInput : MonoBehaviour {
 		yield return new WaitForSeconds(shakeCounterCooldown);
 		shakeCounter = 0;
 
-		emoji.ResetEmojiStatsModifier();
+		if(!flagSleeping) emoji.ResetEmojiStatsModifier();
 	}
 
 	const string _RetainShakeExpression = "RetainShakeExpression";

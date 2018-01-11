@@ -185,7 +185,7 @@ public class Emoji : MonoBehaviour {
 
 	protected void TickStats()
 	{
-		//print("TICK!");
+		print("STAMINA MOD = "+stamina.emojiModifier);
 		hunger.TickStats();
 		hygiene.TickStats();
 		if (OnEmojiHygieneCheck != null)
@@ -272,6 +272,7 @@ public class Emoji : MonoBehaviour {
 		hygiene.statsModifier = emojiBaseData.hygeneModifier;
 		happiness.statsModifier = emojiBaseData.happinessModifier;
 		stamina.statsModifier = emojiBaseData.staminaModifier;
+
 	}
 
 	public void ModAllStats(float[] mod)
