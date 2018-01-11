@@ -20,6 +20,9 @@ public class Bowl : MonoBehaviour {
 	public delegate void BowlOutsideFridge();
 	public static event BowlOutsideFridge OnBowlOutsideFridge;
 
+	[Header("Scene Guided Tutorial only")]
+	public Collider2D fridgeDoor;
+
 	public void  Init(GameObject[] ingredients)
 	{
 		transform.position = startPos;
@@ -30,6 +33,11 @@ public class Bowl : MonoBehaviour {
 
 		this.gameObject.SetActive(true);
 		StartCoroutine(_Shrink);
+
+		if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == ShortCode.SCENE_GUIDED_TUTORIAL)
+		{
+			fridgeDoor.enabled = false;
+		}
 	}
 
 	void InstantiateObjects(GameObject[] objects)

@@ -14,7 +14,7 @@ public class WateringCan : MonoBehaviour {
 	#endregion
 
 	public delegate void UsedWateringCan();
-	public static event UsedWateringCan OnUsedWateringCan;
+	public event UsedWateringCan OnUsedWateringCan;
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
 	void Awake()

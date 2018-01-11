@@ -34,21 +34,21 @@ public class PopupStatsMeter : MonoBehaviour {
 	{
 		yield return new WaitForSeconds (1f);
 		float time = 0;
-		Debug.Log ("start:" + currentValue);
-		Debug.Log ("end:" + targetValue);
+//		Debug.Log ("start:" + currentValue);
+//		Debug.Log ("end:" + targetValue);
 		while (time < 1) {
 			barFill.fillAmount = Mathf.Lerp (currentValue, targetValue, time);
 			time += Time.deltaTime * 2;
 			yield return null;
 		}
-		Debug.Log ("calling autoclose");
+//		Debug.Log ("calling autoclose");
 		StartCoroutine (AutoClose ());
 	}
 
 	IEnumerator AutoClose(){
-		Debug.Log ("wait autoclose");
+//		Debug.Log ("wait autoclose");
 		yield return new WaitForSeconds (0.3f);
-		Debug.Log ("autoclose");
+//		Debug.Log ("autoclose");
 		GetComponent<Animator> ().SetBool (boolShowNotif,false);
 	}
 }

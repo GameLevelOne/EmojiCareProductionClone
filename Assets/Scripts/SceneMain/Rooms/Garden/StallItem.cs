@@ -4,8 +4,11 @@ using UnityEngine;
 public class StallItem : MonoBehaviour {
 	public delegate void GoodHarvested(StallItem item);
 	public event GoodHarvested OnItemPicked;
-	public delegate void TutorialItemDragged();
-	public static event TutorialItemDragged OnTutorialItemDragged;
+
+	public delegate void TutorialItemEvent();
+	public event TutorialItemEvent OnItemDragged;
+	public event TutorialItemEvent OnItemReturned;
+	public event TutorialItemEvent OnItemHarvested;
 	#region attributes
 	[Header("Reference")]
 	public Rigidbody2D thisRigidBody;
@@ -59,6 +62,11 @@ public class StallItem : MonoBehaviour {
 			if(OnEndDragStallItem != null) OnEndDragStallItem (true);
 			if (OnItemPicked != null) OnItemPicked (this);
 
+			if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == ShortCode.SCENE_GUIDED_TUTORIAL){
+				if (OnItemHarvested != null)
+					OnItemHarvested ();
+			}
+
 			PlayerData.Instance.inventory.ModIngredientValue (type, 1);
 			basket.Animate();
 			Destroy (this.gameObject);
@@ -77,6 +85,10 @@ public class StallItem : MonoBehaviour {
 		thisCollider.enabled = false;
 		if(OnDragStallItem!=null){
 			OnDragStallItem (price);
+		}
+		if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == ShortCode.SCENE_GUIDED_TUTORIAL){
+			if (OnItemDragged != null)
+				OnItemDragged ();
 		}
 	}
 
@@ -111,10 +123,9 @@ public class StallItem : MonoBehaviour {
 		thisSprite.sortingLayerName = SortingLayers.MOVABLE_FURNITURE;
 		inStall = true;
 		if(OnEndDragStallItem != null) OnEndDragStallItem (false);
-
 		if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == ShortCode.SCENE_GUIDED_TUTORIAL){
-			if (OnTutorialItemDragged != null)
-				OnTutorialItemDragged ();
+			if (OnItemReturned != null)
+				OnItemReturned ();
 		}
 	}
 }

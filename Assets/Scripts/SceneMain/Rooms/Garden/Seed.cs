@@ -5,6 +5,11 @@ using UnityEngine;
 public class Seed : MonoBehaviour {
 	public delegate void SeedPlanted(Seed seed);
 	public event SeedPlanted OnSeedPlanted;
+
+	public delegate void SeedEvent ();
+	public event SeedEvent OnSeedPicked;
+	public event SeedEvent OnSeedReturned;
+
 	#region attributes
 	public GameObject PlantObject;
 	public int growthDuration;
@@ -63,6 +68,8 @@ public class Seed : MonoBehaviour {
 		if (OnDragSeed != null) {
 			OnDragSeed (price);
 		}
+		if (OnSeedPicked != null)
+			OnSeedPicked ();
 	}
 
 	public void Drag()
@@ -98,6 +105,10 @@ public class Seed : MonoBehaviour {
 				}
 			}
 		}
+
+		if (OnSeedReturned != null)
+			OnSeedReturned ();
+
 		if(OnEndDragSeed != null) OnEndDragSeed(false);
 		StartCoroutine(Return());	
 	}

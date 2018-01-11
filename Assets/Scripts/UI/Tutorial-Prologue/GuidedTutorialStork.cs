@@ -23,7 +23,26 @@ public class GuidedTutorialStork : BaseUI {
 	public Pan pan;
 	public UIBowl uiBowl;
 	public Sponge sponge;
+	public Shower shower;
 	public DartboardMinigame dartboard;
+
+	public GameObject arrowBathroomSponge;
+	public GameObject arrowBathroomShower;
+	public GameObject arrowSoapToEmoji;
+	public GameObject arrowShowerToEmoji;
+	public GameObject handBathroomSoap;
+	public GameObject arrowGardenSeed;
+	public GameObject arrowGardenItem;
+	public GameObject arrowGardenSoil;
+	public GameObject arrowGardenWateringCan;
+	public GameObject arrowGardenCanToSoil;
+	public GameObject arrowGardenSoilToBasket;
+	public GameObject arrowGardenBasket;
+	public GameObject arrowGardenItemToBasket;
+
+	public Seed seed1, seed2, seed3;
+	public StallItem item1;
+	public WateringCan wateringCan;
 
 	int dialogCounter = 0;
 	int cropCount = 0;
@@ -31,10 +50,22 @@ public class GuidedTutorialStork : BaseUI {
 	void OnDisable(){
 		uiBowl.OnTutorialBowlFull -= OnTutorialBowlFull;
 		Bowl.OnBowlOutsideFridge -= OnBowlOutsideFridge;
-		StallItem.OnTutorialItemDragged -= OnTutorialItemDragged;
+
 		Seed.OnTutorialSeedPlanted -= OnTutorialSeedPlanted;
-		WateringCan.OnUsedWateringCan -= OnUsedWateringCan;
+		wateringCan.OnUsedWateringCan -= OnUsedWateringCan;
+		wateringCan.OnWateringCanPicked -= OnWateringCanPicked;
+		wateringCan.OnWateringCanReleased -= OnWateringCanReleased;
 		Crop.OnStallItemHarvested -= OnStallItemHarvested;
+		seed1.OnSeedPicked -= OnSeedPicked;
+		seed2.OnSeedPicked -= OnSeedPicked;
+		seed3.OnSeedPicked -= OnSeedPicked;
+		seed1.OnSeedReturned -= OnSeedReturned;
+		seed2.OnSeedReturned -= OnSeedReturned;
+		seed3.OnSeedReturned -= OnSeedReturned;
+		item1.OnItemPicked -= OnItemPicked;
+		item1.OnItemDragged -= OnItemDragged;
+		item1.OnItemReturned -= OnItemReturned;
+		item1.OnItemHarvested -= OnItemHarvested;
 	}
 
 	public void RegisterEvents(){
@@ -48,9 +79,65 @@ public class GuidedTutorialStork : BaseUI {
 		PlayerData.Instance.PlayerEmoji.body.OnEmojiApplySponge += OnEmojiApplySponge;
 		dartboard.OnDartThirdShot += OnDartThirdShot;
 		Crop.OnStallItemHarvested += OnStallItemHarvested;
-		StallItem.OnTutorialItemDragged += OnTutorialItemDragged;
+		Crop.OnCropPicked += OnCropPicked;
+		Crop.OnCropReturned += OnCropReturned;
 		Seed.OnTutorialSeedPlanted += OnTutorialSeedPlanted;
-		WateringCan.OnUsedWateringCan += OnUsedWateringCan;
+		wateringCan.OnUsedWateringCan += OnUsedWateringCan;
+		wateringCan.OnWateringCanPicked += OnWateringCanPicked;
+		wateringCan.OnWateringCanReleased += OnWateringCanReleased;
+		sponge.OnSpongePicked += OnSpongePicked;
+		shower.OnShowerPicked += OnShowerPicked;
+	}
+
+	public void RegisterSeedAndItemEvents()
+	{
+		seed1.OnSeedPicked += OnSeedPicked;
+		seed2.OnSeedPicked += OnSeedPicked;
+		seed3.OnSeedPicked += OnSeedPicked;
+		seed1.OnSeedReturned += OnSeedReturned;
+		seed2.OnSeedReturned += OnSeedReturned;
+		seed3.OnSeedReturned += OnSeedReturned;
+		item1.OnItemPicked += OnItemPicked;
+		item1.OnItemDragged += OnItemDragged;
+		item1.OnItemReturned += OnItemReturned;
+		item1.OnItemHarvested += OnItemHarvested;
+	}
+
+	void OnWateringCanReleased ()
+	{
+		arrowGardenCanToSoil.SetActive (false);
+		arrowGardenWateringCan.SetActive (true);
+	}
+
+	void OnWateringCanPicked ()
+	{
+		arrowGardenCanToSoil.SetActive (true);
+		arrowGardenWateringCan.SetActive (false);
+	}
+
+	void OnCropReturned ()
+	{
+		arrowGardenSoilToBasket.SetActive (true);
+		arrowGardenBasket.SetActive (false);
+	}
+
+	void OnCropPicked ()
+	{
+		arrowGardenSoilToBasket.SetActive (false);
+		arrowGardenBasket.SetActive (true);
+	}
+
+	void OnShowerPicked ()
+	{
+		arrowBathroomShower.SetActive (false);
+		arrowShowerToEmoji.SetActive (true);
+	}
+
+	void OnSpongePicked ()
+	{
+		arrowBathroomSponge.SetActive (false);
+		handBathroomSoap.SetActive (false);
+		arrowSoapToEmoji.SetActive (true);
 	}
 
 	void OnUsedWateringCan ()
@@ -65,13 +152,50 @@ public class GuidedTutorialStork : BaseUI {
 			ShowFirstDialog (50);
 	}
 
+	void OnItemHarvested ()
+	{
+		if (dialogCounter == 55)
+			ShowFirstDialog (55); //CONTINUE?
+	}
+
+	void OnItemReturned ()
+	{
+		arrowGardenItem.SetActive (true);
+		arrowGardenItemToBasket.SetActive (false);
+	}
+
+	void OnItemDragged()
+	{
+		arrowGardenItem.SetActive (false);
+		arrowGardenItemToBasket.SetActive (true);
+	}
+
+	void OnSeedReturned ()
+	{
+		arrowGardenSeed.SetActive (true);
+		arrowGardenSoil.SetActive (false);
+	}
+
+	void OnItemPicked (StallItem item)
+	{
+		arrowGardenItem.SetActive (false);
+		arrowGardenBasket.SetActive (true);
+	}
+
+	void OnSeedPicked ()
+	{
+		arrowGardenSeed.SetActive (false);
+		arrowGardenSoil.SetActive (true);
+	}
+
 	void OnTutorialItemDragged ()
 	{
-		if (dialogCounter == 49)
-			ShowFirstDialog (50);
-		else if (dialogCounter == 50)
-			ShowFirstDialog (51);
-		else if (dialogCounter == 55)
+//		if (dialogCounter == 49)
+//			ShowFirstDialog (50);
+//		else if (dialogCounter == 50)
+//			ShowFirstDialog (51);
+//		else 
+		if (dialogCounter == 55)
 			ShowFirstDialog (55); //CONTINUE?
 	}
 
@@ -96,6 +220,7 @@ public class GuidedTutorialStork : BaseUI {
 	{
 		Debug.Log ("foamvalue:" + value);
 		if(value >=10){
+			sponge.OnSpongePicked -= OnSpongePicked;
 			PlayerData.Instance.PlayerEmoji.body.OnEmojiApplySponge -= OnEmojiApplySponge;
 			ShowFirstDialog (33);
 			PlayerData.Instance.PlayerEmoji.OnEmojiHygieneCheck += OnEmojiHygieneCheck;
@@ -105,6 +230,7 @@ public class GuidedTutorialStork : BaseUI {
 	void OnEmojiHygieneCheck (float ratio)
 	{
 		if(ratio >= 1f){
+			shower.OnShowerPicked -= OnShowerPicked;
 			PlayerData.Instance.PlayerEmoji.OnEmojiHygieneCheck -= OnEmojiHygieneCheck;
 			ShowFirstDialog (34);
 		}
@@ -159,6 +285,7 @@ public class GuidedTutorialStork : BaseUI {
 
 	public void OnNextDialog(){
 		transform.GetChild (0).GetComponent<Image> ().raycastTarget = true;
+		dialogBox.GetComponent<CanvasGroup> ().blocksRaycasts = true;
 		buttonNext.SetActive (true);
 		if(dialogCounter == 27){
 			dialogCounter = 30;
@@ -186,7 +313,11 @@ public class GuidedTutorialStork : BaseUI {
 	}
 
 	public void SetHighlightPanels (){
-		TurnOffHighlightPanels ();
+		foreach (GameObject obj in highlightPanels) {
+			if (obj.activeSelf) {
+				obj.SetActive (false);
+			}
+		}
 
 		if (dialogCounter == 1 || dialogCounter == 20 || dialogCounter == 25 || dialogCounter == 35 || dialogCounter == 45)
 			highlightPanels [0].SetActive (true);
@@ -224,7 +355,7 @@ public class GuidedTutorialStork : BaseUI {
 			highlightPanels [20].SetActive (true);
 		else if (dialogCounter == 40)
 			highlightPanels [21].SetActive (true);
-		else if (dialogCounter == 49 || dialogCounter == 54)
+		else if (dialogCounter == 49)
 			highlightPanels [23].SetActive (true);
 		else if(dialogCounter == 50)
 			highlightPanels [24].SetActive (true);
@@ -234,6 +365,9 @@ public class GuidedTutorialStork : BaseUI {
 			highlightPanels [26].SetActive (true);
 		else if(dialogCounter == 57)
 			highlightPanels [27].SetActive (true);
+		else if(dialogCounter == 54){
+			highlightPanels [28].SetActive (true);
+		}
 
 		foreach (GameObject obj in highlightPanels) {
 			if (obj.activeSelf) {
@@ -250,6 +384,8 @@ public class GuidedTutorialStork : BaseUI {
 		Emoji playerEmoji = PlayerData.Instance.PlayerEmoji;
 		if (dialogCounter == 0 || dialogCounter == 41) {
 			playerEmoji.hunger.SetStats (tresholdLow * playerEmoji.hunger.MaxStatValue);
+		} else if(dialogCounter == 7 || dialogCounter == 8 || dialogCounter == 11){
+			dialogBox.GetComponent<CanvasGroup> ().blocksRaycasts = false;
 		} else if (dialogCounter == 18) {
 			playerEmoji.stamina.SetStats (tresholdLow * playerEmoji.stamina.MaxStatValue);
 		} else if (dialogCounter == 20) {
@@ -262,15 +398,6 @@ public class GuidedTutorialStork : BaseUI {
 			PlayerData.Instance.LocationPlayroom = 1;
 		} else if(dialogCounter == 45){
 			PlayerData.Instance.LocationGarden = 1;
-		}
-	}
-
-	public void TurnOffHighlightPanels ()
-	{
-		foreach (GameObject obj in highlightPanels) {
-			if (obj.activeSelf) {
-				obj.SetActive (false);
-			}
 		}
 	}
 

@@ -37,13 +37,11 @@ public class DartboardMinigame : BaseUI {
 				dartAnim.SetBool (boolReset, false);
 			}
 			shotCount++;
-			if(!(shotCount == 3 && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == ShortCode.SCENE_GUIDED_TUTORIAL)){
-				StartCoroutine (ResetDart ());
-			} else{
-				buttonBack.SetActive (true);
+			if(shotCount == 3 && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == ShortCode.SCENE_GUIDED_TUTORIAL){
 				if (OnDartThirdShot != null)
 				OnDartThirdShot ();
-			}
+			} 
+			StartCoroutine (ResetDart ());
 		}
 	}
 

@@ -38,6 +38,9 @@ public class GardenStall : BaseFurniture {
 	TimeSpan itemRestockDuration;
 	TimeSpan seedRestockDuration;
 
+	[Header("Scene guided tutorial only")]
+	public GuidedTutorialStork sceneGuidedTutorial;
+
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
@@ -88,6 +91,8 @@ public class GardenStall : BaseFurniture {
 		InstantiateSeed (0, 0);
 		InstantiateSeed (1, 1);
 		InstantiateSeed (2, 3);
+
+		sceneGuidedTutorial.RegisterSeedAndItemEvents ();
 	}
 
 	void ValidateItemRestocking()
@@ -204,6 +209,10 @@ public class GardenStall : BaseFurniture {
 
 		currentItems.Add(tempItem);
 		SetCurrentItemData(itemIndex,(int)item.type);
+
+		if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == ShortCode.SCENE_GUIDED_TUTORIAL){
+			sceneGuidedTutorial.item1 = item;
+		}
 	}
 
 	int RandomizeIngredientItem()
@@ -252,6 +261,8 @@ public class GardenStall : BaseFurniture {
 
 		currentSeeds.Add(tempSeed);
 		SetCurrentSeedData(seedIndex,(int)seed.type);
+
+
 	}
 
 	void InstantiateSeed(int seedIndex, int seedIngredientIndex)
@@ -273,6 +284,20 @@ public class GardenStall : BaseFurniture {
 
 		currentSeeds.Add(tempSeed);
 		SetCurrentSeedData(seedIndex,(int)seed.type);
+
+		if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == ShortCode.SCENE_GUIDED_TUTORIAL){
+			switch(seedIndex){
+			case 0:
+				sceneGuidedTutorial.seed1 = seed;
+				break;
+			case 1:
+				sceneGuidedTutorial.seed2 = seed;
+				break;
+			case 2:
+				sceneGuidedTutorial.seed3 = seed;
+				break;
+			}
+		}
 	}
 
 	int RandomizeIngridientSeed()

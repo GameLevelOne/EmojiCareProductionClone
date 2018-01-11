@@ -7,6 +7,9 @@ public class Crop : MonoBehaviour {
 	public event CropDestroyed OnCropDestroyed;
 	public delegate void StallItemHarvested();
 	public static event StallItemHarvested OnStallItemHarvested;
+	public delegate void CropEvent();
+	public static event CropEvent OnCropPicked;
+	public static event CropEvent OnCropReturned;
 
 	public Rigidbody2D thisRigidbody;
 	public Collider2D thisCollider;
@@ -56,6 +59,9 @@ public class Crop : MonoBehaviour {
 		thisRigidbody.simulated = false;
 		thisCollider.enabled = false;
 		thisSprite.sortingLayerName = SortingLayers.HELD;
+
+		if (OnCropPicked != null)
+			OnCropPicked ();
 	}
 	public void Drag()
 	{
@@ -67,6 +73,9 @@ public class Crop : MonoBehaviour {
 		thisRigidbody.simulated = true;
 		thisCollider.enabled = true;
 		thisSprite.sortingLayerName = SortingLayers.MOVABLE_FURNITURE;
+
+		if (OnCropReturned != null)
+			OnCropReturned ();
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
