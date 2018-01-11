@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class Sponge : TriggerableFurniture {
 	#region attributes
+	public delegate void SpongeEvent();
+	public event SpongeEvent OnSpongePicked;
+	public event SpongeEvent OnSpongeReleased;
+
 	[Header("Sponge Attributes")]
 	public Animator thisAnim;
 	public GameObject bubble;
@@ -47,6 +51,15 @@ public class Sponge : TriggerableFurniture {
 				}
 			}
 		}
+	}
+
+	public void BeginDrag()
+	{
+		if(OnSpongePicked != null) OnSpongePicked();
+	}
+	public void EndDrag()
+	{
+		if(OnSpongeReleased != null) OnSpongeReleased();
 	}
 
 	public void OnTriggerExit2D(Collider2D other)

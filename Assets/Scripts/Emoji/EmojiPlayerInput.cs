@@ -342,8 +342,6 @@ public class EmojiPlayerInput : MonoBehaviour {
 		}
 	}
 
-
-
 	void EndStroke()
 	{
 		touchInputObject.transform.localScale = Vector3.one;

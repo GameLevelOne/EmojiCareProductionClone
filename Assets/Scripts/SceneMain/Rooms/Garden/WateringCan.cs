@@ -2,6 +2,10 @@
 using UnityEngine;
 
 public class WateringCan : MonoBehaviour {
+	public delegate void WateringCanEvent();
+	public event WateringCanEvent OnWateringCanPicked;
+	public event WateringCanEvent OnWateringCanReleased;
+
 	#region attributes
 	public Collider2D wateringCanTrigger;
 	public SpriteRenderer thisSprite;
@@ -25,6 +29,8 @@ public class WateringCan : MonoBehaviour {
 		wateringCanTrigger.enabled = true;
 		wateringCanTrigger.gameObject.GetComponent<WateringCanTrigger>().Water();
 		thisSprite.sortingLayerName = SortingLayers.HELD;
+
+		if(OnWateringCanPicked != null) OnWateringCanPicked();
 	}
 
 	public void Drag()
@@ -39,6 +45,8 @@ public class WateringCan : MonoBehaviour {
 		wateringCanTrigger.gameObject.GetComponent<WateringCanTrigger>().Stop();
 		thisSprite.sortingLayerName = SortingLayers.MOVABLE_FURNITURE;
 		StartCoroutine(Return());
+
+		if(OnWateringCanReleased != null) OnWateringCanReleased();
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------	

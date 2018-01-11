@@ -2,6 +2,10 @@
 using UnityEngine;
 
 public class Shower : TriggerableFurniture {
+	public delegate void ShowerEvent();
+	public event ShowerEvent OnShowerPicked;
+	public event ShowerEvent OnShowerReleased;
+
 	[Header("Shower Attributes")]
 	public ShowerTrigger showerTrigger;
 
@@ -53,5 +57,15 @@ public class Shower : TriggerableFurniture {
 		}
 		flagDecreasingEmojiFoamState = false;
 
+	}
+
+	public void BeginDrag()
+	{
+		if(OnShowerPicked != null) OnShowerPicked();
+	}
+
+	public void EndDrag()
+	{
+		if(OnShowerReleased != null) OnShowerReleased();
 	}
 }
