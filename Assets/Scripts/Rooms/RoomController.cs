@@ -348,7 +348,7 @@ public class RoomController : MonoBehaviour {
 
 		if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == ShortCode.SCENE_GUIDED_TUTORIAL) {
 			if(currentRoom == RoomType.Kitchen){
-				guidedTutorial.ShowFirstDialog ((int)GuidedTutorialIndex.Kitchen);
+				guidedTutorial.SetDialogInKitchen ();
 			} else if(currentRoom == RoomType.Bedroom){
 				guidedTutorial.ShowFirstDialog ((int)GuidedTutorialIndex.Bedroom);
 			} else if(currentRoom == RoomType.Bathroom){

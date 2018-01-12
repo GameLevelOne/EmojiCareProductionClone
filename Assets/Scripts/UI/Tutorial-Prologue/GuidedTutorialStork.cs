@@ -68,6 +68,7 @@ public class GuidedTutorialStork : BaseUI {
 		item1.OnItemDragged -= OnItemDragged;
 		item1.OnItemReturned -= OnItemReturned;
 		item1.OnItemHarvested -= OnItemHarvested;
+		Food.OnFoodEaten -= OnFoodEaten;
 	}
 
 	public void RegisterEvents(){
@@ -170,8 +171,8 @@ public class GuidedTutorialStork : BaseUI {
 
 	void OnItemHarvested ()
 	{
-		if (dialogCounter == 55)
-			ShowFirstDialog (55); //CONTINUE?
+		if (dialogCounter == 57)
+			ShowFirstDialog (58); //CONTINUE?
 	}
 
 	void OnItemReturned ()
@@ -212,7 +213,7 @@ public class GuidedTutorialStork : BaseUI {
 //			ShowFirstDialog (51);
 //		else 
 		if (dialogCounter == 55)
-			ShowFirstDialog (55); //CONTINUE?
+			ShowFirstDialog (56); 
 	}
 
 	void OnStallItemHarvested ()
@@ -268,28 +269,38 @@ public class GuidedTutorialStork : BaseUI {
 
 	void OnFoodEaten ()
 	{
-		Food.OnFoodEaten -= OnFoodEaten;
-		ShowFirstDialog (12);
+		if (dialogCounter == 11)
+			ShowFirstDialog (12);
+		else if (dialogCounter == 61) {
+			Emoji playerEmoji = PlayerData.Instance.PlayerEmoji;
+			playerEmoji.happiness.SetStats (playerEmoji.happiness.MaxStatValue);
+			playerEmoji.hunger.SetStats (0.5f * playerEmoji.hunger.MaxStatValue);
+			ShowFirstDialog (62);
+		}
 	}
 
 	void OnCookingDone ()
 	{
 		pan.OnCookingDone -= OnCookingDone;
-		ShowFirstDialog (10);
+		if(dialogCounter == 9)
+			ShowFirstDialog (10);
 	}
 
 	void OnCookingStart ()
 	{
 		pan.OnCookingStart -= OnCookingStart;
-		ShowFirstDialog (9);
+		if(dialogCounter == 8)
+			ShowFirstDialog (9);
 	}
 
 	void OnBowlOutsideFridge (){
-		ShowFirstDialog (8);
+		if(dialogCounter == 7)
+			ShowFirstDialog (8);
 	}
 
 	void OnTutorialBowlFull(){
-		ShowFirstDialog (7);
+		if(dialogCounter == 6)
+			ShowFirstDialog (7);
 	}
 
 	public void ShowFirstDialog(int idx){
@@ -314,6 +325,9 @@ public class GuidedTutorialStork : BaseUI {
 			popupUnlockables.SetDisplay (UnlockType.Room, RoomType.Playroom);
 		} else if(dialogCounter+1 == 45){
 			popupUnlockables.SetDisplay (UnlockType.Room, RoomType.Garden);
+		} else if(dialogCounter == 61){
+			refrigerator.GetComponent<BoxCollider2D> ().enabled = true;
+			CloseUI (tutorialObj);
 		} else{
 			transform.GetChild (0).GetComponent<Image> ().raycastTarget = true;
 			dialogBox.GetComponent<CanvasGroup> ().blocksRaycasts = true;
@@ -337,7 +351,7 @@ public class GuidedTutorialStork : BaseUI {
 //		if(dialogCounter >= 0 && dialogCounter <= 6){
 //			
 //		} 
-		if(dialogCounter == 7 || (dialogCounter >= 46 && dialogCounter <= 57)){
+		if(dialogCounter == 7 || (dialogCounter >= 46 && dialogCounter <= 59)){
 			dialogBox.localPosition = dialogBoxPositions [0];
 		} else{
 			dialogBox.localPosition = dialogBoxPositions [2];
@@ -352,7 +366,7 @@ public class GuidedTutorialStork : BaseUI {
 			}
 		}
 
-		if (dialogCounter == 1 || dialogCounter == 20 || dialogCounter == 25 || dialogCounter == 35 || dialogCounter == 45)
+		if (dialogCounter == 1 || dialogCounter == 20 || dialogCounter == 25 || dialogCounter == 35 || dialogCounter == 45 || dialogCounter == 59)
 			highlightPanels [0].SetActive (true);
 		else if (dialogCounter == 2)
 			highlightPanels [1].SetActive (true);
@@ -435,15 +449,9 @@ public class GuidedTutorialStork : BaseUI {
 			PlayerData.Instance.LocationBathroom = 1;
 		} else if (dialogCounter == 35) {
 			PlayerData.Instance.LocationPlayroom = 1;
-		} else if(dialogCounter == 41){
-				
 		} else if(dialogCounter == 45){
 			PlayerData.Instance.LocationGarden = 1;
 		} 
-
-		//unlock expression for send off
-//		playerEmoji.happiness.SetStats (playerEmoji.happiness.MaxStatValue);
-//		playerEmoji.hunger.SetStats (0.5 * playerEmoji.hunger.MaxStatValue);
 	}
 
 	public void OnClickHotkey(){
@@ -452,7 +460,7 @@ public class GuidedTutorialStork : BaseUI {
 
 	public void SetLocationHighlight ()
 	{
-		if (dialogCounter == 2) {
+		if (dialogCounter == 2 || dialogCounter == 59) {
 			highlightPanels [2].SetActive (true);
 		} else if (dialogCounter == 20) {
 			highlightPanels [10].SetActive (true);
@@ -468,6 +476,14 @@ public class GuidedTutorialStork : BaseUI {
 
 	public void OnClickBackAfterDartboard(){
 		StartCoroutine (WaitForHappinessMeterInDartboard ());
+	}
+
+	public void SetDialogInKitchen(){
+		if(dialogCounter == 2){
+			ShowFirstDialog (3);
+		} else if(dialogCounter == 59){
+			ShowFirstDialog (60);
+		}
 	}
 
 	IEnumerator WaitForWakeUp(){
@@ -493,9 +509,12 @@ public class GuidedTutorialStork : BaseUI {
 		highlightPanels [29].SetActive (false);
 		if(dialogCounter == 1){
 			ShowFirstDialog (2);
-		} else if(dialogCounter == 20 || dialogCounter == 25 || dialogCounter == 35 || dialogCounter == 45){
+		} else if(dialogCounter == 20 || dialogCounter == 25 || dialogCounter == 35 || dialogCounter == 45 || dialogCounter == 58){
 			highlightPanels [0].SetActive (false);
 			highlightPanels [1].SetActive (true);
+		} else if(dialogCounter == 62){
+			highlightPanels [0].SetActive (false);
+			highlightPanels [30].SetActive (true);
 		}
 	}
 
