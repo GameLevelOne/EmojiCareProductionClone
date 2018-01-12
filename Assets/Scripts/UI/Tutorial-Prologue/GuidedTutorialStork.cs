@@ -22,6 +22,7 @@ public class GuidedTutorialStork : BaseUI {
 	public GameObject buttonNext;
 	public Pan pan;
 	public UIBowl uiBowl;
+	public Cookbook cookbook;
 	public Sponge sponge;
 	public Shower shower;
 	public DartboardMinigame dartboard;
@@ -43,6 +44,7 @@ public class GuidedTutorialStork : BaseUI {
 	public Seed seed1, seed2, seed3;
 	public StallItem item1;
 	public WateringCan wateringCan;
+	public GameObject refrigerator;
 
 	int dialogCounter = 0;
 	int cropCount = 0;
@@ -50,7 +52,6 @@ public class GuidedTutorialStork : BaseUI {
 	void OnDisable(){
 		uiBowl.OnTutorialBowlFull -= OnTutorialBowlFull;
 		Bowl.OnBowlOutsideFridge -= OnBowlOutsideFridge;
-
 		Seed.OnTutorialSeedPlanted -= OnTutorialSeedPlanted;
 		wateringCan.OnUsedWateringCan -= OnUsedWateringCan;
 		wateringCan.OnWateringCanPicked -= OnWateringCanPicked;
@@ -312,7 +313,8 @@ public class GuidedTutorialStork : BaseUI {
 		}
 	}
 
-	public void SetHighlightPanels (){
+	public void SetHighlightPanels ()
+	{
 		foreach (GameObject obj in highlightPanels) {
 			if (obj.activeSelf) {
 				obj.SetActive (false);
@@ -325,16 +327,20 @@ public class GuidedTutorialStork : BaseUI {
 			highlightPanels [1].SetActive (true);
 		else if (dialogCounter == 4)
 			highlightPanels [3].SetActive (true);
-		else if (dialogCounter == 6)
+		else if (dialogCounter == 6) {
 			highlightPanels [4].SetActive (true);
-		else if (dialogCounter == 7)
+			refrigerator.GetComponent<BoxCollider2D> ().enabled = false;
+		} else if (dialogCounter == 7)
 			highlightPanels [5].SetActive (true);
 		else if (dialogCounter == 8)
 			highlightPanels [6].SetActive (true);
 		else if (dialogCounter == 11)
 			highlightPanels [7].SetActive (true);
-		else if (dialogCounter == 13)
+		else if (dialogCounter == 13) {
 			highlightPanels [8].SetActive (true);
+			cookbook.GetComponent<Rigidbody2D> ().simulated = true;
+			cookbook.GetComponent<BoxCollider2D> ().enabled = true;
+		}
 		else if (dialogCounter == 16)
 			highlightPanels [9].SetActive (true);
 		else if (dialogCounter == 21)
@@ -386,6 +392,8 @@ public class GuidedTutorialStork : BaseUI {
 			playerEmoji.hunger.SetStats (tresholdLow * playerEmoji.hunger.MaxStatValue);
 		} else if(dialogCounter == 7 || dialogCounter == 8 || dialogCounter == 11){
 			dialogBox.GetComponent<CanvasGroup> ().blocksRaycasts = false;
+		} else if(dialogCounter == 9){
+			buttonNext.SetActive (false);
 		} else if (dialogCounter == 18) {
 			playerEmoji.stamina.SetStats (tresholdLow * playerEmoji.stamina.MaxStatValue);
 		} else if (dialogCounter == 20) {
@@ -427,7 +435,9 @@ public class GuidedTutorialStork : BaseUI {
 	}
 
 	IEnumerator WaitForWakeUp(){
+		buttonNext.SetActive (false);
 		yield return new WaitForSeconds (7);
+		buttonNext.SetActive (true);
 		ShowFirstDialog (23);
 	}
 

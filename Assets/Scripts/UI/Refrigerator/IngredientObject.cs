@@ -13,6 +13,7 @@ public class IngredientObject : MonoBehaviour {
 
 	Vector3 smallerScale = new Vector3(0.7f,0.7f,1f);
 	UIBowl bowl = null;
+	bool interactable = true;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region mechanics
@@ -32,20 +33,28 @@ public class IngredientObject : MonoBehaviour {
 
 	public void BeginDrag()
 	{
-		GetComponent<RectTransform>().SetParent(bowl.GetComponent<RectTransform>().parent,true);
+		if(interactable){
+			GetComponent<RectTransform>().SetParent(bowl.GetComponent<RectTransform>().parent,true);
 		StartCoroutine(_StartHold);
 		bowl.RemoveObject(this.gameObject);
+		}
+
 	}
 
 	public void Drag()
 	{
-		Vector3 touchWorldPos = GetTouchWorldPosition();
+		if(interactable){
+			Vector3 touchWorldPos = GetTouchWorldPosition();
 		transform.position = new Vector3(touchWorldPos.x,touchWorldPos.y+20f,touchWorldPos.z);
+		}
+
 	}
 
 	public void EndDrag()
 	{
-		CheckBowl();
+		if(interactable){
+			CheckBowl();
+		}
 	}
 
 	void CheckBowl()
@@ -85,6 +94,10 @@ public class IngredientObject : MonoBehaviour {
 			transform.position = new Vector3(touchWorldPos.x,touchWorldPos.y+20f,touchWorldPos.z);
 
 			if(Input.GetMouseButtonUp(0)){
+				if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == ShortCode.SCENE_GUIDED_TUTORIAL){
+					interactable = false;
+				}
+
 				initialized = false;
 				CheckBowl();
 			}
