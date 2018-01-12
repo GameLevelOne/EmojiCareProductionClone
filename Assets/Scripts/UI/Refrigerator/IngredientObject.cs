@@ -47,7 +47,6 @@ public class IngredientObject : MonoBehaviour {
 			Vector3 touchWorldPos = GetTouchWorldPosition();
 		transform.position = new Vector3(touchWorldPos.x,touchWorldPos.y+20f,touchWorldPos.z);
 		}
-
 	}
 
 	public void EndDrag()

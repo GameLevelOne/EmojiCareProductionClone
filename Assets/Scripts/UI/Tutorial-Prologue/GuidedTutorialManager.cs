@@ -36,7 +36,6 @@ public class GuidedTutorialManager : MonoBehaviour {
 		PlayerData.Instance.PlayerEmoji.body.previousRoom = (int)roomController.currentRoom;
 		PlayerData.Instance.PlayerEmoji.body.currentRoom = (int)roomController.currentRoom;
 
-		celebrationManager.RegisterEmojiEvents();
 		roomController.RegisterEmojiEvents();
 		floatingStats.RegisterEmojiEvents();
 		gachaReward.RegisterEmojiEvents();
@@ -56,6 +55,8 @@ public class GuidedTutorialManager : MonoBehaviour {
 		celebrationManager.Init();
 		floatingStats.Init ();
 
+		SetExpressionProgress ();
+
 		//unlock kitchen
 		PlayerData.Instance.LocationKitchen = 1;
 
@@ -70,6 +71,21 @@ public class GuidedTutorialManager : MonoBehaviour {
 	{
 		PlayerData.Instance.PlayerEmoji.body.OnEmojiEatEvent -= OnEmojiFirstEatEvent;
 		PlayerData.Instance.PlayerEmoji.hunger.SetStats (PlayerData.Instance.PlayerEmoji.hunger.MaxStatValue);
+	}
+
+	void SetExpressionProgress ()
+	{
+		EmojiExpression emojiExpression = PlayerData.Instance.PlayerEmoji.emojiExpressions;
+		for (int i = 0; i < emojiExpression.expressionDataInstances.Length; i++) {
+			if ((i < emojiExpression.totalExpressionForSendOff) || i != (int)EmojiExpressionState.BLISS) {
+				emojiExpression.expressionDataInstances [i].SetCurrentProgress (emojiExpression.expressionDataInstances [i].expressionTotalProgress);
+				PlayerPrefs.SetInt (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_STATUS +
+				EmojiType.Emoji.ToString () + ((EmojiExpressionState)i).ToString (), 0);
+			} else if(i == (int)EmojiExpressionState.BLISS){
+				emojiExpression.expressionDataInstances [i].SetCurrentProgress (emojiExpression.expressionDataInstances [i].expressionTotalProgress-1);
+			} 
+		}
+		celebrationManager.RegisterEmojiEvents();
 	}
 
 

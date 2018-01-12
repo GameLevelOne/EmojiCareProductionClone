@@ -348,7 +348,7 @@ public class Emoji : MonoBehaviour {
 			timeOnPause = DateTime.Now;
 		}
 		else{
-//			ResumeTickingStats();
+			ResumeTickingStats();
 		}
 	}
 

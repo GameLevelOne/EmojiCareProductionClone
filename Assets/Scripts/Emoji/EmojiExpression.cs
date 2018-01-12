@@ -224,10 +224,19 @@ public class EmojiExpression {
 					expression.ToString (), (int)ExpressionStatus.Unlocked);
 					SaveEmojiExpression ();
 
-					if (OnNewExpression != null) {
-						OnNewExpression ((int)expression,true);
-					}	
-					PlayerData.Instance.PlayerEmoji.emojiGrowth.UpdateGrowth(GetTotalExpressionProgress());
+					if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == ShortCode.SCENE_GUIDED_TUTORIAL){
+						if(expression == EmojiExpressionState.BLISS){
+							if (OnNewExpression != null) {
+								OnNewExpression ((int)expression,true);
+							}
+						}
+					} else{
+						if (OnNewExpression != null) {
+							OnNewExpression ((int)expression,true);
+						}
+						PlayerData.Instance.PlayerEmoji.emojiGrowth.UpdateGrowth(GetTotalExpressionProgress());
+					}
+
 				}
 				else{
 					//notif expression progress

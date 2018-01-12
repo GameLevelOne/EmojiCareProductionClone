@@ -14,6 +14,7 @@ public enum GuidedTutorialIndex{
 
 public class GuidedTutorialStork : BaseUI {
 	public GameObject tutorialObj;
+	public PopupGuidedTutorialUnlockables popupUnlockables;
 	public string[] storkDialogs;
 	public GameObject[] highlightPanels;
 	public Vector3[] dialogBoxPositions; //top,middle,bottom
@@ -87,7 +88,9 @@ public class GuidedTutorialStork : BaseUI {
 		wateringCan.OnWateringCanPicked += OnWateringCanPicked;
 		wateringCan.OnWateringCanReleased += OnWateringCanReleased;
 		sponge.OnSpongePicked += OnSpongePicked;
+		sponge.OnSpongeReleased += OnSpongeReleased;
 		shower.OnShowerPicked += OnShowerPicked;
+		shower.OnShowerReleased += OnShowerReleased;
 	}
 
 	public void RegisterSeedAndItemEvents()
@@ -128,10 +131,22 @@ public class GuidedTutorialStork : BaseUI {
 		arrowGardenBasket.SetActive (true);
 	}
 
+	void OnShowerReleased(){
+		arrowBathroomShower.SetActive (true);
+		arrowShowerToEmoji.SetActive (false);
+	}
+
 	void OnShowerPicked ()
 	{
 		arrowBathroomShower.SetActive (false);
 		arrowShowerToEmoji.SetActive (true);
+	}
+
+	void OnSpongeReleased ()
+	{
+		arrowBathroomSponge.SetActive (true);
+		handBathroomSoap.SetActive (true);
+		arrowSoapToEmoji.SetActive (false);
 	}
 
 	void OnSpongePicked ()
@@ -222,6 +237,7 @@ public class GuidedTutorialStork : BaseUI {
 		Debug.Log ("foamvalue:" + value);
 		if(value >=10){
 			sponge.OnSpongePicked -= OnSpongePicked;
+			sponge.OnSpongeReleased -= OnSpongeReleased;
 			PlayerData.Instance.PlayerEmoji.body.OnEmojiApplySponge -= OnEmojiApplySponge;
 			ShowFirstDialog (33);
 			PlayerData.Instance.PlayerEmoji.OnEmojiHygieneCheck += OnEmojiHygieneCheck;
@@ -232,6 +248,7 @@ public class GuidedTutorialStork : BaseUI {
 	{
 		if(ratio >= 1f){
 			shower.OnShowerPicked -= OnShowerPicked;
+			shower.OnShowerReleased -= OnShowerReleased;
 			PlayerData.Instance.PlayerEmoji.OnEmojiHygieneCheck -= OnEmojiHygieneCheck;
 			ShowFirstDialog (34);
 		}
@@ -285,15 +302,29 @@ public class GuidedTutorialStork : BaseUI {
 	}
 
 	public void OnNextDialog(){
-		transform.GetChild (0).GetComponent<Image> ().raycastTarget = true;
-		dialogBox.GetComponent<CanvasGroup> ().blocksRaycasts = true;
-		buttonNext.SetActive (true);
-		if(dialogCounter == 27){
-			dialogCounter = 30;
-		} else 
-			dialogCounter++;
-		dialogText.text = storkDialogs [dialogCounter];
-		SetMisc ();
+		if(dialogCounter+1 == 1){
+			popupUnlockables.SetDisplay (UnlockType.Room, RoomType.Kitchen);
+		} else if(dialogCounter+1 == 4){
+			popupUnlockables.SetDisplay (UnlockType.Recipe);
+		} else if(dialogCounter+1 == 20){
+			popupUnlockables.SetDisplay (UnlockType.Room, RoomType.Bedroom);
+		} else if(dialogCounter+1 == 25){
+			popupUnlockables.SetDisplay (UnlockType.Room, RoomType.Bathroom);
+		} else if(dialogCounter+1 == 35){
+			popupUnlockables.SetDisplay (UnlockType.Room, RoomType.Playroom);
+		} else if(dialogCounter+1 == 45){
+			popupUnlockables.SetDisplay (UnlockType.Room, RoomType.Garden);
+		} else{
+			transform.GetChild (0).GetComponent<Image> ().raycastTarget = true;
+			dialogBox.GetComponent<CanvasGroup> ().blocksRaycasts = true;
+			buttonNext.SetActive (true);
+			if(dialogCounter == 27){
+				dialogCounter = 30;
+			} else 
+				dialogCounter++;
+			dialogText.text = storkDialogs [dialogCounter];
+			SetMisc ();
+		}
 	}
 
 	public void SetMisc(){
@@ -306,7 +337,7 @@ public class GuidedTutorialStork : BaseUI {
 //		if(dialogCounter >= 0 && dialogCounter <= 6){
 //			
 //		} 
-		if(dialogCounter == 7){
+		if(dialogCounter == 7 || (dialogCounter >= 46 && dialogCounter <= 57)){
 			dialogBox.localPosition = dialogBoxPositions [0];
 		} else{
 			dialogBox.localPosition = dialogBoxPositions [2];
@@ -406,7 +437,11 @@ public class GuidedTutorialStork : BaseUI {
 			PlayerData.Instance.LocationPlayroom = 1;
 		} else if(dialogCounter == 45){
 			PlayerData.Instance.LocationGarden = 1;
-		}
+		} 
+
+		//unlock expression for send off
+//		playerEmoji.happiness.SetStats (playerEmoji.happiness.MaxStatValue);
+//		playerEmoji.hunger.SetStats (0.5 * playerEmoji.hunger.MaxStatValue);
 	}
 
 	public void OnClickHotkey(){
