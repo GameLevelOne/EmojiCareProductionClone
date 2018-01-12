@@ -419,7 +419,7 @@ public class GuidedTutorialStork : BaseUI {
 	{
 		float tresholdLow = 0.19f;
 		Emoji playerEmoji = PlayerData.Instance.PlayerEmoji;
-		if (dialogCounter == 0 || dialogCounter == 41) {
+		if (dialogCounter == 0) {
 			playerEmoji.hunger.SetStats (tresholdLow * playerEmoji.hunger.MaxStatValue);
 		} else if(dialogCounter == 7 || dialogCounter == 8 || dialogCounter == 11){
 			dialogBox.GetComponent<CanvasGroup> ().blocksRaycasts = false;
@@ -435,6 +435,8 @@ public class GuidedTutorialStork : BaseUI {
 			PlayerData.Instance.LocationBathroom = 1;
 		} else if (dialogCounter == 35) {
 			PlayerData.Instance.LocationPlayroom = 1;
+		} else if(dialogCounter == 41){
+				
 		} else if(dialogCounter == 45){
 			PlayerData.Instance.LocationGarden = 1;
 		} 
@@ -445,12 +447,7 @@ public class GuidedTutorialStork : BaseUI {
 	}
 
 	public void OnClickHotkey(){
-		if(dialogCounter == 1){
-			ShowFirstDialog (2);
-		} else if(dialogCounter == 20 || dialogCounter == 25 || dialogCounter == 35 || dialogCounter == 45){
-			highlightPanels [0].SetActive (false);
-			highlightPanels [1].SetActive (true);
-		}
+		StartCoroutine (WaitForHotkeyAnimation ());
 	}
 
 	public void SetLocationHighlight ()
@@ -469,11 +466,37 @@ public class GuidedTutorialStork : BaseUI {
 		
 	}
 
+	public void OnClickBackAfterDartboard(){
+		StartCoroutine (WaitForHappinessMeterInDartboard ());
+	}
+
 	IEnumerator WaitForWakeUp(){
 		buttonNext.SetActive (false);
 		yield return new WaitForSeconds (7);
 		buttonNext.SetActive (true);
 		ShowFirstDialog (23);
+	}
+
+	IEnumerator WaitForHappinessMeterInDartboard(){
+		buttonNext.SetActive (false);
+		yield return new WaitForSeconds (2);
+		buttonNext.SetActive (true);
+		PlayerData.Instance.PlayerEmoji.hunger.SetStats (0.19f * PlayerData.Instance.PlayerEmoji.hunger.MaxStatValue);
+		ShowFirstDialog (41);
+	}
+
+	IEnumerator WaitForHotkeyAnimation(){
+		highlightPanels [29].SetActive (true);
+		highlightPanels [0].SetActive (false);
+		buttonNext.SetActive (false);
+		yield return new WaitForSeconds (0.4f);
+		highlightPanels [29].SetActive (false);
+		if(dialogCounter == 1){
+			ShowFirstDialog (2);
+		} else if(dialogCounter == 20 || dialogCounter == 25 || dialogCounter == 35 || dialogCounter == 45){
+			highlightPanels [0].SetActive (false);
+			highlightPanels [1].SetActive (true);
+		}
 	}
 
 }
