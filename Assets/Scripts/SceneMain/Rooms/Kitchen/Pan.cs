@@ -243,21 +243,25 @@ public class Pan : BaseFurniture {
 	}
 	IEnumerator MovingPlate()
 	{
-		//MOVE PLATE TO TOP OF PAN
-		Vector3 plateStartPos = plate.transform.localPosition;
-		Vector3 plateTargetPos = new Vector3(1.456f,2.548f,-1f);
+		if(isCooking){
+			//MOVE PLATE TO TOP OF PAN
+			Vector3 plateStartPos = plate.transform.localPosition;
+			Vector3 plateTargetPos = new Vector3(1.456f,2.548f,-1f);
 
-		plate.thisCollider.enabled = false;
-		plate.thisRigidbody.simulated = false;
-		float current = 0;
-		while(current < 1){
-			plate.transform.localPosition = Vector3.Lerp(plateStartPos,plateTargetPos,current);
-			current += Time.deltaTime * 4f;
-			yield return null;
+			plate.thisCollider.enabled = false;
+			plate.thisRigidbody.simulated = false;
+			float current = 0;
+			while(current < 1){
+				plate.transform.localPosition = Vector3.Lerp(plateStartPos,plateTargetPos,current);
+				current += Time.deltaTime * 4f;
+				yield return null;
+			}
+			plate.transform.localPosition = plateTargetPos;
+			plate.thisCollider.enabled = true;
+			plate.thisRigidbody.simulated = true;
+
+			isCooking = false;
 		}
-		plate.transform.localPosition = plateTargetPos;
-		plate.thisCollider.enabled = true;
-		plate.thisRigidbody.simulated = true;
 	}
 
 	public void InstantiateFood()
@@ -267,7 +271,7 @@ public class Pan : BaseFurniture {
 		foodObject.transform.localPosition = new Vector3(1.456f,3f,-1f);
 		foodObject.GetComponent<Food>().thisRigidbody.AddForce(new Vector2(0,300f));
 		cookingBar.SetActive(false);
-		isCooking = false;
+//		isCooking = false;
 	}
 	#endregion
 }
