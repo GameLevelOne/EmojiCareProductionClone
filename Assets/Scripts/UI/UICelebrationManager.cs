@@ -37,9 +37,9 @@ public class UICelebrationManager : MonoBehaviour {
 	public void RegisterEmojiEvents()
 	{
 		EmojiExpression.OnNewExpression += OnNewExpression;
-		Emoji.OnEmojiDead += OnEmojiDead;
 		if(!(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == ShortCode.SCENE_GUIDED_TUTORIAL)){
 			PlayerData.Instance.PlayerEmoji.emojiGrowth.OnNewGrowth += OnEmojiGrow;
+			Emoji.OnEmojiDead += OnEmojiDead;
 		}
 	}
 

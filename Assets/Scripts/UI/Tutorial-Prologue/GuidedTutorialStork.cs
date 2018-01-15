@@ -14,6 +14,7 @@ public enum GuidedTutorialIndex{
 
 public class GuidedTutorialStork : BaseUI {
 	public GameObject tutorialObj;
+	public GameObject hotkeyButton;
 	public PopupGuidedTutorialUnlockables popupUnlockables;
 	public string[] storkDialogs;
 	public GameObject[] highlightPanels;
@@ -45,19 +46,20 @@ public class GuidedTutorialStork : BaseUI {
 	public Seed seed1, seed2, seed3;
 	public StallItem item1;
 	public WateringCan wateringCan;
+	public GardenField gardenField;
 	public GameObject refrigerator;
 
 	int dialogCounter = 0;
 	int cropCount = 0;
 
 	void OnDisable(){
-		uiBowl.OnTutorialBowlFull -= OnTutorialBowlFull;
 		Bowl.OnBowlOutsideFridge -= OnBowlOutsideFridge;
 		Seed.OnTutorialSeedPlanted -= OnTutorialSeedPlanted;
-		wateringCan.OnUsedWateringCan -= OnUsedWateringCan;
+		Food.OnFoodEaten -= OnFoodEaten;
+		Crop.OnStallItemHarvested -= OnStallItemHarvested;
+		uiBowl.OnTutorialBowlFull -= OnTutorialBowlFull;
 		wateringCan.OnWateringCanPicked -= OnWateringCanPicked;
 		wateringCan.OnWateringCanReleased -= OnWateringCanReleased;
-		Crop.OnStallItemHarvested -= OnStallItemHarvested;
 		seed1.OnSeedPicked -= OnSeedPicked;
 		seed2.OnSeedPicked -= OnSeedPicked;
 		seed3.OnSeedPicked -= OnSeedPicked;
@@ -68,26 +70,26 @@ public class GuidedTutorialStork : BaseUI {
 		item1.OnItemDragged -= OnItemDragged;
 		item1.OnItemReturned -= OnItemReturned;
 		item1.OnItemHarvested -= OnItemHarvested;
-		Food.OnFoodEaten -= OnFoodEaten;
 	}
 
 	public void RegisterEvents(){
-		uiBowl.OnTutorialBowlFull += OnTutorialBowlFull;
-		Bowl.OnBowlOutsideFridge += OnBowlOutsideFridge;
-		pan.OnCookingStart += OnCookingStart;
-		pan.OnCookingDone += OnCookingDone;
-		Food.OnFoodEaten += OnFoodEaten;
 		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent += OnEmojiFirstSleepEvent;
 		PlayerData.Instance.PlayerEmoji.playerInput.OnEmojiWake += OnEmojiFirstWakeEvent;
 		PlayerData.Instance.PlayerEmoji.body.OnEmojiApplySponge += OnEmojiApplySponge;
-		dartboard.OnDartThirdShot += OnDartThirdShot;
 		Crop.OnStallItemHarvested += OnStallItemHarvested;
 		Crop.OnCropPicked += OnCropPicked;
 		Crop.OnCropReturned += OnCropReturned;
 		Seed.OnTutorialSeedPlanted += OnTutorialSeedPlanted;
-		wateringCan.OnUsedWateringCan += OnUsedWateringCan;
+		Bowl.OnBowlOutsideFridge += OnBowlOutsideFridge;
+		Food.OnFoodEaten += OnFoodEaten;
+		NotificationNewExpression.OnDismissPopup += OnDismissPopup;
+		uiBowl.OnTutorialBowlFull += OnTutorialBowlFull;
+		pan.OnCookingStart += OnCookingStart;
+		pan.OnCookingDone += OnCookingDone;
+		dartboard.OnDartThirdShot += OnDartThirdShot;
 		wateringCan.OnWateringCanPicked += OnWateringCanPicked;
 		wateringCan.OnWateringCanReleased += OnWateringCanReleased;
+		gardenField.OnPlantWatered += OnPlantWatered;
 		sponge.OnSpongePicked += OnSpongePicked;
 		sponge.OnSpongeReleased += OnSpongeReleased;
 		shower.OnShowerPicked += OnShowerPicked;
@@ -106,6 +108,12 @@ public class GuidedTutorialStork : BaseUI {
 		item1.OnItemDragged += OnItemDragged;
 		item1.OnItemReturned += OnItemReturned;
 		item1.OnItemHarvested += OnItemHarvested;
+	}
+
+	void OnDismissPopup ()
+	{
+		if(dialogCounter == 62)
+			ShowFirstDialog (63);
 	}
 
 	void OnWateringCanReleased ()
@@ -157,10 +165,12 @@ public class GuidedTutorialStork : BaseUI {
 		arrowSoapToEmoji.SetActive (true);
 	}
 
-	void OnUsedWateringCan ()
+	void OnPlantWatered ()
 	{
-		if (dialogCounter == 50)
+		if (dialogCounter == 50) {
+			gardenField.OnPlantWatered -= OnPlantWatered;
 			ShowFirstDialog (51);
+		}
 	}
 
 	void OnTutorialSeedPlanted ()
@@ -207,11 +217,6 @@ public class GuidedTutorialStork : BaseUI {
 
 	void OnTutorialItemDragged ()
 	{
-//		if (dialogCounter == 49)
-//			ShowFirstDialog (50);
-//		else if (dialogCounter == 50)
-//			ShowFirstDialog (51);
-//		else 
 		if (dialogCounter == 55)
 			ShowFirstDialog (56); 
 	}
@@ -269,9 +274,10 @@ public class GuidedTutorialStork : BaseUI {
 
 	void OnFoodEaten ()
 	{
-		if (dialogCounter == 11)
+		if (dialogCounter == 11){
 			ShowFirstDialog (12);
-		else if (dialogCounter == 61) {
+			PlayerData.Instance.FirstCook = 1;
+		} else if (dialogCounter == 61) {
 			Emoji playerEmoji = PlayerData.Instance.PlayerEmoji;
 			playerEmoji.happiness.SetStats (playerEmoji.happiness.MaxStatValue);
 			playerEmoji.hunger.SetStats (0.5f * playerEmoji.hunger.MaxStatValue);
@@ -366,8 +372,12 @@ public class GuidedTutorialStork : BaseUI {
 			}
 		}
 
-		if (dialogCounter == 1 || dialogCounter == 20 || dialogCounter == 25 || dialogCounter == 35 || dialogCounter == 45 || dialogCounter == 59)
+		hotkeyButton.GetComponent<Button> ().interactable = false;
+
+		if (dialogCounter == 1 || dialogCounter == 20 || dialogCounter == 25 || dialogCounter == 35 || dialogCounter == 45 || dialogCounter == 59) {
 			highlightPanels [0].SetActive (true);
+			hotkeyButton.GetComponent<Button> ().interactable = true;
+		}
 		else if (dialogCounter == 2)
 			highlightPanels [1].SetActive (true);
 		else if (dialogCounter == 4)
@@ -385,8 +395,7 @@ public class GuidedTutorialStork : BaseUI {
 			highlightPanels [8].SetActive (true);
 			cookbook.GetComponent<Rigidbody2D> ().simulated = true;
 			cookbook.GetComponent<BoxCollider2D> ().enabled = true;
-		}
-		else if (dialogCounter == 16)
+		} else if (dialogCounter == 16)
 			highlightPanels [9].SetActive (true);
 		else if (dialogCounter == 21)
 			highlightPanels [11].SetActive (true);
@@ -408,17 +417,18 @@ public class GuidedTutorialStork : BaseUI {
 			highlightPanels [21].SetActive (true);
 		else if (dialogCounter == 49)
 			highlightPanels [23].SetActive (true);
-		else if(dialogCounter == 50)
+		else if (dialogCounter == 50)
 			highlightPanels [24].SetActive (true);
 //		else if(dialogCounter == 52)
 //			highlightPanels [25].SetActive (true);
-		else if(dialogCounter == 53)
+		else if (dialogCounter == 53)
 			highlightPanels [26].SetActive (true);
-		else if(dialogCounter == 57)
+		else if (dialogCounter == 57)
 			highlightPanels [27].SetActive (true);
-		else if(dialogCounter == 54){
+		else if (dialogCounter == 54)
 			highlightPanels [28].SetActive (true);
-		}
+		else if (dialogCounter == 62)
+			highlightPanels [31].SetActive (true);
 
 		foreach (GameObject obj in highlightPanels) {
 			if (obj.activeSelf) {
@@ -509,7 +519,7 @@ public class GuidedTutorialStork : BaseUI {
 		highlightPanels [29].SetActive (false);
 		if(dialogCounter == 1){
 			ShowFirstDialog (2);
-		} else if(dialogCounter == 20 || dialogCounter == 25 || dialogCounter == 35 || dialogCounter == 45 || dialogCounter == 58){
+		} else if(dialogCounter == 20 || dialogCounter == 25 || dialogCounter == 35 || dialogCounter == 45 || dialogCounter == 59){
 			highlightPanels [0].SetActive (false);
 			highlightPanels [1].SetActive (true);
 		} else if(dialogCounter == 62){

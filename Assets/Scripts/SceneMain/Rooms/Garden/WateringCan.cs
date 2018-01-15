@@ -12,9 +12,6 @@ public class WateringCan : MonoBehaviour {
 	public Vector2 offset = new Vector2(0.5f,0.3f);
 	Vector3 startPos;
 	#endregion
-
-	public delegate void UsedWateringCan();
-	public event UsedWateringCan OnUsedWateringCan;
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
 	void Awake()
@@ -61,7 +58,5 @@ public class WateringCan : MonoBehaviour {
 			yield return null;
 		}
 		transform.localPosition = startPos;
-		if (OnUsedWateringCan != null)
-			OnUsedWateringCan ();
 	}
 }

@@ -83,7 +83,6 @@ public static class PlayerPrefKeys {
 			public const string INGREDIENT_POTATO = "Player/Progress/IngredientPotato";
 			public const string INGREDIENT_TOMATO = "Player/Progress/IngredientTomato";
 
-
 			public const string LOCATION_GARDEN = "Player/Progress/LocationGarden";
 			public const string LOCATION_PLAYROOM = "Player/Progress/LocationPlayroom";
 			public const string LOCATION_LIVINGROOM = "Player/Progress/LocationLivingroom";
@@ -92,6 +91,9 @@ public static class PlayerPrefKeys {
 			public const string LOCATION_BATHROOM = "Player/Progress/LocationBathroom";
 
 			public const string SHOP = "Player/Progress/Shop";
+
+			public const string FIRST_COOK = "Player/Progress/FirstCook";
+
 		}
 		public const string RANDOM_COINGEM_COOLDOWN = "Player/RandomCoinGemCooldown";
 	}

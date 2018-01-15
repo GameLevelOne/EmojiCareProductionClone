@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class NotificationNewExpression : BaseUI {
+	public delegate void TutorialEvent();
+	public static event TutorialEvent OnDismissPopup;
+
 	public Transform parentFrame;
 	Image expressionImage;
 	Image progressBar;
@@ -39,6 +42,10 @@ public class NotificationNewExpression : BaseUI {
 	}
 
 	public void OnClickContinue(){
+		if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == ShortCode.SCENE_GUIDED_TUTORIAL){
+			if (OnDismissPopup != null)
+				OnDismissPopup ();
+		}
 		particles.StopParticleFireworks();
 		particles.StopParticleConfettiAndStarBoom ();
 		base.CloseUI (gameObject);

@@ -93,8 +93,10 @@ public class IngredientObject : MonoBehaviour {
 			transform.position = new Vector3(touchWorldPos.x,touchWorldPos.y+20f,touchWorldPos.z);
 
 			if(Input.GetMouseButtonUp(0)){
-				if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == ShortCode.SCENE_GUIDED_TUTORIAL){
+				if(PlayerData.Instance.FirstCook == 0){
 					interactable = false;
+				}else if(PlayerData.Instance.FirstCook == 1){
+					interactable = true;
 				}
 
 				initialized = false;

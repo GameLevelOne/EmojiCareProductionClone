@@ -380,6 +380,12 @@ public class PlayerData : MonoBehaviour {
 		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.SHOP,value);}
 	}
 
+	//guided tutorial
+	public int FirstCook {
+		get{ return PlayerPrefs.GetInt (PlayerPrefKeys.Player.Progress.FIRST_COOK,0);}
+		set{ PlayerPrefs.SetInt (PlayerPrefKeys.Player.Progress.FIRST_COOK, value);}
+	}
+
 	void Awake()
 	{
 		if(instance != null && instance != this) Destroy(this.gameObject);

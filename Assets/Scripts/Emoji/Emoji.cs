@@ -210,42 +210,53 @@ public class Emoji : MonoBehaviour {
 			
 	}
 
-	protected void TickHealth()
+	protected void TickHealth ()
 	{
-		if(!playerInput.barfSound){
-			float hungerValue = hunger.StatValue/hunger.MaxStatValue;
-			float hygieneValue = hygiene.StatValue/hygiene.MaxStatValue;
-			float happinessValue = happiness.StatValue/happiness.MaxStatValue;
-			float staminaValue = stamina.StatValue/stamina.MaxStatValue;
+		if (!playerInput.barfSound) {
+			float hungerValue = hunger.StatValue / hunger.MaxStatValue;
+			float hygieneValue = hygiene.StatValue / hygiene.MaxStatValue;
+			float happinessValue = happiness.StatValue / happiness.MaxStatValue;
+			float staminaValue = stamina.StatValue / stamina.MaxStatValue;
 
 			int LowStatsCounter = 0;
-			if(hungerValue < statsTresholdLow) LowStatsCounter++;
-			if(hygieneValue < statsTresholdLow) LowStatsCounter++;
-			if(happinessValue < statsTresholdLow) LowStatsCounter++;
-			if(staminaValue < statsTresholdLow) LowStatsCounter++;
+			if (hungerValue < statsTresholdLow)
+				LowStatsCounter++;
+			if (hygieneValue < statsTresholdLow)
+				LowStatsCounter++;
+			if (happinessValue < statsTresholdLow)
+				LowStatsCounter++;
+			if (staminaValue < statsTresholdLow)
+				LowStatsCounter++;
 
-			if(LowStatsCounter < 2){
+			if (LowStatsCounter < 2) {
 				int highStatsCounter = 0;
-				if(hungerValue >= statsTresholdHigh) highStatsCounter++;
-				if(hygieneValue >= statsTresholdHigh) highStatsCounter++;
-				if(happinessValue >= statsTresholdHigh) highStatsCounter++;
-				if(staminaValue >= statsTresholdHigh) highStatsCounter++;
+				if (hungerValue >= statsTresholdHigh)
+					highStatsCounter++;
+				if (hygieneValue >= statsTresholdHigh)
+					highStatsCounter++;
+				if (happinessValue >= statsTresholdHigh)
+					highStatsCounter++;
+				if (staminaValue >= statsTresholdHigh)
+					highStatsCounter++;
 
-				if(highStatsCounter > 0){
-					health.statsModifier = healthTick[highStatsCounter-1];
-				}else{
+				if (highStatsCounter > 0) {
+					health.statsModifier = healthTick [highStatsCounter - 1];
+				} else {
 					health.statsModifier = 0f;
 				}
-			}else{
-				health.statsModifier = -1 * healthTick[LowStatsCounter-1];
+			} else {
+				health.statsModifier = -1 * healthTick [LowStatsCounter - 1];
 			}
 		}
-		health.TickStats();
+		health.TickStats ();
 
-		if(health.StatValue <= 0){
-			if(!emojiDead){
-				emojiDead = true;
-				if(OnEmojiDead != null) OnEmojiDead();
+		if (UnityEngine.SceneManagement.SceneManager.GetActiveScene ().name == ShortCode.SCENE_GUIDED_TUTORIAL) {
+			if (health.StatValue <= 0) {
+				if (!emojiDead) {
+					emojiDead = true;
+					if (OnEmojiDead != null)
+						OnEmojiDead ();
+				}
 			}
 		}
 		
