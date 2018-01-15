@@ -115,9 +115,7 @@ public class ScreenProgress : BaseUI {
 				name = expressionIcons.GetExpressionName(currentEmojiType,exprTileIdx);
 				Sprite sprite = expressionIcons.GetExpressionIcon(currentEmojiType,exprTileIdx);
 
-				float fillAmount = PlayerPrefs.GetFloat (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_PROGRESSRATIO +
-					currentEmojiType.ToString () + ((EmojiExpressionState)exprTileIdx).ToString(), 0);
-
+				float fillAmount = currentEmojiData.emojiExpressions.expressionDataInstances [exprTileIdx].GetProgressRatio (currentEmojiType);
 				ExpressionStatus status = 
 					(ExpressionStatus)PlayerPrefs.GetInt (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_STATUS +
 					currentEmojiType.ToString () + ((EmojiExpressionState)exprTileIdx).ToString(), 0);
@@ -136,8 +134,8 @@ public class ScreenProgress : BaseUI {
 
 		float sendOffPercentage = currentEmojiData.emojiExpressions.sendOffProgressThreshold;
 		currentTotalProgress = currentEmojiData.emojiExpressions.GetTotalExpressionProgress ();
-		totalExpressionProgressText.text = (currentTotalProgress*(1f/sendOffPercentage)*100f).ToString() + "%";
-		totalProgressBarFill.fillAmount = currentTotalProgress;
+		totalExpressionProgressText.text = (currentTotalProgress*100f).ToString() + "%";
+		totalProgressBarFill.fillAmount = currentTotalProgress*0.8f;
 
 		if(currentTotalProgress>=sendOffPercentage){
 			canSendOff=true;

@@ -326,7 +326,7 @@ public class RoomController : MonoBehaviour {
 			gardenMiscItemsManager.Hide ();
 			CropHolder.Instance.HideCrops ();
 		}
-
+		StartCoroutine (WaitForEmoji ());
 
 		//SNAPPING
 		while (t <= 1) {
@@ -346,6 +346,23 @@ public class RoomController : MonoBehaviour {
 //		if(currentRoom != RoomType.LivingRoom)
 //			screenTutorial.CheckRoomPlayerPrefs (currentRoom);
 
+		
+
+		yield return null;
+	}
+
+	const string _lockRoomChanging = "LockRoomChanging";
+	IEnumerator LockRoomChanging(float duration)
+	{
+		interactable = false;
+		yield return new WaitForSeconds(duration);
+		interactable = true;
+	}
+
+	IEnumerator WaitForEmoji(){
+		guidedTutorial.highlightPanelParent.SetActive (false);
+		yield return new WaitForSeconds (1.6f);
+		guidedTutorial.highlightPanelParent.SetActive (true);
 		if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == ShortCode.SCENE_GUIDED_TUTORIAL) {
 			if(currentRoom == RoomType.Kitchen){
 				guidedTutorial.SetDialogInKitchen ();
@@ -359,16 +376,6 @@ public class RoomController : MonoBehaviour {
 				guidedTutorial.ShowFirstDialog ((int)GuidedTutorialIndex.Garden);
 			}
 		}
-
-		yield return null;
-	}
-
-	const string _lockRoomChanging = "LockRoomChanging";
-	IEnumerator LockRoomChanging(float duration)
-	{
-		interactable = false;
-		yield return new WaitForSeconds(duration);
-		interactable = true;
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------

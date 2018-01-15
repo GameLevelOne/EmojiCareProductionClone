@@ -29,6 +29,7 @@ public class EmojiExpressionData {
 		expressionCurrentProgress = value;
 
 		PlayerPrefs.SetInt (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_PROGRESS + emojiType.ToString()+expressionState.ToString (), expressionCurrentProgress);
+		Debug.Log (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_PROGRESS + emojiType.ToString () + expressionState.ToString ());
 	}
 
 	public void AddToCurrentProgress(int mod){

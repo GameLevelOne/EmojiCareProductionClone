@@ -14,6 +14,7 @@ public enum GuidedTutorialIndex{
 
 public class GuidedTutorialStork : BaseUI {
 	public GameObject tutorialObj;
+	public GameObject highlightPanelParent;
 	public GameObject hotkeyButton;
 	public PopupGuidedTutorialUnlockables popupUnlockables;
 	public string[] storkDialogs;
@@ -374,7 +375,8 @@ public class GuidedTutorialStork : BaseUI {
 
 		hotkeyButton.GetComponent<Button> ().interactable = false;
 
-		if (dialogCounter == 1 || dialogCounter == 20 || dialogCounter == 25 || dialogCounter == 35 || dialogCounter == 45 || dialogCounter == 59) {
+		if (dialogCounter == 1 || dialogCounter == 20 || dialogCounter == 25 || 
+		dialogCounter == 35 || dialogCounter == 45 || dialogCounter == 59 || dialogCounter == 65) {
 			highlightPanels [0].SetActive (true);
 			hotkeyButton.GetComponent<Button> ().interactable = true;
 		}
@@ -427,13 +429,14 @@ public class GuidedTutorialStork : BaseUI {
 			highlightPanels [27].SetActive (true);
 		else if (dialogCounter == 54)
 			highlightPanels [28].SetActive (true);
-		else if (dialogCounter == 62)
-			highlightPanels [31].SetActive (true);
-
+		//else if (dialogCounter == 62)
+			
 		foreach (GameObject obj in highlightPanels) {
 			if (obj.activeSelf) {
+					Debug.Log ("disable next btn");
 				buttonNext.SetActive (false);
-				transform.GetChild (0).GetComponent<Image> ().raycastTarget = false;
+				//transform.GetChild (0).GetComponent<Image> ().raycastTarget = false;
+					tutorialObj.GetComponent<Image> ().raycastTarget = false;
 				break;
 			}
 		}
@@ -522,7 +525,7 @@ public class GuidedTutorialStork : BaseUI {
 		} else if(dialogCounter == 20 || dialogCounter == 25 || dialogCounter == 35 || dialogCounter == 45 || dialogCounter == 59){
 			highlightPanels [0].SetActive (false);
 			highlightPanels [1].SetActive (true);
-		} else if(dialogCounter == 62){
+		} else if(dialogCounter == 65){
 			highlightPanels [0].SetActive (false);
 			highlightPanels [30].SetActive (true);
 		}

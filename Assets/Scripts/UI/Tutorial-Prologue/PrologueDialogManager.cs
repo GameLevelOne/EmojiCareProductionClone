@@ -33,7 +33,13 @@ public class PrologueDialogManager : MonoBehaviour {
 	void OnFadeOutFinished ()
 	{
 		sceneLoader.gameObject.SetActive(true);
-		sceneLoader.NextScene = "SceneMain";
+
+		if(PlayerData.Instance.PlayerFirstPlay == 0){
+			sceneLoader.NextScene = "SceneGuidedTutorial";
+		} else if(PlayerData.Instance.PlayerFirstPlay == 1){
+			sceneLoader.NextScene = "SceneMain";
+		}
+
 		Fader.OnFadeOutFinished -= OnFadeOutFinished;
 	}
 

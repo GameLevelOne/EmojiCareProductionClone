@@ -54,6 +54,8 @@ public class ProgressTile : MonoBehaviour {
 			blackOverlay.enabled = false;
 		}
 		progressBarFill.fillAmount = progress;
+
+		Debug.Log ("Expression name: " + name + " Status: " + status + " Progress: " + progress);
 	}
 
 	public void OnClickTile(){

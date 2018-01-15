@@ -76,13 +76,15 @@ public class GuidedTutorialManager : MonoBehaviour {
 	void SetExpressionProgress ()
 	{
 		EmojiExpression emojiExpression = PlayerData.Instance.PlayerEmoji.emojiExpressions;
-		for (int i = 0; i < emojiExpression.expressionDataInstances.Length; i++) {
-			if ((i < emojiExpression.totalExpressionForSendOff) || i != (int)EmojiExpressionState.BLISS) {
+		for (int i = 1; i < emojiExpression.expressionDataInstances.Length; i++) {
+			if ((i < emojiExpression.totalExpressionForSendOff-1)) {
 				emojiExpression.expressionDataInstances [i].SetCurrentProgress (emojiExpression.expressionDataInstances [i].expressionTotalProgress);
 				PlayerPrefs.SetInt (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_STATUS +
-				EmojiType.Emoji.ToString () + ((EmojiExpressionState)i).ToString (), 0);
+				EmojiType.Emoji.ToString () + ((EmojiExpressionState)i).ToString (), 1);
 			} else if(i == (int)EmojiExpressionState.BLISS){
 				emojiExpression.expressionDataInstances [i].SetCurrentProgress (emojiExpression.expressionDataInstances [i].expressionTotalProgress-1);
+				PlayerPrefs.SetInt (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_STATUS +
+				EmojiType.Emoji.ToString () + ((EmojiExpressionState)i).ToString (), 1);
 			} 
 		}
 		celebrationManager.RegisterEmojiEvents();

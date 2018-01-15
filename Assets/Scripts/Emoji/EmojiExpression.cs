@@ -123,8 +123,8 @@ public class EmojiExpression {
 			}
 		}
 
-		Debug.Log((float) System.Math.Round((double)counter / totalExpressionForSendOff,4));
-		return (float) System.Math.Round((double)counter / totalExpressionForSendOff,4);
+		Debug.Log((float) System.Math.Round((double)counter / totalExpressionForSendOff,1));
+		return (float) System.Math.Round((double)counter / totalExpressionForSendOff,1);
 	}
 
 
