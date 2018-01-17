@@ -380,6 +380,12 @@ public class PlayerData : MonoBehaviour {
 		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.SHOP,value);}
 	}
 
+	//edit room
+	public int EditRoom{
+		get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.Progress.EDITROOM,0);}
+		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.Progress.EDITROOM,value);}
+	}
+
 	//guided tutorial
 	public int FirstCook {
 		get{ return PlayerPrefs.GetInt (PlayerPrefKeys.Player.Progress.FIRST_COOK,0);}

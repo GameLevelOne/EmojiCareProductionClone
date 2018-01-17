@@ -91,6 +91,7 @@ public static class PlayerPrefKeys {
 			public const string LOCATION_BATHROOM = "Player/Progress/LocationBathroom";
 
 			public const string SHOP = "Player/Progress/Shop";
+			public const string EDITROOM = "Player/Progress/EditRoom";
 
 			public const string FIRST_COOK = "Player/Progress/FirstCook";
 

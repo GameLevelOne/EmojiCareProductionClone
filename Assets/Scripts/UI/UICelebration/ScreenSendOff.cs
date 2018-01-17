@@ -45,6 +45,7 @@ public class ScreenSendOff : BaseUI {
 
 		if(PlayerData.Instance.PlayerSendOffCount == 2){
 			PlayerData.Instance.Shop = 1;
+			PlayerData.Instance.EditRoom = 1;
 		}
 	}
 
