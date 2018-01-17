@@ -300,8 +300,10 @@ public class GuidedTutorialStork : BaseUI {
 	}
 
 	void OnBowlOutsideFridge (){
-		if(dialogCounter == 7)
+		if (dialogCounter == 7)
 			ShowFirstDialog (8);
+		else if (dialogCounter == 61)
+			refrigerator.GetComponent<BoxCollider2D> ().enabled = true;
 	}
 
 	void OnTutorialBowlFull(){
@@ -437,10 +439,10 @@ public class GuidedTutorialStork : BaseUI {
 			
 		foreach (GameObject obj in highlightPanels) {
 			if (obj.activeSelf) {
-					Debug.Log ("disable next btn");
+				Debug.Log ("disable next btn");
 				buttonNext.SetActive (false);
 				//transform.GetChild (0).GetComponent<Image> ().raycastTarget = false;
-					tutorialObj.GetComponent<Image> ().raycastTarget = false;
+				tutorialObj.GetComponent<Image> ().raycastTarget = false;
 				break;
 			}
 		}
@@ -532,8 +534,9 @@ public class GuidedTutorialStork : BaseUI {
 
 	IEnumerator WaitForHappinessMeterInDartboard(){
 		buttonNext.SetActive (false);
-		yield return new WaitForSeconds (2);
 		dartboardCollider.enabled = false;
+		yield return new WaitForSeconds (2);
+
 		buttonNext.SetActive (true);
 		PlayerData.Instance.PlayerEmoji.hunger.SetStats (0.19f * PlayerData.Instance.PlayerEmoji.hunger.MaxStatValue);
 		ShowFirstDialog (41);

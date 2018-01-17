@@ -37,7 +37,7 @@ public class PopupGuidedTutorialUnlockables : BaseUI {
 			unlockRecipeSprite.SetActive (false);
 			ingredientSprites.SetActive (true);
 			unlockText.text = "You have unlocked: \n TOMATO, CARROT, \n CHICKEN, CABBAGE";
-			unlockText.fontSize = 40;
+			unlockText.fontSize = 35;
 		} else if(unlockType == UnlockType.Recipe){
 			unlockRoomSprite.SetActive (false);
 			unlockRecipeSprite.SetActive (true);

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ScreenProgress : BaseUI {
+	public GuidedTutorialStork guidedTutorial;
 	public ScreenPopup screenPopup;
 	public ScreenTutorial screenTutorial;
 	public ExpressionIcons expressionIcons;
@@ -59,6 +60,7 @@ public class ScreenProgress : BaseUI {
 		}
 
 		if (!isInited) {
+			Debug.Log ("init progress");
 			for (int i = 0; i <= recordCount; i++) {
 				EmojiType type = (EmojiType)PlayerPrefs.GetInt (PlayerPrefKeys.Album.EMOJI_TYPE, 0);
 
@@ -201,7 +203,19 @@ public class ScreenProgress : BaseUI {
 	}
 
 	public void OnClickEmoji(EmojiType typeIdx){
-		base.ShowPanelInHotkey (UIExpressionProgress);
+		Debug.Log ("on click emoji progress");
+		if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == ShortCode.SCENE_GUIDED_TUTORIAL){
+			StartCoroutine (WaitForPanel ());
+		} else{
+			base.ShowPanelInHotkey (UIExpressionProgress);
+		}
+
 		InitExpressionUI (typeIdx);
+	}
+
+	IEnumerator WaitForPanel(){
+		guidedTutorial.ShowFirstDialog (64);
+		yield return new WaitForSeconds (0.16f);
+		base.ShowPanelInHotkey (UIExpressionProgress);
 	}
 }
