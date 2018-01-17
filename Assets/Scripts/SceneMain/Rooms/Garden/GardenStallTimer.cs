@@ -64,6 +64,7 @@ public class GardenStallTimer : MonoBehaviour {
 			AdmobManager.Instance.ShowRewardedVideo (AdEvents.RestockStall);
 		}
 		screenPopup.ClosePopup (screenPopup.gameObject);
+		uiCoin.CloseUI (false);
 	}
 
 	public void RefillButtonWithGems(){

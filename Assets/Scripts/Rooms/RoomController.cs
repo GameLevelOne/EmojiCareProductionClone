@@ -326,7 +326,9 @@ public class RoomController : MonoBehaviour {
 			gardenMiscItemsManager.Hide ();
 			CropHolder.Instance.HideCrops ();
 		}
-		StartCoroutine (WaitForEmoji ());
+
+		if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == ShortCode.SCENE_GUIDED_TUTORIAL)
+			StartCoroutine (WaitForEmoji ());
 
 		//SNAPPING
 		while (t <= 1) {

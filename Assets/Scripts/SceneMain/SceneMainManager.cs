@@ -34,7 +34,16 @@ public class SceneMainManager : MonoBehaviour {
 	#region initialization
 	void Start()
 	{
-		PlayerData.Instance.PlayerFirstPlay = 1;
+		if(PlayerData.Instance.PlayerFirstPlay == 0){
+			PlayerPrefs.DeleteAll ();
+			PlayerData.Instance.PlayerFirstPlay = 1;
+			PlayerData.Instance.LocationGarden = 1;
+			PlayerData.Instance.LocationPlayroom = 1;
+			PlayerData.Instance.LocationKitchen = 1;
+			PlayerData.Instance.LocationBedroom = 1;
+			PlayerData.Instance.LocationBathroom = 1;
+		}
+
 		InitMain();
 	}
 
@@ -100,9 +109,10 @@ public class SceneMainManager : MonoBehaviour {
 
 		if(PlayerPrefs.GetInt(PlayerPrefKeys.Game.HAS_INIT_INGREDIENT,0) == 0){
 			PlayerPrefs.SetInt(PlayerPrefKeys.Game.HAS_INIT_INGREDIENT,1);
-			for(int i = 0;i<(int)IngredientType.COUNT;i++){
-				PlayerData.Instance.inventory.SetIngredientValue((IngredientType)i,2);
-			}
+			PlayerData.Instance.inventory.SetIngredientValue (IngredientType.Chicken, 2);
+			PlayerData.Instance.inventory.SetIngredientValue (IngredientType.Cabbage, 2);
+			PlayerData.Instance.inventory.SetIngredientValue (IngredientType.Carrot, 2);
+			PlayerData.Instance.inventory.SetIngredientValue (IngredientType.Tomato, 2);
 		}
 
 		statsExpressionController.Init();

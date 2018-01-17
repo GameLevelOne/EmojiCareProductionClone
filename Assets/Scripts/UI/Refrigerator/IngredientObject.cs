@@ -35,8 +35,8 @@ public class IngredientObject : MonoBehaviour {
 	{
 		if(interactable){
 			GetComponent<RectTransform>().SetParent(bowl.GetComponent<RectTransform>().parent,true);
-		StartCoroutine(_StartHold);
-		bowl.RemoveObject(this.gameObject);
+			StartCoroutine(_StartHold);
+			bowl.RemoveObject(this.gameObject);
 		}
 
 	}
@@ -45,7 +45,7 @@ public class IngredientObject : MonoBehaviour {
 	{
 		if(interactable){
 			Vector3 touchWorldPos = GetTouchWorldPosition();
-		transform.position = new Vector3(touchWorldPos.x,touchWorldPos.y+20f,touchWorldPos.z);
+			transform.position = new Vector3(touchWorldPos.x,touchWorldPos.y+20f,touchWorldPos.z);
 		}
 	}
 

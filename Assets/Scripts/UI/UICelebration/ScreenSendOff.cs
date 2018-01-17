@@ -25,6 +25,7 @@ public class ScreenSendOff : BaseUI {
 	void OnFadeOutFinished ()
 	{
 		Fader.OnFadeOutFinished -= OnFadeOutFinished;
+	
 		sceneLoader.gameObject.SetActive(true);
 		sceneLoader.NextScene = "SceneSelection_New";
 	}

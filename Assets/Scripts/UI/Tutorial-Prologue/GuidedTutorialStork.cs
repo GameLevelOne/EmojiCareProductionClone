@@ -20,6 +20,7 @@ public class GuidedTutorialStork : BaseUI {
 	public string[] storkDialogs;
 	public GameObject[] highlightPanels;
 	public Vector3[] dialogBoxPositions; //top,middle,bottom
+	public Button[] buttonLocations;
 	public Transform dialogBox;
 	public Text dialogText;
 	public GameObject buttonNext;
@@ -49,6 +50,7 @@ public class GuidedTutorialStork : BaseUI {
 	public WateringCan wateringCan;
 	public GardenField gardenField;
 	public GameObject refrigerator;
+	public BoxCollider2D dartboardCollider;
 
 	int dialogCounter = 0;
 	int cropCount = 0;
@@ -279,9 +281,6 @@ public class GuidedTutorialStork : BaseUI {
 			ShowFirstDialog (12);
 			PlayerData.Instance.FirstCook = 1;
 		} else if (dialogCounter == 61) {
-			Emoji playerEmoji = PlayerData.Instance.PlayerEmoji;
-			playerEmoji.happiness.SetStats (playerEmoji.happiness.MaxStatValue);
-			playerEmoji.hunger.SetStats (0.5f * playerEmoji.hunger.MaxStatValue);
 			ShowFirstDialog (62);
 		}
 	}
@@ -335,6 +334,11 @@ public class GuidedTutorialStork : BaseUI {
 		} else if(dialogCounter == 61){
 			refrigerator.GetComponent<BoxCollider2D> ().enabled = true;
 			CloseUI (tutorialObj);
+		} else if(dialogCounter == 62){
+			Emoji playerEmoji = PlayerData.Instance.PlayerEmoji;
+			playerEmoji.happiness.SetStats (playerEmoji.happiness.MaxStatValue);
+			playerEmoji.hunger.SetStats (0.5f * playerEmoji.hunger.MaxStatValue);
+			CloseUI (tutorialObj);
 		} else{
 			transform.GetChild (0).GetComponent<Image> ().raycastTarget = true;
 			dialogBox.GetComponent<CanvasGroup> ().blocksRaycasts = true;
@@ -375,12 +379,11 @@ public class GuidedTutorialStork : BaseUI {
 
 		hotkeyButton.GetComponent<Button> ().interactable = false;
 
-		if (dialogCounter == 1 || dialogCounter == 20 || dialogCounter == 25 || 
-		dialogCounter == 35 || dialogCounter == 45 || dialogCounter == 59 || dialogCounter == 65) {
+		if (dialogCounter == 1 || dialogCounter == 20 || dialogCounter == 25 ||
+		    dialogCounter == 35 || dialogCounter == 45 || dialogCounter == 59 || dialogCounter == 63) {
 			highlightPanels [0].SetActive (true);
 			hotkeyButton.GetComponent<Button> ().interactable = true;
-		}
-		else if (dialogCounter == 2)
+		} else if (dialogCounter == 2)
 			highlightPanels [1].SetActive (true);
 		else if (dialogCounter == 4)
 			highlightPanels [3].SetActive (true);
@@ -429,7 +432,8 @@ public class GuidedTutorialStork : BaseUI {
 			highlightPanels [27].SetActive (true);
 		else if (dialogCounter == 54)
 			highlightPanels [28].SetActive (true);
-		//else if (dialogCounter == 62)
+		else if (dialogCounter == 67)
+			highlightPanels [32].SetActive (true);
 			
 		foreach (GameObject obj in highlightPanels) {
 			if (obj.activeSelf) {
@@ -474,21 +478,41 @@ public class GuidedTutorialStork : BaseUI {
 	public void SetLocationHighlight ()
 	{
 		if (dialogCounter == 2 || dialogCounter == 59) {
+			SetLocationButtons (3);
 			highlightPanels [2].SetActive (true);
 		} else if (dialogCounter == 20) {
+			SetLocationButtons (4);
 			highlightPanels [10].SetActive (true);
 		} else if (dialogCounter == 25) {
+			SetLocationButtons (5);
 			highlightPanels [14].SetActive (true);
 		} else if (dialogCounter == 35) {
+			SetLocationButtons (1);
 			highlightPanels [18].SetActive (true);
 		} else if(dialogCounter == 45){
+			SetLocationButtons (0);
 			highlightPanels [22].SetActive (true);
 		}
-		
+	}
+
+	void SetLocationButtons(int idx){ //garden,playroom,livingroom,kitchen,bedroom,bathroom
+		for(int i=0;i<buttonLocations.Length;i++){
+			if(i == idx){
+				buttonLocations [i].interactable = true;
+			} else{
+				buttonLocations [i].interactable = false;
+			}
+		}
 	}
 
 	public void OnClickBackAfterDartboard(){
 		StartCoroutine (WaitForHappinessMeterInDartboard ());
+	}
+
+	public void OnClickButtonSend(){
+		CloseUI (tutorialObj);
+		highlightPanels [32].SetActive (false);
+		highlightPanels [33].SetActive (true);
 	}
 
 	public void SetDialogInKitchen(){
@@ -509,6 +533,7 @@ public class GuidedTutorialStork : BaseUI {
 	IEnumerator WaitForHappinessMeterInDartboard(){
 		buttonNext.SetActive (false);
 		yield return new WaitForSeconds (2);
+		dartboardCollider.enabled = false;
 		buttonNext.SetActive (true);
 		PlayerData.Instance.PlayerEmoji.hunger.SetStats (0.19f * PlayerData.Instance.PlayerEmoji.hunger.MaxStatValue);
 		ShowFirstDialog (41);
@@ -525,7 +550,7 @@ public class GuidedTutorialStork : BaseUI {
 		} else if(dialogCounter == 20 || dialogCounter == 25 || dialogCounter == 35 || dialogCounter == 45 || dialogCounter == 59){
 			highlightPanels [0].SetActive (false);
 			highlightPanels [1].SetActive (true);
-		} else if(dialogCounter == 65){
+		} else if(dialogCounter == 63){
 			highlightPanels [0].SetActive (false);
 			highlightPanels [30].SetActive (true);
 		}

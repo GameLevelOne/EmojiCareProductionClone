@@ -23,4 +23,5 @@ public static class ShortCode {
 	}
 
 	public const string SCENE_GUIDED_TUTORIAL = "SceneGuidedTutorial";
+	public const string SCENE_MAIN = "SceneMain";
 }

@@ -6,6 +6,7 @@ public class GuidedTutorialManager : MonoBehaviour {
 
 	[Header("Attributes")]
 	public RoomController roomController;
+	public SceneLoader sceneLoader;
 	public Fader fader;
 
 	[Header("Event Attributes")]
@@ -23,7 +24,7 @@ public class GuidedTutorialManager : MonoBehaviour {
 	public GameObject emojiObject;
 
 	void Start(){
-		PlayerPrefs.DeleteAll();
+		PlayerPrefs.DeleteAll ();
 		PlayerData.Instance.inventory.SetIngredientValue (IngredientType.Chicken, 1);
 		PlayerData.Instance.inventory.SetIngredientValue (IngredientType.Cabbage, 1);
 		PlayerData.Instance.inventory.SetIngredientValue (IngredientType.Carrot, 1);
@@ -62,9 +63,9 @@ public class GuidedTutorialManager : MonoBehaviour {
 
 		guidedTutorialStork.RegisterEvents ();
 		guidedTutorialStork.ShowFirstDialog ((int)GuidedTutorialIndex.Start);
-		//manipulate expresssion data (UNLOCK ALL until 99% to send off)
 
 		PlayerData.Instance.PlayerEmoji.body.OnEmojiEatEvent += OnEmojiFirstEatEvent;
+		Fader.OnFadeOutFinished += OnFadeOutFinished;
 	}
 
 	void OnEmojiFirstEatEvent (float lockDuration)
@@ -90,5 +91,14 @@ public class GuidedTutorialManager : MonoBehaviour {
 		celebrationManager.RegisterEmojiEvents();
 	}
 
+	void OnFadeOutFinished ()
+	{
+		Fader.OnFadeOutFinished -= OnFadeOutFinished;
+		sceneLoader.gameObject.SetActive(true);
+		sceneLoader.NextScene = "SceneSelection_New";
+	}
 
+	public void OnClickSkip(){
+		fader.FadeOut();	
+	}
 }

@@ -16,24 +16,25 @@ public class ExpressionIcons : MonoBehaviour {
 	public string[] emojiExpressionUnlockCondition;
 
 	public Sprite GetExpressionIcon(EmojiType emojiType, int expression){
-		if(emojiType == EmojiType.Emoji){
-			return emojiExpressionIcons[expression];
-		} else if(emojiType == EmojiType.EmojiCamo){
-			return emojiCamoExpressionIcons[expression];
-		} else if(emojiType == EmojiType.EmojiAstronaut){
-			return emojiAstronautExpressionIcons[expression];
-		} else if(emojiType == EmojiType.EmojiButterfly){
-			return emojiButterflyExpressionIcons[expression];
-		} else if(emojiType == EmojiType.EmojiDog){
-			return emojiDogExpressionIcons[expression];
-		} else if(emojiType == EmojiType.EmojiSloth){
-			return emojiSlothExpressionIcons[expression];
-		} else if(emojiType == EmojiType.EmojiTomato){
-			return emojiTomatoExpressionIcons[expression];
-		} else if(emojiType == EmojiType.Gumiji){
-			return gumijiExpressionIcons[expression];
-		}
-		else return emojiExpressionIcons[0]; //temp default
+//		if(emojiType == EmojiType.Emoji){
+//			return emojiExpressionIcons[expression];
+//		} else if(emojiType == EmojiType.EmojiCamo){
+//			return emojiCamoExpressionIcons[expression];
+//		} else if(emojiType == EmojiType.EmojiAstronaut){
+//			return emojiAstronautExpressionIcons[expression];
+//		} else if(emojiType == EmojiType.EmojiButterfly){
+//			return emojiButterflyExpressionIcons[expression];
+//		} else if(emojiType == EmojiType.EmojiDog){
+//			return emojiDogExpressionIcons[expression];
+//		} else if(emojiType == EmojiType.EmojiSloth){
+//			return emojiSlothExpressionIcons[expression];
+//		} else if(emojiType == EmojiType.EmojiTomato){
+//			return emojiTomatoExpressionIcons[expression];
+//		} else if(emojiType == EmojiType.Gumiji){
+//			return gumijiExpressionIcons[expression];
+//		}
+//		else return emojiExpressionIcons[0]; //temp default
+		return emojiExpressionIcons[expression];
 	}
 
 	public string GetExpressionName(EmojiType emojiType, int expression){

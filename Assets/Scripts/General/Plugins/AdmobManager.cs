@@ -77,14 +77,16 @@ public class AdmobManager : MonoBehaviour {
 		#if UNITY_EDITOR
 		Debug.Log("show banner");
 		#endif
-		ad.showBannerRelative(AdSize.SmartBanner,AdPosition.BOTTOM_CENTER,0);
+		if (UnityEngine.SceneManagement.SceneManager.GetActiveScene ().name == ShortCode.SCENE_MAIN)
+			ad.showBannerRelative(AdSize.SmartBanner,AdPosition.BOTTOM_CENTER,0);
 	}
 
 	public void HideBanner(){
 		#if UNITY_EDITOR
 		Debug.Log("hide banner");
 		#endif
-		ad.removeBanner();
+		if (UnityEngine.SceneManagement.SceneManager.GetActiveScene ().name == ShortCode.SCENE_MAIN)
+			ad.removeBanner();
 	}
 
 	public void ShowRewardedVideo(AdEvents eventName){

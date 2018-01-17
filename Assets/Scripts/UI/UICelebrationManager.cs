@@ -43,7 +43,6 @@ public class UICelebrationManager : MonoBehaviour {
 		}
 	}
 
-
 	public void UnregisterEmojiEvents()
 	{
 		EmojiExpression.OnNewExpression -= OnNewExpression;

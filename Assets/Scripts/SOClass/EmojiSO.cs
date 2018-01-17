@@ -9,16 +9,16 @@ public enum EmojiType{
 	EmojiSloth,
 	EmojiTomato,
 	Gumiji,
-	Watermeji,
-	Spookiji,
-	Chocoji,
-
-	Toothiji,
-	Nanaji,
-	Boneji,
-
-	Moeji,
-	Takoji,
+//	Watermeji,
+//	Spookiji,
+//	Chocoji,
+//
+//	Toothiji,
+//	Nanaji,
+//	Boneji,
+//
+//	Moeji,
+//	Takoji,
 
 	COUNT
 }

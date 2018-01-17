@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PopupSelectEmoji : MonoBehaviour {
+public class PopupSelectEmoji : BaseUI {
 	public Fader fader;
 	public SceneLoader sceneLoader;
+
+	public GameObject popupInputName;
+	public GameObject popupWarningEmptyName;
+	public string username;
 
 	int[] optionList = new int[3];
 
@@ -38,12 +42,21 @@ public class PopupSelectEmoji : MonoBehaviour {
 	}
 
 	public void OnClickEmoji(int option){
-		//insert stork dialog here?
-
 		PlayerData.Instance.PlayerEmojiType = optionList [option];
+		ShowUI (popupInputName);
+	}
 
-		//Debug.Log (PlayerData.Instance.PlayerEmojiType);
+	public void OnInputName (UnityEngine.UI.InputField inputName)
+	{
+		username = inputName.text;
+		PlayerData.Instance.EmojiName = username;
+	}
 
-		fader.FadeOut ();
+	public void OnClickOK(){
+		if(!string.IsNullOrEmpty(PlayerData.Instance.EmojiName)){
+			fader.FadeOut ();
+		} else{
+			ShowUI (popupWarningEmptyName);
+		}
 	}
 }
