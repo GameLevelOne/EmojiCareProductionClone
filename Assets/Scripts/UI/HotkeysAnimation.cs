@@ -113,13 +113,19 @@ public class HotkeysAnimation : MonoBehaviour {
 
 	void ValidateRoomForButtonEditRoom()
 	{
-		if(roomController.currentRoom == RoomType.Garden){
+		if(PlayerData.Instance.EditRoom == 0){
 			buttonEditRoom.GetComponent<Button>().interactable = false;
 			buttonEditRoom.color = Color.gray;
-		}else{
-			buttonEditRoom.GetComponent<Button>().interactable = true;
-			buttonEditRoom.color = Color.white;
+		} else{
+			if(roomController.currentRoom == RoomType.Garden){
+				buttonEditRoom.GetComponent<Button>().interactable = false;
+				buttonEditRoom.color = Color.gray;
+			}else{
+				buttonEditRoom.GetComponent<Button>().interactable = true;
+				buttonEditRoom.color = Color.white;
+			}
 		}
+
 		print("BUTTON EDIT MODE DI ROOM "+roomController.currentRoom+" is"+buttonEditRoom.GetComponent<Button>().interactable);
 	}
 }
