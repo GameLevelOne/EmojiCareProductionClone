@@ -10,6 +10,8 @@ public class SceneTitleManager : MonoBehaviour {
 	string nextScene;
 
 	void Start(){
+		SoundManager.Instance.PlayBGM(BGMList.BGMRadio1);
+
 		Input.multiTouchEnabled = false;
 //		PlayerPrefs.DeleteAll();
 		Fader.OnFadeOutFinished += HandleFadeOutFinished;
