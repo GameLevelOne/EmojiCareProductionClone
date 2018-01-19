@@ -13,6 +13,7 @@ public class RandomPassingToyManager : MonoBehaviour {
 
 	[Header("Do Not Modify")]
 	public GameObject tempToyObject;
+	public bool isCycling = false;
 	#endregion
 	//-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
@@ -26,11 +27,12 @@ public class RandomPassingToyManager : MonoBehaviour {
 		transform.localScale = new Vector3(xScale,1,1);
 
 		tempToyObject = Instantiate(toyList[Random.Range(0,toyList.Length)],transform);
-		tempToyObject.GetComponent<RandomPassingToyObject>().OnFinish += Cycle;
+//		tempToyObject.GetComponent<RandomPassingToyObject>().OnFinish += Cycle;
 	}
 	#endregion
 	//-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
+
 	public void Cycle()
 	{
 		StartCoroutine(_CycleToys);
@@ -41,7 +43,8 @@ public class RandomPassingToyManager : MonoBehaviour {
 		print("STOP STOP STOP");
 		StopCoroutine(_CycleToys);
 		if(tempToyObject){ 
-			Destroy(tempToyObject);
+			//Destroy(tempToyObject);
+			tempToyObject.GetComponent<RandomPassingToyObject>().Fade();
 			tempToyObject = null;
 		}
 	}
@@ -51,8 +54,14 @@ public class RandomPassingToyManager : MonoBehaviour {
 	const string _CycleToys = "CycleToys";
 	IEnumerator CycleToys()
 	{
-		yield return new WaitForSeconds(Random.Range(delayMax,delayMax));
+		yield return new WaitForSeconds(2f);
 		SendToy();
+
+		while(true){
+			yield return new WaitForSeconds(Random.Range(delayMax,delayMax));
+			SendToy();
+		}
+
 	}
 	#endregion
 }
