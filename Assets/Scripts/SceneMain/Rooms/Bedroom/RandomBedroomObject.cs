@@ -40,7 +40,7 @@ public class RandomBedroomObject : MonoBehaviour {
 	IEnumerator RandomColor()
 	{
 		while(true){
-			thisSprite.color = new Color(Random.value,Random.value,Random.value,0.75f);
+			thisSprite.color = new Color(Random.value,Random.value,Random.value,0.35f);
 			yield return new WaitForSeconds(Random.Range(0.5f,2f));
 		}
 

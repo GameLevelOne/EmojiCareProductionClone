@@ -59,6 +59,7 @@ public class RandomBedroomObjectController : MonoBehaviour {
 		{
 			int rnd = Random.Range(0,RandomBedroomObjects.Length);
 			GameObject temp = Instantiate(RandomBedroomObjects[rnd],transform);
+			//temp.transform.localPosition = new Vector3(temp.transform.localPosition.x,(float)Random.Range(yMin,yMax),0f);
 			temp.transform.localPosition = new Vector3(temp.transform.localPosition.x,Random.Range(yMin,yMax),0f);
 			yield return new WaitForSeconds(objectDelay);
 		}

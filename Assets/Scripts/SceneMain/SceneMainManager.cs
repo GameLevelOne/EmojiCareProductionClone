@@ -88,6 +88,8 @@ public class SceneMainManager : MonoBehaviour {
 //		print("INITZSZS");
 //		PlayerData.Instance.InitPlayerEmoji(emojiSamples[PlayerData.Instance.PlayerEmojiType]);
 
+		roomController.Init();
+
 		if(PlayerData.Instance.PlayerEmoji.EmojiSleeping){
 			roomController.currentRoom = RoomType.Bedroom;
 			roomController.transform.position = new Vector3(-32f,0f,0f);
@@ -118,7 +120,7 @@ public class SceneMainManager : MonoBehaviour {
 		statsExpressionController.Init();
 		statsExpressionController.RegisterEmojiEvents();
 
-		roomController.Init();
+
 		PlayerData.Instance.emojiParentTransform = roomController.rooms[(int)roomController.currentRoom].transform;
 		PlayerData.Instance.PlayerEmoji.transform.SetParent(PlayerData.Instance.emojiParentTransform,true);
 
