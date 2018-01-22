@@ -115,13 +115,9 @@ public class FloatingStatsManager : MonoBehaviour {
 	public void ShowMultipleMeters(float[] mod){
 		int counter = 0;
 		for(int i=0;i<mod.Length;i++){
-			if(mod[i] != 0){
-				statsMeterObj [i].transform.localPosition = new Vector3 (0, 452 - 100 * counter);
-				ShowSingleMeter (i, mod [i]);
-				counter++;
-			} else{
-				statsMeterObj [i].gameObject.SetActive (false);
-			}
+			statsMeterObj [i].transform.localPosition = new Vector3 (0, 452 - 100 * counter);
+			ShowSingleMeter (i, mod [i]);
+			counter++;
 		}
 	}
 

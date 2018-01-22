@@ -38,9 +38,9 @@ public class ScreenSendOff : BaseUI {
 		expressionProgress.text =  
 		(PlayerData.Instance.PlayerEmoji.emojiExpressions.GetTotalExpressionProgress()*100).ToString()+"%";
 		GenerateReward ();
+		screenAlbum.AddEmojiRecord();
 		ResetExpressionProgress ();
 		CheckEmojiExpressionStatus ();
-		screenAlbum.AddEmojiRecord();
 		PlayerData.Instance.PlayerSendOffCount++;
 
 		if(PlayerData.Instance.PlayerSendOffCount == 2){

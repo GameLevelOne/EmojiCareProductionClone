@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class DartboardMinigame : BaseUI {
 	public GameObject buttonBack;
+	public GameObject buttonHotkey;
 	public GameObject dartMark;
 	bool moveMark = false;
 	bool isWaiting = false;
@@ -20,6 +21,7 @@ public class DartboardMinigame : BaseUI {
 		dartAnim = dartMark.GetComponent<Animator>();
 		moveMark=true;
 		buttonBack.SetActive (true);
+		buttonHotkey.SetActive (false);
 		StartCoroutine(MoveArrow());
 	}
 
@@ -63,6 +65,7 @@ public class DartboardMinigame : BaseUI {
 		dartAnim.SetBool (boolReset, true);
 		moveMark = false;
 		base.CloseUI(this.gameObject);
+		buttonHotkey.SetActive (true);
 	}
 
 	IEnumerator MoveArrow(){

@@ -9,7 +9,7 @@ public class LivingRoom : BaseRoom {
 
 	public void Init()
 	{
-		if(PlayerData.Instance.EmojiAlbumData.Count <= 0) album.SetActive(false);
+		if(PlayerData.Instance.EmojiRecordCount <= 0) album.SetActive(false);
 	}
 
 	public void EnterEmojiMakeOver()

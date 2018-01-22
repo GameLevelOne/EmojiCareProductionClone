@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class DanceMatMinigame : BaseUI {
+	public GameObject buttonHotkey;
 	public DanceMat danceMatFurnitureRef;
 	public Image[] danceMatMinigame;
 	public SpriteRenderer[] danceMatFurniture;
@@ -21,6 +22,7 @@ public class DanceMatMinigame : BaseUI {
 	}
 
 	void Init(){
+		buttonHotkey.SetActive (false);
 		for(int i=0;i<tileColorIndex.Length;i++){
 			tileColorIndex[i]=PlayerPrefs.GetInt (PlayerPrefKeys.Game.DANCE_MAT_TILE_COLOR_DATA + i.ToString(), 0);
 			danceMatMinigame [i].color = danceMatFurnitureRef.GetColor (tileColorIndex [i]);
@@ -45,6 +47,7 @@ public class DanceMatMinigame : BaseUI {
 		SaveChanges ();
 		PlayerData.Instance.PlayerEmoji.playerInput.OnDanceMatMinigameDone ();
 		base.CloseUI (this.gameObject);
+		buttonHotkey.SetActive (true);
 	}
 
 

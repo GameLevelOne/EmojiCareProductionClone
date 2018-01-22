@@ -116,15 +116,19 @@ public class EmojiExpression {
 
 	public float GetTotalExpressionProgress()
 	{
-		int counter = 0;
+		EmojiType emojiType = PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType;
+		Debug.Log ("emojitype:" + emojiType);
+		int counter = 1;
 		foreach(EmojiExpressionData data in expressionDataInstances){
-			if(data.GetProgressRatio(PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType) == 1){
+			if(data.GetProgressRatio(emojiType) == 1){
 				counter++;
 			}
 		}
-
-		Debug.Log((float) System.Math.Round((double)counter / totalExpressionForSendOff,1));
-		return (float) System.Math.Round((double)counter / totalExpressionForSendOff,1);
+//		Debug.Log ("unlockedexpression:" + counter);
+//		Debug.Log ("totalexpressionforsendoff:" + totalExpressionForSendOff);
+//		Debug.Log ((float)counter / (float)totalExpressionForSendOff);
+//		Debug.Log("progress:"+(float) System.Math.Round((double)counter / (double)totalExpressionForSendOff,2));
+		return (float) System.Math.Round((double)counter / (double)totalExpressionForSendOff,2);
 	}
 
 

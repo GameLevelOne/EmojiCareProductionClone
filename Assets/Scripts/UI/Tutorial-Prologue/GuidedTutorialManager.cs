@@ -63,6 +63,7 @@ public class GuidedTutorialManager : MonoBehaviour {
 
 		guidedTutorialStork.RegisterEvents ();
 		guidedTutorialStork.ShowFirstDialog ((int)GuidedTutorialIndex.Start);
+		SoundManager.Instance.PlayBGM(BGMList.BGMMain);
 
 		PlayerData.Instance.PlayerEmoji.body.OnEmojiEatEvent += OnEmojiFirstEatEvent;
 		Fader.OnFadeOutFinished += OnFadeOutFinished;

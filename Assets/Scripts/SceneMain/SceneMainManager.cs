@@ -35,7 +35,7 @@ public class SceneMainManager : MonoBehaviour {
 	void Start()
 	{
 		if(PlayerData.Instance.PlayerFirstPlay == 0){
-			PlayerPrefs.DeleteAll ();
+			//PlayerPrefs.DeleteAll ();
 			PlayerData.Instance.PlayerFirstPlay = 1;
 			PlayerData.Instance.LocationGarden = 1;
 			PlayerData.Instance.LocationPlayroom = 1;

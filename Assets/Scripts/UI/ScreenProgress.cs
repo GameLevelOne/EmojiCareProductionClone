@@ -10,6 +10,7 @@ public class ScreenProgress : BaseUI {
 	public ExpressionIcons expressionIcons;
 	public EmojiIcons emojiIcons;
 
+	public GameObject hotkeyButton;
 	public GameObject UIExpressionProgress;
 	public Transform emojiScrollView;
 	public GameObject emojiTypeObj;
@@ -50,8 +51,9 @@ public class ScreenProgress : BaseUI {
 
 	public override void InitUI ()
 	{
+		hotkeyButton.SetActive (false);
 		List<EmojiType> availableEmoji = new List<EmojiType> ();
-		int recordCount = PlayerPrefs.GetInt (PlayerPrefKeys.Player.EMOJI_RECORD_COUNT, 0);
+		int recordCount = PlayerData.Instance.EmojiRecordCount;
 		bool newType = true;
 		bool isInited = false;
 
@@ -97,7 +99,6 @@ public class ScreenProgress : BaseUI {
 //		if(PlayerData.Instance.TutorialFirstProgressUI == 0){
 //			screenTutorial.ShowFirstDialog (TutorialType.FirstProgressUI);
 //		}
-
 		int exprTileIdx = 0;
 		int unlockedExprIdx = 0;
 		string condition = "";
@@ -136,6 +137,8 @@ public class ScreenProgress : BaseUI {
 
 		float sendOffPercentage = currentEmojiData.emojiExpressions.sendOffProgressThreshold;
 		currentTotalProgress = currentEmojiData.emojiExpressions.GetTotalExpressionProgress ();
+		Debug.Log ("sendoff percentage:" + sendOffPercentage);
+		Debug.Log ("totalexpression progress:" + currentTotalProgress);
 		totalExpressionProgressText.text = (currentTotalProgress*100f).ToString() + "%";
 		totalProgressBarFill.fillAmount = currentTotalProgress*0.8f;
 
@@ -163,6 +166,7 @@ public class ScreenProgress : BaseUI {
 	} 
 
 	public void OnClickBack(){
+		hotkeyButton.SetActive (true);
 		for(int i=0;i<expressionObj.Length;i++){
 			expressionObj [i].GetComponent<ProgressTile> ().OnSelectExpression -= OnSelectExpression;
 		}

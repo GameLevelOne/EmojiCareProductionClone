@@ -10,8 +10,7 @@ public class EmojiStats {
 		this.prefKey = prefKey;
 		this.emojiModifier = emojiModifier;
 		this.maxStatValue = maxStatValue;
-		if(PlayerPrefs.HasKey(prefKey) == false) this.StatValue = startValue;
-
+		if (PlayerPrefs.HasKey (prefKey) == false) this.StatValue = startValue;
 	}
 
 	public delegate void ShowSingleStatBar (int type, float mod,float startValue);

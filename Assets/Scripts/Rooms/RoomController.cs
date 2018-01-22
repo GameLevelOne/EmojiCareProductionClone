@@ -58,8 +58,8 @@ public class RoomController : MonoBehaviour {
 					r.InitRoom();
 					r.OnRoomChanged(currentRoom);
 				}
-			print("ALBUM DATA = "+PlayerData.Instance.EmojiAlbumData.Count);
-			if(PlayerData.Instance.EmojiAlbumData.Count <= 0) Album.SetActive(false);
+
+			if(PlayerData.Instance.EmojiRecordCount <= 0) Album.SetActive(false);
 
 			AdjustTouchAreaSize();
 			pan.OnCookingDone += OnCookingDone;
@@ -264,6 +264,8 @@ public class RoomController : MonoBehaviour {
 	{		
 		if (destination == currentRoom)
 			return;
+
+		if(currentRoom == RoomType.Playroom) randomPassingToyManager.Stop();
 
 		Vector3 startPos = transform.position;
 		Vector3 endpos = new Vector3 ((roomWidth * (int)destination * -1f), 0f, 0f);

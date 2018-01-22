@@ -6,20 +6,23 @@ public class RandomBedroomObject : MonoBehaviour {
 	public SpriteRenderer thisSprite;
 	public float speedMin, speedMax;
 	public float rotateMin, rotateMax;
+	public bool doRotate;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
-	IEnumerator Start()
+	IEnumerator Start ()
 	{
-		StartCoroutine(RandomColor());
+		StartCoroutine (RandomColor ());
 
 		//position
-		Vector3 randomRotation = new Vector3(0,0,Random.Range(rotateMin,rotateMax));
+		Vector3 randomRotation = new Vector3 (0, 0, Random.Range (rotateMin, rotateMax));
 
-		//rotation
-		Quaternion tempRotation = thisSprite.transform.localRotation;
-		tempRotation.eulerAngles = new Vector3(0,0,Random.Range(0,360f));
-		thisSprite.transform.localRotation = tempRotation;
+		if (doRotate) {
+			//rotation
+			Quaternion tempRotation = thisSprite.transform.localRotation;
+			tempRotation.eulerAngles = new Vector3 (0, 0, Random.Range (0, 360f));
+			thisSprite.transform.localRotation = tempRotation;
+		}
 
 		//scale
 		float randomScale = Random.Range(1f,1.75f);
@@ -28,8 +31,9 @@ public class RandomBedroomObject : MonoBehaviour {
 		float speed = Random.Range(speedMin,speedMax);
 		while(true){
 			transform.Translate(Vector3.right * speed);
-			thisSprite.transform.Rotate(randomRotation);
-
+			if(doRotate)
+				thisSprite.transform.Rotate(randomRotation);
+				
 			if(transform.localPosition.x >= 5f) break;
 
 			yield return null;
@@ -40,7 +44,7 @@ public class RandomBedroomObject : MonoBehaviour {
 	IEnumerator RandomColor()
 	{
 		while(true){
-			thisSprite.color = new Color(Random.value,Random.value,Random.value,0.35f);
+			thisSprite.color = new Color(Random.value,Random.value,Random.value,0.5f);
 			yield return new WaitForSeconds(Random.Range(0.5f,2f));
 		}
 

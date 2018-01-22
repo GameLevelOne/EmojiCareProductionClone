@@ -87,6 +87,11 @@ public class PlayerData : MonoBehaviour {
 		get{return emojiCompletionRate;}
 	}
 
+	public int EmojiRecordCount{
+		get{return PlayerPrefs.GetInt (PlayerPrefKeys.Player.EMOJI_RECORD_COUNT, 0);}
+		set{PlayerPrefs.SetInt (PlayerPrefKeys.Player.EMOJI_RECORD_COUNT, value);}
+	}
+
 	public RoomType LastCurrentRoom{
 		get{return (RoomType)PlayerPrefs.GetInt(PlayerPrefKeys.Player.LAST_CURRENT_ROOM,2);}
 		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.LAST_CURRENT_ROOM,(int)value);}

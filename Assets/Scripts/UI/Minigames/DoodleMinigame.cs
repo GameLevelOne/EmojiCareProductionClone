@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class DoodleMinigame : BaseUI {
 	public Sprite[] randomPictures;
+	public GameObject buttonHotkey;
 	public GameObject doodleUI;
 	public RectTransform rectBoard;
 	public SpriteRenderer furnitureBoard;
@@ -15,15 +16,13 @@ public class DoodleMinigame : BaseUI {
 	void OnEnable(){
 		width = System.Convert.ToInt32(rectBoard.rect.width);
 		height = System.Convert.ToInt32(rectBoard.rect.height);
-		Debug.Log ("width:" + width);
-		Debug.Log ("height:" + height);
-		Debug.Log ("screenwidth:" + Screen.width);
-		Debug.Log ("screenheight:" + Screen.height);
+		buttonHotkey.SetActive (false);
 	}
 
 	public void OnClickBack(){
 		PlayerData.Instance.PlayerEmoji.playerInput.OnDoodleMinigameDone ();
 		//StartCoroutine(TakeScreenshot());
+		buttonHotkey.SetActive (true);
 		PlaceRandomPictures ();
 	}
 

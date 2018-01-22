@@ -47,7 +47,7 @@ public class HotkeysAnimation : MonoBehaviour {
 
 		if (AdmobManager.Instance) AdmobManager.Instance.HideBanner ();
 
-		int temp = PlayerData.Instance.EmojiAlbumData.Count;
+		int temp = PlayerData.Instance.EmojiRecordCount;
 		if (temp >= 1) {
 			buttonAlbum.color = Color.white;
 		} else {

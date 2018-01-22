@@ -42,7 +42,8 @@ public class SoundManager : MonoBehaviour {
 	public AudioClip[] VoiceClips;
 
 	public AudioSource BGMSource; //bgm
-	public AudioSource SFXSource; //sfx,voice
+	public AudioSource SFXSource; //sfx
+	public AudioSource VoiceSource; //voice
 
 	void Awake()
 	{
@@ -52,6 +53,12 @@ public class SoundManager : MonoBehaviour {
 			instance = this;
 		}
 		DontDestroyOnLoad(this.gameObject);
+	}
+
+	void Start(){
+		SetAudioVolume (0, PlayerData.Instance.BGMVolume);
+		SetAudioVolume (1, PlayerData.Instance.SFXVolume);
+		SetAudioVolume (2, PlayerData.Instance.VoicesVolume);
 	}
 
 	public void PlayBGM(BGMList bgm)
@@ -87,11 +94,24 @@ public class SoundManager : MonoBehaviour {
 
 	public void PlayVoice(VoiceList voice)
 	{
-		SFXSource.PlayOneShot(VoiceClips[(int)voice]);
+		VoiceSource.PlayOneShot(VoiceClips[(int)voice]);
 	}
 
 	public void SetAudioVolume(int type,float value)
 	{
-		SFXSource.volume = value;
+		switch(type){
+		case 0:
+			BGMSource.volume = value;
+			PlayerData.Instance.BGMVolume = value;
+			break;
+		case 1:
+			SFXSource.volume = value;
+			PlayerData.Instance.SFXVolume = value;
+			break;
+		case 2:
+			VoiceSource.volume = value;
+			PlayerData.Instance.VoicesVolume = value;
+			break;
+		}
 	}
 }

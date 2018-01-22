@@ -55,7 +55,7 @@ public class ProgressTile : MonoBehaviour {
 		}
 		progressBarFill.fillAmount = progress;
 
-		Debug.Log ("Expression name: " + name + " Status: " + status + " Progress: " + progress);
+		//Debug.Log ("Expression name: " + name + " Status: " + status + " Progress: " + progress);
 	}
 
 	public void OnClickTile(){
