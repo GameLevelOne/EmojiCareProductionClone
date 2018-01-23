@@ -83,11 +83,12 @@ public class ScreenEmojiDead : BaseUI {
 	}
 
 	void ResetExpressionProgress(){
-		for(int i=0;i<PlayerData.Instance.PlayerEmoji.emojiExpressions.totalExpressionAvailable;i++){
+		for(int i=1;i<PlayerData.Instance.PlayerEmoji.emojiExpressions.totalExpressionAvailable;i++){
 			PlayerData.Instance.PlayerEmoji.emojiExpressions.expressionDataInstances [i].SetCurrentProgress (0);
 			PlayerPrefs.SetInt (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_STATUS +
 			PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType.ToString (), 0);
 		}
+		PlayerPrefs.DeleteKey (PlayerPrefKeys.Emoji.UNLOCKED_EXPRESSIONS + PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType.ToString ());
 	}
 
 	public void TestEmojiDead(){

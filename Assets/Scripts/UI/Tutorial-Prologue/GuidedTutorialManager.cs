@@ -24,7 +24,7 @@ public class GuidedTutorialManager : MonoBehaviour {
 	public GameObject emojiObject;
 
 	void Start(){
-//		PlayerPrefs.DeleteAll ();
+		PlayerPrefs.DeleteAll ();
 		PlayerData.Instance.inventory.SetIngredientValue (IngredientType.Chicken, 1);
 		PlayerData.Instance.inventory.SetIngredientValue (IngredientType.Cabbage, 1);
 		PlayerData.Instance.inventory.SetIngredientValue (IngredientType.Carrot, 1);

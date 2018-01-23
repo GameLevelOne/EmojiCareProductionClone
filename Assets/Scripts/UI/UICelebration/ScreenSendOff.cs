@@ -80,8 +80,9 @@ public class ScreenSendOff : BaseUI {
 
 	void ResetExpressionProgress(){
 		EmojiExpression expr = PlayerData.Instance.PlayerEmoji.emojiExpressions;
-		for(int i=0;i<expr.totalExpressionAvailable;i++){
+		for(int i=1;i<expr.totalExpressionAvailable;i++){
 			expr.expressionDataInstances [i].SetCurrentProgress (0);
 		}
+		PlayerPrefs.DeleteKey (PlayerPrefKeys.Emoji.UNLOCKED_EXPRESSIONS + PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType.ToString ());
 	}
 }

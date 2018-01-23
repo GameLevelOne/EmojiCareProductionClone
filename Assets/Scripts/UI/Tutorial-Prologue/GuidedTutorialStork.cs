@@ -338,8 +338,11 @@ public class GuidedTutorialStork : BaseUI {
 			CloseUI (tutorialObj);
 		} else if(dialogCounter == 62){
 			Emoji playerEmoji = PlayerData.Instance.PlayerEmoji;
-			playerEmoji.happiness.SetStats (playerEmoji.happiness.MaxStatValue);
 			playerEmoji.hunger.SetStats (0.5f * playerEmoji.hunger.MaxStatValue);
+			playerEmoji.hygiene.SetStats (0.5f * playerEmoji.hygiene.MaxStatValue);
+			playerEmoji.stamina.SetStats (0.5f * playerEmoji.stamina.MaxStatValue);
+			playerEmoji.health.SetStats (0.8f * playerEmoji.health.MaxStatValue);
+			playerEmoji.happiness.SetStats (playerEmoji.happiness.MaxStatValue);
 			CloseUI (tutorialObj);
 		} else{
 			transform.GetChild (0).GetComponent<Image> ().raycastTarget = true;

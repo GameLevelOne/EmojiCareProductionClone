@@ -42,6 +42,7 @@ public class SceneMainManager : MonoBehaviour {
 			PlayerData.Instance.LocationKitchen = 1;
 			PlayerData.Instance.LocationBedroom = 1;
 			PlayerData.Instance.LocationBathroom = 1;
+			PlayerData.Instance.PlayerEmoji.happiness.SetStats (0.5f * PlayerData.Instance.PlayerEmoji.happiness.MaxStatValue);
 		}
 
 		InitMain();
