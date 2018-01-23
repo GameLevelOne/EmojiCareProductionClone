@@ -67,11 +67,11 @@ public class SceneMainManager : MonoBehaviour {
 
 			float progress = ((float) node["EmojiUnlockedExpressions"].Count / (float) totalExpression);
 			print("PROGRESS = "+progress);
-			if(progress < 0.3f){
+			if(progress < 0.2f){
 				//baby
 				PlayerData.Instance.InitPlayerBabyEmoji(EmojiAgeType.Baby, emojiSamples[PlayerData.Instance.PlayerEmojiType], emojiSamples[PlayerData.Instance.PlayerEmojiType].GetComponent<Emoji>().emojiBaseData);
 				PlayerData.Instance.PlayerEmoji.GetComponent<BabyEmoji>().sceneManager = this;
-			}else if(progress >= 0.3f && progress <  0.7f){
+			}else if(progress >= 0.2f && progress <  0.5f){
 				//juvenille
 				PlayerData.Instance.InitPlayerBabyEmoji(EmojiAgeType.Juvenille, emojiSamples[PlayerData.Instance.PlayerEmojiType], emojiSamples[PlayerData.Instance.PlayerEmojiType].GetComponent<Emoji>().emojiBaseData);
 				PlayerData.Instance.PlayerEmoji.GetComponent<BabyEmoji>().sceneManager = this;
