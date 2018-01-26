@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+//EmojiID = 0|00 -> emojiID|skinID
 public enum EmojiType{
 	Emoji,
 	EmojiCamo,
@@ -8,6 +9,16 @@ public enum EmojiType{
 	EmojiDog,
 	EmojiSloth,
 	EmojiTomato,
+
+	EmojiClown,
+	EmojiLime,
+	EmojiPirate,
+	EmojiSanta,
+	EmojiSchoolGirl,
+	EmojiTuxedo,
+	EmojiWizard,
+	EmojiBunny,
+
 	Gumiji,
 //	Watermeji,
 //	Spookiji,

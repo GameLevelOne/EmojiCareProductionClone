@@ -30,8 +30,23 @@ public class PopupSelectEmoji : BaseUI {
 	{
 		int maxType = 0;
 
+//		if(PlayerData.Instance.PlayerSendOffCount == 1){
+//			maxType = 3;
+//		} else {
+//			maxType = (int)EmojiType.COUNT;
+//		}
+
+		//TODO: ADJUST THIS
 		if(PlayerData.Instance.PlayerSendOffCount == 1){
 			maxType = 3;
+		} else if(PlayerData.Instance.PlayerSendOffCount == 2){
+			maxType = 5;
+		} else if(PlayerData.Instance.PlayerSendOffCount == 3){
+			maxType = 7;
+		} else if(PlayerData.Instance.PlayerSendOffCount == 4){
+			maxType = 10;
+		} else if(PlayerData.Instance.PlayerSendOffCount == 5){
+			maxType = 13;
 		} else {
 			maxType = (int)EmojiType.COUNT;
 		}

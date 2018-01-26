@@ -16,8 +16,6 @@ public class PopupEmojiGrowth : BaseUI {
 			growthText.text = PlayerData.Instance.EmojiName +" has grown into Teen!";
 			emojiIcon.sprite = emojiIcons.GetBabyEmojiIcon(PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType);
 		}
-
-
 		ShowUI (gameObject);
 	}
 

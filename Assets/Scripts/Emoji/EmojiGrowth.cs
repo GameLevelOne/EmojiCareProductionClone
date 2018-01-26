@@ -45,7 +45,8 @@ public class EmojiGrowth : MonoBehaviour {
 	{
 		float oldScaleValue = emoji.transform.localScale.x;
 		newScaleValue = GetScaleValue(progress);
-
+		Debug.Log ("oldscale:" + oldScaleValue);
+		Debug.Log ("newscale:" + newScaleValue);
 		if (oldScaleValue != newScaleValue) {
 			EmojiAgeType type = newScaleValue == scaleSmall ? EmojiAgeType.Baby : newScaleValue == scaleMedium ? EmojiAgeType.Juvenille : EmojiAgeType.Adult;
 			if(OnNewGrowth != null) OnNewGrowth(type);
