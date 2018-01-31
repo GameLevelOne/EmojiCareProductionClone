@@ -171,25 +171,25 @@ public class ScreenPopup : BaseUI {
 		if (currentPopupType == PopupType.Confirmation) {
 			base.ClosePopup (this.gameObject);
 			if (currentEventType == PopupEventType.SelectEmoji || currentEventType == PopupEventType.BuyEmoji) {
-				Debug.Log("new emoji");
+//				Debug.Log("new emoji");
 				OnCelebrationNewEmoji(tempEmojiSprite,tempEmojiName);
 			} else if(currentEventType == PopupEventType.AbleToSendOff){
-				Debug.Log("send off");
+//				Debug.Log("send off");
 				OnSendOffEmoji(tempEmojiSprite,tempEmojiName);
 			} else if(currentEventType == PopupEventType.NotAbleToSendOff && emojiTransfer){
-				Debug.Log("transfer");
+//				Debug.Log("transfer");
 				OnTransferEmoji();
 			} else if(currentEventType == PopupEventType.AbleToBuyFurniture){
-				Debug.Log ("buy furniture edit room");
+//				Debug.Log ("buy furniture edit room");
 				OnBuyFurniture ();
 			} else if(currentEventType == PopupEventType.ShopAbleToBuyFurniture){
-				Debug.Log ("buy furniture shop");
+//				Debug.Log ("buy furniture shop");
 				OnShopBuyFurniture ();
 			} else if(currentEventType == PopupEventType.ResetEmoji){
-				Debug.Log ("reset emoji");
+//				Debug.Log ("reset emoji");
 				OnResetEmoji ();
 			} else if(currentEventType == PopupEventType.ReviveEmoji){
-				Debug.Log ("revive emoji");
+//				Debug.Log ("revive emoji");
 				if(PlayerData.Instance.PlayerGem>=reviveCost){
 					PlayerData.Instance.PlayerGem -= reviveCost;
 					OnReviveEmoji ();
@@ -201,7 +201,6 @@ public class ScreenPopup : BaseUI {
 				OnBuyCoin ();
 			}
 		} else{
-			Debug.Log("3");
 			base.ClosePopup(this.gameObject);
 		}
 

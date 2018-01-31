@@ -24,7 +24,7 @@ namespace admob
         
 		#if UNITY_EDITOR
 	   	public void removeAllBanner(){
-		Debug.Log("calling removeAllBanner");
+//		Debug.Log("calling removeAllBanner");
 	}
 		private void preInitAdmob()
 		{

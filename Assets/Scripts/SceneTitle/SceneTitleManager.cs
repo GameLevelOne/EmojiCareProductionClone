@@ -13,7 +13,7 @@ public class SceneTitleManager : MonoBehaviour {
 		SoundManager.Instance.PlayBGM(BGMList.BGMRadio1);
 
 		Input.multiTouchEnabled = false;
-		PlayerPrefs.DeleteAll();
+//		PlayerPrefs.DeleteAll();
 		Fader.OnFadeOutFinished += HandleFadeOutFinished;
 		GameSparkManager.Instance.OnLoginSuccessful += GoToSceneMain;
 
@@ -21,7 +21,7 @@ public class SceneTitleManager : MonoBehaviour {
 			//authenticate with playertoken.(BUT HOW????)
 		}
 
-//		StartCoroutine(FaderFadeIn());
+		PlayerData.Instance.Shop = 1;
 	}
 
 	IEnumerator FaderFadeIn()

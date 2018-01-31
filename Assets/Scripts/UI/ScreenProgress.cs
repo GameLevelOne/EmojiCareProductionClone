@@ -62,7 +62,6 @@ public class ScreenProgress : BaseUI {
 		}
 
 		if (!isInited) {
-			Debug.Log ("init progress");
 			for (int i = 0; i <= recordCount; i++) {
 				EmojiType type = (EmojiType)PlayerPrefs.GetInt (PlayerPrefKeys.Album.EMOJI_TYPE, 0);
 
@@ -137,8 +136,6 @@ public class ScreenProgress : BaseUI {
 
 		float sendOffPercentage = currentEmojiData.emojiExpressions.sendOffProgressThreshold;
 		currentTotalProgress = currentEmojiData.emojiExpressions.GetTotalExpressionProgress ();
-		Debug.Log ("sendoff percentage:" + sendOffPercentage);
-		Debug.Log ("totalexpression progress:" + currentTotalProgress);
 		totalExpressionProgressText.text = (currentTotalProgress*100f).ToString() + "%";
 		totalProgressBarFill.fillAmount = currentTotalProgress*0.8f;
 
@@ -207,7 +204,6 @@ public class ScreenProgress : BaseUI {
 	}
 
 	public void OnClickEmoji(EmojiType typeIdx){
-		Debug.Log ("on click emoji progress");
 		if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == ShortCode.SCENE_GUIDED_TUTORIAL){
 			StartCoroutine (WaitForPanel ());
 		} else{

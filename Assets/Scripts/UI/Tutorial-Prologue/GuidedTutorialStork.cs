@@ -243,7 +243,6 @@ public class GuidedTutorialStork : BaseUI {
 
 	void OnEmojiApplySponge (float value)
 	{
-		Debug.Log ("foamvalue:" + value);
 		if(value >=10){
 			sponge.OnSpongePicked -= OnSpongePicked;
 			sponge.OnSpongeReleased -= OnSpongeReleased;
@@ -442,7 +441,6 @@ public class GuidedTutorialStork : BaseUI {
 			
 		foreach (GameObject obj in highlightPanels) {
 			if (obj.activeSelf) {
-				Debug.Log ("disable next btn");
 				buttonNext.SetActive (false);
 				//transform.GetChild (0).GetComponent<Image> ().raycastTarget = false;
 				tutorialObj.GetComponent<Image> ().raycastTarget = false;

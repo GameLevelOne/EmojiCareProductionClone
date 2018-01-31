@@ -74,9 +74,10 @@ public class UnityIAPManager : MonoBehaviour,IStoreListener {
     void BuyProductID(string productID){
     	if(IsInitialized()){
 			Product product = controller.products.WithID (productID);
-
+			Debug.Log ("string productID:" + productID);
+			Debug.Log ("inited productID:" + product.definition.storeSpecificId);
 			if(product != null && product.availableToPurchase){
-				Debug.Log(string.Format("Purchasing product asychronously: '{0}'", product.definition.id));
+//				Debug.Log(string.Format("Purchasing product asychronously: '{0}'", product.definition.id));
 				controller.InitiatePurchase (product);
 			} else{
 				if (OnFailToBuyProduct != null)
@@ -99,21 +100,21 @@ public class UnityIAPManager : MonoBehaviour,IStoreListener {
     {
     	string purchasedProductID = "";
 		 if(string.Equals(e.purchasedProduct.definition.id,ShortCode.ProductIDs.id_Gem1,StringComparison.Ordinal)){
-			Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", e.purchasedProduct.definition.id));
+//			Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", e.purchasedProduct.definition.id));
 			purchasedProductID = ShortCode.ProductIDs.id_Gem1;
 		} else if(string.Equals(e.purchasedProduct.definition.id,ShortCode.ProductIDs.id_Gem2,StringComparison.Ordinal)){
-			Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", e.purchasedProduct.definition.id));
+//			Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", e.purchasedProduct.definition.id));
 			purchasedProductID = ShortCode.ProductIDs.id_Gem2;
 		} else if(string.Equals(e.purchasedProduct.definition.id,ShortCode.ProductIDs.id_Gem3,StringComparison.Ordinal)){
-			Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", e.purchasedProduct.definition.id));
+//			Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", e.purchasedProduct.definition.id));
 			purchasedProductID = ShortCode.ProductIDs.id_Gem3;
 		} else if(string.Equals(e.purchasedProduct.definition.id,ShortCode.ProductIDs.id_Gem4,StringComparison.Ordinal)){
-			Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", e.purchasedProduct.definition.id));
+//			Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", e.purchasedProduct.definition.id));
 			purchasedProductID = ShortCode.ProductIDs.id_Gem4;
      	} 
 
      	if(string.IsNullOrEmpty(purchasedProductID)){
-			Debug.Log(string.Format("ProcessPurchase: FAIL. Unrecognized product: '{0}'", e.purchasedProduct.definition.id));
+//			Debug.Log(string.Format("ProcessPurchase: FAIL. Unrecognized product: '{0}'", e.purchasedProduct.definition.id));
 			if (OnFailToBuyProduct != null)
 				OnFailToBuyProduct ("Purchased failed. Unknown product");
      	}

@@ -134,8 +134,6 @@ public class ScreenTutorial : BaseUI {
 				CheckStatsPlayerPrefs (TutorialType.TriggerHealthRed);
 			}
 			ShowFirstDialog (statsTutorialPanels [0]);
-
-			Debug.Log ("stacks:" + statsTutorialPanels.Count);
 		}
 	}
 
@@ -229,37 +227,37 @@ public class ScreenTutorial : BaseUI {
 		bool showTutorial = true;
 
 		if(type == TutorialType.TriggerHungerRed){
-			Debug.Log ("hunger red pref");
+//			Debug.Log ("hunger red pref");
 			currentTutorial = TutorialType.TriggerHungerRed;
 			if(PlayerData.Instance.TutorialFirstHungerRed == 0){
 				PlayerData.Instance.TutorialFirstHungerRed = 1;
 			} 
 		} else if(type == TutorialType.TriggerHygieneRed){
-			Debug.Log ("hygiene red pref");
+//			Debug.Log ("hygiene red pref");
 			currentTutorial = TutorialType.TriggerHygieneRed;
 			if(PlayerData.Instance.TutorialFirstHygieneRed == 0){
 				PlayerData.Instance.TutorialFirstHygieneRed = 1;
 			} 
 		} else if(type == TutorialType.TriggerHappinessRed){
-			Debug.Log ("happiness red pref");
+//			Debug.Log ("happiness red pref");
 			currentTutorial = TutorialType.TriggerHappinessRed;
 			if(PlayerData.Instance.TutorialFirstHappinessRed == 0){
 				PlayerData.Instance.TutorialFirstHappinessRed = 1;
 			} 
 		} else if(type == TutorialType.TriggerStaminaRed){
-			Debug.Log ("stamina red pref");
+//			Debug.Log ("stamina red pref");
 			currentTutorial = TutorialType.TriggerStaminaRed;
 			if(PlayerData.Instance.TutorialFirstStaminaRed == 0){
 				PlayerData.Instance.TutorialFirstStaminaRed = 1;
 			} 
 		} else if(type == TutorialType.TriggerHealthOrange){
-			Debug.Log ("health orange pref");
+//			Debug.Log ("health orange pref");
 			currentTutorial = TutorialType.TriggerHealthOrange;
 			if(PlayerData.Instance.TutorialFirstHealthOrange == 0){
 				PlayerData.Instance.TutorialFirstHealthOrange = 1;
 			} 
 		} else if(type == TutorialType.TriggerHealthRed){
-			Debug.Log ("health red pref");
+//			Debug.Log ("health red pref");
 			currentTutorial = TutorialType.TriggerHealthRed;
 			if(PlayerData.Instance.TutorialFirstHealthRed == 0){
 				PlayerData.Instance.TutorialFirstHealthRed = 1;
@@ -455,7 +453,6 @@ public class ScreenTutorial : BaseUI {
 		} else {
 //			currentPref = 1;
 			base.CloseUI (screenTutorialObj);
-			Debug.Log (statsTutorialPanels.Count);
 			if (isStatsTutorial) {
 				if (statsTutorialPanels.Count > 1) {
 					statsTutorialPanels.RemoveAt (0);
@@ -533,7 +530,6 @@ public class ScreenTutorial : BaseUI {
 	}
 
 	IEnumerator WaitForRoomChange(){
-		Debug.Log ("START WAITING");
 		yield return new WaitForSeconds (10f);
 		if (!roomChange) {
 			PlayerData.Instance.TutorialIdleLivingRoom = 1;

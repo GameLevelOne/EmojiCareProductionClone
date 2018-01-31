@@ -18,7 +18,7 @@ public class ScreenLocations : BaseUI {
 
 	public override void InitUI ()
 	{
-		Debug.Log("locations");
+//		Debug.Log("locations");
 		currentRoomIndex = (int)roomController.currentRoom;
 		UpdateDisplay(currentRoomIndex);
 	}

@@ -43,9 +43,27 @@ public class ScreenSendOff : BaseUI {
 		CheckEmojiExpressionStatus ();
 		PlayerData.Instance.PlayerSendOffCount++;
 
-		if(PlayerData.Instance.PlayerSendOffCount == 2){
-			PlayerData.Instance.Shop = 1;
-			PlayerData.Instance.EditRoom = 1;
+		switch(PlayerData.Instance.PlayerSendOffCount){
+			case 2:
+				PlayerData.Instance.Shop = 1;
+				PlayerData.Instance.EditRoom = 1;
+				PlayerData.Instance.GardenField2 = 1;
+				PlayerData.Instance.RecipeRamen = 1;
+				PlayerData.Instance.IngredientEgg = 1;
+				PlayerData.Instance.IngredientMeat = 1;
+				PlayerData.Instance.IngredientFlour = 1;
+				break;
+			case 3:
+				PlayerData.Instance.MiniGameDanceMat = 1;
+				PlayerData.Instance.RecipeBurger = 1;
+				PlayerData.Instance.IngredientCheese = 1;
+				break;
+			case 4:
+				PlayerData.Instance.MiniGamePainting = 1;
+				PlayerData.Instance.MiniGameBlocks = 1;
+				PlayerData.Instance.RecipeGrilledFish = 1;
+				PlayerData.Instance.IngredientFish = 1;
+				break;
 		}
 	}
 

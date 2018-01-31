@@ -168,19 +168,19 @@ public class GachaReward : BaseUI {
 		if(type == RewardType.Gem){
 			gem = Random.Range (minGem, (maxGem + 1));
 			PlayerData.Instance.PlayerGem += gem;
-			Debug.Log ("Gem: "+gem);
+//			Debug.Log ("Gem: "+gem);
 			UpdateRewardDisplay (type, IngredientType.COUNT,gem);
 		} else if(type == RewardType.Costume){
 			CheckDuplicateCostume (Random.Range (0, (int)HatType.COUNT));
 			//update reward
 		} else if(type == RewardType.Ingredients){
 			IngredientType ingredient =	(IngredientType) Random.Range (0, (int)IngredientType.COUNT);
-			Debug.Log ("Ingredients: "+ingredient);
+//			Debug.Log ("Ingredients: "+ingredient);
 			PlayerData.Instance.inventory.ModIngredientValue (ingredient,1);
 			UpdateRewardDisplay (type, ingredient, 1);
 		} else if(type == RewardType.Coin){
 			coin = Random.Range (minCoin, (maxCoin + 1));
-			Debug.Log("coin "+coin.ToString());
+//			Debug.Log("coin "+coin.ToString());
 			PlayerData.Instance.PlayerCoin += coin;
 			UpdateRewardDisplay (type, IngredientType.COUNT,coin);
 		}	
@@ -204,15 +204,15 @@ public class GachaReward : BaseUI {
 		foreach(HatType item in unlockedHats){
 			if(item == (HatType)result){
 				dupeHat = true;
-				Debug.Log ("Dupe hat");
+//				Debug.Log ("Dupe hat");
 			}
 		}
 		if(dupeHat){
-			Debug.Log ("reroll");
+//			Debug.Log ("reroll");
 			StartGacha ();
 		}else{
 			unlockedHats.Add ((HatType)result);
-			Debug.Log ("Hat " + (HatType)result);
+//			Debug.Log ("Hat " + (HatType)result);
 		}
 	}
 

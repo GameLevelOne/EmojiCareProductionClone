@@ -6,10 +6,10 @@ public class GardenStork : MonoBehaviour {
 	Vector3 startPos = new Vector3(-4.68f,5.07f,0);
 	Vector3 endPos = new Vector3(4.42f,5.07f,0);
 	float timer=0;
-	float duration=5;
+	float duration=10;
 
 	public void Init(){
-		InvokeRepeating ("MoveStork", 10, 30);
+		InvokeRepeating ("MoveStork", 10f, 60f);
 	}
 
 	public void Stop(){
@@ -27,5 +27,6 @@ public class GardenStork : MonoBehaviour {
 			yield return null;
 		}
 		timer = 0;
+		transform.position = startPos;
 	}
 }

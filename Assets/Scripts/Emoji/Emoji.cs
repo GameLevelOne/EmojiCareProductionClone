@@ -353,7 +353,7 @@ public class Emoji : MonoBehaviour {
 	protected void OnApplicationPause(bool isPaused)
 	{
 		if(isPaused){ 
-			Debug.Log ("isTicking is false");
+//			Debug.Log ("isTicking is false");
 			isTickingStat = false;
 //			StopCoroutine(_TickingStats);
 			timeOnPause = DateTime.Now;
@@ -365,7 +365,7 @@ public class Emoji : MonoBehaviour {
 
 	protected void OnApplicationQuit()
 	{
-		Debug.Log ("isTicking is false");
+//		Debug.Log ("isTicking is false");
 		isTickingStat = false;
 //		StopCoroutine(_TickingStats);
 		lastTimePlayed = DateTime.Now;

@@ -55,7 +55,7 @@ public class Sponge : TriggerableFurniture {
 
 	public void BeginDrag()
 	{
-		Debug.Log ("sponge begin drag");
+//		Debug.Log ("sponge begin drag");
 		if(OnSpongePicked != null) OnSpongePicked();
 	}
 	public void EndDrag()

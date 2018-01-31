@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class ScreenAlbum : BaseUI {
 	public ScreenPopup screenPopup;
 	public GameObject emojiBoxPrefab;
+	public GameObject hotkeyButton;
 	public RectTransform emojiContentBox;
 	public Scrollbar scrollbar;
 	public Image emojiBigIcon;
@@ -57,6 +58,7 @@ public class ScreenAlbum : BaseUI {
 
 	public override void InitUI ()
 	{
+		hotkeyButton.SetActive (false);
 		if (!isInited) {
 			isInited = true;
 
@@ -100,7 +102,6 @@ public class ScreenAlbum : BaseUI {
 
 					if (PlayerData.Instance.EmojiAlbumData.Count != 0 && (currentRecordCount - 1) >= tempIdx) {
 						if (PlayerData.Instance.EmojiAlbumData [tempIdx] != null) {
-							Debug.Log ("asd");
 							Sprite sprite = emojiIcons.GetEmojiIcon (PlayerData.Instance.EmojiAlbumData [tempIdx]);
 							string entryTime = PlayerData.Instance.EmojiAlbumEntryTime [tempIdx];
 							float completionRate = PlayerData.Instance.EmojiCompletionRate [tempIdx];
@@ -118,9 +119,9 @@ public class ScreenAlbum : BaseUI {
 	}
 
 	public void AddEmojiRecord(){
-		Debug.Log("add emoji record");
+//		Debug.Log("add emoji record");
 		currentRecordCount++;
-		Debug.Log ("record count:" + currentRecordCount);
+//		Debug.Log ("record count:" + currentRecordCount);
 		if(currentRecordCount > tileCount){
 			tileCount = currentRecordCount;
 		}
@@ -156,5 +157,6 @@ public class ScreenAlbum : BaseUI {
 			base.ClosePanelInHotkey (this.gameObject);
 		}
 		openedFromAlbumObj = false;
+		hotkeyButton.SetActive (true);
 	}
 }

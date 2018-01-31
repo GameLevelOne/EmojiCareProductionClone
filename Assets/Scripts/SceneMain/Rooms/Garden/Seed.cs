@@ -81,7 +81,7 @@ public class Seed : MonoBehaviour {
 	public void EndDrag()
 	{
 		if(OnEndDragSeed!=null){
-			Debug.Log ("isBought:" + isBought);
+//			Debug.Log ("isBought:" + isBought);
 			OnEndDragSeed(isBought);
 		}
 

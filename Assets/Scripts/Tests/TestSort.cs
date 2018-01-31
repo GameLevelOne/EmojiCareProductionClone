@@ -18,7 +18,7 @@ public class TestSort : MonoBehaviour {
 
 	public void AddNotif(){
 		testList.Add (10);
-		Debug.Log ("EVENT ADD - member count:" + testList.Count.ToString ());
+//		Debug.Log ("EVENT ADD - member count:" + testList.Count.ToString ());
 	}
 
 	IEnumerator AutoDelete(){
@@ -26,7 +26,7 @@ public class TestSort : MonoBehaviour {
 			if(testList.Count>=1){
 				yield return new WaitForSeconds (2);
 				testList.RemoveAt (0);
-				Debug.Log ("EVENT REMOVE - member count:" + testList.Count.ToString ());
+//				Debug.Log ("EVENT REMOVE - member count:" + testList.Count.ToString ());
 				yield return null;
 			}
 			yield return null;
@@ -44,9 +44,9 @@ public class TestSort : MonoBehaviour {
 			}
 		}
 
-		for(int i=0;i<5;i++){
-			Debug.Log(a[i]);
-		}
+//		for(int i=0;i<5;i++){
+////			Debug.Log(a[i]);
+//		}
 	}
 
 	public void Init(){
@@ -119,7 +119,7 @@ public class TestSort : MonoBehaviour {
 				foreach (Ingredients item2 in recipes[i].ingredients) {
 					if (item == item2) {
 						recipes [i].correctIngredientCounter++;
-						Debug.Log (recipes [i].correctIngredientCounter.ToString ());
+//						Debug.Log (recipes [i].correctIngredientCounter.ToString ());
 					}
 				}
 				if (recipes [i].correctIngredientCounter == recipes [i].ingredients.Count) {
@@ -139,11 +139,11 @@ public class TestSort : MonoBehaviour {
 			}
 		}
 
-		if (correctRecipeIdx != -1) {
-			Debug.Log ("correct recipe: ");
-			foreach (Ingredients item in recipes[correctRecipeIdx].ingredients) {
-				Debug.Log (item.ToString ());
-			}
-		}
+//		if (correctRecipeIdx != -1) {
+////			Debug.Log ("correct recipe: ");
+//			foreach (Ingredients item in recipes[correctRecipeIdx].ingredients) {
+//				Debug.Log (item.ToString ());
+//			}
+//		}
 	}
 }
