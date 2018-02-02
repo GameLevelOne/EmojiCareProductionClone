@@ -5,7 +5,8 @@ using UnityEngine;
 public enum BGMList{
 	BGMMain,
 	BGMRadio1,
-	BGMRadio2
+	BGMRadio2,
+	BGMTitle
 }
 
 public enum SFXList{
@@ -18,7 +19,9 @@ public enum SFXList{
 	Ding,
 	AlarmClock,
 	Globe,
-	Bong
+	Bong,
+	TapToStart,
+	DartHitBoard
 }
 
 public enum VoiceList{

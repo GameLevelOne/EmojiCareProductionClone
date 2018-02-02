@@ -10,7 +10,7 @@ public class SceneTitleManager : MonoBehaviour {
 	string nextScene;
 
 	void Start(){
-		SoundManager.Instance.PlayBGM(BGMList.BGMRadio1);
+		SoundManager.Instance.PlayBGM(BGMList.BGMTitle);
 
 		Input.multiTouchEnabled = false;
 //		PlayerPrefs.DeleteAll();
@@ -49,6 +49,8 @@ public class SceneTitleManager : MonoBehaviour {
 
 	public void TapToStart ()
 	{
+		if (SoundManager.Instance)
+			SoundManager.Instance.PlaySFXOneShot (SFXList.TapToStart);
 		fader.FadeOut();
 	}
 

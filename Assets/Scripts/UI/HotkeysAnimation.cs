@@ -45,6 +45,7 @@ public class HotkeysAnimation : MonoBehaviour {
 		buttonHotkey.SetActive(false);
 		DisableHotkeyButtons();
 
+		if (SoundManager.Instance) SoundManager.Instance.PlaySFXOneShot (SFXList.OpenThings);
 		if (AdmobManager.Instance) AdmobManager.Instance.HideBanner ();
 
 		int temp = PlayerData.Instance.EmojiRecordCount;
