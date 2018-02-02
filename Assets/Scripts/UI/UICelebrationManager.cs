@@ -59,13 +59,13 @@ public class UICelebrationManager : MonoBehaviour {
 
 	void OnCelebrationNewEmoji (Sprite sprite,string emojiName)
 	{
-		Debug.Log("new emoji");
+//		Debug.Log("new emoji");
 		screenNewEmoji.ShowUI(sprite,emojiName,screenNewEmoji.gameObject);
 	}
 
 	void OnNewExpression (int expressionStateIndex,bool isNewExpression)
 	{
-		Debug.Log("new expression");
+//		Debug.Log("new expression");
 		EmojiExpression expr = PlayerData.Instance.PlayerEmoji.emojiExpressions;
 		if(expr.GetTotalExpressionProgress() >= expr.sendOffProgressThreshold){
 //			if(PlayerData.Instance.TutorialFirstExpressionFull == 0)
@@ -87,7 +87,7 @@ public class UICelebrationManager : MonoBehaviour {
 
 	void OnSendOffEmoji (Sprite sprite, string emojiName)
 	{
-		Debug.Log("send off");
+//		Debug.Log("send off");
 		Emoji currentEmoji = PlayerData.Instance.PlayerEmoji;
 		screenSendOff.ShowUI(sprite,emojiName,screenSendOff.gameObject);
 	}
@@ -95,8 +95,7 @@ public class UICelebrationManager : MonoBehaviour {
 	void OnEmojiDead ()
 	{
 		ResetData ();
-		Debug.Log("emoji dead");
-
+//		Debug.Log("emoji dead");
 		if(PlayerData.Instance.TutorialFirstEmojiDead == 0){
 			screenTutorial.ShowFirstDialog (TutorialType.TriggerFirstDead);
 		}
@@ -107,7 +106,7 @@ public class UICelebrationManager : MonoBehaviour {
 
 	void OnTransferEmoji ()
 	{
-		Debug.Log("emoji transferred");
+//		Debug.Log("emoji transferred");
 		Sprite sprite = emojiIcons.GetEmojiIcon(PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType);
 		screenEmojiTransfer.ShowUI(sprite,screenEmojiTransfer.gameObject);
 	}
@@ -127,7 +126,7 @@ public class UICelebrationManager : MonoBehaviour {
 	}
 
 	IEnumerator WaitForNewExpression(int expressionStateIndex,bool isNewExpression){
-		Debug.Log("wait");
+//		Debug.Log("wait");
 		NotificationNewExpression obj = Instantiate(notificationExpressionProgress,canvasParent,false) as NotificationNewExpression;
 		if(isNewExpression){
 			buttonGacha.SetActive (true);

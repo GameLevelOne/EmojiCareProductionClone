@@ -37,6 +37,7 @@ public class DartboardMinigame : BaseUI {
 			if (!moveMark) {
 				dartAnim.SetBool (boolShoot, true);
 				dartAnim.SetBool (boolReset, false);
+				StartCoroutine (WaitShootAnim ());
 			}
 			shotCount++;
 			if(shotCount == 3 && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == ShortCode.SCENE_GUIDED_TUTORIAL){
@@ -83,5 +84,11 @@ public class DartboardMinigame : BaseUI {
 		isWaiting = false;
 		buttonBack.SetActive (true);
 		StartCoroutine (MoveArrow ());
+	}
+
+	IEnumerator WaitShootAnim(){
+		yield return new WaitForSeconds (0.5f);
+		if (SoundManager.Instance)
+			SoundManager.Instance.PlaySFXOneShot (SFXList.DartHitBoard);
 	}
 }

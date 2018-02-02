@@ -75,7 +75,6 @@ public class CaptureEmojiManager : MonoBehaviour {
 
 	public void BackToGame()
 	{
-		Debug.Log ("back to game");
 		if (cameraFront != null) cameraFront.GetComponent<DeviceCamera> ().Stop ();
 		if (cameraBack != null)	cameraBack.GetComponent<DeviceCamera> ().Stop ();
 
@@ -121,7 +120,7 @@ public class CaptureEmojiManager : MonoBehaviour {
 	public IEnumerator SharingScreenshot()
 	{
 		isProcessing = true;
-		Debug.Log ("processing share");
+//		Debug.Log ("processing share");
 		dataToSave = tex.EncodeToPNG ();
 		string destination = Application.persistentDataPath + "/" + fileName;
 		File.WriteAllBytes (destination, dataToSave);

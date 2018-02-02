@@ -117,7 +117,7 @@ public class EmojiExpression {
 	public float GetTotalExpressionProgress()
 	{
 		EmojiType emojiType = PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType;
-		Debug.Log ("emojitype:" + emojiType);
+//		Debug.Log ("emojitype:" + emojiType);
 		int counter = 1;
 		foreach(EmojiExpressionData data in expressionDataInstances){
 			if(data.GetProgressRatio(emojiType) == 1){
@@ -257,7 +257,7 @@ public class EmojiExpression {
 	/// </summary>
 	public void ResetExpressionDuration()
 	{
-		Debug.Log("ResetDuration");
+//		Debug.Log("ResetDuration");
 		currentDuration = 0f;
 	}
 	#endregion

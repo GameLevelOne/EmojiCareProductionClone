@@ -22,13 +22,13 @@ public class RandomCurrencyGenerator : MonoBehaviour {
 			if(DateTime.Now.CompareTo(PlayerData.Instance.RandomCoinAndGemCooldown) >= 0){
 				
 				GenerateCurrency(selectedObject);
-				Debug.Log("Currency Generated");
-			}else{
-				Debug.Log("Currency Not Available Yet");
-			}
+//				Debug.Log("Currency Generated");
+			}//else{
+//				Debug.Log("Currency Not Available Yet");
+//			}
 		}else{
 			GenerateCurrency(selectedObject);
-			Debug.Log("Currency Generated");
+//			Debug.Log("Currency Generated");
 		}
 	}
 

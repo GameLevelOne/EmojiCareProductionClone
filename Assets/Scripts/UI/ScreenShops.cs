@@ -74,7 +74,7 @@ public class ScreenShops : BaseUI {
 	{
 		PlayerData.Instance.PlayerCoin -= currentItemPrice;
 		UpdateCurrencyDisplay ();
-		Debug.Log (PlayerPrefKeys.Game.FURNITURE_VARIANT + currentItemID);
+//		Debug.Log (PlayerPrefKeys.Game.FURNITURE_VARIANT + currentItemID);
 		PlayerPrefs.SetInt (PlayerPrefKeys.Game.FURNITURE_VARIANT + currentItemID, 1);
 		currentItem.SetOverlay ();
 	}
@@ -174,7 +174,7 @@ public class ScreenShops : BaseUI {
 	}
 
 	public void ConfirmToBuyItem(){
-		Debug.Log (itemType);
+//		Debug.Log (itemType);
 		if(itemType == ItemType.Coin){
 			if(PlayerData.Instance.PlayerGem >= currentItemPrice){
 				screenPopup.ShowPopup (PopupType.Confirmation, PopupEventType.AbleToBuyCoin);
@@ -188,18 +188,17 @@ public class ScreenShops : BaseUI {
 				screenPopup.ShowPopup (PopupType.Warning, PopupEventType.ShopNotAbleToBuyFurniture);
 			}
 		} else if(itemType == ItemType.Gem){
-			string productID = "";
 			if(currentItemCurrency == CurrencyType.Cash){
-				if (currentItemPrice == gemAmount1)
-					productID = ShortCode.ProductIDs.id_Gem1;
-				else if (currentItemPrice == gemAmount2)
-					productID = ShortCode.ProductIDs.id_Gem2;
-				else if (currentItemPrice == gemAmount3)
-					productID = ShortCode.ProductIDs.id_Gem3;
-				else if (currentItemPrice == gemAmount4)
-					productID = ShortCode.ProductIDs.id_Gem4;
-
-				UnityIAPManager.Instance.BuyConsumable (productID);
+//				if (currentItemPrice == gemAmount1)
+//					productID = ShortCode.ProductIDs.id_Gem1;
+//				else if (currentItemPrice == gemAmount2)
+//					productID = ShortCode.ProductIDs.id_Gem2;
+//				else if (currentItemPrice == gemAmount3)
+//					productID = ShortCode.ProductIDs.id_Gem3;
+//				else if (currentItemPrice == gemAmount4)
+//					productID = ShortCode.ProductIDs.id_Gem4;
+				
+				UnityIAPManager.Instance.BuyConsumable (currentItemID);
 			} 	
 		}
 	}

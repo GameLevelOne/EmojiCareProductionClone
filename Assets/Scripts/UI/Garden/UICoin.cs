@@ -27,7 +27,7 @@ public class UICoin : MonoBehaviour {
 	/// </summary>
 	public void ShowUI (int coinAmount, bool isCoin, bool showPrice, bool addition)
 	{
-		Debug.Log ("show coin box");
+//		Debug.Log ("show coin box");
 		GetComponent<Animator> ().SetBool (boolOpenBox,true);
 		priceIsShown = showPrice;
 
@@ -57,8 +57,8 @@ public class UICoin : MonoBehaviour {
 		}
 		currentPrice = coinAmount;
 		if(priceIsShown){
-			Debug.Log ("showprice");
-			Debug.Log (textItemPrice.transform.parent.GetComponent<Animator> ());
+//			Debug.Log ("showprice");
+//			Debug.Log (textItemPrice.transform.parent.GetComponent<Animator> ());
 			StartCoroutine (ShowPrice ());
 		}
 	}
@@ -97,7 +97,7 @@ public class UICoin : MonoBehaviour {
 	}
 
 	public void CloseUI(bool isBought){
-		Debug.Log ("close ui");
+//		Debug.Log ("close ui");
 		if(isBought){
 //			Debug.Log ("bought");
 			StartCoroutine (AnimateCoin (currentCoin,(currentCoin-currentPrice)));

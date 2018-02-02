@@ -7,9 +7,9 @@ public class RefrigeratorIngredientTrigger : MonoBehaviour {
 	public static event EnterBowl OnEnterBowl;
 
 	void OnTriggerEnter2D(Collider2D col){
-		Debug.Log("triggered");
+//		Debug.Log("triggered");
 		if(col.tag == Tags.UI.BOWL){
-			Debug.Log("mangkok");
+//			Debug.Log("mangkok");
 			OnEnterBowl();
 		}
 	}

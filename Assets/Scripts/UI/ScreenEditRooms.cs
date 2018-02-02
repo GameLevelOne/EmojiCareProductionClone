@@ -30,7 +30,7 @@ public class ScreenEditRooms : BaseUI {
 
 	public override void InitUI ()
 	{
-		Debug.Log("edit room");	
+//		Debug.Log("edit room");	
 		int currentRoom = (int)roomController.currentRoom;
 		textPlayerCoin.text = PlayerData.Instance.PlayerCoin.ToString("N0");
 		boxVariants.SetActive (false);
@@ -177,8 +177,8 @@ public class ScreenEditRooms : BaseUI {
 
 	public void OnClickBack ()
 	{
-		Debug.Log ("used:" + currentUsedVariant);
-		Debug.Log ("current:" + currentVariant);
+//		Debug.Log ("used:" + currentUsedVariant);
+//		Debug.Log ("current:" + currentVariant);
 
 		if (currentItem != null) {
 			if (currentUsedVariant != currentItem.currentVariant) {

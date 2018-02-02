@@ -10,10 +10,10 @@ public class SceneTitleManager : MonoBehaviour {
 	string nextScene;
 
 	void Start(){
-		SoundManager.Instance.PlayBGM(BGMList.BGMRadio1);
+		SoundManager.Instance.PlayBGM(BGMList.BGMTitle);
 
 		Input.multiTouchEnabled = false;
-		PlayerPrefs.DeleteAll();
+//		PlayerPrefs.DeleteAll();
 		Fader.OnFadeOutFinished += HandleFadeOutFinished;
 		GameSparkManager.Instance.OnLoginSuccessful += GoToSceneMain;
 
@@ -21,7 +21,7 @@ public class SceneTitleManager : MonoBehaviour {
 			//authenticate with playertoken.(BUT HOW????)
 		}
 
-//		StartCoroutine(FaderFadeIn());
+		PlayerData.Instance.Shop = 1;
 	}
 
 	IEnumerator FaderFadeIn()
@@ -49,6 +49,8 @@ public class SceneTitleManager : MonoBehaviour {
 
 	public void TapToStart ()
 	{
+		if (SoundManager.Instance)
+			SoundManager.Instance.PlaySFXOneShot (SFXList.TapToStart);
 		fader.FadeOut();
 	}
 

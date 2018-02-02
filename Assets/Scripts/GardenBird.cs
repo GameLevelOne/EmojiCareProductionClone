@@ -11,7 +11,7 @@ public class GardenBird : MonoBehaviour {
 	float duration=5;
 
 	public void Init(){
-		InvokeRepeating ("MoveBird", 0, 10);
+		InvokeRepeating ("MoveBird", 7f, 120f);
 	}
 
 	public void Stop(){
@@ -30,5 +30,7 @@ public class GardenBird : MonoBehaviour {
 			yield return null;
 		}
 		timer = 0;
+		transform.position = startPos;
+		transform.localScale = startScale;
 	}
 }

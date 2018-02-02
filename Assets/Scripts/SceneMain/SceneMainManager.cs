@@ -62,7 +62,7 @@ public class SceneMainManager : MonoBehaviour {
 		//load from json	
 		if(PlayerPrefs.HasKey(PlayerPrefKeys.Emoji.UNLOCKED_EXPRESSIONS+emojiType.ToString())){
 			string data = PlayerPrefs.GetString(PlayerPrefKeys.Emoji.UNLOCKED_EXPRESSIONS+emojiType.ToString());
-			Debug.Log (data);
+//			Debug.Log (data);
 			JSONNode node = JSON.Parse(data);
 
 			float progress = ((float) node["EmojiUnlockedExpressions"].Count / (float) totalExpression);

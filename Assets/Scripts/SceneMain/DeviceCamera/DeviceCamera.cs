@@ -34,7 +34,7 @@ public class DeviceCamera : MonoBehaviour {
 		WebCamDevice[] devices = WebCamTexture.devices;
 
 		if(devices.Length == 0){
-			Debug.Log ("No Camera Detected");
+//			Debug.Log ("No Camera Detected");
 			camAvailable = false;
 			return;
 		}
@@ -46,14 +46,14 @@ public class DeviceCamera : MonoBehaviour {
 		}
 
 		if(cameraTexture == null){
-			Debug.Log ("No Camera Found");
+//			Debug.Log ("No Camera Found");
 			return;
 		}
 
 		cameraTexture.Play ();
 		cameraRawImage.texture = cameraTexture;
 		camAvailable = true;
-		Debug.Log ("STATO");
+//		Debug.Log ("STATO");
 	}
 
 	public void Stop()

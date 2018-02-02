@@ -36,9 +36,9 @@ public class ScreenStats : BaseUI {
 	//FOR TESTING
 //	public ScreenTutorial tut;
 
-	public override void InitUI(){
-		Debug.Log("stats");
-	}
+//	public override void InitUI(){
+//		Debug.Log("stats");
+//	}
 
 	void Update(){
 		UpdateUI();

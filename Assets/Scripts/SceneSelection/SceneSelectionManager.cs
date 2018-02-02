@@ -123,7 +123,7 @@ public class SceneSelectionManager : MonoBehaviour {
 		for(int i=0;i<unlockedEmoji.Count;i++){
 			GameObject obj = Instantiate (emojiSelectionObjPrefab, emojiSuptixParent,false);
 			obj.transform.localPosition = new Vector3 (startX + ((i % 3) * 200), startY - (float)(Mathf.FloorToInt (i / 3) * 200));
-			Debug.Log (obj.transform.localPosition);
+//			Debug.Log (obj.transform.localPosition);
 			obj.GetComponent<EmojiSelectionData> ().InitEmoji (emojiSO [unlockedEmoji [i]], tempSprites [unlockedEmoji [i]]);
 		}
 	}

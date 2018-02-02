@@ -42,7 +42,7 @@ public class FloatingStatsManager : MonoBehaviour {
 	public void OnEmojiSleepEvent (bool sleeping)
 	{
 		if (sleeping) {
-			Debug.Log ("sleeping");
+//			Debug.Log ("sleeping");
 			barIsShowing = true;
 			statsMeterObj [(int)EmojiStatsState.Stamina].gameObject.SetActive (true);
 			StartCoroutine(UpdateMeterDisplay ((int)EmojiStatsState.Stamina));
@@ -51,7 +51,7 @@ public class FloatingStatsManager : MonoBehaviour {
 
 	void OnEmojiWake ()
 	{
-		Debug.Log ("WAKEUP");
+//		Debug.Log ("WAKEUP");
 		barIsShowing = false;
 		//StopCoroutine ("UpdateMeterDisplay");
 		//statsMeterObj [(int)EmojiStatsState.Stamina].HideMeter ();
@@ -59,7 +59,7 @@ public class FloatingStatsManager : MonoBehaviour {
 
 	void OnEnterShower ()
 	{
-		Debug.Log ("bathing");
+//		Debug.Log ("bathing");
 		barIsShowing = true;
 		statsMeterObj [(int)EmojiStatsState.Hygiene].gameObject.SetActive (true);
 		StartCoroutine(UpdateMeterDisplay ((int)EmojiStatsState.Hygiene));
@@ -67,7 +67,7 @@ public class FloatingStatsManager : MonoBehaviour {
 
 	void OnExitShower ()
 	{
-		Debug.Log ("FINISH BATHING");
+//		Debug.Log ("FINISH BATHING");
 		barIsShowing = false;
 		//StopCoroutine ("UpdateMeterDisplay");
 		//statsMeterObj [(int)EmojiStatsState.Hygiene].HideMeter ();
