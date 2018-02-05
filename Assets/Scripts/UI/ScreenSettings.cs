@@ -31,14 +31,5 @@ public class ScreenSettings : BaseUI {
 		SoundManager.Instance.SetAudioVolume(type,sliders[type].value);
 	}
 
-	public void OnClickSkipProgress(){
-		EmojiExpression emojiExpression = PlayerData.Instance.PlayerEmoji.emojiExpressions;
-		for (int i = 1; i < emojiExpression.expressionDataInstances.Length; i++) {
-			if ((i < emojiExpression.totalExpressionForSendOff-1)) {
-				emojiExpression.expressionDataInstances [i].SetCurrentProgress (emojiExpression.expressionDataInstances [i].expressionTotalProgress);
-				PlayerPrefs.SetInt (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_STATUS +
-				PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType.ToString () + ((EmojiExpressionState)i).ToString (), 1);
-			}
-		}
-	}
+
 }

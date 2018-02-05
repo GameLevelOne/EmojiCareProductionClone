@@ -106,26 +106,40 @@ public class Pan : BaseFurniture {
 		if(smoke.isPlaying) smoke.Stop();
 	}
 
-	public void CheckIngredientCombination()
+	public void CheckIngredientCombination ()
 	{
 		int foodIndex = -1;
 		int correct = 0;
+		bool correctIngredient = false;
 
 		//for every recipes
-		for(int i = 0;i<cookBook.recipes.Length;i++){
+		for (int i = 0; i < cookBook.recipes.Length; i++) {
 
-//			if(isUnlocked(i)){ <<<<<<< YANG INI
+			if (isUnlocked (i)) { //<<<<<<< YANG INI
 				//if total ingredients amount match the recipe's ingredient amount
-				if(ingredients.Count == cookBook.recipes[i].ingredients.Count){
+				if (ingredients.Count == cookBook.recipes [i].ingredients.Count) {
 
 					//match every ingredient in pan with recipe, correct value will add if match
-					for(int j = 0;j < ingredients.Count;j++){
-						foreach(IngredientType t in cookBook.recipes[i].ingredients){
-							print("Ingredient "+ingredients[j].GetComponent<Ingredient>().type+" compare to "+t);
-							if(ingredients[j].GetComponent<Ingredient>().type == t) correct++;
+//					for(int j = 0;j < ingredients.Count;j++){
+//						foreach(IngredientType t in cookBook.recipes[i].ingredients){
+//							print("Ingredient "+ingredients[j].GetComponent<Ingredient>().type+" compare to "+t);
+//							if(ingredients[j].GetComponent<Ingredient>().type == t) correct++;
+//						}
+//					}
+
+					for (int j = 0; j < cookBook.recipes [i].ingredients.Count; j++) {
+						foreach (GameObject t in ingredients) {
+							print ("Ingredient " + cookBook.recipes [i].ingredients [j] + " compare to " + t.GetComponent<Ingredient> ().type);
+							if (t.GetComponent<Ingredient> ().type == cookBook.recipes [i].ingredients [j]) {
+								correctIngredient = true;
+								break;
+							} 
+						}
+						if (correctIngredient) {
+							correct++;
+							correctIngredient = false;
 						}
 					}
-
 
 					if(correct == cookBook.recipes[i].ingredients.Count) {
 						foodIndex = i;
@@ -134,10 +148,10 @@ public class Pan : BaseFurniture {
 					else correct = 0;
 				}
 			}
-//		} <<<<<<<<<<<YANG INI
+		} //<<<<<<<<<<<YANG INI
 
 
-		if(foodIndex == -1) {
+		if(correct == 0) {
 			print("Wrong recipe");
 			return;
 		}

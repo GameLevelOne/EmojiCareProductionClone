@@ -21,7 +21,9 @@ public enum SFXList{
 	Globe,
 	Bong,
 	TapToStart,
-	DartHitBoard
+	DartHitBoard,
+	Achievement,
+	SendOff
 }
 
 public enum VoiceList{

@@ -15,6 +15,6 @@ public class PanAnimationEvent : MonoBehaviour {
 	}
 	public void InstantiateFood()
 	{
-		pan.InstantiateFood();
+		if(pan.isCooking)	pan.InstantiateFood();
 	}
 }

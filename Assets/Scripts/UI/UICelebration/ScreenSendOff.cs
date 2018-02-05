@@ -31,6 +31,8 @@ public class ScreenSendOff : BaseUI {
 	}
 
 	public void ShowUI(Sprite sprite,string emojiName,GameObject obj){
+		if (SoundManager.Instance)
+			SoundManager.Instance.PlaySFXOneShot (SFXList.SendOff);
 		base.ShowUI(obj);
 		this.sceneLoader = sceneLoader;
 

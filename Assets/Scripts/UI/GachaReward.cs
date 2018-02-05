@@ -105,6 +105,8 @@ public class GachaReward : BaseUI {
 	//button gacha screen
 	public void TapGachaPack(){
 		if(currentAnimState == AnimState.CloseGacha){
+			if (SoundManager.Instance)
+				SoundManager.Instance.PlaySFXOneShot (SFXList.Achievement);
 			currentAnimState = AnimState.OpenGacha;
 
 			gachaCount--;

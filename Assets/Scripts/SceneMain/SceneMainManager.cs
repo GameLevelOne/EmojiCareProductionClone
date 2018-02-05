@@ -44,7 +44,6 @@ public class SceneMainManager : MonoBehaviour {
 			PlayerData.Instance.LocationBathroom = 1;
 			PlayerData.Instance.PlayerEmoji.happiness.SetStats (0.5f * PlayerData.Instance.PlayerEmoji.happiness.MaxStatValue);
 		}
-
 		InitMain();
 	}
 
@@ -231,7 +230,17 @@ public class SceneMainManager : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
-
+	public void OnClickSkipProgress(){
+		int totalExpressionToUnlock = 40;
+		EmojiExpression emojiExpression = PlayerData.Instance.PlayerEmoji.emojiExpressions;
+		for (int i = 1; i < emojiExpression.expressionDataInstances.Length; i++) {
+			if ((i < totalExpressionToUnlock)) {
+				emojiExpression.expressionDataInstances [i].SetCurrentProgress (emojiExpression.expressionDataInstances [i].expressionTotalProgress);
+				PlayerPrefs.SetInt (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_STATUS +
+				PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType.ToString () + ((EmojiExpressionState)i).ToString (), 1);
+			}
+		}
+	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------	
 }

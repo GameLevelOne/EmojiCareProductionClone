@@ -46,6 +46,8 @@ public class PopupGuidedTutorialUnlockables : BaseUI {
 			unlockText.fontSize = 43;
 		}
 		particlePlayer.ShowParticleFireworks ();
+		if (SoundManager.Instance)
+			SoundManager.Instance.PlaySFXOneShot (SFXList.Achievement);
 		ShowUI (popupObj);
 	}
 
