@@ -7,6 +7,7 @@ public class FieldPost : MonoBehaviour {
 	#region attributes
 	public Text textTimer;
 	public GardenField field;
+	public ScreenPopup popup;
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
@@ -14,7 +15,6 @@ public class FieldPost : MonoBehaviour {
 	{
 		field.OnTimerTick += OnTimerTick;
 	}
-
 	void OnDisable()
 	{
 		field.OnTimerTick -= OnTimerTick;
@@ -40,7 +40,12 @@ public class FieldPost : MonoBehaviour {
 		gameObject.SetActive(false);
 		textTimer.gameObject.SetActive(false);
 	}
-
+	public void OnClickPost ()
+	{
+		if (field.isUnlocked()) {
+			popup.ShowPopup (PopupType.Confirmation, PopupEventType.SpeedUpPlant);
+		}
+	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------	
 

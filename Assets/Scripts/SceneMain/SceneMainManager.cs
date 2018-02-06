@@ -20,6 +20,7 @@ public class SceneMainManager : MonoBehaviour {
 	public Bedroom bedroom;
 	public RandomBedroomObjectController randomBedroomObjectController;
 	public FloatingStatsManager floatingStatsManager;
+	public ButtonSpecialWakeUp buttonWakeUp;
 
 	//sementara
 	public GameObject[] emojiSamples;
@@ -127,6 +128,7 @@ public class SceneMainManager : MonoBehaviour {
 		gachaReward.Init ();
 		celebrationManager.Init();
 		floatingStats.Init ();
+		buttonWakeUp.Init ();
 
 //		if (PlayerData.Instance.TutorialFirstVisit == 0) {
 //			screenTutorial.ShowUI (screenTutorial.screenTutorialObj);

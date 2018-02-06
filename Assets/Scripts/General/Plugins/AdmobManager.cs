@@ -6,7 +6,9 @@ using admob;
 public enum AdEvents{
 	RestockStall,
 	RestockSeeds,
-	ShuffleEmoji
+	ShuffleEmoji,
+	SpeedUpPlant,
+	WakeEmojiUp
 }
 
 public class AdmobManager : MonoBehaviour {
@@ -67,9 +69,9 @@ public class AdmobManager : MonoBehaviour {
 
 	void rewardedVideoEventHandler (string eventName, string msg)
 	{
+		Debug.Log ("eventName:" + eventName + " msg:" + msg);
 		if(eventName == AdmobEvent.onRewarded){
 			OnFinishWatchVideoAds (currentEvent);
-			ad.loadRewardedVideo (androidRewardedVideoID);
 		}
 	}
 
@@ -91,20 +93,22 @@ public class AdmobManager : MonoBehaviour {
 
 	public void ShowRewardedVideo(AdEvents eventName){
 		currentEvent = eventName;
+		ad.loadRewardedVideo (androidRewardedVideoID);
 		StartCoroutine (WaitForAds ());
 	}
 
 	IEnumerator WaitForAds(){
 		bool adsReady = false;
-		while(!adsReady){
+		Debug.Log ("Start waiting. adsReady:" + adsReady);
+		while(!adsReady){ 
 			if(ad.isRewardedVideoReady()){
 				adsReady = true;
 			}
+			Debug.Log ("adsReady:" + adsReady);
 			yield return null;
 		}
-
-
 		if(adsReady){
+			Debug.Log ("ads is ready, playing video");
 			adsReady = false;
 			//OnFinishLoadVideoAds ();
 			ad.showRewardedVideo ();

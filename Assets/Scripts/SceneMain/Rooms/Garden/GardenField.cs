@@ -22,6 +22,7 @@ public class GardenField : MonoBehaviour {
 
 	[Header("value in minutes")]
 	public int harvestTimeCut = 5;
+	public int adsHarvestTimeCut = 10;
 	public int waterCooldownTime = 5;
 
 	[Header("Do Not modify")]
@@ -75,9 +76,8 @@ public class GardenField : MonoBehaviour {
 				}
 			}
 		}
-
+		if(AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds += OnFinishWatchVideoAds;
 		InitPlayerProgressToGardenField();
-
 	}
 
 	public void InitPlayerProgressToGardenField()
@@ -85,6 +85,10 @@ public class GardenField : MonoBehaviour {
 		foreach(GameObject g in lockedSign){
 			g.SetActive(!isUnlocked());
 		}
+	}
+
+	void OnDisable(){
+		if(AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds -= OnFinishWatchVideoAds;
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -101,6 +105,14 @@ public class GardenField : MonoBehaviour {
 		}
 
 		return tempValue == 1 ? true : false;
+	}
+	void OnFinishWatchVideoAds (AdEvents eventName)
+	{
+		if(eventName == AdEvents.SpeedUpPlant){
+			DateTime newPlantHarvestTime = plantHarvestTime.Subtract(TimeSpan.FromMinutes(adsHarvestTimeCut));
+			PlayerPrefs.SetString(prefKeyHarvestTime,newPlantHarvestTime.ToString());
+			print("New harvest time: "+newPlantHarvestTime);
+		}
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -165,7 +177,6 @@ public class GardenField : MonoBehaviour {
 			} else{
 				newPlantHarvestTime = plantHarvestTime.Subtract(TimeSpan.FromMinutes(harvestTimeCut));
 			}
-
 
 			PlayerPrefs.SetString(prefKeyHarvestTime,newPlantHarvestTime.ToString());
 			print("New harvest time: "+newPlantHarvestTime);

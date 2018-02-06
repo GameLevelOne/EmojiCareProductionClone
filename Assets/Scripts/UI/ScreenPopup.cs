@@ -30,7 +30,9 @@ public enum PopupEventType{
 	AbleToBuyCoin,
 	NotAbleToBuyCoin,
 	IAPFail,
-	EmptyName
+	EmptyName,
+	SpeedUpPlant,
+	WakeEmojiUp
 }
 
 public class ScreenPopup : BaseUI {
@@ -160,6 +162,10 @@ public class ScreenPopup : BaseUI {
 			return tempMessage;
 		} else if(eventType == PopupEventType.EmptyName){
 			return "Emoji name cannot be empty";
+		} else if(eventType == PopupEventType.SpeedUpPlant){
+			return "Watch ads to hasten harvest time for 10 minutes?";
+		} else if(eventType == PopupEventType.WakeEmojiUp){
+			return "Watch ads to get bonus stamina for "+PlayerData.Instance.EmojiName+" ?";
 		}
 		else{
 			return "";
@@ -172,33 +178,34 @@ public class ScreenPopup : BaseUI {
 			base.ClosePopup (this.gameObject);
 			if (currentEventType == PopupEventType.SelectEmoji || currentEventType == PopupEventType.BuyEmoji) {
 //				Debug.Log("new emoji");
-				OnCelebrationNewEmoji(tempEmojiSprite,tempEmojiName);
-			} else if(currentEventType == PopupEventType.AbleToSendOff){
+				OnCelebrationNewEmoji (tempEmojiSprite, tempEmojiName);
+			} else if (currentEventType == PopupEventType.AbleToSendOff) {
 //				Debug.Log("send off");
-				OnSendOffEmoji(tempEmojiSprite,tempEmojiName);
-			} else if(currentEventType == PopupEventType.NotAbleToSendOff && emojiTransfer){
+				OnSendOffEmoji (tempEmojiSprite, tempEmojiName);
+			} else if (currentEventType == PopupEventType.NotAbleToSendOff && emojiTransfer) {
 //				Debug.Log("transfer");
-				OnTransferEmoji();
-			} else if(currentEventType == PopupEventType.AbleToBuyFurniture){
+				OnTransferEmoji ();
+			} else if (currentEventType == PopupEventType.AbleToBuyFurniture) {
 //				Debug.Log ("buy furniture edit room");
 				OnBuyFurniture ();
-			} else if(currentEventType == PopupEventType.ShopAbleToBuyFurniture){
+			} else if (currentEventType == PopupEventType.ShopAbleToBuyFurniture) {
 //				Debug.Log ("buy furniture shop");
 				OnShopBuyFurniture ();
-			} else if(currentEventType == PopupEventType.ResetEmoji){
+			} else if (currentEventType == PopupEventType.ResetEmoji) {
 //				Debug.Log ("reset emoji");
 				OnResetEmoji ();
-			} else if(currentEventType == PopupEventType.ReviveEmoji){
+			} else if (currentEventType == PopupEventType.ReviveEmoji) {
 //				Debug.Log ("revive emoji");
-				if(PlayerData.Instance.PlayerGem>=reviveCost){
+				if (PlayerData.Instance.PlayerGem >= reviveCost) {
 					PlayerData.Instance.PlayerGem -= reviveCost;
 					OnReviveEmoji ();
-				} else{
+				} else {
 					ShowPopup (PopupType.Warning, PopupEventType.NotAbleToReviveEmoji);
 				}
-
-			} else if(currentEventType == PopupEventType.AbleToBuyCoin){
+			} else if (currentEventType == PopupEventType.AbleToBuyCoin) {
 				OnBuyCoin ();
+			} else if (currentEventType == PopupEventType.SpeedUpPlant || currentEventType == PopupEventType.WakeEmojiUp) {
+				WatchAds ();
 			}
 		} else{
 			base.ClosePopup(this.gameObject);
@@ -213,6 +220,19 @@ public class ScreenPopup : BaseUI {
 			uiCoin.CloseUI (false);
 		}
 
-		base.ClosePopup(this.gameObject);
+		ClosePopup(this.gameObject);
+	}
+
+	public void WatchAds ()
+	{
+		if (AdmobManager.Instance) {
+			if (currentEventType == PopupEventType.SpeedUpPlant) {
+				AdmobManager.Instance.ShowRewardedVideo (AdEvents.SpeedUpPlant);
+			} else if(currentEventType == PopupEventType.WakeEmojiUp){
+				AdmobManager.Instance.ShowRewardedVideo (AdEvents.WakeEmojiUp);
+			}
+		}
+
+		ClosePopup (this.gameObject);
 	}
 }

@@ -17,9 +17,9 @@ public class SceneTitleManager : MonoBehaviour {
 		Fader.OnFadeOutFinished += HandleFadeOutFinished;
 		GameSparkManager.Instance.OnLoginSuccessful += GoToSceneMain;
 
-		if(! string.IsNullOrEmpty(PlayerData.Instance.PlayerAuthToken)){
-			//authenticate with playertoken.(BUT HOW????)
-		}
+//		if(! string.IsNullOrEmpty(PlayerData.Instance.PlayerAuthToken)){
+//			//authenticate with playertoken.(BUT HOW????)
+//		}
 
 		PlayerData.Instance.Shop = 1;
 	}
