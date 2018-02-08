@@ -21,7 +21,7 @@ public class SceneTitleManager : MonoBehaviour {
 //			//authenticate with playertoken.(BUT HOW????)
 //		}
 
-		PlayerData.Instance.Shop = 1;
+		//PlayerData.Instance.Shop = 1;
 	}
 
 	IEnumerator FaderFadeIn()

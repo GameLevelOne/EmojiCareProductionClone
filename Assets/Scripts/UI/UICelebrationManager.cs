@@ -96,9 +96,9 @@ public class UICelebrationManager : MonoBehaviour {
 	{
 		ResetData ();
 //		Debug.Log("emoji dead");
-		if(PlayerData.Instance.TutorialFirstEmojiDead == 0){
-			screenTutorial.ShowFirstDialog (TutorialType.TriggerFirstDead);
-		}
+//		if(PlayerData.Instance.TutorialFirstEmojiDead == 0){
+//			screenTutorial.ShowFirstDialog (TutorialType.TriggerFirstDead);
+//		}
 
 		Sprite sprite = emojiIcons.GetEmojiIcon(PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType);
 		screenEmojiDead.ShowUI(sprite,screenEmojiDead.gameObject);

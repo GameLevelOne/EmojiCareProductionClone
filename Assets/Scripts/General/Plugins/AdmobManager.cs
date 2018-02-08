@@ -8,7 +8,9 @@ public enum AdEvents{
 	RestockSeeds,
 	ShuffleEmoji,
 	SpeedUpPlant,
-	WakeEmojiUp
+	WakeEmojiUp,
+	FreeCoin,
+	FreeGem
 }
 
 public class AdmobManager : MonoBehaviour {
@@ -31,6 +33,7 @@ public class AdmobManager : MonoBehaviour {
 
 	Admob ad;
 	AdEvents currentEvent;
+	bool videoAdsReady = false;
 
 	public static AdmobManager Instance{
 		get{return instance;}
@@ -65,13 +68,19 @@ public class AdmobManager : MonoBehaviour {
 		#endif
 
 		ad.rewardedVideoEventHandler += rewardedVideoEventHandler;
+
 	}
 
 	void rewardedVideoEventHandler (string eventName, string msg)
 	{
 		Debug.Log ("eventName:" + eventName + " msg:" + msg);
 		if(eventName == AdmobEvent.onRewarded){
+			videoAdsReady = false;
 			OnFinishWatchVideoAds (currentEvent);
+		} else if(eventName == AdmobEvent.onAdLoaded){
+			if(ad.isRewardedVideoReady()){
+				videoAdsReady = true;
+			}
 		}
 	}
 
@@ -101,7 +110,7 @@ public class AdmobManager : MonoBehaviour {
 		bool adsReady = false;
 		Debug.Log ("Start waiting. adsReady:" + adsReady);
 		while(!adsReady){ 
-			if(ad.isRewardedVideoReady()){
+			if(videoAdsReady){
 				adsReady = true;
 			}
 			Debug.Log ("adsReady:" + adsReady);
@@ -110,7 +119,7 @@ public class AdmobManager : MonoBehaviour {
 		if(adsReady){
 			Debug.Log ("ads is ready, playing video");
 			adsReady = false;
-			//OnFinishLoadVideoAds ();
+			if(OnFinishLoadVideoAds!=null) OnFinishLoadVideoAds ();
 			ad.showRewardedVideo ();
 		}
 	}

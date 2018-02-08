@@ -32,7 +32,9 @@ public enum PopupEventType{
 	IAPFail,
 	EmptyName,
 	SpeedUpPlant,
-	WakeEmojiUp
+	WakeEmojiUp,
+	FreeCoinAds,
+	FreeGemAds
 }
 
 public class ScreenPopup : BaseUI {
@@ -86,6 +88,14 @@ public class ScreenPopup : BaseUI {
 
 	PopupEventType currentEventType;
 	PopupType currentPopupType;
+
+	void OnEnable(){
+		if(AdmobManager.Instance) AdmobManager.Instance.OnFinishLoadVideoAds += OnFinishLoadVideoAds;
+	}
+
+	void OnDisable(){
+		if (AdmobManager.Instance) AdmobManager.Instance.OnFinishLoadVideoAds -= OnFinishLoadVideoAds;
+	}
 
 	public void ShowPopup(PopupType type,PopupEventType eventType,bool toShop=false,bool toTransfer=false,Sprite sprite = null,string emojiName = null,string message = null){
 		currentEventType = eventType;
@@ -166,6 +176,10 @@ public class ScreenPopup : BaseUI {
 			return "Watch ads to hasten harvest time for 10 minutes?";
 		} else if(eventType == PopupEventType.WakeEmojiUp){
 			return "Watch ads to get bonus stamina for "+PlayerData.Instance.EmojiName+" ?";
+		} else if(eventType == PopupEventType.FreeCoinAds){
+			return "Watch ads to get free 20 coins?";
+		} else if(eventType == PopupEventType.FreeGemAds){
+			return "Watch ads to get free 1 gem?";
 		}
 		else{
 			return "";
@@ -204,7 +218,8 @@ public class ScreenPopup : BaseUI {
 				}
 			} else if (currentEventType == PopupEventType.AbleToBuyCoin) {
 				OnBuyCoin ();
-			} else if (currentEventType == PopupEventType.SpeedUpPlant || currentEventType == PopupEventType.WakeEmojiUp) {
+			} else if (currentEventType == PopupEventType.SpeedUpPlant || currentEventType == PopupEventType.WakeEmojiUp 
+						|| currentEventType == PopupEventType.FreeCoinAds || currentEventType == PopupEventType.FreeGemAds) {
 				WatchAds ();
 			}
 		} else{
@@ -230,9 +245,16 @@ public class ScreenPopup : BaseUI {
 				AdmobManager.Instance.ShowRewardedVideo (AdEvents.SpeedUpPlant);
 			} else if(currentEventType == PopupEventType.WakeEmojiUp){
 				AdmobManager.Instance.ShowRewardedVideo (AdEvents.WakeEmojiUp);
+			} else if(currentEventType == PopupEventType.FreeCoinAds){
+				AdmobManager.Instance.ShowRewardedVideo (AdEvents.FreeCoin);
+			} else if(currentEventType == PopupEventType.FreeGemAds){
+				AdmobManager.Instance.ShowRewardedVideo (AdEvents.FreeGem);
 			}
 		}
+	}
 
+	void OnFinishLoadVideoAds ()
+	{
 		ClosePopup (this.gameObject);
 	}
 }

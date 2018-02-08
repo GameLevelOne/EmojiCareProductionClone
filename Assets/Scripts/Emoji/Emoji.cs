@@ -250,7 +250,7 @@ public class Emoji : MonoBehaviour {
 		}
 		health.TickStats ();
 
-		if (UnityEngine.SceneManagement.SceneManager.GetActiveScene ().name == ShortCode.SCENE_GUIDED_TUTORIAL) {
+		if (UnityEngine.SceneManagement.SceneManager.GetActiveScene ().name != ShortCode.SCENE_GUIDED_TUTORIAL) {
 			if (health.StatValue <= 0) {
 				if (!emojiDead) {
 					emojiDead = true;

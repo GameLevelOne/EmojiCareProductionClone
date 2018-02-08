@@ -50,6 +50,8 @@ public class ScreenShops : BaseUI {
 	int gemAmount2 = 500;
 	int gemAmount3 = 1000;
 	int gemAmount4 = 5000;
+	int freeCoinAmount = 20;
+	int freeGemAmount = 1;
 
 	string[] shopDescription = new string[2]{"Gem Store","Decoration Store"};
 
@@ -242,6 +244,28 @@ public class ScreenShops : BaseUI {
 			buttonNext.SetActive (false);
 			buttonPrev.SetActive (false);
 		}
+	}
+
+	public void OnClickCurrencyBox(int type){ //0 = gem,1 = coin
+		if(AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds += OnFinishWatchVideoAds;
+		if(type == 0){
+			Debug.Log ("popupgem");
+			screenPopup.ShowPopup (PopupType.Confirmation, PopupEventType.FreeGemAds);
+		} else if(type == 1){
+			Debug.Log ("popupcoin");
+			screenPopup.ShowPopup (PopupType.Confirmation, PopupEventType.FreeCoinAds);
+		}
+	}
+
+	void OnFinishWatchVideoAds (AdEvents eventName)
+	{
+		if(AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds -= OnFinishWatchVideoAds;
+		if(eventName == AdEvents.FreeCoin){
+			PlayerData.Instance.PlayerCoin += freeCoinAmount;
+		} else if(eventName == AdEvents.FreeGem){
+			PlayerData.Instance.PlayerGem += freeGemAmount;
+		}
+		UpdateCurrencyDisplay ();
 	}
 
 	IEnumerator WaitForAnim(int shopIndex){
