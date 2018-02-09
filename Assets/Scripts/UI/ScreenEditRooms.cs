@@ -99,9 +99,9 @@ public class ScreenEditRooms : BaseUI {
 	void ConfirmBuyObject(int price){
 		int currentCoin = PlayerData.Instance.PlayerCoin;
 		 if(currentCoin>=price){
-			screenPopup.ShowPopup (PopupType.Confirmation, PopupEventType.AbleToBuyFurniture, false, false);
+			screenPopup.ShowPopup (PopupType.Confirmation, PopupEventType.AbleToBuyFurniture, false);
 		 } else {
-			screenPopup.ShowPopup (PopupType.Confirmation, PopupEventType.NotAbleToBuyFurniture, true, false);
+			screenPopup.ShowPopup (PopupType.Confirmation, PopupEventType.NotAbleToBuyFurniture, true);
 		 }
 	}
 

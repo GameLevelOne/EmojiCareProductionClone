@@ -146,7 +146,7 @@ public class ScreenAlbum : BaseUI {
 		if(PlayerData.Instance.EmojiRecordCount >= 1){
 			ShowPanelInHotkey(this.gameObject);
 		} else{
-			screenPopup.ShowPopup(PopupType.Warning,PopupEventType.AlbumLocked,false,false);
+			screenPopup.ShowPopup(PopupType.Warning,PopupEventType.AlbumLocked,false);
 		}
 	}
 

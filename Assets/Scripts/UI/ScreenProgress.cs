@@ -156,9 +156,9 @@ public class ScreenProgress : BaseUI {
 		Sprite sprite = emojiIcons.GetEmojiIcon(type);
 		string emojiName = type.ToString();
 		if(canSendOff){
-			screenPopup.ShowPopup(PopupType.Confirmation,PopupEventType.AbleToSendOff,false,false,sprite,emojiName);
+			screenPopup.ShowPopup(PopupType.Confirmation,PopupEventType.AbleToSendOff,false,sprite,emojiName);
 		}else{
-			screenPopup.ShowPopup(PopupType.Warning,PopupEventType.NotAbleToSendOff,false,false);
+			screenPopup.ShowPopup(PopupType.Warning,PopupEventType.NotAbleToSendOff);
 		}
 	} 
 

@@ -27,6 +27,13 @@ public class GachaReward : BaseUI {
 	public Sprite iconCoin;
 	public Sprite iconGem;
 	public Sprite[] iconIngredients;
+	public GameObject buttonReroll;
+	public GameObject text50Coin;
+	public GameObject text100Coin;
+	public GameObject text25Gem;
+	public Text textUserGem;
+	public Text textUserCoin;
+	public ScreenPopup popup;
 
 	public int gachaCount = 0;
 
@@ -46,6 +53,9 @@ public class GachaReward : BaseUI {
 
 	AnimState currentAnimState = AnimState.CloseGacha;
 
+	int rerollCount=0;
+	int resetRerollCount = 5;
+
 	//constants
 	const string gachaPrefKey = "GachaCount";
 	const string gachaAnimParameter = "OpenGacha";
@@ -62,8 +72,8 @@ public class GachaReward : BaseUI {
 	}
 
 	public void Init(){
-
 		gachaCount = PlayerPrefs.GetInt (gachaPrefKey, 0);
+		//gachaCount = 5;
 		textGachaCount.text = gachaCount.ToString ();
 		if(gachaCount <= 0) buttonGacha.SetActive(false);
 	}
@@ -89,6 +99,12 @@ public class GachaReward : BaseUI {
 			textGachaCountInScreen.gameObject.SetActive(true);
 			textGachaCountInScreen.text = gachaCount.ToString();
 			buttonGacha.SetActive (false);
+
+			if(rerollCount>resetRerollCount){
+				rerollCount = 0;
+			}
+			buttonReroll.SetActive (false);
+			UpdateCurrencyDisplay ();
 		}
 	}
 
@@ -102,30 +118,30 @@ public class GachaReward : BaseUI {
 		}
 	}
 
-	//button gacha screen
-	public void TapGachaPack(){
+	void OpenGachaPack(bool isReroll){
 		if(currentAnimState == AnimState.CloseGacha){
+			buttonReroll.SetActive (false);
 			if (SoundManager.Instance)
 				SoundManager.Instance.PlaySFXOneShot (SFXList.Achievement);
 			currentAnimState = AnimState.OpenGacha;
-
-			gachaCount--;
+			if(!isReroll) gachaCount--;
 			PlayerPrefs.SetInt (gachaPrefKey, gachaCount);
 			textGachaCount.text = gachaCount.ToString ();
+
 			if(gachaCount <= 0){
 				textGachaCountInScreen.gameObject.SetActive(false);
 			}else{
 				textGachaCountInScreen.gameObject.SetActive(true);
 				textGachaCountInScreen.text = gachaCount.ToString();
 			}
-
-
 			gachaAnim.SetBool (gachaAnimParameter, true);
 			StartGacha ();
-		}else if(currentAnimState == AnimState.OpenGacha){
+
+		} else if(currentAnimState == AnimState.OpenGacha){
 			currentAnimState = AnimState.CloseGacha;
 			if(gachaCount > 0){
 				gachaAnim.SetBool (gachaAnimParameter, false);
+				SetRerollButton ();
 			}else{
 				base.CloseUI(screenGacha);
 			}
@@ -146,6 +162,28 @@ public class GachaReward : BaseUI {
 //				base.CloseUI (screenGacha);
 //			}
 //		}
+	}
+
+	void SetRerollButton(){
+		buttonReroll.SetActive (true);
+		if(rerollCount == 0){
+			text50Coin.SetActive (true);
+			text100Coin.SetActive (false);
+			text25Gem.SetActive (false);
+		} else if(rerollCount == 1){
+			text50Coin.SetActive (false);
+			text100Coin.SetActive (true);
+			text25Gem.SetActive (false);
+		} else if(rerollCount >= 3){
+			text50Coin.SetActive (false);
+			text100Coin.SetActive (false);
+			text25Gem.SetActive (true);
+		}
+	}
+
+	void UpdateCurrencyDisplay(){
+		textUserGem.text = PlayerData.Instance.PlayerGem.ToString();
+		textUserCoin.text = PlayerData.Instance.PlayerCoin.ToString ();
 	}
 
 	//GACHA MECHANICS
@@ -171,6 +209,7 @@ public class GachaReward : BaseUI {
 			gem = Random.Range (minGem, (maxGem + 1));
 			PlayerData.Instance.PlayerGem += gem;
 //			Debug.Log ("Gem: "+gem);
+			UpdateCurrencyDisplay ();
 			UpdateRewardDisplay (type, IngredientType.COUNT,gem);
 		} else if(type == RewardType.Costume){
 			CheckDuplicateCostume (Random.Range (0, (int)HatType.COUNT));
@@ -184,6 +223,7 @@ public class GachaReward : BaseUI {
 			coin = Random.Range (minCoin, (maxCoin + 1));
 //			Debug.Log("coin "+coin.ToString());
 			PlayerData.Instance.PlayerCoin += coin;
+			UpdateCurrencyDisplay ();
 			UpdateRewardDisplay (type, IngredientType.COUNT,coin);
 		}	
 	}
@@ -232,7 +272,38 @@ public class GachaReward : BaseUI {
 
 		if(gachaCount > 0) buttonGacha.SetActive(true);
 	}
-
+	public void OnClickRerollButton(){
+		bool canReroll = false;
+		if(rerollCount == 0){
+			if(PlayerData.Instance.PlayerCoin >= 50){
+				PlayerData.Instance.PlayerCoin -= 50;
+				canReroll = true;
+			} else{
+				popup.ShowPopup (PopupType.Warning, PopupEventType.NotEnoughCoins);
+			}
+		} else if(rerollCount == 1 || rerollCount == 2){
+			if(PlayerData.Instance.PlayerCoin >= 100){
+				PlayerData.Instance.PlayerCoin -= 100;
+				canReroll = true;
+			} else{
+				popup.ShowPopup (PopupType.Warning, PopupEventType.NotEnoughCoins);
+			}
+		} else if(rerollCount >= 3){
+			if(PlayerData.Instance.PlayerGem >= 25){
+				PlayerData.Instance.PlayerGem -= 25;
+				canReroll = true;
+			} else{
+				popup.ShowPopup (PopupType.Warning, PopupEventType.NotEnoughGems);
+			}
+		}
+		if (canReroll) rerollCount++;
+		Debug.Log ("reroll count:" + rerollCount);
+		OpenGachaPack (true);
+		UpdateCurrencyDisplay ();
+	}
+	public void OnClickGachaPack(){
+		OpenGachaPack (false);
+	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region coroutines

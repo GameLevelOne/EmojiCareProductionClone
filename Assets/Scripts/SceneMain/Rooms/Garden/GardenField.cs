@@ -77,18 +77,18 @@ public class GardenField : MonoBehaviour {
 			}
 		}
 		if(AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds += OnFinishWatchVideoAds;
+		post.popup.OnInstantHarvestPlant += OnInstantHarvestPlant;
 		InitPlayerProgressToGardenField();
 	}
-
 	public void InitPlayerProgressToGardenField()
 	{
 		foreach(GameObject g in lockedSign){
 			g.SetActive(!isUnlocked());
 		}
 	}
-
 	void OnDisable(){
 		if(AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds -= OnFinishWatchVideoAds;
+		post.popup.OnInstantHarvestPlant -= OnInstantHarvestPlant;
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -113,6 +113,12 @@ public class GardenField : MonoBehaviour {
 			PlayerPrefs.SetString(prefKeyHarvestTime,newPlantHarvestTime.ToString());
 			print("New harvest time: "+newPlantHarvestTime);
 		}
+	}
+	void OnInstantHarvestPlant ()
+	{
+		DateTime newPlantHarvestTime = DateTime.Now.Add (TimeSpan.FromSeconds (1));
+		PlayerPrefs.SetString(prefKeyHarvestTime,newPlantHarvestTime.ToString());
+		print("New harvest time: "+newPlantHarvestTime);
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------

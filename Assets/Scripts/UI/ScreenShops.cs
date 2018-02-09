@@ -102,7 +102,7 @@ public class ScreenShops : BaseUI {
 
 	void OnFailToBuyProduct (string message)
 	{
-		screenPopup.ShowPopup (PopupType.Warning, PopupEventType.IAPFail, false,false,null,null,message);
+		screenPopup.ShowPopup (PopupType.Warning,PopupEventType.IAPFail,false,null,null,message);
 	}
 
 	void OnFinishBuyProduct (string productId)

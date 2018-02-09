@@ -107,13 +107,13 @@ public class SceneSelectionManager : MonoBehaviour {
 		PlayerData.Instance.PlayerEmojiType = (int)emojiData.emojiType;
 		if(needToBuy){
 			if(PlayerData.Instance.PlayerGem>= emojiData.price){
-				screenPopup.ShowPopup(PopupType.Confirmation,PopupEventType.BuyEmoji,false,false,sprite,emojiData.emojiType.ToString());
+				screenPopup.ShowPopup(PopupType.Confirmation,PopupEventType.BuyEmoji,false,sprite,emojiData.emojiType.ToString());
 			} else{
 				screenPopup.ShowPopup (PopupType.Warning, PopupEventType.NotAbleToBuyEmoji);
 			}
 		}
 		else{
-			screenPopup.ShowPopup(PopupType.Confirmation,PopupEventType.SelectEmoji,false,false,sprite,emojiData.emojiType.ToString());
+			screenPopup.ShowPopup(PopupType.Confirmation,PopupEventType.SelectEmoji,false,sprite,emojiData.emojiType.ToString());
 		}
 	}
 

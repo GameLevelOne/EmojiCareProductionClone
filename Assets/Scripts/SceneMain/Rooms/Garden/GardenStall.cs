@@ -357,11 +357,11 @@ public class GardenStall : BaseFurniture {
 		}
 	}
 
-	void OnRefillStallWithGems (AdEvents eventName)
+	void OnRefillStallWithGems (PopupEventType eventName)
 	{
-		if(eventName == AdEvents.RestockStall){
+		if(eventName == PopupEventType.RestockStall){
 			RestockItems ();
-		} else if(eventName == AdEvents.RestockSeeds){
+		} else if(eventName == PopupEventType.RestockSeeds){
 			RestockSeeds ();
 		}
 	}

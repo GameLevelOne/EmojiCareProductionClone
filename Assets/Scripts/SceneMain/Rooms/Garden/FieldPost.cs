@@ -8,7 +8,10 @@ public class FieldPost : MonoBehaviour {
 	public Text textTimer;
 	public GardenField field;
 	public ScreenPopup popup;
+	public UICoin uiCoin;
 	#endregion
+
+	int instantHarvestCost = 20;
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
 	void OnEnable()
@@ -43,7 +46,8 @@ public class FieldPost : MonoBehaviour {
 	public void OnClickPost ()
 	{
 		if (field.isUnlocked()) {
-			popup.ShowPopup (PopupType.Confirmation, PopupEventType.SpeedUpPlant);
+			uiCoin.ShowUI (instantHarvestCost, false,true,false);
+			popup.ShowPopup (PopupType.AdsOrGems, PopupEventType.SpeedUpPlant,false,null,null,null,instantHarvestCost);
 		}
 	}
 	#endregion

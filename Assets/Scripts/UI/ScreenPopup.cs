@@ -6,7 +6,8 @@ using UnityEngine.UI;
 public enum PopupType{
 	Warning,
 	Confirmation,
-	AdsOrGems
+	AdsOrGems,
+	Gems
 }
 
 public enum PopupEventType{
@@ -34,7 +35,9 @@ public enum PopupEventType{
 	SpeedUpPlant,
 	WakeEmojiUp,
 	FreeCoinAds,
-	FreeGemAds
+	FreeGemAds,
+	NotEnoughCoins,
+	NotEnoughGems
 }
 
 public class ScreenPopup : BaseUI {
@@ -43,18 +46,20 @@ public class ScreenPopup : BaseUI {
 	public GameObject buttonGroupWarning;
 	public GameObject buttonGroupConfirmation;
 	public GameObject buttonGroupAdsAndGems;
+	public GameObject buttonGroupGems;
 	public GameObject buttonOk;
 	public GameObject buttonShop;
 	public GameObject buttonTransfer;
 	public Text popupText;
+	public Text gemText1;
+	public Text gemText2;
 
 	Sprite tempEmojiSprite;
 	string tempEmojiName;
 	string tempMessage;
 
-	bool emojiTransfer = false;
-
 	int reviveCost = 100; //TODO: ADJUST THIS LATER
+	int instantHarvestCost = 20;
 
 	#region events
 	public delegate void CelebrationNewEmoji(Sprite sprite,string emojiName);
@@ -62,9 +67,6 @@ public class ScreenPopup : BaseUI {
 
 	public delegate void SendOffEmoji(Sprite sprite,string emojiName);
 	public static event SendOffEmoji OnSendOffEmoji;
-
-	public delegate void TransferEmoji();
-	public static event TransferEmoji OnTransferEmoji;
 
 	public delegate void ResetEmoji();
 	public static event ResetEmoji OnResetEmoji;
@@ -84,6 +86,9 @@ public class ScreenPopup : BaseUI {
 	public delegate void BuyCoin();
 	public static event BuyCoin OnBuyCoin;
 
+	public delegate void InstantHarvestPlant();
+	public event InstantHarvestPlant OnInstantHarvestPlant;
+
 	#endregion
 
 	PopupEventType currentEventType;
@@ -97,39 +102,39 @@ public class ScreenPopup : BaseUI {
 		if (AdmobManager.Instance) AdmobManager.Instance.OnFinishLoadVideoAds -= OnFinishLoadVideoAds;
 	}
 
-	public void ShowPopup(PopupType type,PopupEventType eventType,bool toShop=false,bool toTransfer=false,Sprite sprite = null,string emojiName = null,string message = null){
+	public void ShowPopup(PopupType type,PopupEventType eventType,bool toShop=false,Sprite sprite = null,string emojiName = null,string message = null,int gemPrice=0){
 		currentEventType = eventType;
 		currentPopupType = type;
-		emojiTransfer = toTransfer;
 		tempMessage = message;
 		popupText.text = SetPopupText(eventType);
 		if(type == PopupType.Warning){
 			buttonGroupWarning.SetActive(true);
 			buttonGroupConfirmation.SetActive(false);
 			buttonGroupAdsAndGems.SetActive (false);
+			buttonGroupGems.SetActive (false);
 		} else if(type == PopupType.Confirmation){
 			buttonGroupConfirmation.SetActive(true);
 			buttonGroupWarning.SetActive(false);
 			buttonGroupAdsAndGems.SetActive (false);
+			buttonGroupGems.SetActive (false);
 			if(toShop){
-				//buttonShop.SetActive(true);
-				//buttonTransfer.SetActive(false);
-				buttonOk.SetActive(false);
-			} else if(toTransfer){
-				//buttonShop.SetActive(false);
-				//buttonTransfer.SetActive(true);
 				buttonOk.SetActive(false);
 			} else{
-				//buttonShop.SetActive(false);
-				//buttonTransfer.SetActive(false);
 				buttonOk.SetActive(true);
 			}
-		} else{
+		} else if(type == PopupType.AdsOrGems){
 			buttonGroupConfirmation.SetActive(false);
 			buttonGroupWarning.SetActive(false);
 			buttonGroupAdsAndGems.SetActive (true);
+			buttonGroupGems.SetActive (false);
+			gemText1.text = gemPrice.ToString ();
+		} else if(type == PopupType.Gems){
+			buttonGroupConfirmation.SetActive(false);
+			buttonGroupWarning.SetActive(false);
+			buttonGroupAdsAndGems.SetActive (false);
+			buttonGroupGems.SetActive (true);
+			gemText2.text = gemPrice.ToString ();
 		}
-
 		if(sprite!=null){
 			tempEmojiSprite=sprite;
 		}
@@ -137,7 +142,7 @@ public class ScreenPopup : BaseUI {
 			tempEmojiName=emojiName;
 		}
 
-		base.ShowUI(popupObject);
+		ShowUI(popupObject);
 	}
 
 	string SetPopupText (PopupEventType eventType)
@@ -150,20 +155,20 @@ public class ScreenPopup : BaseUI {
 			return "Send off this emoji?";
 		} else if (eventType == PopupEventType.NotAbleToSendOff) {
 			return "Cannot send off yet";
-		} else if(eventType == PopupEventType.NotAbleToBuyEmoji || eventType == PopupEventType.NotAbleToReviveEmoji || eventType == PopupEventType.NotAbleToRestock){
+		} else if(eventType == PopupEventType.NotAbleToBuyEmoji || eventType == PopupEventType.NotAbleToReviveEmoji || 
+			eventType == PopupEventType.NotAbleToRestock || eventType == PopupEventType.NotAbleToBuyCoin || eventType == PopupEventType.NotEnoughGems){
 			return "Not enough gems";
 		} else if(eventType == PopupEventType.AlbumLocked){
 			return "Finish your first emoji to unlock this menu";
 		} else if(eventType == PopupEventType.AbleToBuyFurniture || eventType == PopupEventType.ShopAbleToBuyFurniture){
 			return "Do you want to buy this furniture?";
-		} else if(eventType == PopupEventType.NotAbleToBuyFurniture || eventType == PopupEventType.ShopNotAbleToBuyFurniture){
+		} else if(eventType == PopupEventType.NotAbleToBuyFurniture || eventType == PopupEventType.ShopNotAbleToBuyFurniture || 
+			eventType == PopupEventType.NotEnoughCoins){
 			return "Not enough coins";
 		} else if(eventType == PopupEventType.AbleToBuyCoin){
 			return "Are you sure?";
-		} else if(eventType == PopupEventType.NotAbleToBuyCoin){
-			return "Not enough gems";
 		} else if(eventType == PopupEventType.RestockSeeds || eventType == PopupEventType.RestockStall){
-			return "Do you want to refill?";
+			return "Instantly restock with 10 gems?";
 		} else if(eventType == PopupEventType.ResetEmoji){
 			return "Do you want to start over? You will lose all your progress";
 		} else if(eventType == PopupEventType.ReviveEmoji){
@@ -173,7 +178,7 @@ public class ScreenPopup : BaseUI {
 		} else if(eventType == PopupEventType.EmptyName){
 			return "Emoji name cannot be empty";
 		} else if(eventType == PopupEventType.SpeedUpPlant){
-			return "Watch ads to hasten harvest time for 10 minutes?";
+			return "Watch ads to speed up for 10 minutes OR instantly harvest using 20 gems?";
 		} else if(eventType == PopupEventType.WakeEmojiUp){
 			return "Watch ads to get bonus stamina for "+PlayerData.Instance.EmojiName+" ?";
 		} else if(eventType == PopupEventType.FreeCoinAds){
@@ -196,9 +201,6 @@ public class ScreenPopup : BaseUI {
 			} else if (currentEventType == PopupEventType.AbleToSendOff) {
 //				Debug.Log("send off");
 				OnSendOffEmoji (tempEmojiSprite, tempEmojiName);
-			} else if (currentEventType == PopupEventType.NotAbleToSendOff && emojiTransfer) {
-//				Debug.Log("transfer");
-				OnTransferEmoji ();
 			} else if (currentEventType == PopupEventType.AbleToBuyFurniture) {
 //				Debug.Log ("buy furniture edit room");
 				OnBuyFurniture ();
@@ -225,7 +227,6 @@ public class ScreenPopup : BaseUI {
 		} else{
 			base.ClosePopup(this.gameObject);
 		}
-
 	}
 
 	public void OnClickButtonCancel(){
@@ -249,7 +250,22 @@ public class ScreenPopup : BaseUI {
 				AdmobManager.Instance.ShowRewardedVideo (AdEvents.FreeCoin);
 			} else if(currentEventType == PopupEventType.FreeGemAds){
 				AdmobManager.Instance.ShowRewardedVideo (AdEvents.FreeGem);
+			} 
+		}
+	}
+
+	public void OnClickButtonGem(){
+		
+		if(currentEventType == PopupEventType.SpeedUpPlant){
+			uiCoin.CloseUI (false);
+			ClosePopup (this.gameObject);
+			if(PlayerData.Instance.PlayerGem >= instantHarvestCost){
+				if (OnInstantHarvestPlant != null)
+					OnInstantHarvestPlant ();
+			} else{
+				ShowPopup (PopupType.Warning, PopupEventType.NotAbleToRestock);
 			}
+
 		}
 	}
 

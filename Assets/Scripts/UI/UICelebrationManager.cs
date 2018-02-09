@@ -30,7 +30,6 @@ public class UICelebrationManager : MonoBehaviour {
 			hasInit = true;
 			ScreenPopup.OnCelebrationNewEmoji += OnCelebrationNewEmoji;
 			ScreenPopup.OnSendOffEmoji += OnSendOffEmoji;
-			ScreenPopup.OnTransferEmoji += OnTransferEmoji;
 		}
 	}
 
@@ -53,7 +52,6 @@ public class UICelebrationManager : MonoBehaviour {
 	void OnDestroy(){
 		ScreenPopup.OnCelebrationNewEmoji -= OnCelebrationNewEmoji;
 		ScreenPopup.OnSendOffEmoji -= OnSendOffEmoji;
-		ScreenPopup.OnTransferEmoji -= OnTransferEmoji;
 		UnregisterEmojiEvents();
 	}
 
