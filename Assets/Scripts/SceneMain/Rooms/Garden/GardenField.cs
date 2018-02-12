@@ -39,45 +39,50 @@ public class GardenField : MonoBehaviour {
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initialization
-	public void Init()
+	public void Init ()
 	{
-		prefKeySeedType = PlayerPrefKeys.Game.Garden.SEED_TYPE+fieldIndex.ToString();
-		prefKeyHarvestTime = PlayerPrefKeys.Game.Garden.SEED_HARVEST_TIME+fieldIndex.ToString();
-		prefKeyWaterCooldownTime = PlayerPrefKeys.Game.Garden.SEED_WATER_COOLDOWN+fieldIndex.ToString();
+		prefKeySeedType = PlayerPrefKeys.Game.Garden.SEED_TYPE + fieldIndex.ToString ();
+		prefKeyHarvestTime = PlayerPrefKeys.Game.Garden.SEED_HARVEST_TIME + fieldIndex.ToString ();
+		prefKeyWaterCooldownTime = PlayerPrefKeys.Game.Garden.SEED_WATER_COOLDOWN + fieldIndex.ToString ();
 
-		foreach(SpriteRenderer s in wetSoil) s.enabled = false;
-		post.Hide();
+		foreach (SpriteRenderer s in wetSoil)
+			s.enabled = false;
+		post.Hide ();
 
-		if(PlayerPrefs.HasKey(prefKeySeedType))
-		{
+		if (PlayerPrefs.HasKey (prefKeySeedType)) {
 			//has plant
-			IngredientType plantType = (IngredientType) PlayerPrefs.GetInt(prefKeySeedType);
-			LoadPlant(plantType);
+			IngredientType plantType = (IngredientType)PlayerPrefs.GetInt (prefKeySeedType);
+			LoadPlant (plantType);
 
 			//check time, compare with plant stage
-			plantHarvestTime = DateTime.Parse(PlayerPrefs.GetString(prefKeyHarvestTime.ToString()));
-			if(DateTime.Now.CompareTo(plantHarvestTime) >= 0){
-				foreach(GameObject g in currentPlants) g.GetComponent<Plant>().UpdatePlantStage(0);
-			}else{
-				StartCoroutine(StartPlantGrowing());
+			plantHarvestTime = DateTime.Parse (PlayerPrefs.GetString (prefKeyHarvestTime.ToString ()));
+			if (DateTime.Now.CompareTo (plantHarvestTime) >= 0) {
+				foreach (GameObject g in currentPlants)
+					g.GetComponent<Plant> ().UpdatePlantStage (0);
+			} else {
+				StartCoroutine (StartPlantGrowing ());
 
-				if(PlayerPrefs.HasKey(prefKeyWaterCooldownTime)){
-					DateTime waterAvailableTime = DateTime.Parse(PlayerPrefs.GetString(prefKeyWaterCooldownTime));
-					if(DateTime.Now.CompareTo(waterAvailableTime) < 0){
-						foreach(SpriteRenderer s in wetSoil) s.enabled = true;
-						StartCoroutine(StartWaterCooldown());
+				if (PlayerPrefs.HasKey (prefKeyWaterCooldownTime)) {
+					DateTime waterAvailableTime = DateTime.Parse (PlayerPrefs.GetString (prefKeyWaterCooldownTime));
+					if (DateTime.Now.CompareTo (waterAvailableTime) < 0) {
+						foreach (SpriteRenderer s in wetSoil)
+							s.enabled = true;
+						StartCoroutine (StartWaterCooldown ());
 						hasWatered = true;
-					}else{
-						foreach(SpriteRenderer s in wetSoil) s.enabled = false;
+					} else {
+						foreach (SpriteRenderer s in wetSoil)
+							s.enabled = false;
 						hasWatered = false;
 					}
-				}else{
+				} else {
 					hasWatered = false;
 				}
 			}
 		}
-		if(AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds += OnFinishWatchVideoAds;
-		post.popup.OnInstantHarvestPlant += OnInstantHarvestPlant;
+		if (UnityEngine.SceneManagement.SceneManager.GetActiveScene ().name != ShortCode.SCENE_GUIDED_TUTORIAL) {
+			if (AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds += OnFinishWatchVideoAds;
+			post.popup.OnInstantHarvestPlant += OnInstantHarvestPlant;
+		}
 		InitPlayerProgressToGardenField();
 	}
 	public void InitPlayerProgressToGardenField()
@@ -86,9 +91,13 @@ public class GardenField : MonoBehaviour {
 			g.SetActive(!isUnlocked());
 		}
 	}
-	void OnDisable(){
-		if(AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds -= OnFinishWatchVideoAds;
-		post.popup.OnInstantHarvestPlant -= OnInstantHarvestPlant;
+	void OnDisable ()
+	{
+		if (UnityEngine.SceneManagement.SceneManager.GetActiveScene ().name != ShortCode.SCENE_GUIDED_TUTORIAL) {
+			if (AdmobManager.Instance)
+				AdmobManager.Instance.OnFinishWatchVideoAds -= OnFinishWatchVideoAds;
+			post.popup.OnInstantHarvestPlant -= OnInstantHarvestPlant;
+		}
 	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------

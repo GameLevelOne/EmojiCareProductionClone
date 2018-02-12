@@ -213,14 +213,14 @@ public class EmojiExpression {
 
 	}
 
-	void UpdateExpressionProgress(EmojiExpressionState expression)
+	void UpdateExpressionProgress (EmojiExpressionState expression)
 	{
-		if(currentExpression != expression){
+		if (currentExpression != expression) {
 			if (IsNewExpression (expression) && expression != EmojiExpressionState.DEFAULT) {
 				EmojiExpressionData currentData = expressionDataInstances [(int)expression];
 				currentData.AddToCurrentProgress (1);
 
-				if(currentData.GetProgressRatio(PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType) >= 1f){
+				if (currentData.GetProgressRatio (PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType) >= 1f) {
 					//new expression
 					unlockedExpressions.Add (expression);
 					PlayerPrefs.SetInt (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_STATUS +
@@ -228,17 +228,21 @@ public class EmojiExpression {
 					expression.ToString (), (int)ExpressionStatus.Unlocked);
 					SaveEmojiExpression ();
 
-					if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == ShortCode.SCENE_GUIDED_TUTORIAL){
-						if(expression == EmojiExpressionState.BLISS){
+					if (UnityEngine.SceneManagement.SceneManager.GetActiveScene ().name == ShortCode.SCENE_GUIDED_TUTORIAL) {
+						if (expression == EmojiExpressionState.BLISS) {
 							if (OnNewExpression != null) {
-								OnNewExpression ((int)expression,true);
+								OnNewExpression ((int)expression, true);
 							}
 						}
-					} else{
+					} else {
 						if (OnNewExpression != null) {
-							OnNewExpression ((int)expression,true);
+							OnNewExpression ((int)expression, true);
 						}
-						PlayerData.Instance.PlayerEmoji.emojiGrowth.UpdateGrowth(GetTotalExpressionProgress());
+						if (expression == EmojiExpressionState.CHANGE_ROOM) {
+							PlayerData.Instance.PlayerEmoji.emojiGrowth.UpdateGrowth (GetTotalExpressionProgress (), true);
+						} else {
+							PlayerData.Instance.PlayerEmoji.emojiGrowth.UpdateGrowth (GetTotalExpressionProgress (), false);
+						}
 					}
 
 				}

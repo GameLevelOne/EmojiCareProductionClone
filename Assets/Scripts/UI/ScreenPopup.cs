@@ -102,21 +102,24 @@ public class ScreenPopup : BaseUI {
 		if (AdmobManager.Instance) AdmobManager.Instance.OnFinishLoadVideoAds -= OnFinishLoadVideoAds;
 	}
 
-	public void ShowPopup(PopupType type,PopupEventType eventType,bool toShop=false,Sprite sprite = null,string emojiName = null,string message = null,int gemPrice=0){
+	public void ShowPopup (PopupType type, PopupEventType eventType, bool toShop = false, Sprite sprite = null, string emojiName = null, string message = null, int gemPrice = 0)
+	{
 		currentEventType = eventType;
 		currentPopupType = type;
 		tempMessage = message;
-		popupText.text = SetPopupText(eventType);
-		if(type == PopupType.Warning){
-			buttonGroupWarning.SetActive(true);
-			buttonGroupConfirmation.SetActive(false);
+		popupText.text = SetPopupText (eventType);
+		if (type == PopupType.Warning) {
+			buttonGroupWarning.SetActive (true);
+			buttonGroupConfirmation.SetActive (false);
 			buttonGroupAdsAndGems.SetActive (false);
 			buttonGroupGems.SetActive (false);
-		} else if(type == PopupType.Confirmation){
-			buttonGroupConfirmation.SetActive(true);
-			buttonGroupWarning.SetActive(false);
+		} else if (type == PopupType.Confirmation) {
+			buttonGroupConfirmation.SetActive (true);
+			buttonGroupWarning.SetActive (false);
 			buttonGroupAdsAndGems.SetActive (false);
-			buttonGroupGems.SetActive (false);
+			if (UnityEngine.SceneManagement.SceneManager.GetActiveScene ().name != ShortCode.SCENE_GUIDED_TUTORIAL) {
+				buttonGroupGems.SetActive (false);
+			}
 			if(toShop){
 				buttonOk.SetActive(false);
 			} else{

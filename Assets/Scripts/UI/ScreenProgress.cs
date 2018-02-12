@@ -134,12 +134,15 @@ public class ScreenProgress : BaseUI {
 			}
 		}
 
-		float sendOffPercentage = currentEmojiData.emojiExpressions.sendOffProgressThreshold;
+		//float sendOffPercentage = currentEmojiData.emojiExpressions.sendOffProgressThreshold;
 		currentTotalProgress = currentEmojiData.emojiExpressions.GetTotalExpressionProgress ();
 		totalExpressionProgressText.text = (currentTotalProgress*100f).ToString() + "%";
 		totalProgressBarFill.fillAmount = currentTotalProgress*0.8f;
 
-		if(currentTotalProgress>=sendOffPercentage){
+		Debug.Log ("currentTotalProgress:"+currentTotalProgress);
+		//Debug.Log ("sendOffPercentage:" + sendOffPercentage);
+
+		if(currentTotalProgress>=1){
 			canSendOff=true;
 		}
 

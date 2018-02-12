@@ -41,13 +41,19 @@ public class EmojiGrowth : MonoBehaviour {
 		
 	}
 
-	public void UpdateGrowth(float progress)
+	public void UpdateGrowth(float progress,bool absScale)
 	{
 		float oldScaleValue = emoji.transform.localScale.x;
+
+		if(absScale){
+			oldScaleValue = Mathf.Abs (oldScaleValue);
+		}
+
 		newScaleValue = GetScaleValue(progress);
-//		Debug.Log ("oldscale:" + oldScaleValue);
-//		Debug.Log ("newscale:" + newScaleValue);
+		Debug.Log ("oldscale:" + oldScaleValue);
+		Debug.Log ("newscale:" + newScaleValue);
 		if (oldScaleValue != newScaleValue) {
+			Debug.Log ("growth event");
 			EmojiAgeType type = newScaleValue == scaleSmall ? EmojiAgeType.Baby : newScaleValue == scaleMedium ? EmojiAgeType.Juvenille : EmojiAgeType.Adult;
 			if(OnNewGrowth != null) OnNewGrowth(type);
 			//panggil popup celebration
