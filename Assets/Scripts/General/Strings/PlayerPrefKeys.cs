@@ -94,6 +94,7 @@ public static class PlayerPrefKeys {
 			public const string EDITROOM = "Player/Progress/EditRoom";
 
 			public const string FIRST_COOK = "Player/Progress/FirstCook";
+			public const string COOK_COUNT = "Player/Progress/CookCount";
 
 		}
 		public const string RANDOM_COINGEM_COOLDOWN = "Player/RandomCoinGemCooldown";

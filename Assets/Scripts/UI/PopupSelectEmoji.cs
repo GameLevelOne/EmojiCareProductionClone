@@ -44,9 +44,9 @@ public class PopupSelectEmoji : BaseUI {
 		} else if(PlayerData.Instance.PlayerSendOffCount == 3){
 			maxType = 7;
 		} else if(PlayerData.Instance.PlayerSendOffCount == 4){
-			maxType = 10;
+			maxType = 9;
 		} else if(PlayerData.Instance.PlayerSendOffCount == 5){
-			maxType = 13;
+			maxType = 11;
 		} else {
 			maxType = (int)EmojiType.COUNT;
 		}

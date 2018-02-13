@@ -42,7 +42,7 @@ public class PopupGuidedTutorialUnlockables : BaseUI {
 			unlockRoomSprite.SetActive (false);
 			unlockRecipeSprite.SetActive (true);
 			ingredientSprites.SetActive (false);
-			unlockText.text = "You have unlocked: \n SALAD RECIPE";
+			unlockText.text = "You have unlocked: \n RECIPE: SALAD";
 			unlockText.fontSize = 43;
 		}
 		particlePlayer.ShowParticleFireworks ();
@@ -59,7 +59,7 @@ public class PopupGuidedTutorialUnlockables : BaseUI {
 			} else if (currentTargetRoom == RoomType.Bedroom) {
 				guidedTutorial.ShowFirstDialog (20);
 			} else if (currentTargetRoom == RoomType.Bathroom) {
-				guidedTutorial.ShowFirstDialog (25); //TODO: CHECK THIS
+				guidedTutorial.ShowFirstDialog (25);
 			} else if (currentTargetRoom == RoomType.Playroom) {
 				guidedTutorial.ShowFirstDialog (35);
 			} else if (currentTargetRoom == RoomType.Garden) {

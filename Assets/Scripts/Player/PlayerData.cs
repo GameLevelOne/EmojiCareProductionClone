@@ -397,6 +397,11 @@ public class PlayerData : MonoBehaviour {
 		set{ PlayerPrefs.SetInt (PlayerPrefKeys.Player.Progress.FIRST_COOK, value);}
 	}
 
+	public int CookCount{
+		get{return PlayerPrefs.GetInt (PlayerPrefKeys.Player.Progress.COOK_COUNT, 0);}
+		set{PlayerPrefs.SetInt (PlayerPrefKeys.Player.Progress.COOK_COUNT, value);}
+	}
+
 	void Awake()
 	{
 		if(instance != null && instance != this) Destroy(this.gameObject);

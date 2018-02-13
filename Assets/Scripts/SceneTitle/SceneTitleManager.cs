@@ -13,7 +13,7 @@ public class SceneTitleManager : MonoBehaviour {
 		SoundManager.Instance.PlayBGM(BGMList.BGMTitle);
 
 		Input.multiTouchEnabled = false;
-//		PlayerPrefs.DeleteAll();
+		PlayerPrefs.DeleteAll();
 		Fader.OnFadeOutFinished += HandleFadeOutFinished;
 		GameSparkManager.Instance.OnLoginSuccessful += GoToSceneMain;
 

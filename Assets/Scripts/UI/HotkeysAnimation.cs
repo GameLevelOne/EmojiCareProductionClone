@@ -7,7 +7,7 @@ public class HotkeysAnimation : MonoBehaviour {
 	public GameObject hotkeyPanel;
 	public GameObject buttonHotkey;
 	public Image buttonAlbum;
-	public Image buttonShop;
+	//public Image buttonShop;
 	public Image buttonEditRoom;
 	public RoomController roomController;
 
@@ -55,14 +55,14 @@ public class HotkeysAnimation : MonoBehaviour {
 			buttonAlbum.color = Color.gray;
 		}
 
-		temp = PlayerData.Instance.Shop;
-		if(temp == 1){
-			buttonShop.color = Color.white;
-			buttonShop.GetComponent<Button> ().interactable = true;
-		} else{
-			buttonShop.color = Color.grey;
-			buttonShop.GetComponent<Button> ().interactable = false;
-		}
+//		temp = PlayerData.Instance.Shop;
+//		if(temp == 1){
+//			buttonShop.color = Color.white;
+//			buttonShop.GetComponent<Button> ().interactable = true;
+//		} else{
+//			buttonShop.color = Color.grey;
+//			buttonShop.GetComponent<Button> ().interactable = false;
+//		}
 
 //		if (roomController != null) {
 //			if (roomController.currentRoom == RoomType.Garden) {

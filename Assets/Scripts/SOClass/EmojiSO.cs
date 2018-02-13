@@ -19,7 +19,7 @@ public enum EmojiType{
 	EmojiWizard,
 	EmojiBunny,
 
-	Gumiji,
+//	Gumiji,
 //	Watermeji,
 //	Spookiji,
 //	Chocoji,
