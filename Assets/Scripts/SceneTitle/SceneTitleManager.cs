@@ -13,7 +13,7 @@ public class SceneTitleManager : MonoBehaviour {
 		SoundManager.Instance.PlayBGM(BGMList.BGMTitle);
 
 		Input.multiTouchEnabled = false;
-		PlayerPrefs.DeleteAll();
+//		PlayerPrefs.DeleteAll();
 		Fader.OnFadeOutFinished += HandleFadeOutFinished;
 		GameSparkManager.Instance.OnLoginSuccessful += GoToSceneMain;
 
@@ -49,6 +49,8 @@ public class SceneTitleManager : MonoBehaviour {
 
 	public void TapToStart ()
 	{
+		if (GooglePlayGamesManager.Instance)
+			GooglePlayGamesManager.Instance.GPGSLogin ();
 		if (SoundManager.Instance)
 			SoundManager.Instance.PlaySFXOneShot (SFXList.TapToStart);
 		fader.FadeOut();
