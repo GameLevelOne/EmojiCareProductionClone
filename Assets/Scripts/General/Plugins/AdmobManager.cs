@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using admob;
+//using admob;
+using GoogleMobileAds.Api;
 
 public enum AdEvents{
 	RestockStall,
@@ -31,9 +32,12 @@ public class AdmobManager : MonoBehaviour {
 	public event FinishWatchVideoAds OnFinishWatchVideoAds;
 	#endregion
 
-	Admob ad;
+	//Admob ad;
 	AdEvents currentEvent;
 	bool videoAdsReady = false;
+
+	private RewardBasedVideoAd rewardedVideo;
+	private BannerView bannerView;
 
 	public static AdmobManager Instance{
 		get{return instance;}
@@ -48,40 +52,73 @@ public class AdmobManager : MonoBehaviour {
 		DontDestroyOnLoad(this.gameObject);
 
 		InitAdmob();
+
+		rewardedVideo = RewardBasedVideoAd.Instance;
 	}
 
 	void OnDisable(){
-		ad.rewardedVideoEventHandler -= rewardedVideoEventHandler;
+		//ad.rewardedVideoEventHandler -= rewardedVideoEventHandler;
+		rewardedVideo.OnAdLoaded -= OnAdLoaded;
+		rewardedVideo.OnAdRewarded -= OnAdRewarded;
+		bannerView.Destroy ();
 	}
 
 	void InitAdmob(){
-		ad = Admob.Instance();
+//		ad = Admob.Instance();
+//
+//		#if UNITY_ANDROID
+//		ad.initAdmob(androidBannerID,"");
+//		ad.loadRewardedVideo (androidRewardedVideoID);
+//		#endif
+//
+//		#if UNITY_IOS
+//		ad.initAdmob(iosBannerID,"");
+//		ad.loadRewardedVideo (iosRewardedVideoID);
+//		#endif
+//
+//		ad.rewardedVideoEventHandler += rewardedVideoEventHandler;
 
-		#if UNITY_ANDROID
-		ad.initAdmob(androidBannerID,"");
-		ad.loadRewardedVideo (androidRewardedVideoID);
-		#endif
+		MobileAds.Initialize ("ca-app-pub-3940256099942544~3347511713"); //temp AppID
+		rewardedVideo.OnAdLoaded += OnAdLoaded;
+		rewardedVideo.OnAdRewarded += OnAdRewarded;
+		RequestBannerAd ();
+	}
 
-		#if UNITY_IOS
-		ad.initAdmob(iosBannerID,"");
-		ad.loadRewardedVideo (iosRewardedVideoID);
-		#endif
+	void OnAdLoaded (object sender, System.EventArgs e)
+	{
+		if(rewardedVideo.IsLoaded()) videoAdsReady = true;
+	}
 
-		ad.rewardedVideoEventHandler += rewardedVideoEventHandler;
-
+	void OnAdRewarded (object sender, Reward e)
+	{
+		videoAdsReady = false;
+		if(OnFinishWatchVideoAds!=null) OnFinishWatchVideoAds (currentEvent);
 	}
 
 	void rewardedVideoEventHandler (string eventName, string msg)
 	{
-		Debug.Log ("eventName:" + eventName + " msg:" + msg);
-		if(eventName == AdmobEvent.onRewarded){
-			videoAdsReady = false;
-			OnFinishWatchVideoAds (currentEvent);
-		} else if(eventName == AdmobEvent.onAdLoaded){
-			if(ad.isRewardedVideoReady()){
-				videoAdsReady = true;
-			}
-		}
+//		Debug.Log ("eventName:" + eventName + " msg:" + msg);
+//		if(eventName == AdmobEvent.onRewarded){
+//			videoAdsReady = false;
+//			OnFinishWatchVideoAds (currentEvent);
+//		} else if(eventName == AdmobEvent.onAdLoaded){
+//			if(ad.isRewardedVideoReady()){
+//				videoAdsReady = true;
+//			}
+//		}
+	}
+
+	void RequestBannerAd(){
+		bannerView = new BannerView (androidBannerID, AdSize.SmartBanner, AdPosition.Bottom);
+		AdRequest req = new AdRequest.Builder ().Build ();
+		bannerView.LoadAd (req);
+	}
+
+	public void RequestRewardedVideo(){
+		// Create an empty ad request.
+        AdRequest request = new AdRequest.Builder().Build();
+        // Load the rewarded video ad with the request.
+        rewardedVideo.LoadAd(request, androidRewardedVideoID);
 	}
 
 	public void ShowBanner(){
@@ -89,7 +126,8 @@ public class AdmobManager : MonoBehaviour {
 		Debug.Log("show banner");
 		#endif
 		if (UnityEngine.SceneManagement.SceneManager.GetActiveScene ().name == ShortCode.SCENE_MAIN)
-			ad.showBannerRelative(AdSize.SmartBanner,AdPosition.BOTTOM_CENTER,0);
+			//ad.showBannerRelative(AdSize.SmartBanner,AdPosition.BOTTOM_CENTER,0);
+			bannerView.Show ();
 	}
 
 	public void HideBanner(){
@@ -97,12 +135,14 @@ public class AdmobManager : MonoBehaviour {
 		Debug.Log("hide banner");
 		#endif
 		if (UnityEngine.SceneManagement.SceneManager.GetActiveScene ().name == ShortCode.SCENE_MAIN)
-			ad.removeBanner();
+			//ad.removeBanner();
+			bannerView.Hide ();
 	}
 
 	public void ShowRewardedVideo(AdEvents eventName){
 		currentEvent = eventName;
-		ad.loadRewardedVideo (androidRewardedVideoID);
+		//ad.loadRewardedVideo (androidRewardedVideoID);
+		RequestRewardedVideo ();
 		StartCoroutine (WaitForAds ());
 	}
 
@@ -120,7 +160,8 @@ public class AdmobManager : MonoBehaviour {
 			Debug.Log ("ads is ready, playing video");
 			adsReady = false;
 			if(OnFinishLoadVideoAds!=null) OnFinishLoadVideoAds ();
-			ad.showRewardedVideo ();
+			//ad.showRewardedVideo ();
+			rewardedVideo.Show ();
 		}
 	}
 
