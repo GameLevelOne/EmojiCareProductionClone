@@ -16,12 +16,23 @@ public class SceneTitleManager : MonoBehaviour {
 //		PlayerPrefs.DeleteAll();
 		Fader.OnFadeOutFinished += HandleFadeOutFinished;
 		GameSparkManager.Instance.OnLoginSuccessful += GoToSceneMain;
+		GooglePlayGamesManager.Instance.OnFinishLogin += OnFinishLogin;
 
 //		if(! string.IsNullOrEmpty(PlayerData.Instance.PlayerAuthToken)){
 //			//authenticate with playertoken.(BUT HOW????)
 //		}
 
 		//PlayerData.Instance.Shop = 1;
+	}
+
+	void OnDisable(){
+		GameSparkManager.Instance.OnLoginSuccessful -= GoToSceneMain;
+		GooglePlayGamesManager.Instance.OnFinishLogin -= OnFinishLogin;
+	}
+
+	void OnFinishLogin ()
+	{
+		fader.FadeOut();
 	}
 
 	IEnumerator FaderFadeIn()
@@ -53,7 +64,6 @@ public class SceneTitleManager : MonoBehaviour {
 			GooglePlayGamesManager.Instance.GPGSLogin ();
 		if (SoundManager.Instance)
 			SoundManager.Instance.PlaySFXOneShot (SFXList.TapToStart);
-		fader.FadeOut();
 	}
 
 	public void DownloadEmojiObject()

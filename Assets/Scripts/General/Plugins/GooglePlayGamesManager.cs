@@ -10,15 +10,20 @@ public class GooglePlayGamesManager : MonoBehaviour {
 
 	public static GooglePlayGamesManager Instance{ get { return instance; } }
 
+	public delegate void FinishLogin();
+	public event FinishLogin OnFinishLogin;
+
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		if(instance!=null && instance!=this){
 			Destroy (this.gameObject);
 		} else{
 			instance = this;
 		}
 		DontDestroyOnLoad (this.gameObject);
+	}
 
+	void Start(){
 		InitGPGS ();
 	}
 	
@@ -30,6 +35,7 @@ public class GooglePlayGamesManager : MonoBehaviour {
 	public void GPGSLogin(){
 		Social.localUser.Authenticate((bool success) =>{
 			Debug.Log("success login gpgs");
+			if(OnFinishLogin!=null) OnFinishLogin();
 		});
 	}
 }

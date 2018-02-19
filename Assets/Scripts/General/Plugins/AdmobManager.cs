@@ -43,17 +43,17 @@ public class AdmobManager : MonoBehaviour {
 		get{return instance;}
 	}
 
-	void Start(){
+	void Awake(){
 		if(instance != null && instance != this){
 			Destroy(this.gameObject);
 		} else{
 			instance=this;
 		}
 		DontDestroyOnLoad(this.gameObject);
+	}
 
+	void Start(){
 		InitAdmob();
-
-		rewardedVideo = RewardBasedVideoAd.Instance;
 	}
 
 	void OnDisable(){
@@ -77,8 +77,9 @@ public class AdmobManager : MonoBehaviour {
 //		#endif
 //
 //		ad.rewardedVideoEventHandler += rewardedVideoEventHandler;
-
+		
 		MobileAds.Initialize ("ca-app-pub-3940256099942544~3347511713"); //temp AppID
+		rewardedVideo = RewardBasedVideoAd.Instance;
 		rewardedVideo.OnAdLoaded += OnAdLoaded;
 		rewardedVideo.OnAdRewarded += OnAdRewarded;
 		RequestBannerAd ();
