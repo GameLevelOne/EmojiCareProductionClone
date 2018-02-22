@@ -78,7 +78,7 @@ public class AdmobManager : MonoBehaviour {
 //
 //		ad.rewardedVideoEventHandler += rewardedVideoEventHandler;
 		
-		MobileAds.Initialize ("ca-app-pub-3940256099942544~3347511713"); //temp AppID
+//		MobileAds.Initialize ("ca-app-pub-3940256099942544~3347511713"); //temp AppID
 		rewardedVideo = RewardBasedVideoAd.Instance;
 		rewardedVideo.OnAdLoaded += OnAdLoaded;
 		rewardedVideo.OnAdRewarded += OnAdRewarded;
@@ -113,6 +113,7 @@ public class AdmobManager : MonoBehaviour {
 		bannerView = new BannerView (androidBannerID, AdSize.SmartBanner, AdPosition.Bottom);
 		AdRequest req = new AdRequest.Builder ().Build ();
 		bannerView.LoadAd (req);
+		HideBanner ();
 	}
 
 	public void RequestRewardedVideo(){
@@ -135,9 +136,7 @@ public class AdmobManager : MonoBehaviour {
 		#if UNITY_EDITOR
 		Debug.Log("hide banner");
 		#endif
-		if (UnityEngine.SceneManagement.SceneManager.GetActiveScene ().name == ShortCode.SCENE_MAIN)
-			//ad.removeBanner();
-			bannerView.Hide ();
+		bannerView.Hide ();
 	}
 
 	public void ShowRewardedVideo(AdEvents eventName){

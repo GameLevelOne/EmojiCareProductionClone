@@ -13,7 +13,9 @@ public enum UnlockableList{
 	EmojiSet1,
 	EmojiSet2,
 	EmojiSet3,
-	EmojiSet4
+	EmojiSet4,
+	GardenField2,
+	GardenField3
 }
 
 public class PopupUnlockables : BaseUI {
@@ -72,6 +74,14 @@ public class PopupUnlockables : BaseUI {
 		case UnlockableList.EmojiSet4:
 			unlockText.text = "You have unlocked: \n EMOJI PIRATE \n EMOJI SANTA";
 			break;
+		case UnlockableList.GardenField2:
+			unlockText.text = "You have unlocked: \n SECOND GARDEN FIELD";
+			PlayerData.Instance.GardenField1 = 1;
+			break;
+		case UnlockableList.GardenField3:
+			unlockText.text = "You have unlocked: \n THIRD GARDEN FIELD";
+			PlayerData.Instance.GardenField1 = 2;
+			break;
 		}
 
 		particlePlayer.ShowParticleFireworks ();
@@ -85,8 +95,17 @@ public class PopupUnlockables : BaseUI {
 		StartCoroutine (WaitToClose ());
 	}
 
+	public void WaitForGrowthPopup(){
+		StartCoroutine (WaitForPopup ());
+	}
+
 	IEnumerator WaitToClose(){
 		yield return new WaitForSeconds (0.16f);
 		CloseUI (popupObj);
+	}
+
+	IEnumerator WaitForPopup(){
+		yield return new WaitForSeconds (0.2f);
+		SetDisplay (UnlockableList.GardenField2);
 	}
 }

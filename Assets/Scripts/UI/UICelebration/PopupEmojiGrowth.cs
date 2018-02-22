@@ -5,8 +5,11 @@ using UnityEngine.UI;
 
 public class PopupEmojiGrowth : BaseUI {
 	public EmojiIcons emojiIcons;
+	public PopupUnlockables popupUnlockables;
 	public Text growthText;
 	public Image emojiIcon;
+
+	bool toTeen = false;
 
 	public void SetDisplay(EmojiAgeType type){
 		if(type == EmojiAgeType.Adult){
@@ -15,6 +18,7 @@ public class PopupEmojiGrowth : BaseUI {
 		} else if(type == EmojiAgeType.Juvenille){
 			growthText.text = PlayerData.Instance.EmojiName +" has grown into Teen!";
 			emojiIcon.sprite = emojiIcons.GetBabyEmojiIcon(PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType);
+			toTeen = true;
 		}
 		ShowUI (gameObject);
 	}
@@ -22,6 +26,7 @@ public class PopupEmojiGrowth : BaseUI {
 	public void OnClickOK(){
 		//emoji growth
 		PlayerData.Instance.PlayerEmoji.emojiGrowth.OnClosePopup ();
+		popupUnlockables.WaitForGrowthPopup ();
 		CloseUI (gameObject);
 	}
 }

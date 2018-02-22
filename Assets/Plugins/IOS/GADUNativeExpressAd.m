@@ -2,16 +2,16 @@
 
 #import "GADUNativeExpressAd.h"
 
+@import CoreGraphics;
+@import UIKit;
+
 #import "GADUPluginUtil.h"
 #import "UnityAppController.h"
 
 @interface GADUNativeExpressAd () <GADNativeExpressAdViewDelegate>
 
-/// Defines where the ad should be positioned on the screen with a GADAdPosition.
+/// Defines where the ad should be positioned on the screen.
 @property(nonatomic, assign) GADAdPosition adPosition;
-
-/// Defines where the ad should be positioned on the screen with a CGPoint.
-@property(nonatomic, assign) CGPoint customAdPosition;
 
 @end
 
@@ -23,11 +23,11 @@
                                                  width:(CGFloat)width
                                                 height:(CGFloat)height
                                             adPosition:(GADAdPosition)adPosition {
-  return [self
-      initWithNativeExpressAdClientReference:nativeExpressAdClient
-                                    adUnitID:adUnitID
-                                      adSize:[GADUPluginUtil adSizeForWidth:width height:height]
-                                  adPosition:adPosition];
+  GADAdSize adSize = GADAdSizeFromCGSize(CGSizeMake(width, height));
+  return [self initWithNativeExpressAdClientReference:nativeExpressAdClient
+                                             adUnitID:adUnitID
+                                               adSize:adSize
+                                           adPosition:adPosition];
 }
 
 - (instancetype)initWithNativeExpressAdClientReference:
@@ -40,26 +40,6 @@
     _nativeExpressAdClient = nativeExpressAdClient;
     _adPosition = adPosition;
     _nativeExpressAdView = [[GADNativeExpressAdView alloc] initWithAdSize:size];
-    _nativeExpressAdView.adUnitID = adUnitID;
-    _nativeExpressAdView.delegate = self;
-    _nativeExpressAdView.rootViewController = [GADUPluginUtil unityGLViewController];
-  }
-  return self;
-}
-
-- (instancetype)initWithNativeExpressAdClientReference:
-                    (GADUTypeNativeExpressAdClientRef *)nativeExpressAdClient
-                                              adUnitID:(NSString *)adUnitID
-                                                 width:(CGFloat)width
-                                                height:(CGFloat)height
-                                      customAdPosition:(CGPoint)customAdPosition {
-  self = [super init];
-  if (self) {
-    _nativeExpressAdClient = nativeExpressAdClient;
-    _customAdPosition = customAdPosition;
-    _adPosition = kGADAdPositionCustom;
-    GADAdSize adSize = [GADUPluginUtil adSizeForWidth:width height:height];
-    _nativeExpressAdView = [[GADNativeExpressAdView alloc] initWithAdSize:adSize];
     _nativeExpressAdView.adUnitID = adUnitID;
     _nativeExpressAdView.delegate = self;
     _nativeExpressAdView.rootViewController = [GADUPluginUtil unityGLViewController];
@@ -106,10 +86,6 @@
   [self.nativeExpressAdView removeFromSuperview];
 }
 
-- (NSString *)mediationAdapterClassName {
-  return [self.nativeExpressAdView adNetworkClassName];
-}
-
 #pragma mark GADNativeExpressAdViewDelegate implementation
 
 - (void)nativeExpressAdViewDidReceiveAd:(GADNativeExpressAdView *)nativeExpressAdView {
@@ -121,15 +97,9 @@
 
   /// Align the nativeExpressAdView in the Unity view bounds.
   UIView *unityView = [GADUPluginUtil unityGLViewController].view;
-  if (self.adPosition != kGADAdPositionCustom) {
-    [GADUPluginUtil positionView:self.nativeExpressAdView
-                    inParentView:unityView
-                      adPosition:self.adPosition];
-  } else {
-    [GADUPluginUtil positionView:self.nativeExpressAdView
-                    inParentView:unityView
-                  customPosition:self.customAdPosition];
-  }
+  [GADUPluginUtil positionView:self.nativeExpressAdView
+                inParentBounds:unityView.bounds
+                withAdPosition:self.adPosition];
   [unityView addSubview:self.nativeExpressAdView];
 
   if (self.adReceivedCallback) {

@@ -17,6 +17,7 @@ public class GuidedTutorialStork : BaseUI {
 	public GameObject highlightPanelParent;
 	public GameObject hotkeyButton;
 	public PopupGuidedTutorialUnlockables popupUnlockables;
+	public ScreenPopup popup;
 	public string[] storkDialogs;
 	public GameObject[] highlightPanels;
 	public Vector3[] dialogBoxPositions; //top,middle,bottom
@@ -54,6 +55,8 @@ public class GuidedTutorialStork : BaseUI {
 
 	int dialogCounter = 0;
 	int cropCount = 0;
+
+	bool plantFirstWatered = false;
 
 	void OnDisable(){
 		Bowl.OnBowlOutsideFridge -= OnBowlOutsideFridge;
@@ -428,8 +431,8 @@ public class GuidedTutorialStork : BaseUI {
 			highlightPanels [23].SetActive (true);
 		else if (dialogCounter == 50)
 			highlightPanels [24].SetActive (true);
-//		else if(dialogCounter == 52)
-//			highlightPanels [25].SetActive (true);
+		else if(dialogCounter == 51)
+			highlightPanels [25].SetActive (true);
 		else if (dialogCounter == 53)
 			highlightPanels [26].SetActive (true);
 		else if (dialogCounter == 57)
@@ -495,6 +498,14 @@ public class GuidedTutorialStork : BaseUI {
 		} else if(dialogCounter == 45){
 			SetLocationButtons (0);
 			highlightPanels [22].SetActive (true);
+		}
+	}
+
+	public void OnClickButtonSpeedUpHarvest(){
+		if(!plantFirstWatered){
+			plantFirstWatered = true;
+			popup.OnClickButtonGem ();
+			ShowFirstDialog (52);
 		}
 	}
 

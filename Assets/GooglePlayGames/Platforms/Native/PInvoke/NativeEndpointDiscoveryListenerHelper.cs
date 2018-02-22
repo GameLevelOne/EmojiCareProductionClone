@@ -50,6 +50,7 @@ namespace GooglePlayGames.Native.PInvoke
         [AOT.MonoPInvokeCallback(typeof(C.OnEndpointFoundCallback))]
         private static void InternalOnEndpointFoundCallback(long id, IntPtr data, IntPtr userData)
         {
+
             Callbacks.PerformInternalCallback<long>(
                 "NativeEndpointDiscoveryListenerHelper#InternalOnEndpointFoundCallback",
                 // make this Perm since the callback can happen multiple times.

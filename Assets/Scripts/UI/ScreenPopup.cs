@@ -235,7 +235,7 @@ public class ScreenPopup : BaseUI {
 	public void OnClickButtonCancel(){
 		if(currentEventType == PopupEventType.AbleToBuyFurniture){
 			OnCancelBuyFurniture ();
-		} else if(currentEventType == PopupEventType.RestockSeeds || currentEventType == PopupEventType.RestockStall){
+		} else if(currentEventType == PopupEventType.RestockSeeds || currentEventType == PopupEventType.RestockStall || currentEventType == PopupEventType.SpeedUpPlant){
 			uiCoin.CloseUI (false);
 		}
 
@@ -244,6 +244,7 @@ public class ScreenPopup : BaseUI {
 
 	public void WatchAds ()
 	{
+		uiCoin.CloseUI (false);
 		if (AdmobManager.Instance) {
 			if (currentEventType == PopupEventType.SpeedUpPlant) {
 				AdmobManager.Instance.ShowRewardedVideo (AdEvents.SpeedUpPlant);
@@ -263,6 +264,7 @@ public class ScreenPopup : BaseUI {
 			uiCoin.CloseUI (false);
 			ClosePopup (this.gameObject);
 			if(PlayerData.Instance.PlayerGem >= instantHarvestCost){
+				PlayerData.Instance.PlayerGem -= instantHarvestCost;
 				if (OnInstantHarvestPlant != null)
 					OnInstantHarvestPlant ();
 			} else{

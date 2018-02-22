@@ -38,19 +38,21 @@ public class UICelebrationManager : MonoBehaviour {
 	public void RegisterEmojiEvents()
 	{
 		EmojiExpression.OnNewExpression += OnNewExpression;
-		if(!(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == ShortCode.SCENE_GUIDED_TUTORIAL)){
+		if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == ShortCode.SCENE_MAIN){
 			PlayerData.Instance.PlayerEmoji.emojiGrowth.OnNewGrowth += OnEmojiGrow;
 			Emoji.OnEmojiDead += OnEmojiDead;
 			pan.OnCookingDone += OnCookingDone;
 		}
 	}
 
-	public void UnregisterEmojiEvents()
+	public void UnregisterEmojiEvents ()
 	{
 		EmojiExpression.OnNewExpression -= OnNewExpression;
-		Emoji.OnEmojiDead -= OnEmojiDead;
-		PlayerData.Instance.PlayerEmoji.emojiGrowth.OnNewGrowth -= OnEmojiGrow;
-		pan.OnCookingDone -= OnCookingDone;
+		if (UnityEngine.SceneManagement.SceneManager.GetActiveScene ().name == ShortCode.SCENE_MAIN) {
+			Emoji.OnEmojiDead -= OnEmojiDead;
+			PlayerData.Instance.PlayerEmoji.emojiGrowth.OnNewGrowth -= OnEmojiGrow;
+			pan.OnCookingDone -= OnCookingDone;
+		}
 	}
 
 	void OnDestroy(){
@@ -65,7 +67,7 @@ public class UICelebrationManager : MonoBehaviour {
 		screenNewEmoji.ShowUI(sprite,emojiName,screenNewEmoji.gameObject);
 	}
 
-	void OnNewExpression (int expressionStateIndex,bool isNewExpression)
+	void OnNewExpression (int expressionStateIndex, bool isNewExpression)
 	{
 //		Debug.Log("new expression");
 		EmojiExpression expr = PlayerData.Instance.PlayerEmoji.emojiExpressions;
@@ -79,10 +81,12 @@ public class UICelebrationManager : MonoBehaviour {
 //			PlayerData.Instance.TutorialFirstNewExpression = 1;
 //		}
 
-		if(expr.GetTotalExpressionProgress() == 0.5f && PlayerData.Instance.MiniGameBlocks == 0){
-			popupUnlockables.SetDisplay (UnlockableList.MinigamePlayBlock);
-		} else if(expr.GetTotalExpressionProgress() == 1 && PlayerData.Instance.MiniGamePainting == 0){
-			popupUnlockables.SetDisplay (UnlockableList.MinigameDrawingBoard);
+		if (UnityEngine.SceneManagement.SceneManager.GetActiveScene ().name == ShortCode.SCENE_MAIN) {
+			if (expr.GetTotalExpressionProgress () == 0.5f && PlayerData.Instance.MiniGameBlocks == 0) {
+				popupUnlockables.SetDisplay (UnlockableList.MinigamePlayBlock);
+			} else if (expr.GetTotalExpressionProgress () == 1 && PlayerData.Instance.MiniGamePainting == 0) {
+				popupUnlockables.SetDisplay (UnlockableList.MinigameDrawingBoard);
+			}
 		}
 
 		StartCoroutine(WaitForNewExpression(expressionStateIndex,isNewExpression));
@@ -122,13 +126,15 @@ public class UICelebrationManager : MonoBehaviour {
 
 	void OnCookingDone ()
 	{
-		PlayerData.Instance.CookCount++;
-		if(PlayerData.Instance.CookCount == 10){
-			popupUnlockables.SetDisplay (UnlockableList.RecipeRamen);
-		} else if(PlayerData.Instance.CookCount == 50){
-			popupUnlockables.SetDisplay (UnlockableList.RecipeBurger);
-		} else if(PlayerData.Instance.CookCount == 100){
-			popupUnlockables.SetDisplay (UnlockableList.RecipeGrilledFish);
+		if (UnityEngine.SceneManagement.SceneManager.GetActiveScene ().name == ShortCode.SCENE_MAIN) {
+			PlayerData.Instance.CookCount++;
+			if (PlayerData.Instance.CookCount == 10) {
+				popupUnlockables.SetDisplay (UnlockableList.RecipeRamen);
+			} else if (PlayerData.Instance.CookCount == 50) {
+				popupUnlockables.SetDisplay (UnlockableList.RecipeBurger);
+			} else if (PlayerData.Instance.CookCount == 100) {
+				popupUnlockables.SetDisplay (UnlockableList.RecipeGrilledFish);
+			}
 		}
 	}
 

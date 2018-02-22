@@ -20,16 +20,13 @@ using UnityEngine;
 
 namespace GoogleMobileAds.Common
 {
-    public class DummyClient : IBannerClient, IInterstitialClient, IRewardBasedVideoAdClient,
-            IAdLoaderClient, INativeExpressAdClient, IMobileAdsClient
+    internal class DummyClient : IBannerClient, IInterstitialClient, IRewardBasedVideoAdClient,
+            IAdLoaderClient, INativeExpressAdClient
     {
         public DummyClient()
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
-
-        // Disable warnings for unused dummy ad events.
-#pragma warning disable 67
 
         public event EventHandler<EventArgs> OnAdLoaded;
 
@@ -47,8 +44,6 @@ namespace GoogleMobileAds.Common
 
         public event EventHandler<CustomNativeEventArgs> OnCustomNativeTemplateAdLoaded;
 
-#pragma warning restore 67
-
         public string UserId
         {
             get
@@ -63,32 +58,7 @@ namespace GoogleMobileAds.Common
             }
         }
 
-        public void Initialize(string appId)
-        {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-        }
-
-        public void SetApplicationMuted(bool muted)
-        {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-        }
-
-        public void SetApplicationVolume(float volume)
-        {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-        }
-
-        public void SetiOSAppPauseOnBackground(bool pause)
-        {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-        }
-
         public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position)
-        {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-        }
-
-        public void CreateBannerView(string adUnitId, AdSize adSize, int positionX, int positionY)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
@@ -109,28 +79,6 @@ namespace GoogleMobileAds.Common
         }
 
         public void DestroyBannerView()
-        {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-        }
-
-        public float GetHeightInPixels()
-        {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            return 0;
-        }
-
-        public float GetWidthInPixels()
-        {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            return 0;
-        }
-
-        public void SetPosition(AdPosition adPosition)
-        {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-        }
-
-        public void SetPosition(int x, int y)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
@@ -181,6 +129,16 @@ namespace GoogleMobileAds.Common
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
+        public void SetDefaultInAppPurchaseProcessor(IDefaultInAppPurchaseProcessor processor)
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+        }
+
+        public void SetCustomInAppPurchaseProcessor(ICustomInAppPurchaseProcessor processor)
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+        }
+
         public void CreateAdLoader(AdLoader.Builder builder)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
@@ -192,11 +150,6 @@ namespace GoogleMobileAds.Common
         }
 
         public void CreateNativeExpressAdView(string adUnitId, AdSize adSize, AdPosition position)
-        {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-        }
-
-        public void CreateNativeExpressAdView(string adUnitId, AdSize adSize, int positionX, int positionY)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
@@ -220,12 +173,5 @@ namespace GoogleMobileAds.Common
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
-
-        public string MediationAdapterClassName()
-        {
-            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
-            return null;
-        }
-
     }
 }

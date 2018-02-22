@@ -47,16 +47,6 @@ namespace GooglePlayGames.IOS
             return config;
         }
 
-        public PlatformConfiguration CreatePlatformConfiguration(PlayGamesClientConfiguration clientConfig)
-        {
-            return CreatePlatformConfiguration();
-        }
-
-        public TokenClient CreateTokenClient(bool reset)
-        {
-             return new IOSTokenClient();
-        }
-
         /// <summary>
         /// Creates the token client.
         /// </summary>
@@ -72,10 +62,6 @@ namespace GooglePlayGames.IOS
             Action<CommonStatusCodes, PlayerStats> callback) {
             throw new InvalidOperationException(
                 "The native API should be called for iOS");
-        }
-
-        public void SetGravityForPopups(IntPtr apiClient, Gravity gravity) {
-            throw new NotImplementedException();
         }
     }
 }

@@ -25,20 +25,11 @@ namespace GooglePlayGames.Editor
         private string mNearbyServiceId = string.Empty;
 
         [MenuItem("Window/Google Play Games/Setup/Nearby Connections setup...", false, 3)]
-        public static void MenuItemNearbySetup()
+        public static void MenuItemFileGPGSAndroidSetup()
         {
             EditorWindow window = EditorWindow.GetWindow(
                 typeof(NearbyConnectionUI), true, GPGSStrings.NearbyConnections.Title);
             window.minSize = new Vector2(400, 200);
-        }
-
-        [MenuItem("Window/Google Play Games/Setup/Nearby Connections setup...", true)]
-        public static bool EnableNearbyMenuItem() {
-        #if UNITY_ANDROID
-            return true;
-        #else
-            return false;
-        #endif
         }
 
         public void OnEnable()
@@ -97,27 +88,12 @@ namespace GooglePlayGames.Editor
             // check for valid app id
             if (!GPGSUtil.LooksLikeValidServiceId(nearbyServiceId))
             {
-                if (EditorUtility.DisplayDialog(
-                    "Remove Nearby connection permissions?  ",
-                    "The service Id is invalid.  It must follow package naming rules.  " +
-                    "Do you want to remove the AndroidManifest entries for Nearby connections?",
-                    "Yes",
-                    "No"))
-                {
-                    GPGSProjectSettings.Instance.Set(GPGSUtil.SERVICEIDKEY, null);
-                    GPGSProjectSettings.Instance.Save();
-                }
-                else
-                {
-                    return false;
-                }
+                GPGSUtil.Alert(GPGSStrings.Setup.ServiceIdError);
+                return false;
+            }
 
-             }
-             else
-             {
-                 GPGSProjectSettings.Instance.Set(GPGSUtil.SERVICEIDKEY, nearbyServiceId);
-                 GPGSProjectSettings.Instance.Save();
-             }
+            GPGSProjectSettings.Instance.Set(GPGSUtil.SERVICEIDKEY, nearbyServiceId);
+            GPGSProjectSettings.Instance.Save();
 
             if (androidBuild)
             {
@@ -128,20 +104,10 @@ namespace GooglePlayGames.Editor
                 // Generate AndroidManifest.xml
                 GPGSUtil.GenerateAndroidManifest();
 
+                // refresh assets, and we're done
+                AssetDatabase.Refresh();
                 GPGSProjectSettings.Instance.Set(GPGSUtil.NEARBYSETUPDONEKEY, true);
                 GPGSProjectSettings.Instance.Save();
-
-                // Resolve the dependencies
-                Google.VersionHandler.VerboseLoggingEnabled = true;
-                Google.VersionHandler.UpdateVersionedAssets(forceUpdate: true);
-                Google.VersionHandler.Enabled = true;
-                AssetDatabase.Refresh();
-
-                Google.VersionHandler.InvokeStaticMethod(
-                    Google.VersionHandler.FindClass(
-                   "Google.JarResolver",
-                   "GooglePlayServices.PlayServicesResolver"),
-                   "MenuResolve", null);
             }
             return true;
         }

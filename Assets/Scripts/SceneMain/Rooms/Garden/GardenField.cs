@@ -81,8 +81,8 @@ public class GardenField : MonoBehaviour {
 		}
 		if (UnityEngine.SceneManagement.SceneManager.GetActiveScene ().name != ShortCode.SCENE_GUIDED_TUTORIAL) {
 			if (AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds += OnFinishWatchVideoAds;
-			post.popup.OnInstantHarvestPlant += OnInstantHarvestPlant;
 		}
+		post.popup.OnInstantHarvestPlant += OnInstantHarvestPlant;
 		InitPlayerProgressToGardenField();
 	}
 	public void InitPlayerProgressToGardenField()
@@ -186,13 +186,11 @@ public class GardenField : MonoBehaviour {
 
 			DateTime newPlantHarvestTime = new DateTime ();
 			if (UnityEngine.SceneManagement.SceneManager.GetActiveScene ().name == ShortCode.SCENE_GUIDED_TUTORIAL) {
-				newPlantHarvestTime = DateTime.Now.Add (TimeSpan.FromSeconds (5));
+				//newPlantHarvestTime = DateTime.Now.Add (TimeSpan.FromSeconds (5));
 				if (OnPlantWatered != null)
 					OnPlantWatered();
-			} else{
-				newPlantHarvestTime = plantHarvestTime.Subtract(TimeSpan.FromMinutes(harvestTimeCut));
-			}
-
+			} 
+			newPlantHarvestTime = plantHarvestTime.Subtract(TimeSpan.FromMinutes(harvestTimeCut));
 			PlayerPrefs.SetString(prefKeyHarvestTime,newPlantHarvestTime.ToString());
 			print("New harvest time: "+newPlantHarvestTime);
 

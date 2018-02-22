@@ -14,15 +14,15 @@
 
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 
 using GoogleMobileAds.Common;
+using UnityEngine;
 
 namespace GoogleMobileAds.Api
 {
     public enum NativeAdType
     {
-        CustomTemplate = 0
+        CustomTemplate = 0,
     }
 
     public class AdLoader
@@ -37,32 +37,23 @@ namespace GoogleMobileAds.Api
                     builder.CustomNativeTemplateClickHandlers);
             this.TemplateIds = new HashSet<string>(builder.TemplateIds);
             this.AdTypes = new HashSet<NativeAdType>(builder.AdTypes);
+            this.adLoaderClient = GoogleMobileAdsClientFactory.BuildAdLoaderClient(this);
 
-            Type googleMobileAdsClientFactory = Type.GetType(
-                "GoogleMobileAds.GoogleMobileAdsClientFactory,Assembly-CSharp");
-            MethodInfo method = googleMobileAdsClientFactory.GetMethod(
-                "BuildAdLoaderClient",
-                BindingFlags.Static | BindingFlags.Public);
-            this.adLoaderClient = (IAdLoaderClient)method.Invoke(null, new object[] { this });
-
-            Utils.CheckInitialization();
-
-            this.adLoaderClient.OnCustomNativeTemplateAdLoaded +=
-                    delegate (object sender, CustomNativeEventArgs args)
-            {
-                if (this.OnCustomNativeTemplateAdLoaded != null)
+            this.adLoaderClient.OnCustomNativeTemplateAdLoaded += (sender, args) =>
                 {
-                    MobileAdsEventExecutor.executeInUpdate(() => this.OnCustomNativeTemplateAdLoaded(this, args));
-                }
-            };
-            this.adLoaderClient.OnAdFailedToLoad += delegate (
-                object sender, AdFailedToLoadEventArgs args)
-            {
-                if (this.OnAdFailedToLoad != null)
+                    if(this.OnCustomNativeTemplateAdLoaded != null)
+                    {
+                        this.OnCustomNativeTemplateAdLoaded(this, args);
+                    }
+                };
+
+            this.adLoaderClient.OnAdFailedToLoad += (sender, args) =>
                 {
-                    MobileAdsEventExecutor.executeInUpdate(() => this.OnAdFailedToLoad(this, args));
-                }
-            };
+                    if(this.OnAdFailedToLoad != null)
+                    {
+                        this.OnAdFailedToLoad(this, args);
+                    }
+                };
         }
 
         public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;

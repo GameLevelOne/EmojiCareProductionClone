@@ -8,6 +8,7 @@
 #import "UnityAppController.h"
 
 @interface GADUAdLoader () <GADAdLoaderDelegate, GADNativeCustomTemplateAdLoaderDelegate>
+
 @end
 
 @implementation GADUAdLoader
@@ -21,7 +22,7 @@
     _adLoaderClient = adLoaderClient;
     _adLoader = [[GADAdLoader alloc] initWithAdUnitID:adUnitID
                                    rootViewController:[GADUPluginUtil unityGLViewController]
-                                              adTypes:adTypes
+                                              adTypes:@[ kGADAdLoaderAdTypeNativeCustomTemplate ]
                                               options:nil];
     _adLoader.delegate = self;
     _templateIDs = [NSArray arrayWithArray:templateIDs];
@@ -53,12 +54,12 @@
 
 - (void)adLoader:(GADAdLoader *)adLoader
     didReceiveNativeCustomTemplateAd:(GADNativeCustomTemplateAd *)nativeCustomTemplateAd {
-  if (self.customTemplateAdReceivedCallback) {
+  if (self.adReceivedCallback) {
     GADUObjectCache *cache = [GADUObjectCache sharedInstance];
     GADUNativeCustomTemplateAd *internalNativeAd =
         [[GADUNativeCustomTemplateAd alloc] initWithAd:nativeCustomTemplateAd];
     [cache.references setObject:internalNativeAd forKey:[internalNativeAd gadu_referenceKey]];
-    self.customTemplateAdReceivedCallback(
+    self.adReceivedCallback(
         self.adLoaderClient, (__bridge GADUTypeNativeCustomTemplateAdRef)internalNativeAd,
         [nativeCustomTemplateAd.templateID cStringUsingEncoding:NSUTF8StringEncoding]);
   }

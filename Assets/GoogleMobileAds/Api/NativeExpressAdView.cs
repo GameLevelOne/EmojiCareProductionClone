@@ -13,7 +13,6 @@
 // limitations under the License.
 
 using System;
-using System.Reflection;
 
 using GoogleMobileAds.Common;
 
@@ -26,31 +25,48 @@ namespace GoogleMobileAds.Api
         // Creates a NativeExpressAd and adds it to the view hierarchy.
         public NativeExpressAdView(string adUnitId, AdSize adSize, AdPosition position)
         {
-            Type googleMobileAdsClientFactory = Type.GetType(
-                "GoogleMobileAds.GoogleMobileAdsClientFactory,Assembly-CSharp");
-            MethodInfo method = googleMobileAdsClientFactory.GetMethod(
-                "BuildNativeExpressAdClient",
-                BindingFlags.Static | BindingFlags.Public);
-            this.client = (INativeExpressAdClient)method.Invoke(null, null);
+            this.client = GoogleMobileAdsClientFactory.BuildNativeExpressAdClient();
             this.client.CreateNativeExpressAdView(adUnitId, adSize, position);
 
-            Utils.CheckInitialization();
-            ConfigureNativeExpressAdEvents();
-        }
+            this.client.OnAdLoaded += (sender, args) =>
+                {
+                    if(this.OnAdLoaded != null)
+                    {
+                         this.OnAdLoaded(this, args);
+                    }
+                };
 
-        // Creates a NativeExpressAd with a custom position.
-        public NativeExpressAdView(string adUnitId, AdSize adSize, int x, int y)
-        {
-            Type googleMobileAdsClientFactory = Type.GetType(
-                "GoogleMobileAds.GoogleMobileAdsClientFactory,Assembly-CSharp");
-            MethodInfo method = googleMobileAdsClientFactory.GetMethod(
-                "BuildNativeExpressAdClient",
-                BindingFlags.Static | BindingFlags.Public);
-            this.client = (INativeExpressAdClient)method.Invoke(null, null);
-            this.client.CreateNativeExpressAdView(adUnitId, adSize, x, y);
+            this.client.OnAdFailedToLoad += (sender, args) =>
+                {
+                    if(this.OnAdFailedToLoad != null)
+                    {
+                        this.OnAdFailedToLoad(this, args);
+                    }
+                };
 
-            Utils.CheckInitialization();
-            ConfigureNativeExpressAdEvents();
+            this.client.OnAdOpening += (sender, args) =>
+                {
+                    if(this.OnAdOpening != null)
+                    {
+                        this.OnAdOpening(this, args);
+                    }
+                };
+
+            this.client.OnAdClosed += (sender, args) =>
+                {
+                    if(this.OnAdClosed != null)
+                    {
+                        this.OnAdClosed(this, args);
+                    }
+                };
+
+            this.client.OnAdLeavingApplication += (sender, args) =>
+                {
+                    if(this.OnAdLeavingApplication != null)
+                    {
+                        this.OnAdLeavingApplication(this, args);
+                    }
+                };
         }
 
         // These are the ad callback events that can be hooked into.
@@ -86,55 +102,6 @@ namespace GoogleMobileAds.Api
         public void Destroy()
         {
             this.client.DestroyNativeExpressAdView();
-        }
-
-        private void ConfigureNativeExpressAdEvents()
-        {
-            this.client.OnAdLoaded += (sender, args) =>
-            {
-                if (this.OnAdLoaded != null)
-                {
-                    MobileAdsEventExecutor.executeInUpdate(() => this.OnAdLoaded(this, args));
-                }
-            };
-
-            this.client.OnAdFailedToLoad += (sender, args) =>
-            {
-                if (this.OnAdFailedToLoad != null)
-                {
-                    MobileAdsEventExecutor.executeInUpdate(() => this.OnAdFailedToLoad(this, args));
-                }
-            };
-
-            this.client.OnAdOpening += (sender, args) =>
-            {
-                if (this.OnAdOpening != null)
-                {
-                    MobileAdsEventExecutor.executeInUpdate(() => this.OnAdOpening(this, args));
-                }
-            };
-
-            this.client.OnAdClosed += (sender, args) =>
-            {
-                if (this.OnAdClosed != null)
-                {
-                    MobileAdsEventExecutor.executeInUpdate(() => this.OnAdClosed(this, args));
-                }
-            };
-
-            this.client.OnAdLeavingApplication += (sender, args) =>
-            {
-                if (this.OnAdLeavingApplication != null)
-                {
-                    MobileAdsEventExecutor.executeInUpdate(() => this.OnAdLeavingApplication(this, args));
-                }
-            };
-        }
-
-        // Returns the mediation adapter class name.
-        public string MediationAdapterClassName()
-        {
-            return this.client.MediationAdapterClassName();
         }
     }
 }

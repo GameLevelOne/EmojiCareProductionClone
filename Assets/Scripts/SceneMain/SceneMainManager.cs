@@ -233,7 +233,7 @@ public class SceneMainManager : MonoBehaviour {
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region public modules
 	public void OnClickSkipProgress(){
-		int totalExpressionToUnlock = 40;
+		int totalExpressionToUnlock = 22;
 		EmojiExpression emojiExpression = PlayerData.Instance.PlayerEmoji.emojiExpressions;
 		for (int i = 1; i < emojiExpression.expressionDataInstances.Length; i++) {
 			if ((i < totalExpressionToUnlock)) {

@@ -11,7 +11,7 @@ public class PlayerData : MonoBehaviour {
 	public PlayerInventory inventory = new PlayerInventory();
 
 	int defaultCoin = 1000; //TODO: ADJUST THIS LATER
-	int defulatGem = 0; //TODO: ADJUST THIS LATER
+	int defaultGem = 80; //TODO: ADJUST THIS LATER
 
 	public GameObject babyEmoji;
 
@@ -46,7 +46,7 @@ public class PlayerData : MonoBehaviour {
 	}
 
 	public int PlayerGem{
-		get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.PLAYER_GEM,defulatGem);}
+		get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.PLAYER_GEM,defaultGem);}
 		set{PlayerPrefs.SetInt(PlayerPrefKeys.Player.PLAYER_GEM,value);}
 	}
 

@@ -15,6 +15,7 @@
 #if UNITY_ANDROID
 
 using System;
+using System.Collections.Generic;
 
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
@@ -22,7 +23,7 @@ using UnityEngine;
 
 namespace GoogleMobileAds.Android
 {
-    public class NativeExpressAdClient : AndroidJavaProxy, INativeExpressAdClient
+    internal class NativeExpressAdClient : AndroidJavaProxy, INativeExpressAdClient
     {
         private AndroidJavaObject nativeExpressAdView;
 
@@ -51,14 +52,6 @@ namespace GoogleMobileAds.Android
             this.nativeExpressAdView.Call(
                     "create",
                     new object[3] { adUnitId, Utils.GetAdSizeJavaObject(adSize), (int)position });
-        }
-
-        // Creates a native express ad view with a custom position
-        public void CreateNativeExpressAdView(string adUnitId, AdSize adSize, int x, int y)
-        {
-            this.nativeExpressAdView.Call(
-                "create",
-                new object[4] { adUnitId, Utils.GetAdSizeJavaObject(adSize), x, y });
         }
 
         // Loads an ad.
@@ -91,13 +84,7 @@ namespace GoogleMobileAds.Android
             this.nativeExpressAdView.Call("destroy");
         }
 
-        // Returns the mediation adapter class name.
-        public string MediationAdapterClassName()
-        {
-            return this.nativeExpressAdView.Call<string>("getMediationAdapterClassName");
-        }
-
-#region Callbacks from UnityAdListener.
+        #region Callbacks from UnityAdListener.
 
         public void onAdLoaded()
         {
@@ -143,7 +130,7 @@ namespace GoogleMobileAds.Android
             }
         }
 
-#endregion
+        #endregion
     }
 }
 

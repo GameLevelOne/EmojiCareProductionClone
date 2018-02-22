@@ -27,19 +27,11 @@ namespace GooglePlayGames
     /// </summary>
     internal interface IClientImpl
     {
-        PlatformConfiguration CreatePlatformConfiguration (PlayGamesClientConfiguration clientConfig);
+        PlatformConfiguration CreatePlatformConfiguration ();
 
-        TokenClient CreateTokenClient (bool reset);
+        TokenClient CreateTokenClient (string playerId, bool reset);
 
-        void GetPlayerStats(IntPtr apiClientPtr, Action<CommonStatusCodes, GooglePlayGames.BasicApi.PlayerStats> callback);
-
-        /// <summary>
-        /// Sets the gravity for popups (Android only).
-        /// </summary>
-        /// <remarks>This can only be called after authentication.  It affects
-        /// popups for achievements and other game services elements.</remarks>
-        /// <param name="gravity">Gravity for the popup.</param>
-        void SetGravityForPopups(IntPtr apiClient, Gravity gravity);
+        void GetPlayerStats(IntPtr apiClientPtr, Action<CommonStatusCodes, PlayerStats> callback);
     }
 }
 

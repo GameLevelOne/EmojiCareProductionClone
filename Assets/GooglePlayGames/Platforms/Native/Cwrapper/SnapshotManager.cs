@@ -90,43 +90,24 @@ namespace GooglePlayGames.Native.Cwrapper
         [DllImport(SymbolLocation.NativeSymbolLocation)]
         internal static extern void SnapshotManager_ResolveConflict(
             HandleRef self,
-           /* from(char const *) */string conflict_id,
          /* from(SnapshotMetadata_t) */IntPtr snapshot_metadata,
          /* from(SnapshotMetadataChange_t) */IntPtr metadata_change,
-         /* from(SnapshotManager_OpenCallback_t) */OpenCallback callback,
+         /* from(char const *) */string conflict_id,
+         /* from(SnapshotManager_CommitCallback_t) */CommitCallback callback,
          /* from(void *) */IntPtr callback_arg);
-
-        [DllImport(SymbolLocation.NativeSymbolLocation)]
-        internal static extern void SnapshotManager_ResolveConflict(
-            HandleRef self,
-            /* from(char const *) */string conflict_id,
-            /* from(SnapshotMetadata_t) */IntPtr snapshot_metadata,
-            /* from(SnapshotMetadataChange_t) */IntPtr metadata_change,
-            /* from(uint8_t const *) */byte[] data,
-            /* from(size_t) */UIntPtr data_size,
-            /* from(SnapshotManager_OpenCallback_t) */OpenCallback callback,
-            /* from(void *) */IntPtr callback_arg);
-
-        [DllImport(SymbolLocation.NativeSymbolLocation)]
-        internal static extern void SnapshotManager_ResolveConflict(
-            HandleRef self,
-            /* from(char const *) */string conflict_id,
-            /* from(SnapshotMetadata_t) */IntPtr snapshot_metadata,
-            /* from(SnapshotManager_OpenCallback_t) */OpenCallback callback,
-            /* from(void *) */IntPtr callback_arg);
 
         [DllImport(SymbolLocation.NativeSymbolLocation)]
         internal static extern void SnapshotManager_Delete(
             HandleRef self,
-            /* from(SnapshotMetadata_t) */IntPtr snapshot_metadata);
+         /* from(SnapshotMetadata_t) */IntPtr snapshot_metadata);
 
         [DllImport(SymbolLocation.NativeSymbolLocation)]
         internal static extern void SnapshotManager_FetchAllResponse_Dispose(
             HandleRef self);
 
         [DllImport(SymbolLocation.NativeSymbolLocation)]
-        internal static extern /* from(ResponseStatus_t) */ CommonErrorStatus.ResponseStatus
-            SnapshotManager_FetchAllResponse_GetStatus(HandleRef self);
+        internal static extern /* from(ResponseStatus_t) */ CommonErrorStatus.ResponseStatus SnapshotManager_FetchAllResponse_GetStatus(
+            HandleRef self);
 
         [DllImport(SymbolLocation.NativeSymbolLocation)]
         internal static extern /* from(size_t) */ UIntPtr SnapshotManager_FetchAllResponse_GetData_Length(
@@ -135,10 +116,11 @@ namespace GooglePlayGames.Native.Cwrapper
         [DllImport(SymbolLocation.NativeSymbolLocation)]
         internal static extern /* from(SnapshotMetadata_t) */ IntPtr SnapshotManager_FetchAllResponse_GetData_GetElement(
             HandleRef self,
-            /* from(size_t) */UIntPtr index);
+         /* from(size_t) */UIntPtr index);
 
         [DllImport(SymbolLocation.NativeSymbolLocation)]
-        internal static extern void SnapshotManager_OpenResponse_Dispose(HandleRef self);
+        internal static extern void SnapshotManager_OpenResponse_Dispose(
+            HandleRef self);
 
         [DllImport(SymbolLocation.NativeSymbolLocation)]
         internal static extern /* from(SnapshotOpenStatus_t) */ CommonErrorStatus.SnapshotOpenStatus SnapshotManager_OpenResponse_GetStatus(
@@ -151,8 +133,8 @@ namespace GooglePlayGames.Native.Cwrapper
         [DllImport(SymbolLocation.NativeSymbolLocation)]
         internal static extern /* from(size_t) */ UIntPtr SnapshotManager_OpenResponse_GetConflictId(
             HandleRef self,
-            [In, Out] /* from(char *) */byte[] out_arg,
-            /* from(size_t) */UIntPtr out_size);
+         /* from(char *) */StringBuilder out_arg,
+         /* from(size_t) */UIntPtr out_size);
 
         [DllImport(SymbolLocation.NativeSymbolLocation)]
         internal static extern /* from(SnapshotMetadata_t) */ IntPtr SnapshotManager_OpenResponse_GetConflictOriginal(

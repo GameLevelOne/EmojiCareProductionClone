@@ -18,7 +18,7 @@ using GoogleMobileAds.Api;
 
 namespace GoogleMobileAds.Common
 {
-    public interface IRewardBasedVideoAdClient
+    internal interface IRewardBasedVideoAdClient
     {
         // Ad event fired when the reward based video ad has been received.
         event EventHandler<EventArgs> OnAdLoaded;
@@ -43,9 +43,6 @@ namespace GoogleMobileAds.Common
 
         // Determines whether the reward based video has loaded.
         bool IsLoaded();
-
-        // Returns the mediation adapter class name.
-        string MediationAdapterClassName();
 
         // Shows the reward based video ad on the screen.
         void ShowRewardBasedVideoAd();

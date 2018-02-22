@@ -23,11 +23,12 @@ namespace GooglePlayGames.BasicApi.Nearby
         private readonly EndpointDetails mRemoteEndpoint;
         private readonly byte[] mPayload;
 
-        public ConnectionRequest(string remoteEndpointId,
+        public ConnectionRequest(string remoteEndpointId, string remoteDeviceId,
                              string remoteEndpointName, string serviceId, byte[] payload)
         {
             Logger.d("Constructing ConnectionRequest");
-            mRemoteEndpoint = new EndpointDetails(remoteEndpointId, remoteEndpointName, serviceId);
+            mRemoteEndpoint = new EndpointDetails(remoteEndpointId, remoteDeviceId,
+                remoteEndpointName, serviceId);
             this.mPayload = Misc.CheckNotNull(payload);
         }
 

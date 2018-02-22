@@ -37,6 +37,12 @@ namespace GooglePlayGames.Native.PInvoke
             C.ConnectionRequest_GetRemoteEndpointId(SelfPtr(), out_arg, out_size));
         }
 
+        internal string RemoteDeviceId()
+        {
+            return PInvokeUtilities.OutParamsToString((out_arg, out_size) =>
+            C.ConnectionRequest_GetRemoteDeviceId(SelfPtr(), out_arg, out_size));
+        }
+
         internal string RemoteEndpointName()
         {
             return PInvokeUtilities.OutParamsToString((out_arg, out_size) =>
@@ -58,6 +64,7 @@ namespace GooglePlayGames.Native.PInvoke
         {
             ConnectionRequest req = new ConnectionRequest(
                                         RemoteEndpointId(),
+                                        RemoteDeviceId(),
                                         RemoteEndpointName(),
                                         NearbyConnectionsManager.ServiceId,
                                         Payload());

@@ -12,14 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
+using UnityEngine;
 
 namespace GoogleMobileAds
 {
-    public class GoogleMobileAdsClientFactory
+    internal class GoogleMobileAdsClientFactory
     {
-        public static IBannerClient BuildBannerClient()
+        internal static IBannerClient BuildBannerClient()
         {
             #if UNITY_EDITOR
                 // Testing UNITY_EDITOR first because the editor also responds to the currently
@@ -34,7 +37,7 @@ namespace GoogleMobileAds
             #endif
         }
 
-        public static IInterstitialClient BuildInterstitialClient()
+        internal static IInterstitialClient BuildInterstitialClient()
         {
             #if UNITY_EDITOR
                 // Testing UNITY_EDITOR first because the editor also responds to the currently
@@ -49,7 +52,7 @@ namespace GoogleMobileAds
             #endif
         }
 
-        public static IRewardBasedVideoAdClient BuildRewardBasedVideoAdClient()
+        internal static IRewardBasedVideoAdClient BuildRewardBasedVideoAdClient()
         {
             #if UNITY_EDITOR
                 // Testing UNITY_EDITOR first because the editor also responds to the currently
@@ -64,7 +67,7 @@ namespace GoogleMobileAds
             #endif
         }
 
-        public static IAdLoaderClient BuildAdLoaderClient(AdLoader adLoader)
+        internal static IAdLoaderClient BuildAdLoaderClient(AdLoader adLoader)
         {
             #if UNITY_EDITOR
                 // Testing UNITY_EDITOR first because the editor also responds to the currently
@@ -79,7 +82,7 @@ namespace GoogleMobileAds
             #endif
         }
 
-        public static INativeExpressAdClient BuildNativeExpressAdClient()
+        internal static INativeExpressAdClient BuildNativeExpressAdClient()
         {
             #if UNITY_EDITOR
                 // Testing UNITY_EDITOR first because the editor also responds to the currently
@@ -89,21 +92,6 @@ namespace GoogleMobileAds
                 return new GoogleMobileAds.Android.NativeExpressAdClient();
             #elif (UNITY_5 && UNITY_IOS) || UNITY_IPHONE
                 return new GoogleMobileAds.iOS.NativeExpressAdClient();
-            #else
-                return new GoogleMobileAds.Common.DummyClient();
-            #endif
-        }
-
-        public static IMobileAdsClient MobileAdsInstance()
-        {
-            #if UNITY_EDITOR
-                // Testing UNITY_EDITOR first because the editor also responds to the currently
-                // selected platform.
-                return new GoogleMobileAds.Common.DummyClient();
-            #elif UNITY_ANDROID
-                return GoogleMobileAds.Android.MobileAdsClient.Instance;
-            #elif (UNITY_5 && UNITY_IOS) || UNITY_IPHONE
-                return GoogleMobileAds.iOS.MobileAdsClient.Instance;
             #else
                 return new GoogleMobileAds.Common.DummyClient();
             #endif

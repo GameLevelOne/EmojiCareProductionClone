@@ -59,7 +59,7 @@ namespace GooglePlayGames.Native.Cwrapper
         [DllImport(SymbolLocation.NativeSymbolLocation)]
         internal static extern /* from(size_t) */ UIntPtr AppIdentifier_GetIdentifier(
             HandleRef self,
-            [In, Out] /* from(char *) */byte[] out_arg,
+         /* from(char *) */StringBuilder out_arg,
          /* from(size_t) */UIntPtr out_size);
 
         [DllImport(SymbolLocation.NativeSymbolLocation)]
@@ -74,7 +74,7 @@ namespace GooglePlayGames.Native.Cwrapper
         [DllImport(SymbolLocation.NativeSymbolLocation)]
         internal static extern /* from(size_t) */ UIntPtr StartAdvertisingResult_GetLocalEndpointName(
             HandleRef self,
-            [In, Out] /* from(char *) */byte[] out_arg,
+         /* from(char *) */StringBuilder out_arg,
          /* from(size_t) */UIntPtr out_size);
 
         [DllImport(SymbolLocation.NativeSymbolLocation)]
@@ -84,19 +84,25 @@ namespace GooglePlayGames.Native.Cwrapper
         [DllImport(SymbolLocation.NativeSymbolLocation)]
         internal static extern /* from(size_t) */ UIntPtr EndpointDetails_GetEndpointId(
             HandleRef self,
-            [In, Out] /* from(char *) */byte[] out_arg,
+         /* from(char *) */StringBuilder out_arg,
+         /* from(size_t) */UIntPtr out_size);
+
+        [DllImport(SymbolLocation.NativeSymbolLocation)]
+        internal static extern /* from(size_t) */ UIntPtr EndpointDetails_GetDeviceId(
+            HandleRef self,
+         /* from(char *) */StringBuilder out_arg,
          /* from(size_t) */UIntPtr out_size);
 
         [DllImport(SymbolLocation.NativeSymbolLocation)]
         internal static extern /* from(size_t) */ UIntPtr EndpointDetails_GetName(
             HandleRef self,
-            [In, Out] /* from(char *) */byte[] out_arg,
+         /* from(char *) */StringBuilder out_arg,
          /* from(size_t) */UIntPtr out_size);
 
         [DllImport(SymbolLocation.NativeSymbolLocation)]
         internal static extern /* from(size_t) */ UIntPtr EndpointDetails_GetServiceId(
             HandleRef self,
-            [In, Out] /* from(char *) */byte[] out_arg,
+         /* from(char *) */StringBuilder out_arg,
          /* from(size_t) */UIntPtr out_size);
 
         [DllImport(SymbolLocation.NativeSymbolLocation)]
@@ -106,13 +112,19 @@ namespace GooglePlayGames.Native.Cwrapper
         [DllImport(SymbolLocation.NativeSymbolLocation)]
         internal static extern /* from(size_t) */ UIntPtr ConnectionRequest_GetRemoteEndpointId(
             HandleRef self,
-            [In, Out] /* from(char *) */byte[] out_arg,
+         /* from(char *) */StringBuilder out_arg,
+         /* from(size_t) */UIntPtr out_size);
+
+        [DllImport(SymbolLocation.NativeSymbolLocation)]
+        internal static extern /* from(size_t) */ UIntPtr ConnectionRequest_GetRemoteDeviceId(
+            HandleRef self,
+         /* from(char *) */StringBuilder out_arg,
          /* from(size_t) */UIntPtr out_size);
 
         [DllImport(SymbolLocation.NativeSymbolLocation)]
         internal static extern /* from(size_t) */ UIntPtr ConnectionRequest_GetRemoteEndpointName(
             HandleRef self,
-            [In, Out] /* from(char *) */byte[] out_arg,
+         /* from(char *) */StringBuilder out_arg,
          /* from(size_t) */UIntPtr out_size);
 
         [DllImport(SymbolLocation.NativeSymbolLocation)]
@@ -128,7 +140,7 @@ namespace GooglePlayGames.Native.Cwrapper
         [DllImport(SymbolLocation.NativeSymbolLocation)]
         internal static extern /* from(size_t) */ UIntPtr ConnectionResponse_GetRemoteEndpointId(
             HandleRef self,
-            [In, Out] /* from(char *) */byte[] out_arg,
+         /* from(char *) */StringBuilder out_arg,
          /* from(size_t) */UIntPtr out_size);
 
         [DllImport(SymbolLocation.NativeSymbolLocation)]

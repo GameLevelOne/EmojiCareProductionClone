@@ -13,7 +13,6 @@
 // limitations under the License.
 
 using System;
-using System.Reflection;
 
 using GoogleMobileAds.Common;
 
@@ -22,12 +21,16 @@ namespace GoogleMobileAds.Api
     public class RewardBasedVideoAd
     {
         private IRewardBasedVideoAdClient client;
-        private static readonly RewardBasedVideoAd instance = new RewardBasedVideoAd();
+        private static RewardBasedVideoAd instance;
 
         public static RewardBasedVideoAd Instance
         {
             get
             {
+                if (instance == null)
+                {
+                    instance = new RewardBasedVideoAd();
+                }
                 return instance;
             }
         }
@@ -35,70 +38,64 @@ namespace GoogleMobileAds.Api
         // Creates a Singleton RewardBasedVideoAd.
         private RewardBasedVideoAd()
         {
-            Type googleMobileAdsClientFactory = Type.GetType(
-                "GoogleMobileAds.GoogleMobileAdsClientFactory,Assembly-CSharp");
-            MethodInfo method = googleMobileAdsClientFactory.GetMethod(
-                "BuildRewardBasedVideoAdClient",
-                BindingFlags.Static | BindingFlags.Public);
-            this.client = (IRewardBasedVideoAdClient)method.Invoke(null, null);
+            client = GoogleMobileAdsClientFactory.BuildRewardBasedVideoAdClient();
             client.CreateRewardBasedVideoAd();
 
-            Utils.CheckInitialization();
             this.client.OnAdLoaded += (sender, args) =>
-            {
-                if (this.OnAdLoaded != null)
                 {
-                    MobileAdsEventExecutor.executeInUpdate(() => this.OnAdLoaded(this, args));
-                }
-            };
+                    if (this.OnAdLoaded != null)
+                    {
+                        this.OnAdLoaded(this, args);
+                    }
+                };
 
             this.client.OnAdFailedToLoad += (sender, args) =>
-            {
-                if (this.OnAdFailedToLoad != null)
                 {
-                    MobileAdsEventExecutor.executeInUpdate(() => this.OnAdFailedToLoad(this, args));
-                }
-            };
+                    if (this.OnAdFailedToLoad != null)
+                    {
+                        this.OnAdFailedToLoad(this, args);
+                    }
+                };
 
             this.client.OnAdOpening += (sender, args) =>
-            {
-                if (this.OnAdOpening != null)
                 {
-                    MobileAdsEventExecutor.executeInUpdate(() => this.OnAdOpening(this, args));
-                }
-            };
+                    if (this.OnAdOpening != null)
+                    {
+                        this.OnAdOpening(this, args);
+                    }
+                };
 
             this.client.OnAdStarted += (sender, args) =>
-            {
-                if (this.OnAdStarted != null)
                 {
-                    MobileAdsEventExecutor.executeInUpdate(() => this.OnAdStarted(this, args));
-                }
-            };
+                    if (this.OnAdStarted != null)
+                    {
+                        this.OnAdStarted(this, args);
+                    }
+                };
 
             this.client.OnAdClosed += (sender, args) =>
-            {
-                if (this.OnAdClosed != null)
                 {
-                    MobileAdsEventExecutor.executeInUpdate(() => this.OnAdClosed(this, args));
-                }
-            };
+                    if (this.OnAdClosed != null)
+                    {
+                        this.OnAdClosed(this, args);
+                    }
+                };
 
             this.client.OnAdLeavingApplication += (sender, args) =>
-            {
-                if (this.OnAdLeavingApplication != null)
                 {
-                    MobileAdsEventExecutor.executeInUpdate(() => this.OnAdLeavingApplication(this, args));
-                }
-            };
+                    if (this.OnAdLeavingApplication != null)
+                    {
+                        this.OnAdLeavingApplication(this, args);
+                    }
+                };
 
             this.client.OnAdRewarded += (sender, args) =>
-            {
-                if (this.OnAdRewarded != null)
                 {
-                    MobileAdsEventExecutor.executeInUpdate(() => this.OnAdRewarded(this, args));
-                }
-            };
+                    if (this.OnAdRewarded != null)
+                    {
+                        this.OnAdRewarded(this, args);
+                    }
+                };
         }
 
         // These are the ad callback events that can be hooked into.
@@ -132,12 +129,6 @@ namespace GoogleMobileAds.Api
         public void Show()
         {
             client.ShowRewardBasedVideoAd();
-        }
-
-        // Returns the mediation adapter class name.
-        public string MediationAdapterClassName()
-        {
-            return this.client.MediationAdapterClassName();
         }
     }
 }

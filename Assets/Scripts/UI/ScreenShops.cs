@@ -27,6 +27,7 @@ public class ScreenShops : BaseUI {
 	public Text itemPriceText;
 
 	public ScreenPopup screenPopup;
+	public PopupUnlockables popupUnlockables;
 
 	public Text storeDescriptionText;
 	public Text itemDescriptionText;
@@ -111,6 +112,7 @@ public class ScreenShops : BaseUI {
 			PlayerData.Instance.PlayerGem += gemAmount1;
 		} else if(productId == ShortCode.ProductIDs.id_Gem2){
 			PlayerData.Instance.PlayerGem += gemAmount2;
+			popupUnlockables.SetDisplay (UnlockableList.GardenField3);
 		} else if(productId == ShortCode.ProductIDs.id_Gem3){
 			PlayerData.Instance.PlayerGem += gemAmount3;
 		} else if(productId == ShortCode.ProductIDs.id_Gem4){

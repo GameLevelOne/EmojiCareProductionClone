@@ -1,5 +1,5 @@
-lastUpgrade=00950
-proj.pluginVersion=0.9.50
+lastUpgrade=00936
+proj.pluginVersion=0.9.36
 proj.AppId=779649100649
 and.BundleId=com.GameLevelOne.EmojiCare
 proj.classDir=Assets

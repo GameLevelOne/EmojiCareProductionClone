@@ -56,6 +56,10 @@ namespace GooglePlayGames.BasicApi.Nearby
 
         void StopAllConnections();
 
+        string LocalEndpointId();
+
+        string LocalDeviceId();
+
         string GetAppBundleId();
 
         string GetServiceId();

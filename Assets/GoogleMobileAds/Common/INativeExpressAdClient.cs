@@ -18,7 +18,7 @@ using GoogleMobileAds.Api;
 
 namespace GoogleMobileAds.Common
 {
-    public interface INativeExpressAdClient
+    internal interface INativeExpressAdClient
     {
         // Fired when the native express ad has been received.
         event EventHandler<EventArgs> OnAdLoaded;
@@ -38,9 +38,6 @@ namespace GoogleMobileAds.Common
         // Creates a native express ad view and adds it to the view hierarchy.
         void CreateNativeExpressAdView(string adUnitId, AdSize adSize, AdPosition position);
 
-        // Creates a native express ad view and adds it to the view hierarchy with a custom position.
-        void CreateNativeExpressAdView(string adUnitId, AdSize adSize, int x, int y);
-
         // Requests a new ad for the native express ad view.
         void LoadAd(AdRequest request);
 
@@ -52,8 +49,5 @@ namespace GoogleMobileAds.Common
 
         // Destroys a native express ad view.
         void DestroyNativeExpressAdView();
-
-        // Returns the mediation adapter class name.
-        string MediationAdapterClassName();
     }
 }

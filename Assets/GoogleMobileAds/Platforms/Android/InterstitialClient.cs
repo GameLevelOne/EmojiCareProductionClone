@@ -15,6 +15,7 @@
 #if UNITY_ANDROID
 
 using System;
+using System.Collections.Generic;
 
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
@@ -22,7 +23,7 @@ using UnityEngine;
 
 namespace GoogleMobileAds.Android
 {
-    public class InterstitialClient : AndroidJavaProxy, IInterstitialClient
+    internal class InterstitialClient : AndroidJavaProxy, IInterstitialClient
     {
         private AndroidJavaObject interstitial;
 
@@ -77,10 +78,18 @@ namespace GoogleMobileAds.Android
             this.interstitial.Call("destroy");
         }
 
-        // Returns the mediation adapter class name.
-        public string MediationAdapterClassName()
+        // Sets IDefaultInAppPurchaseProcessor as PlayStorePurchaseListener on interstital ad.
+        public void SetDefaultInAppPurchaseProcessor(IDefaultInAppPurchaseProcessor processor)
         {
-            return this.interstitial.Call<string>("getMediationAdapterClassName");
+            DefaultInAppPurchaseListener listener = new DefaultInAppPurchaseListener(processor);
+            this.interstitial.Call("setPlayStorePurchaseParams", listener, processor.AndroidPublicKey);
+        }
+
+        // Sets ICustomInAppPurchaseProcessor as PlayStorePurchaseListener on interstital ad.
+        public void SetCustomInAppPurchaseProcessor(ICustomInAppPurchaseProcessor processor)
+        {
+            CustomInAppPurchaseListener listener = new CustomInAppPurchaseListener(processor);
+            this.interstitial.Call("setInAppPurchaseListener", listener);
         }
 
         #endregion
