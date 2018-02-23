@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public enum ShopType{
-	GemStore,DecorStore
+	GemStore,CoinStore,DecorStore
 }
 
 public enum ShopItems{
@@ -16,7 +16,7 @@ public enum ShopItems{
 public class ScreenShops : BaseUI {
 	public GameObject parentShop;
 	public GameObject parentShopContent;
-	public GameObject[] panelShopContents = new GameObject[2];
+	public GameObject[] panelShopContents = new GameObject[3];
 	public GameObject[] displayCurrencies = new GameObject[3];
 	public GameObject buttonNext;
 	public GameObject buttonPrev;
@@ -45,7 +45,8 @@ public class ScreenShops : BaseUI {
 	ShopType selectedStore = ShopType.GemStore;
 	ShopItem currentItem;
 
-	string boolMoveRight = "moveRight";
+	string boolMoveRightToCoinStore = "moveRightToCoin";
+	string boolMoveRightToDecor = "moveRightToDecor";
 
 	int gemAmount1 = 100;
 	int gemAmount2 = 500;
@@ -54,10 +55,9 @@ public class ScreenShops : BaseUI {
 	int freeCoinAmount = 20;
 	int freeGemAmount = 1;
 
-	string[] shopDescription = new string[2]{"Gem Store","Decoration Store"};
+	string[] shopDescription = new string[3]{"Gem Store","Coin Store","Decoration Store"};
 
 	void OnEnable (){
-		InitShopDisplay();
 		ShopItem.OnClickShopItem += OnClickShopItem;
 		ScreenPopup.OnBuyCoin += OnBuyCoin;
 		ScreenPopup.OnShopBuyFurniture += OnShopBuyFurniture;
@@ -71,6 +71,17 @@ public class ScreenShops : BaseUI {
 		ScreenPopup.OnShopBuyFurniture -= OnShopBuyFurniture;
 		UnityIAPManager.Instance.OnFinishBuyProduct -= OnFinishBuyProduct;
 		UnityIAPManager.Instance.OnFailToBuyProduct -= OnFailToBuyProduct;
+	}
+
+	public override void InitUI ()
+	{
+		InitShopDisplay();
+	}
+
+	void InitShopDisplay(){
+		selectedStore = ShopType.GemStore;
+		UpdateButtonDisplay(true);
+		storeDescriptionText.text = shopDescription[(int)selectedStore];
 	}
 
 	void OnShopBuyFurniture ()
@@ -144,14 +155,9 @@ public class ScreenShops : BaseUI {
 		}
 	}
 
-	public void InitShopDisplay(){
-		UpdateButtonDisplay(true);
-		storeDescriptionText.text = shopDescription[(int)selectedStore];
-	}
-
 	public void OnClickShop(int shopIndex){
 		selectedStore = (ShopType)shopIndex;
-		parentShop.SetActive(false);
+		//parentShop.SetActive(false);
 		parentShopContent.SetActive(true);
 		parentShopContent.GetComponent<ScreenShopContent>().ShowUI(parentShopContent);
 		UpdateButtonDisplay (false);
@@ -166,9 +172,15 @@ public class ScreenShops : BaseUI {
 		if(selectedStore == ShopType.GemStore){
 			panelShopContents [0].SetActive (true);
 			panelShopContents [1].SetActive (false);
-		} else{
-			panelShopContents [1].SetActive (true);
+			panelShopContents [2].SetActive (false);
+		} else if(selectedStore == ShopType.CoinStore){
 			panelShopContents [0].SetActive (false);
+			panelShopContents [1].SetActive (true);
+			panelShopContents [2].SetActive (false);
+		} else if(selectedStore == ShopType.DecorStore){
+			panelShopContents [0].SetActive (false);
+			panelShopContents [1].SetActive (false);
+			panelShopContents [2].SetActive (true);
 		}
 	}
 
@@ -210,7 +222,10 @@ public class ScreenShops : BaseUI {
 	public void OnClickNext ()
 	{
 		if (selectedStore == ShopType.GemStore) {
-			shopScrollAnim.SetBool (boolMoveRight, true);
+			shopScrollAnim.SetBool (boolMoveRightToCoinStore, true);
+			selectedStore = ShopType.CoinStore;
+		} else if(selectedStore == ShopType.CoinStore){
+			shopScrollAnim.SetBool (boolMoveRightToDecor, true);
 			selectedStore = ShopType.DecorStore;
 		}
 		UpdateButtonDisplay(true);
@@ -219,7 +234,10 @@ public class ScreenShops : BaseUI {
 	public void OnClickPrev ()
 	{
 		if (selectedStore == ShopType.DecorStore) {
-			shopScrollAnim.SetBool (boolMoveRight, false);
+			shopScrollAnim.SetBool (boolMoveRightToDecor, false);
+			selectedStore = ShopType.CoinStore;
+		} else if(selectedStore == ShopType.CoinStore){
+			shopScrollAnim.SetBool (boolMoveRightToCoinStore, false);
 			selectedStore = ShopType.GemStore;
 		}
 		UpdateButtonDisplay(true);
@@ -240,6 +258,9 @@ public class ScreenShops : BaseUI {
 				buttonPrev.SetActive (false);
 			} else if (selectedStore == ShopType.DecorStore) {
 				buttonNext.SetActive (false);
+				buttonPrev.SetActive (true);
+			} else if(selectedStore == ShopType.CoinStore){
+				buttonNext.SetActive (true);
 				buttonPrev.SetActive (true);
 			}
 		} else{

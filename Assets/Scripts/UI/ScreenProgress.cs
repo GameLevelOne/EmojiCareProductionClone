@@ -30,7 +30,7 @@ public class ScreenProgress : BaseUI {
 
 	public bool openedFromEnvelope = false;
 
-	int expressionTotalCount;
+	int currentExpressionTile = 0;
 	int tileWidth = 4;
 	int tileHeight = 15;
 	float expressionBoxWidth = 120f;
@@ -42,11 +42,18 @@ public class ScreenProgress : BaseUI {
 	GameObject[] expressionObj = new GameObject[60];
 	List<GameObject> emojiObj = new List<GameObject>();
 
+	int unlockExpressionPriceGem = 10;
+
 	void Start(){
 		for(int i=0;i<expressionObj.Length;i++){
 			GameObject obj = Instantiate(expressionBoxPrefab,contentBox,false) as GameObject;
 			expressionObj [i] = obj;
 		}
+		screenPopup.OnGemUnlockExpression += OnGemUnlockExpression;
+	}
+
+	void OnDisable(){
+		screenPopup.OnGemUnlockExpression -= OnGemUnlockExpression;
 	}
 
 	public override void InitUI ()
@@ -184,13 +191,21 @@ public class ScreenProgress : BaseUI {
 		openedFromEnvelope = false;
 	}
 
-	void OnSelectExpression (Sprite item, string expressionName, string condition, bool isLocked, float progress)
+	void OnSelectExpression (EmojiExpressionState type,Sprite item, string expressionName, string condition, bool isLocked, float progress)
 	{
+		currentExpressionTile = (int)type;
 		if (!isLocked) {
 			expressionIcon.sprite = item;
 			expressionNameText.text = expressionName;
 			indivProgressBarFill.fillAmount = progress;
+		} else{
+			screenPopup.ShowPopup (PopupType.Confirmation, PopupEventType.ProgressUnlockExpressionGem, false, null, null, null, unlockExpressionPriceGem);
 		}
+	}
+
+	void OnGemUnlockExpression ()
+	{
+		expressionObj [currentExpressionTile].GetComponent<ProgressTile> ().UnlockExpression ();
 	}
 
 	void SortList(List<EmojiExpressionState> list){

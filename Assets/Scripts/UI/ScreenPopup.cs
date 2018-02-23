@@ -37,7 +37,9 @@ public enum PopupEventType{
 	FreeCoinAds,
 	FreeGemAds,
 	NotEnoughCoins,
-	NotEnoughGems
+	NotEnoughGems,
+	ProgressUnlockExpressionCoin,
+	ProgressUnlockExpressionGem
 }
 
 public class ScreenPopup : BaseUI {
@@ -60,6 +62,8 @@ public class ScreenPopup : BaseUI {
 
 	int reviveCost = 100; //TODO: ADJUST THIS LATER
 	int instantHarvestCost = 20;
+
+	int currentGemPrice = 0;
 
 	#region events
 	public delegate void CelebrationNewEmoji(Sprite sprite,string emojiName);
@@ -89,6 +93,9 @@ public class ScreenPopup : BaseUI {
 	public delegate void InstantHarvestPlant();
 	public event InstantHarvestPlant OnInstantHarvestPlant;
 
+	public delegate void UnlockExpression();
+	public event UnlockExpression OnGemUnlockExpression;
+
 	#endregion
 
 	PopupEventType currentEventType;
@@ -106,6 +113,7 @@ public class ScreenPopup : BaseUI {
 	{
 		currentEventType = eventType;
 		currentPopupType = type;
+		currentGemPrice = gemPrice;
 		tempMessage = message;
 		popupText.text = SetPopupText (eventType);
 		if (type == PopupType.Warning) {
@@ -188,6 +196,8 @@ public class ScreenPopup : BaseUI {
 			return "Watch ads to get free 20 coins?";
 		} else if(eventType == PopupEventType.FreeGemAds){
 			return "Watch ads to get free 1 gem?";
+		} else if(eventType == PopupEventType.ProgressUnlockExpressionGem){
+			return "Unlock this expression now?";
 		}
 		else{
 			return "";
@@ -226,6 +236,13 @@ public class ScreenPopup : BaseUI {
 			} else if (currentEventType == PopupEventType.SpeedUpPlant || currentEventType == PopupEventType.WakeEmojiUp 
 						|| currentEventType == PopupEventType.FreeCoinAds || currentEventType == PopupEventType.FreeGemAds) {
 				WatchAds ();
+			} else if(currentEventType == PopupEventType.ProgressUnlockExpressionGem){
+				if(PlayerData.Instance.PlayerGem >= currentGemPrice){
+					PlayerData.Instance.PlayerGem -= currentGemPrice;
+					OnGemUnlockExpression ();
+				} else {
+					ShowPopup (PopupType.Warning, PopupEventType.NotEnoughGems);
+				}
 			}
 		} else{
 			base.ClosePopup(this.gameObject);

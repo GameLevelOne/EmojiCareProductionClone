@@ -79,7 +79,7 @@ public class ScreenSendOff : BaseUI {
 
 	void GenerateReward(){
 		int randCoin = Random.Range (1000, 5000);
-		int randGem = Random.Range (10, 50);
+		int randGem = Random.Range (1, 50);
 		textRewardCoin.text = "x" + randCoin.ToString ();
 		textRewardGem.text = "x" + randGem.ToString ();
 		PlayerData.Instance.PlayerCoin += randCoin;

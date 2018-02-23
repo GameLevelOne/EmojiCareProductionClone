@@ -10,7 +10,7 @@ public enum ExpressionStatus{
 }
 
 public class ProgressTile : MonoBehaviour {
-	public delegate void SelectExpression(Sprite item,string name,string condition,bool isLocked,float progress);
+	public delegate void SelectExpression(EmojiExpressionState type,Sprite item,string name,string condition,bool isLocked,float progress);
 	public event SelectExpression OnSelectExpression;
 
 	public EmojiExpressionState exprType;
@@ -59,7 +59,17 @@ public class ProgressTile : MonoBehaviour {
 	}
 
 	public void OnClickTile(){
-		OnSelectExpression(expressionIcon.sprite,expressionName,unlockCondition,lockedExpression,currentProgress);
+		OnSelectExpression(exprType,expressionIcon.sprite,expressionName,unlockCondition,lockedExpression,currentProgress);
+	}
+
+	public void UnlockExpression(){
+		PlayerPrefs.SetInt (PlayerPrefKeys.Emoji.EMOJI_EXPRESSION_STATUS +
+		PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType.ToString () +
+		exprType.ToString (), (int)ExpressionStatus.Locked);
+		lockedExpression = false;
+		lockIcon.SetActive (false);
+		blackOverlay.enabled = true;
+		blackOverlay.color = new Color (0.28f, 0.15f, 0.15f, 0.5f);
 	}
 
 }
