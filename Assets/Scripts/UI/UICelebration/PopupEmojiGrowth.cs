@@ -26,7 +26,8 @@ public class PopupEmojiGrowth : BaseUI {
 	public void OnClickOK(){
 		//emoji growth
 		PlayerData.Instance.PlayerEmoji.emojiGrowth.OnClosePopup ();
-		popupUnlockables.WaitForGrowthPopup ();
+		if(PlayerData.Instance.GardenField1 == 0)
+			popupUnlockables.WaitForGrowthPopup ();
 		CloseUI (gameObject);
 	}
 }

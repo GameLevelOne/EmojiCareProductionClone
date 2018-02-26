@@ -128,11 +128,11 @@ public class UICelebrationManager : MonoBehaviour {
 	{
 		if (UnityEngine.SceneManagement.SceneManager.GetActiveScene ().name == ShortCode.SCENE_MAIN) {
 			PlayerData.Instance.CookCount++;
-			if (PlayerData.Instance.CookCount == 10) {
+			if (PlayerData.Instance.CookCount == 10 && PlayerData.Instance.RecipeRamen == 0) {
 				popupUnlockables.SetDisplay (UnlockableList.RecipeRamen);
-			} else if (PlayerData.Instance.CookCount == 50) {
+			} else if (PlayerData.Instance.CookCount == 50 && PlayerData.Instance.RecipeBurger == 0) {
 				popupUnlockables.SetDisplay (UnlockableList.RecipeBurger);
-			} else if (PlayerData.Instance.CookCount == 100) {
+			} else if (PlayerData.Instance.CookCount == 100 && PlayerData.Instance.RecipeGrilledFish == 0) {
 				popupUnlockables.SetDisplay (UnlockableList.RecipeGrilledFish);
 			}
 		}

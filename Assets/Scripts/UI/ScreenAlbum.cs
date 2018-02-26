@@ -75,7 +75,7 @@ public class ScreenAlbum : BaseUI {
 				while (counter > 0) {
 					EmojiType emojiType = PlayerData.Instance.PlayerEmoji.emojiBaseData.emojiType;
 					string emojiEntryTime = System.DateTime.Now.ToString ();
-					float completionRate = PlayerData.Instance.PlayerEmoji.emojiExpressions.GetTotalExpressionProgress ();
+					float completionRate = PlayerPrefs.GetFloat (PlayerPrefKeys.Emoji.EMOJI_SENDOFF_PROGRESS);
 
 					PlayerData.Instance.EmojiAlbumData.Add (emojiType);
 					PlayerData.Instance.EmojiAlbumEntryTime.Add (emojiEntryTime);

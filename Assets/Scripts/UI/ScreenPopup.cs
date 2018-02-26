@@ -52,6 +52,7 @@ public class ScreenPopup : BaseUI {
 	public GameObject buttonOk;
 	public GameObject buttonShop;
 	public GameObject buttonTransfer;
+	public GameObject buttonAds;
 	public Text popupText;
 	public Text gemText1;
 	public Text gemText2;
@@ -138,6 +139,11 @@ public class ScreenPopup : BaseUI {
 			buttonGroupWarning.SetActive(false);
 			buttonGroupAdsAndGems.SetActive (true);
 			buttonGroupGems.SetActive (false);
+			if(PlayerData.Instance.SpeedUpHarvestCooldown == 0){
+				buttonAds.GetComponent<Button> ().interactable = true;
+			} else{
+				buttonAds.GetComponent<Button> ().interactable = false;
+			}
 			gemText1.text = gemPrice.ToString ();
 		} else if(type == PopupType.Gems){
 			buttonGroupConfirmation.SetActive(false);
@@ -206,8 +212,9 @@ public class ScreenPopup : BaseUI {
 
 	public void OnClickButtonOk ()
 	{
-		if (currentPopupType == PopupType.Confirmation) {
-			base.ClosePopup (this.gameObject);
+		if(currentPopupType == PopupType.Warning){
+			ClosePopup(this.gameObject);
+		} else{
 			if (currentEventType == PopupEventType.SelectEmoji || currentEventType == PopupEventType.BuyEmoji) {
 //				Debug.Log("new emoji");
 				OnCelebrationNewEmoji (tempEmojiSprite, tempEmojiName);
@@ -244,8 +251,7 @@ public class ScreenPopup : BaseUI {
 					ShowPopup (PopupType.Warning, PopupEventType.NotEnoughGems);
 				}
 			}
-		} else{
-			base.ClosePopup(this.gameObject);
+			ClosePopup(this.gameObject);
 		}
 	}
 
@@ -261,9 +267,12 @@ public class ScreenPopup : BaseUI {
 
 	public void WatchAds ()
 	{
+		Debug.Log ("watch ads speed up");
+		PlayerData.Instance.SpeedUpHarvestCooldown = 1;
 		uiCoin.CloseUI (false);
 		if (AdmobManager.Instance) {
 			if (currentEventType == PopupEventType.SpeedUpPlant) {
+				PlayerData.Instance.SpeedUpHarvestCooldown = 1;
 				AdmobManager.Instance.ShowRewardedVideo (AdEvents.SpeedUpPlant);
 			} else if(currentEventType == PopupEventType.WakeEmojiUp){
 				AdmobManager.Instance.ShowRewardedVideo (AdEvents.WakeEmojiUp);
@@ -287,7 +296,6 @@ public class ScreenPopup : BaseUI {
 			} else{
 				ShowPopup (PopupType.Warning, PopupEventType.NotAbleToRestock);
 			}
-
 		}
 	}
 

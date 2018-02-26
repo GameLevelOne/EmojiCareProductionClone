@@ -210,6 +210,11 @@ public class PlayerData : MonoBehaviour {
 		set{PlayerPrefs.SetString(PlayerPrefKeys.Player.RANDOM_COINGEM_COOLDOWN,value.ToString());}
 	}
 
+	public int SpeedUpHarvestCooldown{
+		get{return PlayerPrefs.GetInt (PlayerPrefKeys.Player.SPEEDUP_HARVEST_COOLDOWN, 0);}
+		set{PlayerPrefs.SetInt (PlayerPrefKeys.Player.SPEEDUP_HARVEST_COOLDOWN, value);}
+	}
+
 	//garden
 	public int GardenField0{
 		get{return PlayerPrefs.GetInt(PlayerPrefKeys.Player.Progress.GARDENFIELD0,1);}

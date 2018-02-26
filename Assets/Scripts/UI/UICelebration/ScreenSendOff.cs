@@ -36,37 +36,19 @@ public class ScreenSendOff : BaseUI {
 		base.ShowUI(obj);
 		this.sceneLoader = sceneLoader;
 
+		float progress = PlayerData.Instance.PlayerEmoji.emojiExpressions.GetTotalExpressionProgress ();
+
 		emojiIcon.sprite = sprite;
-		expressionProgress.text =  
-		(PlayerData.Instance.PlayerEmoji.emojiExpressions.GetTotalExpressionProgress()*100).ToString()+"%";
+		expressionProgress.text = (progress*100).ToString()+"%";
 		GenerateReward ();
 		screenAlbum.AddEmojiRecord();
 		ResetExpressionProgress ();
 		CheckEmojiExpressionStatus ();
+		PlayerPrefs.SetFloat (PlayerPrefKeys.Emoji.EMOJI_SENDOFF_PROGRESS, progress);
 		PlayerData.Instance.PlayerSendOffCount++;
 
-		switch(PlayerData.Instance.PlayerSendOffCount){
-			case 2:
-				PlayerData.Instance.Shop = 1;
-				PlayerData.Instance.EditRoom = 1;
-				PlayerData.Instance.GardenField2 = 1;
-				PlayerData.Instance.RecipeRamen = 1;
-				PlayerData.Instance.IngredientEgg = 1;
-				PlayerData.Instance.IngredientMeat = 1;
-				PlayerData.Instance.IngredientFlour = 1;
-				break;
-			case 3:
-				PlayerData.Instance.MiniGameDanceMat = 1;
-				PlayerData.Instance.RecipeBurger = 1;
-				PlayerData.Instance.IngredientCheese = 1;
-				break;
-			case 4:
-				PlayerData.Instance.MiniGamePainting = 1;
-				PlayerData.Instance.MiniGameBlocks = 1;
-				PlayerData.Instance.RecipeGrilledFish = 1;
-				PlayerData.Instance.IngredientFish = 1;
-				break;
-		}
+		if (PlayerData.Instance.PlayerSendOffCount == 5)
+			PlayerData.Instance.MiniGameDanceMat = 1;
 	}
 
 	public void OnClickContinue(){
@@ -78,7 +60,7 @@ public class ScreenSendOff : BaseUI {
 	}
 
 	void GenerateReward(){
-		int randCoin = Random.Range (1000, 5000);
+		int randCoin = Random.Range (100, 500);
 		int randGem = Random.Range (1, 50);
 		textRewardCoin.text = "x" + randCoin.ToString ();
 		textRewardGem.text = "x" + randGem.ToString ();

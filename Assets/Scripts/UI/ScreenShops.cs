@@ -123,7 +123,8 @@ public class ScreenShops : BaseUI {
 			PlayerData.Instance.PlayerGem += gemAmount1;
 		} else if(productId == ShortCode.ProductIDs.id_Gem2){
 			PlayerData.Instance.PlayerGem += gemAmount2;
-			popupUnlockables.SetDisplay (UnlockableList.GardenField3);
+			if(PlayerData.Instance.GardenField2 == 0)
+				popupUnlockables.SetDisplay (UnlockableList.GardenField2);
 		} else if(productId == ShortCode.ProductIDs.id_Gem3){
 			PlayerData.Instance.PlayerGem += gemAmount3;
 		} else if(productId == ShortCode.ProductIDs.id_Gem4){

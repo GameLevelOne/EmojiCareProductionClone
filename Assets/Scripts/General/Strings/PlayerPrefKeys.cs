@@ -20,6 +20,7 @@ public static class PlayerPrefKeys {
 		public const string EMOJI_EXPRESSION_PROGRESS = "Emoji/ExpressionProgress/";
 		public const string EMOJI_EXPRESSION_STATUS = "Emoji/ExpressionStatus/";
 		public const string EMOJI_EXPRESSION_PROGRESSRATIO = "Emoji/ExpressionProgressRatio/";
+		public const string EMOJI_SENDOFF_PROGRESS = "Emoji/SendOffProgress";
 	}
 
 	public static class Player
@@ -98,6 +99,7 @@ public static class PlayerPrefKeys {
 
 		}
 		public const string RANDOM_COINGEM_COOLDOWN = "Player/RandomCoinGemCooldown";
+		public const string SPEEDUP_HARVEST_COOLDOWN = "Player/SpeedUpHarvestCooldown";
 	}
 
 	public static class Game
