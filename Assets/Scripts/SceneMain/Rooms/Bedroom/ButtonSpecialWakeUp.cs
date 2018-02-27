@@ -23,7 +23,12 @@ public class ButtonSpecialWakeUp : MonoBehaviour {
 		if(eventName == AdEvents.WakeEmojiUp){
 			EmojiStats emojiStamina = PlayerData.Instance.PlayerEmoji.stamina;
 			float currentStamina = emojiStamina.StatValue;
-			emojiStamina.SetStats (currentStamina + (0.5f * currentStamina));
+			if(currentStamina >= emojiStamina.MaxStatValue*0.5f){
+				emojiStamina.SetStats (currentStamina + (0.5f * currentStamina));
+			} else{
+				emojiStamina.SetStats (emojiStamina.MaxStatValue*0.5f);
+			}
+
 			PlayerData.Instance.PlayerEmoji.playerInput.Wake ();
 		}
 	}
