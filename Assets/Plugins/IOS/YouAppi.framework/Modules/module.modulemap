@@ -1,0 +1,11 @@
+framework module YouAppi {
+  umbrella header "YouAppi.h"
+
+  export *
+  module * { export * }
+}
+
+module YouAppi.Swift {
+    header "YouAppi-Swift.h"
+    requires objc
+}

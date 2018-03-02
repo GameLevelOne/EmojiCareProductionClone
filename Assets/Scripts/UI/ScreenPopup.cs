@@ -273,13 +273,17 @@ public class ScreenPopup : BaseUI {
 		if (AdmobManager.Instance) {
 			if (currentEventType == PopupEventType.SpeedUpPlant) {
 				PlayerData.Instance.SpeedUpHarvestCooldown = 1;
-				AdmobManager.Instance.ShowRewardedVideo (AdEvents.SpeedUpPlant);
+				//AdmobManager.Instance.ShowRewardedVideo (AdEvents.SpeedUpPlant);
+				YouAppiManager.Instance.showRewardedVideoAd (AdEvents.SpeedUpPlant);
 			} else if(currentEventType == PopupEventType.WakeEmojiUp){
-				AdmobManager.Instance.ShowRewardedVideo (AdEvents.WakeEmojiUp);
+				//AdmobManager.Instance.ShowRewardedVideo (AdEvents.WakeEmojiUp);
+				YouAppiManager.Instance.showRewardedVideoAd (AdEvents.WakeEmojiUp);
 			} else if(currentEventType == PopupEventType.FreeCoinAds){
-				AdmobManager.Instance.ShowRewardedVideo (AdEvents.FreeCoin);
+				//AdmobManager.Instance.ShowRewardedVideo (AdEvents.FreeCoin);
+				YouAppiManager.Instance.showRewardedVideoAd (AdEvents.FreeCoin);
 			} else if(currentEventType == PopupEventType.FreeGemAds){
-				AdmobManager.Instance.ShowRewardedVideo (AdEvents.FreeGem);
+				//AdmobManager.Instance.ShowRewardedVideo (AdEvents.FreeGem);
+				YouAppiManager.Instance.showRewardedVideoAd (AdEvents.FreeGem);
 			} 
 		}
 	}

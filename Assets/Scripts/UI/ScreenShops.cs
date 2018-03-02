@@ -271,7 +271,8 @@ public class ScreenShops : BaseUI {
 	}
 
 	public void OnClickCurrencyBox(int type){ //0 = gem,1 = coin
-		if(AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds += OnFinishWatchVideoAds;
+		//if(AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds += OnFinishWatchVideoAds;
+		if (YouAppiManager.Instance) YouAppiManager.Instance.OnYouAppiFinishWatchAds += OnFinishWatchVideoAds;
 		if(type == 0){
 			Debug.Log ("popupgem");
 			screenPopup.ShowPopup (PopupType.Confirmation, PopupEventType.FreeGemAds);
@@ -283,7 +284,8 @@ public class ScreenShops : BaseUI {
 
 	void OnFinishWatchVideoAds (AdEvents eventName)
 	{
-		if(AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds -= OnFinishWatchVideoAds;
+		//if(AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds -= OnFinishWatchVideoAds;
+		if (YouAppiManager.Instance) YouAppiManager.Instance.OnYouAppiFinishWatchAds -= OnFinishWatchVideoAds;
 		if(eventName == AdEvents.FreeCoin){
 			PlayerData.Instance.PlayerCoin += freeCoinAmount;
 		} else if(eventName == AdEvents.FreeGem){
