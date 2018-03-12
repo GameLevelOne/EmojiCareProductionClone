@@ -32,6 +32,7 @@ public class PrologueDialogManager : MonoBehaviour {
 
 	void OnFadeOutFinished ()
 	{
+		Fader.OnFadeOutFinished -= OnFadeOutFinished;
 		sceneLoader.gameObject.SetActive(true);
 
 		if(PlayerData.Instance.PlayerFirstPlay == 0){
@@ -39,8 +40,6 @@ public class PrologueDialogManager : MonoBehaviour {
 		} else if(PlayerData.Instance.PlayerFirstPlay == 1){
 			sceneLoader.NextScene = "SceneMain";
 		}
-
-		Fader.OnFadeOutFinished -= OnFadeOutFinished;
 	}
 
 	public void OnClickNext(){

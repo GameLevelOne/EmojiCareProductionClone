@@ -61,11 +61,6 @@ public class GachaReward : BaseUI {
 	const string gachaAnimParameter = "OpenGacha";
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 	#region initializations
-	void Start(){
-//		Init ();
-		//GetGachaReward();
-		//GetGachaReward();
-	}
 
 	void OnDestroy(){
 		UnregisterEmojiEvents();

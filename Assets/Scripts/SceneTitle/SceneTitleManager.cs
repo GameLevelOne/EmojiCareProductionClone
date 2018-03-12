@@ -9,14 +9,18 @@ public class SceneTitleManager : MonoBehaviour {
 
 	string nextScene;
 
+	void Awake(){
+		Application.targetFrameRate = 60;
+	}
+
 	void Start(){
 		SoundManager.Instance.PlayBGM(BGMList.BGMTitle);
 
 		Input.multiTouchEnabled = false;
-		if(PlayerData.Instance.PlayerFirstPlay == 0) 
+//		if(PlayerData.Instance.PlayerFirstPlay == 0) 
 			PlayerPrefs.DeleteAll();
 		Fader.OnFadeOutFinished += HandleFadeOutFinished;
-		GameSparkManager.Instance.OnLoginSuccessful += GoToSceneMain;
+//		GameSparkManager.Instance.OnLoginSuccessful += GoToSceneMain;
 		GooglePlayGamesManager.Instance.OnFinishLogin += OnFinishLogin;
 
 //		if(! string.IsNullOrEmpty(PlayerData.Instance.PlayerAuthToken)){
@@ -26,13 +30,9 @@ public class SceneTitleManager : MonoBehaviour {
 		//PlayerData.Instance.Shop = 1;
 	}
 
-	void OnDisable(){
-		GameSparkManager.Instance.OnLoginSuccessful -= GoToSceneMain;
-		GooglePlayGamesManager.Instance.OnFinishLogin -= OnFinishLogin;
-	}
-
 	void OnFinishLogin ()
 	{
+		GooglePlayGamesManager.Instance.OnFinishLogin -= OnFinishLogin;
 		fader.FadeOut();
 	}
 

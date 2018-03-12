@@ -63,8 +63,8 @@ public class RoomController : MonoBehaviour {
 
 			AdjustTouchAreaSize();
 			pan.OnCookingDone += OnCookingDone;
-			stall.Init();
-			soil.Init();
+//			stall.Init();
+//			soil.Init();
 		}
 	}
 

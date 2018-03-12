@@ -29,7 +29,10 @@ public class GuidedTutorialManager : MonoBehaviour {
 		PlayerData.Instance.inventory.SetIngredientValue (IngredientType.Cabbage, 1);
 		PlayerData.Instance.inventory.SetIngredientValue (IngredientType.Carrot, 1);
 		PlayerData.Instance.inventory.SetIngredientValue (IngredientType.Tomato, 1);
+		StartCoroutine (Initialize ());
+	}
 
+	void InitEmoji(){
 		//init + register events (EMOJI)
 		PlayerData.Instance.InitPlayerEmoji (emojiObject);
 		PlayerData.Instance.PlayerEmoji.Init ();
@@ -43,15 +46,21 @@ public class GuidedTutorialManager : MonoBehaviour {
 		hotkeys.RegisterEmojiEvents();
 		bedroom.RegisterEmojiEvents();
 		randomBedroomController.RegisterEmojiEvents();
+	}
 
+	void InitStatsExpression(){
 		//init other events
 		statsExpressionController.Init();
 		statsExpressionController.RegisterEmojiEvents();
+	}
 
+	void InitRoomController(){
 		roomController.Init();
 		PlayerData.Instance.emojiParentTransform = roomController.rooms[(int)roomController.currentRoom].transform;
 		PlayerData.Instance.PlayerEmoji.transform.SetParent(PlayerData.Instance.emojiParentTransform,true);
+	}
 
+	void InitOthers(){
 		gachaReward.Init ();
 		celebrationManager.Init();
 		floatingStats.Init ();
@@ -101,5 +110,23 @@ public class GuidedTutorialManager : MonoBehaviour {
 
 	public void OnClickSkip(){
 		fader.FadeOut();	
+	}
+
+	IEnumerator Initialize(){
+		WaitForSeconds waitTime = new WaitForSeconds (0.1f);
+		InitEmoji ();
+		Debug.Log ("init emoji");
+		yield return waitTime;
+
+		InitStatsExpression ();
+		Debug.Log ("init stats expression");
+		yield return waitTime;
+
+		InitRoomController ();
+		Debug.Log ("init rooms");
+		yield return waitTime;
+
+		InitOthers ();
+		Debug.Log ("init others");
 	}
 }
