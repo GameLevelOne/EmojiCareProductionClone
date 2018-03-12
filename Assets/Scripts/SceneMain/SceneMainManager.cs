@@ -55,6 +55,17 @@ public class SceneMainManager : MonoBehaviour {
 
 	void InitMain()
 	{
+		if(PlayerPrefs.GetInt(PlayerPrefKeys.Game.HAS_INIT_INGREDIENT,0) == 0){
+			PlayerPrefs.SetInt(PlayerPrefKeys.Game.HAS_INIT_INGREDIENT,1);
+			PlayerData.Instance.inventory.SetIngredientValue (IngredientType.Chicken, 2);
+			PlayerData.Instance.inventory.SetIngredientValue (IngredientType.Cabbage, 2);
+			PlayerData.Instance.inventory.SetIngredientValue (IngredientType.Carrot, 2);
+			PlayerData.Instance.inventory.SetIngredientValue (IngredientType.Tomato, 2);
+		}
+		StartCoroutine (Initialize ());
+	}
+
+	void InitEmoji(){
 		//VALIDATE TOTAL PROGRESS
 		int totalExpression = 48;
 		//load expression data
@@ -62,7 +73,7 @@ public class SceneMainManager : MonoBehaviour {
 		//load from json	
 		if(PlayerPrefs.HasKey(PlayerPrefKeys.Emoji.UNLOCKED_EXPRESSIONS+emojiType.ToString())){
 			string data = PlayerPrefs.GetString(PlayerPrefKeys.Emoji.UNLOCKED_EXPRESSIONS+emojiType.ToString());
-//			Debug.Log (data);
+			//			Debug.Log (data);
 			JSONNode node = JSON.Parse(data);
 
 			float progress = ((float) node["EmojiUnlockedExpressions"].Count / (float) totalExpression);
@@ -86,9 +97,11 @@ public class SceneMainManager : MonoBehaviour {
 		}
 		PlayerData.Instance.PlayerEmoji.OnEmojiInitiated += OnEmojiInitiated;
 		PlayerData.Instance.PlayerEmoji.Init();
-//		print("INITZSZS");
-//		PlayerData.Instance.InitPlayerEmoji(emojiSamples[PlayerData.Instance.PlayerEmojiType]);
+		//		print("INITZSZS");
+		//		PlayerData.Instance.InitPlayerEmoji(emojiSamples[PlayerData.Instance.PlayerEmojiType]);
+	}
 
+	void InitRooms(){
 		roomController.Init();
 
 		if(PlayerData.Instance.PlayerEmoji.EmojiSleeping){
@@ -104,35 +117,26 @@ public class SceneMainManager : MonoBehaviour {
 			randomBedroomController.StartGeneratingObjects();
 		}
 		PlayerData.Instance.PlayerEmoji.InitEmojiStats();
-//		print("INITSTAT");
+		//		print("INITSTAT");
 
 		if(PlayerData.Instance.PlayerEmoji.EmojiSleeping){
 			floatingStatsManager.OnEmojiSleepEvent(true);
 		}
-
-		if(PlayerPrefs.GetInt(PlayerPrefKeys.Game.HAS_INIT_INGREDIENT,0) == 0){
-			PlayerPrefs.SetInt(PlayerPrefKeys.Game.HAS_INIT_INGREDIENT,1);
-			PlayerData.Instance.inventory.SetIngredientValue (IngredientType.Chicken, 2);
-			PlayerData.Instance.inventory.SetIngredientValue (IngredientType.Cabbage, 2);
-			PlayerData.Instance.inventory.SetIngredientValue (IngredientType.Carrot, 2);
-			PlayerData.Instance.inventory.SetIngredientValue (IngredientType.Tomato, 2);
-		}
-
-		statsExpressionController.Init();
-		statsExpressionController.RegisterEmojiEvents();
-
-
+			
 		PlayerData.Instance.emojiParentTransform = roomController.rooms[(int)roomController.currentRoom].transform;
 		PlayerData.Instance.PlayerEmoji.transform.SetParent(PlayerData.Instance.emojiParentTransform,true);
+	}
 
+	void InitStatsExpression(){
+		statsExpressionController.Init();
+		statsExpressionController.RegisterEmojiEvents();
+	}
+
+	void InitOthers(){
 		gachaReward.Init ();
 		celebrationManager.Init();
 		floatingStats.Init ();
 		buttonWakeUp.Init ();
-
-//		if (PlayerData.Instance.TutorialFirstVisit == 0) {
-//			screenTutorial.ShowUI (screenTutorial.screenTutorialObj);
-//		}
 
 		if(AdmobManager.Instance) AdmobManager.Instance.ShowBanner();
 
@@ -143,51 +147,6 @@ public class SceneMainManager : MonoBehaviour {
 		//OnEmojiInitiated();
 
 		//PlayerData.Instance.PlayerEmoji.OnEmojiDestroyed += OnEmojiDestroyed;
-	}
-
-	public void EmojiGrowToAdult()
-	{
-		
-		GameObject tempAdultObject = PlayerData.Instance.PlayerEmoji.GetComponent<BabyEmoji>().emojiAdultObject;
-		PlayerData.Instance.babyEmojiObjToDestroy = PlayerData.Instance.PlayerEmoji.gameObject;
-
-		print("destroying baby");
-		OnEmojiDestroyed();
-		Destroy(PlayerData.Instance.babyEmojiObjToDestroy);
-
-		print("instantiating adult");
-		PlayerData.Instance.InitPlayerEmoji(tempAdultObject);
-
-		//init new adult
-		PlayerData.Instance.PlayerEmoji.OnEmojiInitiated += OnEmojiInitiated;
-		PlayerData.Instance.PlayerEmoji.Init();
-
-
-		if(PlayerData.Instance.PlayerEmoji.EmojiSleeping){
-			roomController.currentRoom = RoomType.Bedroom;
-			roomController.transform.position = new Vector3(-32f,0f,0f);
-			foreach(BaseRoom r in roomController.rooms) if(r != null) r.OnRoomChanged(roomController.currentRoom);
-
-			PlayerData.Instance.PlayerEmoji.transform.parent = roomController.rooms[(int)roomController.currentRoom].transform;
-			PlayerData.Instance.PlayerEmoji.transform.position = new Vector3(0,0.0025f,-2f);
-			PlayerData.Instance.PlayerEmoji.emojiExpressions.SetExpression(EmojiExpressionState.SLEEP,-1);
-			PlayerData.Instance.PlayerEmoji.body.DoSleep();
-			bedroom.DimLight();
-			randomBedroomController.StartGeneratingObjects();
-
-		}else{
-			PlayerData.Instance.PlayerEmoji.transform.SetParent(roomController.rooms[(int)roomController.currentRoom].transform,false);
-		}
-		PlayerData.Instance.PlayerEmoji.InitEmojiStats();
-
-		if(PlayerData.Instance.PlayerEmoji.EmojiSleeping){
-			floatingStatsManager.OnEmojiSleepEvent(true);
-		}
-
-		PlayerData.Instance.PlayerEmoji.transform.SetParent(PlayerData.Instance.emojiParentTransform,true);
-
-		statsExpressionController.Init();
-		statsExpressionController.RegisterEmojiEvents();
 	}
 
 	void OnEmojiInitiated()
@@ -243,6 +202,67 @@ public class SceneMainManager : MonoBehaviour {
 			}
 		}
 	}
+
+	public void EmojiGrowToAdult()
+	{
+		GameObject tempAdultObject = PlayerData.Instance.PlayerEmoji.GetComponent<BabyEmoji>().emojiAdultObject;
+		PlayerData.Instance.babyEmojiObjToDestroy = PlayerData.Instance.PlayerEmoji.gameObject;
+
+		print("destroying baby");
+		OnEmojiDestroyed();
+		Destroy(PlayerData.Instance.babyEmojiObjToDestroy);
+
+		print("instantiating adult");
+		PlayerData.Instance.InitPlayerEmoji(tempAdultObject);
+
+		//init new adult
+		PlayerData.Instance.PlayerEmoji.OnEmojiInitiated += OnEmojiInitiated;
+		PlayerData.Instance.PlayerEmoji.Init();
+
+
+		if(PlayerData.Instance.PlayerEmoji.EmojiSleeping){
+			roomController.currentRoom = RoomType.Bedroom;
+			roomController.transform.position = new Vector3(-32f,0f,0f);
+			foreach(BaseRoom r in roomController.rooms) if(r != null) r.OnRoomChanged(roomController.currentRoom);
+
+			PlayerData.Instance.PlayerEmoji.transform.parent = roomController.rooms[(int)roomController.currentRoom].transform;
+			PlayerData.Instance.PlayerEmoji.transform.position = new Vector3(0,0.0025f,-2f);
+			PlayerData.Instance.PlayerEmoji.emojiExpressions.SetExpression(EmojiExpressionState.SLEEP,-1);
+			PlayerData.Instance.PlayerEmoji.body.DoSleep();
+			bedroom.DimLight();
+			randomBedroomController.StartGeneratingObjects();
+
+		}else{
+			PlayerData.Instance.PlayerEmoji.transform.SetParent(roomController.rooms[(int)roomController.currentRoom].transform,false);
+		}
+		PlayerData.Instance.PlayerEmoji.InitEmojiStats();
+
+		if(PlayerData.Instance.PlayerEmoji.EmojiSleeping){
+			floatingStatsManager.OnEmojiSleepEvent(true);
+		}
+
+		PlayerData.Instance.PlayerEmoji.transform.SetParent(PlayerData.Instance.emojiParentTransform,true);
+
+		statsExpressionController.Init();
+		statsExpressionController.RegisterEmojiEvents();
+	}
 	#endregion
 //-------------------------------------------------------------------------------------------------------------------------------------------------	
+	IEnumerator Initialize(){
+		WaitForSeconds waitTime = new WaitForSeconds (0.1f);
+		InitEmoji ();
+		Debug.Log ("init emoji");
+		yield return waitTime;
+
+		InitStatsExpression ();
+		Debug.Log ("init stats expression");
+		yield return waitTime;
+
+		InitRooms ();
+		Debug.Log ("init rooms");
+		yield return waitTime;
+
+		InitOthers ();
+		Debug.Log ("init others");
+	}
 }

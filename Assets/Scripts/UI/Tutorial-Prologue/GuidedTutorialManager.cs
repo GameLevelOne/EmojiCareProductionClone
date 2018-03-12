@@ -49,7 +49,6 @@ public class GuidedTutorialManager : MonoBehaviour {
 	}
 
 	void InitStatsExpression(){
-		//init other events
 		statsExpressionController.Init();
 		statsExpressionController.RegisterEmojiEvents();
 	}
