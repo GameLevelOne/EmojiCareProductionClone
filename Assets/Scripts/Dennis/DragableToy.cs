@@ -43,7 +43,7 @@ public class DragableToy : MonoBehaviour {
 	public void OnFinishedEndDragAnimation()
 	{
 		if(endDrag){
-			Debug.Log("-------End drag------------");
+//			Debug.Log("-------End drag------------");
 
 
 			GetComponent<Rigidbody2D>().velocity = Vector2.zero;
@@ -55,7 +55,7 @@ public class DragableToy : MonoBehaviour {
 	{
 		yield return null;
 		if (endDrag) {
-			Debug.Log("------change end drag state-----");
+//			Debug.Log("------change end drag state-----");
 			endDrag = false;
 			if(daftar.Count != 0){
 				foreach(Collider2D c in daftar){

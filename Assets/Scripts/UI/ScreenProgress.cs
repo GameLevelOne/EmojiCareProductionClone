@@ -146,7 +146,7 @@ public class ScreenProgress : BaseUI {
 		totalExpressionProgressText.text = (currentTotalProgress*100f).ToString() + "%";
 		totalProgressBarFill.fillAmount = currentTotalProgress*0.8f;
 
-		Debug.Log ("currentTotalProgress:"+currentTotalProgress);
+//		Debug.Log ("currentTotalProgress:"+currentTotalProgress);
 		//Debug.Log ("sendOffPercentage:" + sendOffPercentage);
 
 		if(currentTotalProgress>=1){

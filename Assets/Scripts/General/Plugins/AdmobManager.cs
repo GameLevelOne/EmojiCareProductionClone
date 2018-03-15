@@ -19,7 +19,7 @@ public class AdmobManager : MonoBehaviour {
 
 	#region adsIds
 	//TODO: REPLACE WITH PRODUCTION IDs LATER
-	string androidBannerID = "ca-app-pub-3940256099942544/6300978111";
+	string androidBannerID = "ca-app-pub-5190655431355165/3293375151";
 	string iosBannerID;
 	string androidRewardedVideoID = "ca-app-pub-3940256099942544/5224354917";
 	string iosRewardedVideoID;
@@ -148,16 +148,16 @@ public class AdmobManager : MonoBehaviour {
 
 	IEnumerator WaitForAds(){
 		bool adsReady = false;
-		Debug.Log ("Start waiting. adsReady:" + adsReady);
+//		Debug.Log ("Start waiting. adsReady:" + adsReady);
 		while(!adsReady){ 
 			if(videoAdsReady){
 				adsReady = true;
 			}
-			Debug.Log ("adsReady:" + adsReady);
+//			Debug.Log ("adsReady:" + adsReady);
 			yield return null;
 		}
 		if(adsReady){
-			Debug.Log ("ads is ready, playing video");
+//			Debug.Log ("ads is ready, playing video");
 			adsReady = false;
 			if(OnFinishLoadVideoAds!=null) OnFinishLoadVideoAds ();
 			//ad.showRewardedVideo ();

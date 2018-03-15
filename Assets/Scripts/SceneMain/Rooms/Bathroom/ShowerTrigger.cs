@@ -46,11 +46,12 @@ public class ShowerTrigger : MonoBehaviour {
 	{
 		if(other.tag == Tags.EMOJI_BODY){
 			if(shower.holding){
-				if(other.transform.parent.GetComponent<Emoji>().emojiExpressions.currentExpression != EmojiExpressionState.BATHING){
+				EmojiExpression emojiExpression = other.transform.parent.GetComponent<Emoji> ().emojiExpressions;
+				if(emojiExpression.currentExpression != EmojiExpressionState.BATHING){
 					shower.ModEmojiHygiene();
 
-					if(other.transform.parent.GetComponent<Emoji>().emojiExpressions.currentExpression != EmojiExpressionState.BATHING)
-					other.transform.parent.GetComponent<Emoji>().emojiExpressions.SetExpression(EmojiExpressionState.BATHING,-1);
+					if(emojiExpression.currentExpression != EmojiExpressionState.BATHING)
+						emojiExpression.SetExpression(EmojiExpressionState.BATHING,-1);
 				}
 			}
 		}

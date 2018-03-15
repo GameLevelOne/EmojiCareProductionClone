@@ -41,13 +41,13 @@ public class SceneLoader : MonoBehaviour {
 	}
 
 	IEnumerator LoadNextScene(){
-		Debug.Log ("start load level async. loading scene: "+nextScene);
+//		Debug.Log ("start load level async. loading scene: "+nextScene);
 		asop = SceneManager.LoadSceneAsync(nextScene);
 		asop.allowSceneActivation = false;
 
 		while(!barIsFilled){
 			float progress = Mathf.Clamp01 (asop.progress / 0.9f);
-			Debug.Log ("progress: " + progress);
+//			Debug.Log ("progress: " + progress);
 			progressBar.fillAmount = progress;
 			if(asop.progress >= 0.9f){
 				barIsFilled = true;
@@ -56,7 +56,7 @@ public class SceneLoader : MonoBehaviour {
 		}
 
 		if(barIsFilled){
-			Debug.Log ("finish load level async");
+//			Debug.Log ("finish load level async");
 			fader.FadeOut();
 		}
 	}

@@ -133,8 +133,8 @@ public class CaptureEmojiManager : MonoBehaviour {
 			AndroidJavaObject currentActivity = unity.GetStatic<AndroidJavaObject>("currentActivity");
 			AndroidJavaObject unityContext = currentActivity.Call<AndroidJavaObject>("getApplicationContext");
 
-			string packageName = unityContext.Call<string>("getPackageName");
-	        string authority = packageName + ".provider";
+			//string packageName = unityContext.Call<string>("getPackageName");
+	        string authority = "com.gamelevelone.emojicare.provider";
 
 			AndroidJavaClass intentClass = new AndroidJavaClass("android.content.Intent");
 			AndroidJavaObject intentObject = new AndroidJavaObject("android.content.Intent");
@@ -153,6 +153,38 @@ public class CaptureEmojiManager : MonoBehaviour {
 			intentObject.Call<AndroidJavaObject>("setType","image/png");
 
 			currentActivity.Call("startActivity",intentObject);
+
+//		//instantiate the class Intent
+//			AndroidJavaClass intentClass = new AndroidJavaClass("android.content.Intent");
+//
+//			//instantiate the object Intent
+//			AndroidJavaObject intentObject = new AndroidJavaObject("android.content.Intent");
+//
+//			//call setAction setting ACTION_SEND as parameter
+//			intentObject.Call<AndroidJavaObject>("setAction", intentClass.GetStatic<string>("ACTION_SEND"));
+//
+//			//instantiate the class Uri
+//			AndroidJavaClass uriClass = new AndroidJavaClass("android.net.Uri");
+//
+//			//instantiate the object Uri with the parse of the url's file
+//			AndroidJavaObject uriObject = uriClass.CallStatic<AndroidJavaObject>("parse","file://"+ destination);
+//
+//			//call putExtra with the uri object of the file
+//			intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_STREAM"), uriObject);
+//
+//			intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_TEXT"), "Play EmojiCare Now!");
+//
+//			//set the type of file
+//			intentObject.Call<AndroidJavaObject>("setType", "image/jpeg");
+//
+//			//instantiate the class UnityPlayer
+//			AndroidJavaClass unity = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+//
+//			//instantiate the object currentActivity
+//			AndroidJavaObject currentActivity = unity.GetStatic<AndroidJavaObject>("currentActivity");
+//
+//			//call the activity with our Intent
+//			currentActivity.Call("startActivity", intentObject);
 		#endif
 
 		yield return new WaitUntil (() => isFocus);

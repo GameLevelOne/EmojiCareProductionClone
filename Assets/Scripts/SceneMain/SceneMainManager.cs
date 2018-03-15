@@ -251,18 +251,18 @@ public class SceneMainManager : MonoBehaviour {
 	IEnumerator Initialize(){
 		WaitForSeconds waitTime = new WaitForSeconds (0.1f);
 		InitEmoji ();
-		Debug.Log ("init emoji");
+//		Debug.Log ("init emoji");
 		yield return waitTime;
 
 		InitStatsExpression ();
-		Debug.Log ("init stats expression");
+//		Debug.Log ("init stats expression");
 		yield return waitTime;
 
 		InitRooms ();
-		Debug.Log ("init rooms");
+//		Debug.Log ("init rooms");
 		yield return waitTime;
 
 		InitOthers ();
-		Debug.Log ("init others");
+//		Debug.Log ("init others");
 	}
 }

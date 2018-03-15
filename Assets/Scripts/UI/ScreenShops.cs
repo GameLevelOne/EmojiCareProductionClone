@@ -274,10 +274,10 @@ public class ScreenShops : BaseUI {
 		//if(AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds += OnFinishWatchVideoAds;
 		if (YouAppiManager.Instance) YouAppiManager.Instance.OnYouAppiFinishWatchAds += OnFinishWatchVideoAds;
 		if(type == 0){
-			Debug.Log ("popupgem");
+//			Debug.Log ("popupgem");
 			screenPopup.ShowPopup (PopupType.Confirmation, PopupEventType.FreeGemAds);
 		} else if(type == 1){
-			Debug.Log ("popupcoin");
+//			Debug.Log ("popupcoin");
 			screenPopup.ShowPopup (PopupType.Confirmation, PopupEventType.FreeCoinAds);
 		}
 	}

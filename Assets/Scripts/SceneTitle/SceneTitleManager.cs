@@ -17,7 +17,7 @@ public class SceneTitleManager : MonoBehaviour {
 		SoundManager.Instance.PlayBGM(BGMList.BGMTitle);
 
 		Input.multiTouchEnabled = false;
-//		if(PlayerData.Instance.PlayerFirstPlay == 0) 
+		if(PlayerData.Instance.PlayerFirstPlay == 0) 
 			PlayerPrefs.DeleteAll();
 		Fader.OnFadeOutFinished += HandleFadeOutFinished;
 //		GameSparkManager.Instance.OnLoginSuccessful += GoToSceneMain;
@@ -67,10 +67,10 @@ public class SceneTitleManager : MonoBehaviour {
 			SoundManager.Instance.PlaySFXOneShot (SFXList.TapToStart);
 	}
 
-	public void DownloadEmojiObject()
-	{
-//		GameSparkManager.Instance.GetDownloadableURL(PlayerData.Instance.PlayerEmojiType);
-	}
+//	public void DownloadEmojiObject()
+//	{
+////		GameSparkManager.Instance.GetDownloadableURL(PlayerData.Instance.PlayerEmojiType);
+//	}
 
 	void GoToSceneMain()
 	{

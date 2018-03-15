@@ -267,7 +267,7 @@ public class ScreenPopup : BaseUI {
 
 	public void WatchAds ()
 	{
-		Debug.Log ("watch ads speed up");
+//		Debug.Log ("watch ads speed up");
 		PlayerData.Instance.SpeedUpHarvestCooldown = 1;
 		uiCoin.CloseUI (false);
 		if (AdmobManager.Instance) {

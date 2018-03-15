@@ -228,7 +228,7 @@ public class GardenField : MonoBehaviour {
 			plantHarvestTime = DateTime.Parse(PlayerPrefs.GetString(prefKeyHarvestTime));
 			if(DateTime.Now.CompareTo(plantHarvestTime) >= 0){
 				//ready harvest
-				Debug.Log ("ready to harvest");
+//				Debug.Log ("ready to harvest");
 				PlayerData.Instance.SpeedUpHarvestCooldown = 0;
 				foreach(GameObject g in currentPlants) g.GetComponent<Plant>().UpdatePlantStage(0);
 				flag = false;

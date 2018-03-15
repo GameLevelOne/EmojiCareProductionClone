@@ -292,7 +292,7 @@ public class GachaReward : BaseUI {
 			}
 		}
 		if (canReroll) rerollCount++;
-		Debug.Log ("reroll count:" + rerollCount);
+//		Debug.Log ("reroll count:" + rerollCount);
 		OpenGachaPack (true);
 		UpdateCurrencyDisplay ();
 	}

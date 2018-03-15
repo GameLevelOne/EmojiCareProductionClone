@@ -36,13 +36,13 @@ public class YouAppiManager : MonoBehaviour {
 	void InitYouAppi(){
 		youAppi = new YouAppi ();
 
-		Debug.Log("You Appi TestClient Object Started. \n Initializing... 2");
+//		Debug.Log("You Appi TestClient Object Started. \n Initializing... 2");
 
 		this.youAppi.initialize("a42ea166-1299-4a09-bfb7-a2370d4ec466");
 
-		Debug.Log ("Access Token Received: " + this.youAppi.accessToken);
-		Debug.Log ("Shared Instance Environment: " + this.youAppi.environment);
-		Debug.Log ("isInitialized: " + this.youAppi.isInitialized);
+//		Debug.Log ("Access Token Received: " + this.youAppi.accessToken);
+//		Debug.Log ("Shared Instance Environment: " + this.youAppi.environment);
+//		Debug.Log ("isInitialized: " + this.youAppi.isInitialized);
 
 	}
 
@@ -77,7 +77,7 @@ public class YouAppiManager : MonoBehaviour {
 			Debug.Log ("Failed to load rewarded video. ");
 		};
 		this.rewardedVideoAd.Rewarded += (sender,AdUnitEventArg) => {
-			Debug.Log("reward user");
+//			Debug.Log("reward user");
 			if (OnYouAppiFinishWatchAds != null)
 				OnYouAppiFinishWatchAds (currentEvent);
 		};

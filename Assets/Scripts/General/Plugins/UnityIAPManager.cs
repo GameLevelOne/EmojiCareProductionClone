@@ -74,8 +74,8 @@ public class UnityIAPManager : MonoBehaviour,IStoreListener {
     void BuyProductID(string productID){
     	if(IsInitialized()){
 			Product product = controller.products.WithID (productID);
-			Debug.Log ("string productID:" + productID);
-			Debug.Log ("inited productID:" + product.definition.storeSpecificId);
+//			Debug.Log ("string productID:" + productID);
+//			Debug.Log ("inited productID:" + product.definition.storeSpecificId);
 			if(product != null && product.availableToPurchase){
 //				Debug.Log(string.Format("Purchasing product asychronously: '{0}'", product.definition.id));
 				controller.InitiatePurchase (product);
