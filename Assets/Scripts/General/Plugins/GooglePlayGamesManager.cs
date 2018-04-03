@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_ANDROID
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
+#endif
 using UnityEngine.SocialPlatforms;
 
 public class GooglePlayGamesManager : MonoBehaviour {
@@ -23,14 +25,16 @@ public class GooglePlayGamesManager : MonoBehaviour {
 		DontDestroyOnLoad (this.gameObject);
 	}
 
+	#if UNITY_ANDROID
 	void Start(){
 		InitGPGS ();
 	}
-	
+
 	void InitGPGS(){
 		PlayGamesPlatform.DebugLogEnabled = true;
 		PlayGamesPlatform.Activate ();
 	}
+	#endif
 
 	public void GPGSLogin(){
 		Social.localUser.Authenticate((bool success) =>{

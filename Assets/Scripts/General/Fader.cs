@@ -17,7 +17,8 @@ public class Fader : MonoBehaviour {
 	}
 
 	void Start(){
-		FadeIn();
+		if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "SceneTitle")
+			FadeIn();
 	}
 
 	public void FadeIn(){

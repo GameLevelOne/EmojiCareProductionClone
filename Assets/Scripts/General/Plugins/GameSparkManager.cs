@@ -39,15 +39,15 @@ public class GameSparkManager : MonoBehaviour {
 
 	public void DoGuestLogin()
 	{
-		new GameSparks.Api.Requests.DeviceAuthenticationRequest().Send((response)=>{
-			if(!response.HasErrors){
-				print("success login device");
-				
-				if(OnLoginSuccessful != null) OnLoginSuccessful();
-			}else{
-				print("Error: "+response.Errors.JSON.ToString());
-			}
-		});
+//		new GameSparks.Api.Requests.DeviceAuthenticationRequest().Send((response)=>{
+//			if(!response.HasErrors){
+//				print("success login device");
+//				
+//				if(OnLoginSuccessful != null) OnLoginSuccessful();
+//			}else{
+//				print("Error: "+response.Errors.JSON.ToString());
+//			}
+//		});
 	}
 
 	public void DoSaveData()

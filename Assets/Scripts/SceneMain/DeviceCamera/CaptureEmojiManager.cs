@@ -3,6 +3,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using System.IO;
+#if UNITY_IOS
+using System.Runtime.InteropServices;
+#endif
 
 public class CaptureEmojiManager : MonoBehaviour {
 	[Header("CaptureEmojiManager Attributes")]
@@ -185,6 +188,10 @@ public class CaptureEmojiManager : MonoBehaviour {
 //
 //			//call the activity with our Intent
 //			currentActivity.Call("startActivity", intentObject);
+		#elif UNITY_IOS
+
+		ShareIOS("Play EmojiCare Now!","","",destination);
+
 		#endif
 
 		yield return new WaitUntil (() => isFocus);
@@ -229,4 +236,47 @@ public class CaptureEmojiManager : MonoBehaviour {
 		buttonHotkey.transform.parent.GetComponent<HotkeysAnimation> ().CloseHotkeys ();
 	}
 	#endregion
+
+	#if UNITY_IOS
+	public struct ConfigStruct
+	{
+		public string title;
+		public string message;
+	}
+
+	[DllImport ("__Internal")] private static extern void showAlertMessage(ref ConfigStruct conf);
+
+	public struct SocialSharingStruct
+	{
+		public string text;
+		public string subject;
+		public string filePaths;
+	}
+
+	[DllImport ("__Internal")] private static extern void showSocialSharing(ref SocialSharingStruct conf);
+
+	public static void ShareIOS(string title, string message)
+	{
+		ConfigStruct conf = new ConfigStruct();
+		conf.title  = title;
+		conf.message = message;
+		showAlertMessage(ref conf);
+	}
+
+	public static void ShareIOS(string body, string subject, string url, string[] filePaths)
+	{
+		SocialSharingStruct conf = new SocialSharingStruct();
+		conf.text = body;
+		string paths = string.Join(";", filePaths);
+		if (string.IsNullOrEmpty(paths))
+			paths = url;
+		else if (!string.IsNullOrEmpty(url))
+			paths += ";" + url;
+		conf.filePaths = paths;
+		conf.subject = subject;
+
+		showSocialSharing(ref conf);
+	}
+	#endif
+
 }

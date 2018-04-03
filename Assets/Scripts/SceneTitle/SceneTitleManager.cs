@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class SceneTitleManager : MonoBehaviour {
 	public Fader fader;
 	public SceneLoader sceneLoader;
+	public GameObject tapArea;
 
 	string nextScene;
 
@@ -15,6 +16,8 @@ public class SceneTitleManager : MonoBehaviour {
 
 	void Start(){
 		SoundManager.Instance.PlayBGM(BGMList.BGMTitle);
+
+//		PlayerData.Instance.PlayerFirstPlay = 1;
 
 		Input.multiTouchEnabled = false;
 		if(PlayerData.Instance.PlayerFirstPlay == 0) 
@@ -27,19 +30,15 @@ public class SceneTitleManager : MonoBehaviour {
 //			//authenticate with playertoken.(BUT HOW????)
 //		}
 
-		//PlayerData.Instance.Shop = 1;
+		if (GooglePlayGamesManager.Instance)
+			GooglePlayGamesManager.Instance.GPGSLogin ();
 	}
 
 	void OnFinishLogin ()
 	{
 		GooglePlayGamesManager.Instance.OnFinishLogin -= OnFinishLogin;
-		fader.FadeOut();
-	}
-
-	IEnumerator FaderFadeIn()
-	{
-		yield return new WaitForSeconds(1f);
-		fader.FadeIn();
+		//fader.FadeOut();
+		fader.FadeIn ();
 	}
 
 	void HandleFadeOutFinished(){
@@ -61,10 +60,10 @@ public class SceneTitleManager : MonoBehaviour {
 
 	public void TapToStart ()
 	{
-		if (GooglePlayGamesManager.Instance)
-			GooglePlayGamesManager.Instance.GPGSLogin ();
+		tapArea.SetActive (false);
 		if (SoundManager.Instance)
 			SoundManager.Instance.PlaySFXOneShot (SFXList.TapToStart);
+		fader.FadeOut();
 	}
 
 //	public void DownloadEmojiObject()
