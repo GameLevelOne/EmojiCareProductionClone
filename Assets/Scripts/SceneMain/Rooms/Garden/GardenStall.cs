@@ -46,14 +46,14 @@ public class GardenStall : BaseFurniture {
 	#region initialization
 
 	void OnEnable(){
-		//if(AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds += OnFinishWatchVideoAds;
-		if (YouAppiManager.Instance) YouAppiManager.Instance.OnYouAppiFinishWatchAds += OnFinishWatchVideoAds;
+		if(AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds += OnFinishWatchVideoAds;
+		//if (YouAppiManager.Instance) YouAppiManager.Instance.OnYouAppiFinishWatchAds += OnFinishWatchVideoAds;
 		GardenStallTimer.OnRefillStallWithGems += OnRefillStallWithGems;
 	}
 
 	void OnDisable(){
-		//if(AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds -= OnFinishWatchVideoAds;
-		if (YouAppiManager.Instance) YouAppiManager.Instance.OnYouAppiFinishWatchAds -= OnFinishWatchVideoAds;
+		if(AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds -= OnFinishWatchVideoAds;
+		//if (YouAppiManager.Instance) YouAppiManager.Instance.OnYouAppiFinishWatchAds -= OnFinishWatchVideoAds;
 		GardenStallTimer.OnRefillStallWithGems -= OnRefillStallWithGems;
 	}
 

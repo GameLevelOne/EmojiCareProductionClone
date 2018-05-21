@@ -17,9 +17,10 @@ public class SceneTitleManager : MonoBehaviour {
 	void Start(){
 		SoundManager.Instance.PlayBGM(BGMList.BGMTitle);
 
-//		PlayerData.Instance.PlayerFirstPlay = 1;
-
 		Input.multiTouchEnabled = false;
+
+//		PlayerData.Instance.PlayerFirstPlay = 0;
+
 		if(PlayerData.Instance.PlayerFirstPlay == 0) 
 			PlayerPrefs.DeleteAll();
 		Fader.OnFadeOutFinished += HandleFadeOutFinished;
@@ -37,8 +38,7 @@ public class SceneTitleManager : MonoBehaviour {
 	void OnFinishLogin ()
 	{
 		GooglePlayGamesManager.Instance.OnFinishLogin -= OnFinishLogin;
-		//fader.FadeOut();
-		fader.FadeIn ();
+		fader.FadeIn();
 	}
 
 	void HandleFadeOutFinished(){
@@ -61,9 +61,11 @@ public class SceneTitleManager : MonoBehaviour {
 	public void TapToStart ()
 	{
 		tapArea.SetActive (false);
+
 		if (SoundManager.Instance)
 			SoundManager.Instance.PlaySFXOneShot (SFXList.TapToStart);
-		fader.FadeOut();
+
+		fader.FadeOut ();
 	}
 
 //	public void DownloadEmojiObject()

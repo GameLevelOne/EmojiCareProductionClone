@@ -9,15 +9,15 @@ public class ButtonSpecialWakeUp : MonoBehaviour {
 	public void Init(){
 		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent += OnEmojiSleepEvent;
 		PlayerData.Instance.PlayerEmoji.playerInput.OnEmojiWake += OnEmojiWake;
-		//if(AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds += OnFinishWatchVideoAds;
-		if (YouAppiManager.Instance) YouAppiManager.Instance.OnYouAppiFinishWatchAds += OnFinishWatchVideoAds;
+		if(AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds += OnFinishWatchVideoAds;
+		//if (YouAppiManager.Instance) YouAppiManager.Instance.OnYouAppiFinishWatchAds += OnFinishWatchVideoAds;
 	}
 
 	void OnDisable(){
 		PlayerData.Instance.PlayerEmoji.body.OnEmojiSleepEvent -= OnEmojiSleepEvent;
 		PlayerData.Instance.PlayerEmoji.playerInput.OnEmojiWake -= OnEmojiWake;
-		//if(AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds -= OnFinishWatchVideoAds;
-		if (YouAppiManager.Instance) YouAppiManager.Instance.OnYouAppiFinishWatchAds -= OnFinishWatchVideoAds;
+		if(AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds -= OnFinishWatchVideoAds;
+		//if (YouAppiManager.Instance) YouAppiManager.Instance.OnYouAppiFinishWatchAds -= OnFinishWatchVideoAds;
 	}
 
 	void OnFinishWatchVideoAds (AdEvents eventName)

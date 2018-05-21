@@ -190,7 +190,7 @@ public class CaptureEmojiManager : MonoBehaviour {
 //			currentActivity.Call("startActivity", intentObject);
 		#elif UNITY_IOS
 
-		ShareIOS("Play EmojiCare Now!","","",destination);
+		ShareIOS("","","",destination);
 
 		#endif
 
@@ -263,11 +263,11 @@ public class CaptureEmojiManager : MonoBehaviour {
 		showAlertMessage(ref conf);
 	}
 
-	public static void ShareIOS(string body, string subject, string url, string[] filePaths)
+	public static void ShareIOS(string body, string subject, string url, string filePaths)
 	{
 		SocialSharingStruct conf = new SocialSharingStruct();
 		conf.text = body;
-		string paths = string.Join(";", filePaths);
+		string paths = filePaths;
 		if (string.IsNullOrEmpty(paths))
 			paths = url;
 		else if (!string.IsNullOrEmpty(url))

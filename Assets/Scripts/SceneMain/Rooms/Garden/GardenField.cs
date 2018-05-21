@@ -80,8 +80,8 @@ public class GardenField : MonoBehaviour {
 			}
 		}
 		if (UnityEngine.SceneManagement.SceneManager.GetActiveScene ().name != ShortCode.SCENE_GUIDED_TUTORIAL) {
-			//if (AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds += OnFinishWatchVideoAds;
-			if (YouAppiManager.Instance) YouAppiManager.Instance.OnYouAppiFinishWatchAds += OnFinishWatchVideoAds;
+			if (AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds += OnFinishWatchVideoAds;
+			//if (YouAppiManager.Instance) YouAppiManager.Instance.OnYouAppiFinishWatchAds += OnFinishWatchVideoAds;
 		}
 		post.popup.OnInstantHarvestPlant += OnInstantHarvestPlant;
 		InitPlayerProgressToGardenField();
@@ -95,8 +95,8 @@ public class GardenField : MonoBehaviour {
 	void OnDisable ()
 	{
 		if (UnityEngine.SceneManagement.SceneManager.GetActiveScene ().name != ShortCode.SCENE_GUIDED_TUTORIAL) {
-			//if (AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds -= OnFinishWatchVideoAds;
-			if (YouAppiManager.Instance) YouAppiManager.Instance.OnYouAppiFinishWatchAds -= OnFinishWatchVideoAds;
+			if (AdmobManager.Instance) AdmobManager.Instance.OnFinishWatchVideoAds -= OnFinishWatchVideoAds;
+			//if (YouAppiManager.Instance) YouAppiManager.Instance.OnYouAppiFinishWatchAds -= OnFinishWatchVideoAds;
 			post.popup.OnInstantHarvestPlant -= OnInstantHarvestPlant;
 		}
 	}

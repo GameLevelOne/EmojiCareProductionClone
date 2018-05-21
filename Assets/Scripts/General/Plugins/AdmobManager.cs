@@ -20,9 +20,9 @@ public class AdmobManager : MonoBehaviour {
 	#region adsIds
 	//TODO: REPLACE WITH PRODUCTION IDs LATER
 	string androidBannerID = "ca-app-pub-5190655431355165/3293375151";
-	string iosBannerID;
+	string iosBannerID = "ca-app-pub-5190655431355165/9590019646";
 	string androidRewardedVideoID = "ca-app-pub-3940256099942544/5224354917";
-	string iosRewardedVideoID;
+	string iosRewardedVideoID = "ca-app-pub-5190655431355165/8565711034";
 	#endregion
 
 	#region events
@@ -110,17 +110,25 @@ public class AdmobManager : MonoBehaviour {
 	}
 
 	void RequestBannerAd(){
+		#if UNITY_ANDROID
 		bannerView = new BannerView (androidBannerID, AdSize.SmartBanner, AdPosition.Bottom);
+		#endif
+		#if UNITY_IOS
+		bannerView = new BannerView (iosBannerID, AdSize.SmartBanner, AdPosition.Bottom);
+		#endif
 		AdRequest req = new AdRequest.Builder ().Build ();
 		bannerView.LoadAd (req);
 		HideBanner ();
 	}
 
 	public void RequestRewardedVideo(){
-		// Create an empty ad request.
         AdRequest request = new AdRequest.Builder().Build();
-        // Load the rewarded video ad with the request.
+		#if UNITY_ANDROID
         rewardedVideo.LoadAd(request, androidRewardedVideoID);
+		#endif
+		#if UNITY_IOS
+		rewardedVideo.LoadAd(request, iosRewardedVideoID);
+		#endif
 	}
 
 	public void ShowBanner(){

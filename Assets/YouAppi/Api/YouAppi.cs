@@ -3,7 +3,7 @@ using UnityEngine;
 #if UNITY_ANDROID
 using YouAPPiSDK.Android;
 #elif UNITY_IOS
-using YouAPPiSDK.iOS;
+//using YouAPPiSDK.iOS;
 #endif
 using YouAPPiSDK.Common;
 
@@ -47,7 +47,7 @@ namespace YouAPPiSDK.Api
 		public YouAppi ()
 		{
 			#if UNITY_IOS
-			this.client = new YouAppiClientiOS ();
+			//this.client = new YouAppiClientiOS ();
 			#elif UNITY_ANDROID
 			this.client = new YouAppiClientAndroid();
 			#endif
