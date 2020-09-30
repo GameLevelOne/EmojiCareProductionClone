@@ -1,4 +1,4 @@
-﻿// Copyright (C) 2015 Google, Inc.
+// Copyright (C) 2015 Google, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,15 +14,16 @@
 
 using System;
 using System.Collections.Generic;
-
-using GoogleMobileAds.Common;
 using UnityEngine;
+
+using GoogleMobileAds;
+using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Api
 {
     public enum NativeAdType
     {
-        CustomTemplate = 0,
+        CustomTemplate
     }
 
     public class AdLoader
@@ -39,21 +40,21 @@ namespace GoogleMobileAds.Api
             this.AdTypes = new HashSet<NativeAdType>(builder.AdTypes);
             this.adLoaderClient = GoogleMobileAdsClientFactory.BuildAdLoaderClient(this);
 
-            this.adLoaderClient.OnCustomNativeTemplateAdLoaded += (sender, args) =>
-                {
-                    if(this.OnCustomNativeTemplateAdLoaded != null)
-                    {
-                        this.OnCustomNativeTemplateAdLoaded(this, args);
-                    }
-                };
+            Utils.CheckInitialization();
 
-            this.adLoaderClient.OnAdFailedToLoad += (sender, args) =>
+            this.adLoaderClient.OnCustomNativeTemplateAdLoaded +=
+                    delegate (object sender, CustomNativeEventArgs args)
+            {
+                this.OnCustomNativeTemplateAdLoaded(this, args);
+            };
+            this.adLoaderClient.OnAdFailedToLoad += delegate (
+                object sender, AdFailedToLoadEventArgs args)
+            {
+                if (this.OnAdFailedToLoad != null)
                 {
-                    if(this.OnAdFailedToLoad != null)
-                    {
-                        this.OnAdFailedToLoad(this, args);
-                    }
-                };
+                    this.OnAdFailedToLoad(this, args);
+                }
+            };
         }
 
         public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;

@@ -12,29 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#if UNITY_IOS
-
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
-using UnityEngine;
 
 namespace GoogleMobileAds.iOS
 {
+    [StructLayout(LayoutKind.Sequential),Serializable]
+    // The System.Boolean (bool in C#) type is special. A bool within a structure is marshaled in a different format
+    // than when passed as an argument to a function (4-byte integer vs 2-byte integer, non zero = true vs -1 = true).
+    // Using ints instead for simplicity.
     public struct NativeAdTypes
     {
-        public bool CustomTemplateAd;
-        public bool AppInstallAd;
-        public bool ContentAd;
+        public int CustomTemplateAd;
     }
 
-    internal class AdLoaderClient : IAdLoaderClient, IDisposable
+    public class AdLoaderClient : IAdLoaderClient, IDisposable
     {
         private IntPtr adLoaderPtr;
         private IntPtr adLoaderClientPtr;
+        private NativeAdTypes adTypes;
 
         private Dictionary<string, Action<CustomNativeTemplateAd, string>>
             customNativeTemplateCallbacks;
@@ -47,18 +47,21 @@ namespace GoogleMobileAds.iOS
             string[] templateIdsArray = new string[unityAdLoader.TemplateIds.Count];
             unityAdLoader.TemplateIds.CopyTo(templateIdsArray);
 
-            NativeAdTypes adTypes = new NativeAdTypes();
+            this.adTypes = new NativeAdTypes();
+            bool configureReturnUrlsForImageAssets = false;
+
             if (unityAdLoader.AdTypes.Contains(NativeAdType.CustomTemplate))
             {
-                adTypes.CustomTemplateAd = true;
+                configureReturnUrlsForImageAssets = false;
+                adTypes.CustomTemplateAd = 1;
             }
-
             this.AdLoaderPtr = Externs.GADUCreateAdLoader(
                 this.adLoaderClientPtr,
                 unityAdLoader.AdUnitId,
                 templateIdsArray,
                 templateIdsArray.Length,
-                ref adTypes);
+                ref adTypes,
+                configureReturnUrlsForImageAssets);
 
             Externs.GADUSetAdLoaderCallbacks(
                 this.AdLoaderPtr,
@@ -133,7 +136,6 @@ namespace GoogleMobileAds.iOS
                 };
                 client.OnCustomNativeTemplateAdLoaded(client, args);
             }
-
         }
 
         [MonoPInvokeCallback(typeof(GADUAdLoaderDidFailToReceiveAdWithErrorCallback))]
@@ -158,5 +160,3 @@ namespace GoogleMobileAds.iOS
         }
     }
 }
-
-#endif

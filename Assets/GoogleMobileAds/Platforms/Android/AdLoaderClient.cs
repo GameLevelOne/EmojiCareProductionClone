@@ -1,4 +1,4 @@
-﻿// Copyright (C) 2015 Google, Inc.
+// Copyright (C) 2015 Google, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#if UNITY_ANDROID
-
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,12 +24,14 @@ namespace GoogleMobileAds.Android
     public class AdLoaderClient : AndroidJavaProxy, IAdLoaderClient
     {
         private AndroidJavaObject adLoader;
-        private Dictionary<string, Action<CustomNativeTemplateAd, string>>
-                CustomNativeTemplateCallbacks { get; set; }
+        private Dictionary<string, Action<CustomNativeTemplateAd, string>> CustomNativeTemplateCallbacks
+        {
+            get; set;
+        }
         public event EventHandler<AdFailedToLoadEventArgs> OnAdFailedToLoad;
         public event EventHandler<CustomNativeEventArgs> OnCustomNativeTemplateAdLoaded;
 
-        public AdLoaderClient(AdLoader unityAdLoader) : base(Utils.UnityCustomNativeAdListener)
+        public AdLoaderClient(AdLoader unityAdLoader) : base(Utils.UnityAdLoaderListenerClassName)
         {
             AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
             AndroidJavaObject activity =
@@ -41,13 +41,19 @@ namespace GoogleMobileAds.Android
 
             this.CustomNativeTemplateCallbacks = unityAdLoader.CustomNativeTemplateClickHandlers;
 
+            bool supportsRequestImageAssetUrls = false;
+
             if (unityAdLoader.AdTypes.Contains(NativeAdType.CustomTemplate))
             {
+                supportsRequestImageAssetUrls = false;
                 foreach (string templateId in unityAdLoader.TemplateIds)
                 {
                     adLoader.Call("configureCustomNativeTemplateAd", templateId,
                         this.CustomNativeTemplateCallbacks.ContainsKey(templateId));
                 }
+            }
+            if (supportsRequestImageAssetUrls) {
+                adLoader.Call("configureReturnUrlsForImageAssets");
             }
             adLoader.Call("create");
         }
@@ -61,7 +67,8 @@ namespace GoogleMobileAds.Android
         {
             if (this.OnCustomNativeTemplateAdLoaded != null)
             {
-                CustomNativeEventArgs args = new CustomNativeEventArgs() {
+                CustomNativeEventArgs args = new CustomNativeEventArgs()
+                {
                     nativeAd = new CustomNativeTemplateAd(new CustomNativeTemplateClient(ad))
                 };
                 this.OnCustomNativeTemplateAdLoaded(this, args);
@@ -70,14 +77,11 @@ namespace GoogleMobileAds.Android
 
         void onAdFailedToLoad(string errorReason)
         {
-            if (this.OnAdFailedToLoad != null)
+            AdFailedToLoadEventArgs args = new AdFailedToLoadEventArgs()
             {
-                AdFailedToLoadEventArgs args = new AdFailedToLoadEventArgs()
-                {
-                    Message = errorReason
-                };
-                this.OnAdFailedToLoad(this, args);
-            }
+                Message = errorReason
+            };
+            OnAdFailedToLoad(this, args);
         }
 
         public void onCustomClick(AndroidJavaObject ad, string assetName)
@@ -89,4 +93,4 @@ namespace GoogleMobileAds.Android
     }
 }
 
-#endif
+
